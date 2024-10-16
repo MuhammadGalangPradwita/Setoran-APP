@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:tubes_mobpro/tubes/pages/get_started_page.dart';
-
+import 'package:flutter/rendering.dart';
 
 void main() {
+  debugPaintSizeEnabled = false;
   runApp(const MyApp());
 }
 
@@ -12,11 +13,9 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return  const MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: GetStartedPage(),
     );
   }
 }
-
-
