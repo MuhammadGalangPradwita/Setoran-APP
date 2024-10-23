@@ -35,20 +35,18 @@ class SignUpPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Expanded(
-                      child: Container(
-                        color: Colors.grey, 
-                        height: 2,
-                        margin: EdgeInsets.only(right: 10),
-                      )
-                    ),
-                    Text("Or sign in with"),
+                        child: Container(
+                      color: Colors.grey,
+                      height: 2,
+                      margin: const EdgeInsets.only(right: 10),
+                    )),
+                    const Text("Or sign in with"),
                     Expanded(
-                      child: Container(
-                        color: Colors.grey, 
-                        height: 2,
-                        margin: EdgeInsets.only(left: 10),
-                      )
-                    ),
+                        child: Container(
+                      color: Colors.grey,
+                      height: 2,
+                      margin: const EdgeInsets.only(left: 10),
+                    )),
                   ],
                 ),
                 const Gap(36),
@@ -78,7 +76,7 @@ class SignUpPage extends StatelessWidget {
                     const Gap(4),
                     InkWell(
                       onTap: () {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => const SignInPage()));
@@ -102,7 +100,6 @@ class SignUpPage extends StatelessWidget {
   }
 
   Widget createForm() {
-
     return Column(
       children: [
         const TextfieldWidget(
@@ -117,25 +114,26 @@ class SignUpPage extends StatelessWidget {
           label: "Email",
         ),
         const Gap(24),
-        const TextfieldWidget(
-          keyboardType: TextInputType.visiblePassword,
+        const TextfieldWidget.password(
           hintText: "Enter your password",
           label: "Password",
-          obscureText: true,
-          suffixIcon: Icon(Icons.visibility_off),
         ),
         const Gap(24),
-        const TextfieldWidget(
-          keyboardType: TextInputType.visiblePassword,
+        // const TextfieldWidget(
+        //   keyboardType: TextInputType.visiblePassword,
+        //   hintText: "Confirm your password",
+        //   label: "Password",
+        //   obscureText: true,
+        //   suffixIcon: Icon(Icons.visibility_off),
+        // ),
+        const TextfieldWidget.password(
           hintText: "Confirm your password",
           label: "Password",
-          obscureText: true,
-          suffixIcon: Icon(Icons.visibility_off),
         ),
         const Gap(32),
         SizedBox(
             width: double.infinity,
-            child: ButtonWidget(label: "Register", press: () {}))
+            child: ButtonWidget.primary(label: "Register", press: () {}))
       ],
     );
   }

@@ -64,15 +64,16 @@ class SignInPage extends StatelessWidget {
                     const Gap(4),
                     InkWell(
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const SignUpPage()));
-                        },
-                        child: Text("Sign Up",
-                          style: GoogleFonts.poppins(
-                            fontSize: 12,
-                            decoration: TextDecoration.underline,
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const SignUpPage()));
+                      },
+                      child: Text(
+                        "Sign Up",
+                        style: GoogleFonts.poppins(
+                          fontSize: 12,
+                          decoration: TextDecoration.underline,
                         ),
                       ),
                     ),
@@ -95,12 +96,9 @@ class SignInPage extends StatelessWidget {
           label: "Email",
         ),
         const Gap(24),
-        const TextfieldWidget(
-          keyboardType: TextInputType.visiblePassword,
+        const TextfieldWidget.password(
           hintText: "Enter your password",
           label: "Password",
-          obscureText: true,
-          suffixIcon: Icon(Icons.visibility_off),
         ),
         const Gap(16),
         Row(
