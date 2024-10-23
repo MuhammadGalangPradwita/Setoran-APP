@@ -60,14 +60,18 @@ class SignUpPage extends StatelessWidget {
                       child: ButtonOutlineWidget(
                         label: "Google",
                         press: () {},
-                        icon: Icons.map,
+                        icon: Container(
+                          width: 16,
+                          height: 16,
+                          child: Image(image: AssetImage('assets/images/google_icon.png')),
+                        ),
                       ),
                     ),
                     // Gap(64),
                     SizedBox(
                         width: 144,
                         child:
-                            ButtonOutlineWidget(label: "Google", press: () {})),
+                            ButtonOutlineWidget(label: "Google", press: () {},)),
                   ],
                 ),
                 const Gap(36),

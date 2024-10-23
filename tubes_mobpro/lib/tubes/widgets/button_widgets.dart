@@ -31,7 +31,7 @@ class ButtonOutlineWidget extends StatelessWidget {
 
   final String label;
   final VoidCallback press;
-  final IconData? icon;
+  final Widget? icon;
 
   @override
   Widget build(BuildContext context) {
@@ -49,10 +49,7 @@ class ButtonOutlineWidget extends StatelessWidget {
             if (icon != null) {
               return Row(
                 children: [
-                  Icon(
-                    icon,
-                    color: Colors.black,
-                  ),
+                  icon!,
                   const Gap(8),
                 ],
               );
