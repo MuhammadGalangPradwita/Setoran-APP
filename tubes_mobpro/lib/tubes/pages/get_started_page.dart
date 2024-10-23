@@ -40,7 +40,7 @@ class GetStartedPage extends StatelessWidget {
                 const Gap(30),
                 SizedBox(
                   width: 270,
-                  child: ButtonWidget(
+                  child: ButtonWidget.primary(
                     label: 'Getting Started',
                     press: () {
                       Navigator.push(

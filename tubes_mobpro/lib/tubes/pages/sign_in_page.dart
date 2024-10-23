@@ -119,7 +119,7 @@ class SignInPage extends StatelessWidget {
         const Gap(16),
         SizedBox(
             width: double.infinity,
-            child: ButtonWidget(label: "Login", press: () {}))
+            child: ButtonWidget.primary(label: "Login", press: () {}))
       ],
     );
   }
