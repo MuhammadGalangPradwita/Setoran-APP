@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:tubes_mobpro/tubes/pages/sign_in_page.dart';
 import 'package:tubes_mobpro/tubes/widgets/button_widgets.dart';
 import 'package:tubes_mobpro/tubes/widgets/textField_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tubes_mobpro/tubes/pages/sign_up_page.dart';
 
-class SignInPage extends StatelessWidget {
-  const SignInPage({super.key});
+class SignUpPage extends StatelessWidget {
+  const SignUpPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class SignInPage extends StatelessWidget {
               children: [
                 const Gap(64),
                 Text(
-                  "Sign In",
+                  "Sign Up",
                   style: GoogleFonts.poppins(
                     fontSize: 20,
                     fontWeight: FontWeight.w600,
@@ -31,10 +31,24 @@ class SignInPage extends StatelessWidget {
                 const Gap(36),
                 createForm(),
                 const Gap(36),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    Expanded(
+                      child: Container(
+                        color: Colors.grey, 
+                        height: 2,
+                        margin: EdgeInsets.only(right: 10),
+                      )
+                    ),
                     Text("Or sign in with"),
+                    Expanded(
+                      child: Container(
+                        color: Colors.grey, 
+                        height: 2,
+                        margin: EdgeInsets.only(left: 10),
+                      )
+                    ),
                   ],
                 ),
                 const Gap(36),
@@ -60,20 +74,21 @@ class SignInPage extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text("Dont have account?"),
+                    const Text("Already have an account?"),
                     const Gap(4),
                     InkWell(
                       onTap: () {
                         Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const SignUpPage()));
-                        },
-                        child: Text("Sign Up",
-                          style: GoogleFonts.poppins(
-                            fontSize: 12,
-                            decoration: TextDecoration.underline,
-                        ),
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const SignInPage()));
+                      },
+                      child: InkWell(
+                        child: Text("Sign In",
+                            style: GoogleFonts.poppins(
+                              fontSize: 12,
+                              decoration: TextDecoration.underline,
+                            )),
                       ),
                     ),
                   ],
@@ -87,8 +102,15 @@ class SignInPage extends StatelessWidget {
   }
 
   Widget createForm() {
+
     return Column(
       children: [
+        const TextfieldWidget(
+          keyboardType: TextInputType.emailAddress,
+          hintText: "Enter your username",
+          label: "Email",
+        ),
+        const Gap(24),
         const TextfieldWidget(
           keyboardType: TextInputType.emailAddress,
           hintText: "Enter your email",
@@ -102,24 +124,18 @@ class SignInPage extends StatelessWidget {
           obscureText: true,
           suffixIcon: Icon(Icons.visibility_off),
         ),
-        const Gap(16),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            InkWell(
-              onTap: () {},
-              child: Text("Fortgot Password?",
-                  style: GoogleFonts.poppins(
-                    fontSize: 12,
-                    decoration: TextDecoration.underline,
-                  )),
-            ),
-          ],
+        const Gap(24),
+        const TextfieldWidget(
+          keyboardType: TextInputType.visiblePassword,
+          hintText: "Confirm your password",
+          label: "Password",
+          obscureText: true,
+          suffixIcon: Icon(Icons.visibility_off),
         ),
-        const Gap(16),
+        const Gap(32),
         SizedBox(
             width: double.infinity,
-            child: ButtonWidget(label: "Login", press: () {}))
+            child: ButtonWidget(label: "Register", press: () {}))
       ],
     );
   }
