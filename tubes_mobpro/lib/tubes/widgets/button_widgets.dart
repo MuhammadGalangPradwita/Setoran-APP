@@ -1,25 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 
 class ButtonWidget extends StatelessWidget {
-  const ButtonWidget({super.key, required this.label, required this.press});
+  const ButtonWidget.primary(
+      {super.key, required this.label, required this.press})
+      : backgroundColor = AppColors.B400,
+        color = AppColors.N0;
 
   final String label;
   final VoidCallback press;
+  final Color backgroundColor;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: press,
-      style: TextButton.styleFrom(
-        backgroundColor: const Color(0xFF009DFF),
+      // style: TextButton.styleFrom(
+      //   backgroundColor: const Color(0xFF009DFF),
+      // ),
+      style: ButtonStyle(
+        backgroundColor: WidgetStatePropertyAll(backgroundColor),
       ),
       child: Text(label,
           style: GoogleFonts.poppins(
             fontSize: 16,
             fontWeight: FontWeight.w500,
-            color: const Color(0xFFFFFFFF),
+            color: color,
           )),
     );
   }
