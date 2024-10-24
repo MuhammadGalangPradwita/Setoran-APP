@@ -46,7 +46,10 @@ class SignInPage extends StatelessWidget {
                       child: ButtonOutlineWidget(
                         label: "Google",
                         press: () {},
-                        icon: Icons.map,
+                        icon: Icon(
+                          Icons.map,
+                          color: Colors.black,
+                        ),
                       ),
                     ),
                     // Gap(64),
