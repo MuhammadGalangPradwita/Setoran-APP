@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tubes_mobpro/tubes/pages/get_started_page.dart';
 import 'package:flutter/rendering.dart';
-import 'package:tubes_mobpro/tubes/pages/otp_page.dart';
 
 void main() {
   debugPaintSizeEnabled = false;
@@ -19,7 +18,7 @@ class MyApp extends StatelessWidget {
       // Jgn lupa diganti lagi
 
       debugShowCheckedModeBanner: false,
-      home: OTPPage(),
+      home: GetStartedPage(),
     );
   }
 }
