@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tubes_mobpro/tubes/pages/get_started_page.dart';
 import 'package:flutter/rendering.dart';
+import 'package:tubes_mobpro/tubes/pages/otp_page.dart';
 
 void main() {
   debugPaintSizeEnabled = false;
@@ -14,8 +15,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
+
+      // Jgn lupa diganti lagi
+
       debugShowCheckedModeBanner: false,
-      home: GetStartedPage(),
+      home: OTPPage(),
     );
   }
 }
