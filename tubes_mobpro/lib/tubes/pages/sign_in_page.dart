@@ -109,7 +109,7 @@ class SignInPage extends StatelessWidget {
           children: [
             InkWell(
               onTap: () {},
-              child: Text("Fortgot Password?",
+              child: Text("Forgot Password?",
                   style: GoogleFonts.poppins(
                     fontSize: 12,
                     decoration: TextDecoration.underline,
