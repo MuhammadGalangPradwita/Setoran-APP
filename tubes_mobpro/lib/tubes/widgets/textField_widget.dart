@@ -12,25 +12,27 @@ class TextfieldWidget extends StatefulWidget {
   final String? hintText;
   final Widget? prefixIcon;
   final IconData? suffixIcon;
+  final FormFieldValidator<String>? validator;
 
-  const TextfieldWidget({
-    super.key,
-    this.label = "",
-    // required this.controller,
-    this.keyboardType = TextInputType.text,
-    this.obscureText = false,
-    this.obscureCharacter = "*",
-    required this.hintText,
-    this.prefixIcon,
-    this.suffixIcon,
-  });
+  const TextfieldWidget(
+      {super.key,
+      this.label = "",
+      // required this.controller,
+      this.keyboardType = TextInputType.text,
+      this.obscureText = false,
+      this.obscureCharacter = "*",
+      required this.hintText,
+      this.prefixIcon,
+      this.suffixIcon,
+      this.validator});
 
-  const TextfieldWidget.password({
-    super.key,
-    this.label = "",
-    required this.hintText,
-    this.prefixIcon,
-  })  : keyboardType = TextInputType.visiblePassword,
+  const TextfieldWidget.password(
+      {super.key,
+      this.label = "",
+      required this.hintText,
+      this.prefixIcon,
+      this.validator})
+      : keyboardType = TextInputType.visiblePassword,
         obscureText = true,
         obscureCharacter = "*",
         suffixIcon = Icons.visibility_off;
@@ -94,6 +96,7 @@ class _TextfieldWidgetState extends State<TextfieldWidget> {
       Gap(widget.label != "" ? 4 : 0),
       TextFormField(
         // controller: controller,
+        validator: widget.validator,
         focusNode: _focusNode,
         keyboardType: widget.keyboardType!,
         obscureText: _isObscured,

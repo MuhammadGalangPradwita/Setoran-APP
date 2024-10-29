@@ -76,12 +76,6 @@ class _OTPPageState extends State<OTPPage> {
               validator: (value) {
                 return value == validPin ? null : "Pin is incorrect";
               },
-              onCompleted: (pin) {
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) {
-                  return CreateNewPassPage();
-                }));
-              },
             ),
             Gap(24),
             SizedBox(
@@ -89,7 +83,12 @@ class _OTPPageState extends State<OTPPage> {
                 child: ButtonWidget.primary(
                     label: "Verify",
                     press: () {
-                      formKey.currentState!.validate();
+                      if (formKey.currentState!.validate()) {
+                        Navigator.pushReplacement(context,
+                            MaterialPageRoute(builder: (context) {
+                          return CreateNewPassPage();
+                        }));
+                      }
                     }))
           ],
         ));

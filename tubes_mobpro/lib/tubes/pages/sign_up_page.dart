@@ -1,4 +1,6 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:tubes_mobpro/tubes/pages/sign_in_page.dart';
 import 'package:tubes_mobpro/tubes/widgets/button_widgets.dart';
@@ -29,7 +31,7 @@ class SignUpPage extends StatelessWidget {
                   ),
                 ),
                 const Gap(36),
-                createForm(),
+                createForm(context),
                 const Gap(36),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -85,13 +87,11 @@ class SignUpPage extends StatelessWidget {
                             MaterialPageRoute(
                                 builder: (context) => const SignInPage()));
                       },
-                      child: InkWell(
-                        child: Text("Sign In",
-                            style: GoogleFonts.poppins(
-                              fontSize: 12,
-                              decoration: TextDecoration.underline,
-                            )),
-                      ),
+                      child: Text("Sign In",
+                        style: GoogleFonts.poppins(
+                          fontSize: 12,
+                          decoration: TextDecoration.underline,
+                      )),
                     ),
                   ],
                 )
@@ -103,7 +103,10 @@ class SignUpPage extends StatelessWidget {
     );
   }
 
-  Widget createForm() {
+  Widget createForm(BuildContext context) {
+
+    bool clicked = false;
+
     return Column(
       children: [
         const TextfieldWidget(
@@ -137,7 +140,32 @@ class SignUpPage extends StatelessWidget {
         const Gap(32),
         SizedBox(
             width: double.infinity,
-            child: ButtonWidget.primary(label: "Register", press: () {}))
+            child: ButtonWidget.primary(label: "Register", press: () {
+              // demo sementara snackbar
+              if (!clicked) {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Password tidak sesuai')));
+                clicked = true;
+                return;
+              }
+              AwesomeDialog(
+                context: context,
+                dialogType: DialogType.success,
+                headerAnimationLoop: false,
+                animType: AnimType.bottomSlide,
+                title: 'Sukses',
+                desc: 'Akun berhasil dibuat, silahkan login',
+                buttonsTextStyle: const TextStyle(color: Colors.black),
+                showCloseIcon: false,
+                // btnCancelOnPress: () {},
+                btnOkOnPress: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const SignInPage()));
+                },
+              ).show();
+            })
+        )
       ],
     );
   }
