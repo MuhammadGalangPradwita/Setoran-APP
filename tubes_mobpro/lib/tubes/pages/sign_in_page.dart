@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:tubes_mobpro/tubes/pages/forgot_password_email.dart';
 import 'package:tubes_mobpro/tubes/widgets/button_widgets.dart';
 import 'package:tubes_mobpro/tubes/widgets/textField_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -30,7 +29,7 @@ class SignInPage extends StatelessWidget {
                   ),
                 ),
                 const Gap(36),
-                createForm(context),
+                createForm(),
                 const Gap(36),
                 const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -91,7 +90,7 @@ class SignInPage extends StatelessWidget {
     );
   }
 
-  Widget createForm(BuildContext context) {
+  Widget createForm() {
     return Column(
       children: [
         const TextfieldWidget(
@@ -109,9 +108,7 @@ class SignInPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             InkWell(
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context)=> ForgotPasswordPage()));
-              },
+              onTap: () {},
               child: Text("Fortgot Password?",
                   style: GoogleFonts.poppins(
                     fontSize: 12,
