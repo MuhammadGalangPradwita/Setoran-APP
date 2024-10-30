@@ -5,6 +5,8 @@ import 'package:tubes_mobpro/tubes/widgets/button_widgets.dart';
 import 'package:tubes_mobpro/tubes/widgets/textField_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tubes_mobpro/tubes/pages/sign_up_page.dart';
+import 'package:tubes_mobpro/tubes/widgets/google_login_dialog.dart';
+import 'package:tubes_mobpro/tubes/widgets/bottom_nav.dart';
 
 class SignInPage extends StatelessWidget {
   const SignInPage({super.key});
@@ -46,7 +48,13 @@ class SignInPage extends StatelessWidget {
                       width: 144,
                       child: ButtonOutlineWidget(
                         label: "Google",
-                        press: () {},
+                        press: () {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return GoogleLoginDialogue();
+                              });
+                        },
                         icon: Icon(
                           Icons.map,
                           color: Colors.black,
@@ -110,7 +118,11 @@ class SignInPage extends StatelessWidget {
           children: [
             InkWell(
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ForgotPasswordPage(),));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ForgotPasswordPage(),
+                    ));
               },
               child: Text("Fortgot Password?",
                   style: GoogleFonts.poppins(
@@ -123,7 +135,9 @@ class SignInPage extends StatelessWidget {
         const Gap(16),
         SizedBox(
             width: double.infinity,
-            child: ButtonWidget.primary(label: "Login", press: () {}))
+            child: ButtonWidget.primary(label: "Login", press: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const BottomNav()));
+            }))
       ],
     );
   }

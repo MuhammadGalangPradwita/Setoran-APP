@@ -33,6 +33,8 @@ dependencies:
 
   gap: ^3.0.1
 
+  persistent_bottom_nav_bar: ^6.2.1
+
   google_fonts: ^6.2.1
 
   pinput: ^5.0.0
