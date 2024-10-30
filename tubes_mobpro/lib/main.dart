@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:tubes_mobpro/tubes/pages/get_started_page.dart';
 import 'package:flutter/rendering.dart';
+import 'package:tubes_mobpro/tubes/pages/home_page.dart';
+
+// import 'package:tubes_mobpro/tubes/pages/home_page.dart';
+import 'package:tubes_mobpro/tubes/widgets/bottom_nav.dart';
 
 void main() {
   debugPaintSizeEnabled = false;

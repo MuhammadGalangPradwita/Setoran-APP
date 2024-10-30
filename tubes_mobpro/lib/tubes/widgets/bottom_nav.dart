@@ -2,8 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 
-import 'package:tubes_mobpro/tubes/pages/otp.dart';
-import 'package:tubes_mobpro/tubes/pages/get_started_page.dart';
+import 'package:tubes_mobpro/tubes/pages/home_page.dart';
+import 'package:tubes_mobpro/tubes/pages/activity_page.dart';
+import 'package:tubes_mobpro/tubes/pages/discount_page.dart';
+import 'package:tubes_mobpro/tubes/pages/account_page.dart';
 
 class BottomNav extends StatefulWidget {
   const BottomNav({super.key});
@@ -28,37 +30,36 @@ class _BottomNavState extends State<BottomNav> {
   }
 
   List<Widget> _buildScreens() {
-    return [OTPPage(), GetStartedPage()];
+    return [HomePage(), ActivityPage(), DiscountPage(), AccountPage()];
   }
 
   List<PersistentBottomNavBarItem> _navBarsItems() {
     return [
-      PersistentBottomNavBarItem(
-        icon: Icon(CupertinoIcons.home),
-        title: ("Home"),
-        activeColorPrimary: CupertinoColors.activeBlue,
-        inactiveColorPrimary: CupertinoColors.systemGrey,
-        routeAndNavigatorSettings: RouteAndNavigatorSettings(
-          initialRoute: "/",
-          routes: {
-            "/first": (final context) => const OTPPage(),
-            "/second": (final context) => const GetStartedPage(),
-          },
-        ),
-      ),
-      PersistentBottomNavBarItem(
-        icon: Icon(CupertinoIcons.settings),
-        title: ("Settings"),
-        activeColorPrimary: CupertinoColors.activeBlue,
-        inactiveColorPrimary: CupertinoColors.systemGrey,
-        routeAndNavigatorSettings: RouteAndNavigatorSettings(
-          initialRoute: "/",
-          routes: {
-            "/first": (final context) => const OTPPage(),
-            "/second": (final context) => const GetStartedPage(),
-          },
-        ),
-      ),
+      BottomNavItem('Home', Icon(CupertinoIcons.home)),
+      BottomNavItem('Activity', Icon(CupertinoIcons.bolt)),
+      BottomNavItem('Discount', Icon(CupertinoIcons.tag)),
+      BottomNavItem('Account', Icon(CupertinoIcons.person)),
     ];
+  }
+
+  PersistentBottomNavBarItem BottomNavItem(String navName, Icon navIcon) {
+    return PersistentBottomNavBarItem(
+        icon: navIcon,
+        title: (navName),
+        activeColorPrimary: CupertinoColors.activeBlue,
+        inactiveColorPrimary: CupertinoColors.systemGrey,
+        routeAndNavigatorSettings: BottomNavRoute());
+  }
+
+  RouteAndNavigatorSettings BottomNavRoute() {
+    return RouteAndNavigatorSettings(
+      initialRoute: "/",
+      routes: {
+        "/first": (final context) => const HomePage(),
+        "/second": (final context) => const ActivityPage(),
+        "/third": (final context) => const DiscountPage(),
+        "/fourth": (final context) => const AccountPage(),
+      },
+    );
   }
 }
