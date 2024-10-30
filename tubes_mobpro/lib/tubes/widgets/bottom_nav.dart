@@ -35,10 +35,10 @@ class _BottomNavState extends State<BottomNav> {
 
   List<PersistentBottomNavBarItem> _navBarsItems() {
     return [
-      BottomNavItem('Home', Icon(CupertinoIcons.home)),
-      BottomNavItem('Activity', Icon(CupertinoIcons.bolt)),
-      BottomNavItem('Discount', Icon(CupertinoIcons.tag)),
-      BottomNavItem('Account', Icon(CupertinoIcons.person)),
+      BottomNavItem('Home', Icon(Icons.home)),
+      BottomNavItem('Activity', Icon(Icons.bolt)),
+      BottomNavItem('Discount', Icon(Icons.tag)),
+      BottomNavItem('Account', Icon(Icons.person)),
     ];
   }
 

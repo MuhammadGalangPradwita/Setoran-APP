@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
 import 'package:tubes_mobpro/tubes/pages/forgot_password_email.dart';
 import 'package:tubes_mobpro/tubes/widgets/button_widgets.dart';
@@ -55,17 +56,14 @@ class SignInPage extends StatelessWidget {
                                 return GoogleLoginDialogue();
                               });
                         },
-                        icon: Icon(
-                          Icons.map,
-                          color: Colors.black,
-                        ),
+                        icon: FaIcon(FontAwesomeIcons.google),
                       ),
                     ),
                     // Gap(64),
                     SizedBox(
                         width: 144,
                         child:
-                            ButtonOutlineWidget(label: "Google", press: () {})),
+                            ButtonOutlineWidget(label: "Facebook", press: () {},icon: FaIcon(FontAwesomeIcons.facebook),)),
                   ],
                 ),
                 const Gap(36),
