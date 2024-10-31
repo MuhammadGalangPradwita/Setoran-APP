@@ -1,0 +1,38 @@
+{
+    "today": [
+        {
+            "tipe": "NMAX",
+            "transmisi": "Matic",
+            "date": "26 Oct 2024",
+            "price": "50000",
+            "orderNumber": "IB00234566",
+            "status": "active"
+        },
+        {
+            "tipe": "NMAX",
+            "transmisi": "Matic",
+            "date": "26 Oct 2024",
+            "price": "50000",
+            "orderNumber": "IB00234566",
+            "status": "failed"
+        }
+    ],
+    "week": [
+        {
+            "tipe": "NMAX",
+            "transmisi": "Matic",
+            "date": "26 Oct 2024",
+            "price": "50000",
+            "orderNumber": "IB00234566",
+            "status": "completed"
+        },
+        {
+            "tipe": "NMAX",
+            "transmisi": "Matic",
+            "date": "26 Oct 2024",
+            "price": "50000",
+            "orderNumber": "IB00234566",
+            "status": "completed"
+        }
+    ]
+}

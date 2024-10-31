@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
@@ -59,7 +62,17 @@ class Activity extends StatefulWidget {
 enum TimeFilter { today, week, month }
 
 class _ActivityState extends State<Activity> {
+  Map<String, dynamic> _items = {};
+
   TimeFilter selectedPeriod = TimeFilter.week;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      readJSON();
+    });
+  }
 
   TabBar get _tabBar => TabBar(
         tabs: const [
@@ -102,20 +115,27 @@ class _ActivityState extends State<Activity> {
                   child: _tabBar,
                 )),
           ),
-          body: const TabBarView(children: [
-            TodayTabPage(),
-            WeekTabPage(),
-            TodayTabPage(),
+          body: TabBarView(children: [
+            todayTab(),
+            weekTab(),
+            weekTab(),
           ])),
     );
   }
-}
 
-class TodayTabPage extends StatelessWidget {
-  const TodayTabPage({super.key});
+  Future<void> readJSON() async {
+    await Future.delayed(Duration.zero);
+    final String response =
+        await rootBundle.loadString('assets/sampleActivity.json');
+    final data = await json.decode(response);
+    Future.microtask(() {
+      setState(() {
+        _items = data;
+      });
+    });
+  }
 
-  @override
-  Widget build(BuildContext context) {
+  Widget todayTab() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 28.0, vertical: 12),
       child: Column(
@@ -131,31 +151,24 @@ class TodayTabPage extends StatelessWidget {
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: transactionData[0]["riwayat"]!.length,
+              itemCount: _items['today']?.length ?? 0,
               itemBuilder: (context, index) {
                 return TransactionCard(
-                    vehicleName: transactionData[0]["riwayat"][index]["tipe"],
-                    transmissionType: transactionData[0]["riwayat"][index]
-                        ["transmisi"],
-                    date: transactionData[0]["riwayat"][index]["date"],
-                    price: transactionData[0]["riwayat"][index]["price"],
-                    status: transactionData[0]["riwayat"][index]["status"],
-                    orderNumber: transactionData[0]["riwayat"][index]
-                        ["orderNumber"]);
+                    vehicleName: _items['today'][index]["tipe"],
+                    transmissionType: _items['today'][index]["transmisi"],
+                    date: _items['today'][index]["date"],
+                    price: _items['today'][index]["price"],
+                    status: _items['today'][index]["status"],
+                    orderNumber: _items['today'][index]["orderNumber"]);
               },
             ),
-          )
+          ),
         ],
       ),
     );
   }
-}
 
-class WeekTabPage extends StatelessWidget {
-  const WeekTabPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
+  Widget weekTab() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 28.0, vertical: 12),
       child: Column(
@@ -171,17 +184,15 @@ class WeekTabPage extends StatelessWidget {
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: transactionData[1]["riwayat"]!.length,
+              itemCount: _items['week']?.length ?? 0,
               itemBuilder: (context, index) {
                 return TransactionCard(
-                    vehicleName: transactionData[1]["riwayat"][index]["tipe"],
-                    transmissionType: transactionData[1]["riwayat"][index]
-                        ["transmisi"],
-                    date: transactionData[1]["riwayat"][index]["date"],
-                    price: transactionData[1]["riwayat"][index]["price"],
-                    status: transactionData[1]["riwayat"][index]["status"],
-                    orderNumber: transactionData[1]["riwayat"][index]
-                        ["orderNumber"]);
+                    vehicleName: _items['week'][index]["tipe"],
+                    transmissionType: _items['week'][index]["transmisi"],
+                    date: _items['week'][index]["date"],
+                    price: _items['week'][index]["price"],
+                    status: _items['week'][index]["status"],
+                    orderNumber: _items['week'][index]["orderNumber"]);
               },
             ),
           )
