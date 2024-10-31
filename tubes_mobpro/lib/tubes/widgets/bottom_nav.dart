@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
+import 'package:tubes_mobpro/tubes/pages/activity.dart';
 
 import 'package:tubes_mobpro/tubes/pages/home_page.dart';
 import 'package:tubes_mobpro/tubes/pages/activity_page.dart';
@@ -30,15 +31,15 @@ class _BottomNavState extends State<BottomNav> {
   }
 
   List<Widget> _buildScreens() {
-    return [HomePage(), ActivityPage(), DiscountPage(), AccountPage()];
+    return [HomePage(), Activity(), DiscountPage(), AccountPage()];
   }
 
   List<PersistentBottomNavBarItem> _navBarsItems() {
     return [
-      BottomNavItem('Home', Icon(CupertinoIcons.home)),
-      BottomNavItem('Activity', Icon(CupertinoIcons.bolt)),
-      BottomNavItem('Discount', Icon(CupertinoIcons.tag)),
-      BottomNavItem('Account', Icon(CupertinoIcons.person)),
+      BottomNavItem('Home', Icon(Icons.home)),
+      BottomNavItem('Activity', Icon(Icons.bolt)),
+      BottomNavItem('Discount', Icon(Icons.tag)),
+      BottomNavItem('Account', Icon(Icons.person)),
     ];
   }
 
