@@ -13,12 +13,14 @@ class DetailActivityPage extends StatefulWidget {
 
 class _DetailActivityPageState extends State<DetailActivityPage> {
   late bool _isFailed;
+  late Color _paymentColor;
 
   @override
   void initState() {
     super.initState();
 
     _isFailed = (widget.activity['status'] == 'failed');
+    _paymentColor = _isFailed ? AppColors.R400 : AppColors.G500;
   }
 
   @override
@@ -54,9 +56,9 @@ class _DetailActivityPageState extends State<DetailActivityPage> {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            Text("Payment Succes",
+            Text("Payment ${_isFailed ? 'Failed' : "Succes"}",
                 style:
-                    AppTextStyle.body3SemiBold.copyWith(color: AppColors.G500)),
+                    AppTextStyle.body3SemiBold.copyWith(color: _paymentColor)),
             const Gap(8),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -104,7 +106,7 @@ class _DetailActivityPageState extends State<DetailActivityPage> {
   }
 
   Widget _motorDetailCard() {
-    return const Column(
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text("Detail Motorcycle"),
@@ -113,37 +115,49 @@ class _DetailActivityPageState extends State<DetailActivityPage> {
           elevation: 2,
           color: AppColors.N0,
           child: Padding(
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             child: Column(
               children: [
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Brand'),
+                    const Text('Brand'),
+                    Text(widget.activity['motor']['brand']),
                   ],
                 ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Type'),
+                    const Text('Type'),
+                    Text(widget.activity['motor']['tipe']),
                   ],
                 ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text('Tahun'),
+                    Text(widget.activity['motor']['year']),
                   ],
                 ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text('Transmisi'),
+                    Text(widget.activity['motor']['transmisi']),
                   ],
                 ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text('Police Number'),
+                    Text(widget.activity['motor']['policeNumber']),
                   ],
                 ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text('STNK Number'),
+                    Text(widget.activity['motor']['STNKNumber']),
                   ],
                 ),
               ],

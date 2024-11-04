@@ -163,12 +163,15 @@ class _ActivityPageState extends State<ActivityPage> {
                     }));
                   },
                   child: TransactionCard(
-                      vehicleName: _items['today'][index]["tipe"],
-                      transmissionType: _items['today'][index]["transmisi"],
-                      date: _items['today'][index]["date"],
-                      price: _items['today'][index]["price"],
-                      status: _items['today'][index]["status"],
-                      orderNumber: _items['today'][index]["orderNumber"]),
+                    vehicleName: _items['today'][index]["tipe"],
+                    transmissionType: _items['today'][index]["transmisi"],
+                    date: _items['today'][index]["date"],
+                    price: _items['today'][index]["price"],
+                    status: _items['today'][index]["status"],
+                    orderNumber: _items['today'][index]["orderNumber"],
+                    imagePath:
+                        'assets/images/${_items['today'][index]["tipe"]}.png',
+                  ),
                 );
               },
             ),
@@ -205,12 +208,15 @@ class _ActivityPageState extends State<ActivityPage> {
                     }));
                   },
                   child: TransactionCard(
-                      vehicleName: _items['week'][index]["tipe"],
-                      transmissionType: _items['week'][index]["transmisi"],
-                      date: _items['week'][index]["date"],
-                      price: _items['week'][index]["price"],
-                      status: _items['week'][index]["status"],
-                      orderNumber: _items['week'][index]["orderNumber"]),
+                    vehicleName: _items['week'][index]["tipe"],
+                    transmissionType: _items['week'][index]["transmisi"],
+                    date: _items['week'][index]["date"],
+                    price: _items['week'][index]["price"],
+                    status: _items['week'][index]["status"],
+                    orderNumber: _items['week'][index]["orderNumber"],
+                    imagePath:
+                        'assets/images/${_items['today'][index]["tipe"]}.png',
+                  ),
                 );
               },
             ),
