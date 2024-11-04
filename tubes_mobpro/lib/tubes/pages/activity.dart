@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tubes_mobpro/tubes/pages/detail_activity_page.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 import 'package:tubes_mobpro/tubes/widgets/transaction_card.dart';
 
@@ -52,16 +53,16 @@ List<Map<String, dynamic>> transactionData = const [
   }
 ];
 
-class Activity extends StatefulWidget {
-  const Activity({super.key});
+class ActivityPage extends StatefulWidget {
+  const ActivityPage({super.key});
 
   @override
-  State<Activity> createState() => _ActivityState();
+  State<ActivityPage> createState() => _ActivityPageState();
 }
 
 enum TimeFilter { today, week, month }
 
-class _ActivityState extends State<Activity> {
+class _ActivityPageState extends State<ActivityPage> {
   Map<String, dynamic> _items = {};
 
   TimeFilter selectedPeriod = TimeFilter.week;
@@ -153,13 +154,22 @@ class _ActivityState extends State<Activity> {
             child: ListView.builder(
               itemCount: _items['today']?.length ?? 0,
               itemBuilder: (context, index) {
-                return TransactionCard(
-                    vehicleName: _items['today'][index]["tipe"],
-                    transmissionType: _items['today'][index]["transmisi"],
-                    date: _items['today'][index]["date"],
-                    price: _items['today'][index]["price"],
-                    status: _items['today'][index]["status"],
-                    orderNumber: _items['today'][index]["orderNumber"]);
+                return InkWell(
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return DetailActivityPage(
+                          activity: _items['today'][index]);
+                    }));
+                  },
+                  child: TransactionCard(
+                      vehicleName: _items['today'][index]["tipe"],
+                      transmissionType: _items['today'][index]["transmisi"],
+                      date: _items['today'][index]["date"],
+                      price: _items['today'][index]["price"],
+                      status: _items['today'][index]["status"],
+                      orderNumber: _items['today'][index]["orderNumber"]),
+                );
               },
             ),
           ),
@@ -186,13 +196,22 @@ class _ActivityState extends State<Activity> {
             child: ListView.builder(
               itemCount: _items['week']?.length ?? 0,
               itemBuilder: (context, index) {
-                return TransactionCard(
-                    vehicleName: _items['week'][index]["tipe"],
-                    transmissionType: _items['week'][index]["transmisi"],
-                    date: _items['week'][index]["date"],
-                    price: _items['week'][index]["price"],
-                    status: _items['week'][index]["status"],
-                    orderNumber: _items['week'][index]["orderNumber"]);
+                return InkWell(
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return DetailActivityPage(
+                          activity: _items['week'][index]);
+                    }));
+                  },
+                  child: TransactionCard(
+                      vehicleName: _items['week'][index]["tipe"],
+                      transmissionType: _items['week'][index]["transmisi"],
+                      date: _items['week'][index]["date"],
+                      price: _items['week'][index]["price"],
+                      status: _items['week'][index]["status"],
+                      orderNumber: _items['week'][index]["orderNumber"]),
+                );
               },
             ),
           )
