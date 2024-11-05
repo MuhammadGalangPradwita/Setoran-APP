@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tubes_mobpro/tubes/pages/forgot_password_email.dart';
 import 'package:tubes_mobpro/tubes/pages/otp.dart';
 import 'package:tubes_mobpro/tubes/pages/sign_up_page.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 import 'package:gap/gap.dart';
-import 'forgot_password_number.dart';
+  // Import halaman email
 
-class ForgotPasswordPage extends StatelessWidget {
-  final TextEditingController _emailController = TextEditingController();
+class ForgotPasswordPhonePage extends StatelessWidget {
+  final TextEditingController _phoneController = TextEditingController();
 
-  ForgotPasswordPage({super.key});
+  ForgotPasswordPhonePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +30,7 @@ class ForgotPasswordPage extends StatelessWidget {
             ),
             const Gap(20),
             Text(
-              'Please enter your email address to receive a verification code.',
+              'Please enter your phone number to receive a verification code.',
               textAlign: TextAlign.center,
               style: GoogleFonts.poppins(
                 color: Colors.black54,
@@ -38,9 +39,9 @@ class ForgotPasswordPage extends StatelessWidget {
             ),
             const Gap(20),
             TextField(
-              controller: _emailController,
+              controller: _phoneController,
               decoration: InputDecoration(
-                hintText: 'Enter your Email...',
+                hintText: 'Enter your Phone Number...',
                 hintStyle: GoogleFonts.poppins(color: Colors.black38),
                 filled: true,
                 fillColor: Colors.grey[100],
@@ -49,7 +50,7 @@ class ForgotPasswordPage extends StatelessWidget {
                   borderSide: BorderSide.none,
                 ),
               ),
-              keyboardType: TextInputType.emailAddress,
+              keyboardType: TextInputType.phone,
             ),
             const SizedBox(height: 8),
             Align(
@@ -59,12 +60,12 @@ class ForgotPasswordPage extends StatelessWidget {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ForgotPasswordPhonePage(),
+                      builder: (context) => ForgotPasswordPage(),
                     ),
                   );
                 },
                 child: Text(
-                  'Use phone number instead',
+                  'Use email instead',
                   style: GoogleFonts.poppins(color: Colors.black54),
                 ),
               ),
@@ -75,7 +76,8 @@ class ForgotPasswordPage extends StatelessWidget {
               height: 50,
               child: ElevatedButton(
                 onPressed: () {
-                  if (_emailController.text.isNotEmpty) {
+                  // Handle send SMS action
+                  if (_phoneController.text.isNotEmpty) {
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
@@ -91,7 +93,7 @@ class ForgotPasswordPage extends StatelessWidget {
                   ),
                 ),
                 child: Text(
-                  'Send Email',
+                  'Send SMS',
                   style: GoogleFonts.poppins(
                     color: Colors.white,
                     fontSize: 16,
@@ -110,7 +112,7 @@ class ForgotPasswordPage extends StatelessWidget {
                 GestureDetector(
                   onTap: () {
                     // Navigate to sign up page
-                     Navigator.push(
+                    Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => const SignUpPage(),
