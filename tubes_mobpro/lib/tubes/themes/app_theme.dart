@@ -16,6 +16,7 @@ class AppColors {
   static const Color N600 = Color(0xFF71747D);
   static const Color N400 = Color(0xFFAEB2BE);
   static const Color N200 = Color(0xFFD8DCE8);
+  static const Color N100 = Color(0xFFF4F7FE);
   static const Color N0 = Color(0xFFFFFFFF);
 }
 
