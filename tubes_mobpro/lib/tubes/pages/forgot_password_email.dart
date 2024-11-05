@@ -49,12 +49,7 @@ class ForgotPasswordPage extends StatelessWidget {
               alignment: Alignment.centerRight,
               child: TextButton(
                 onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ForgotPasswordPhonePage(),
-                    ),
-                  );
+                  
                 },
                 child: const Text(
                   'Try looking for something else?',
@@ -68,6 +63,7 @@ class ForgotPasswordPage extends StatelessWidget {
               height: 50,
               child: ElevatedButton(
                 onPressed: () {
+                  // Handle send email action
                   if (_emailController.text.isNotEmpty) {
                     // Implement email sending logic disini
                   }
@@ -97,13 +93,8 @@ class ForgotPasswordPage extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
+
                     // Navigate to sign up page
-                     Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const SignUpPage(),
-                      ),
-                    );
                   },
                   child: const Text(
                     'Sign Up',
