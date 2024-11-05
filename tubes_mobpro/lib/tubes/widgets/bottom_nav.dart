@@ -4,7 +4,6 @@ import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:tubes_mobpro/tubes/pages/activity.dart';
 
 import 'package:tubes_mobpro/tubes/pages/home_page.dart';
-import 'package:tubes_mobpro/tubes/pages/activity_page.dart';
 import 'package:tubes_mobpro/tubes/pages/discount_page.dart';
 import 'package:tubes_mobpro/tubes/pages/account_page.dart';
 
@@ -31,7 +30,7 @@ class _BottomNavState extends State<BottomNav> {
   }
 
   List<Widget> _buildScreens() {
-    return [HomePage(), Activity(), DiscountPage(), AccountPage()];
+    return [HomePage(), const ActivityPage(), DiscountPage(), AccountPage()];
   }
 
   List<PersistentBottomNavBarItem> _navBarsItems() {

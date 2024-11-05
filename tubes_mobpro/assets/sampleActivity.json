@@ -1,0 +1,62 @@
+{
+    "today": [
+        {
+            "orderNumber": "IB00234566",
+            "tipe": "NMAX",
+            "transmisi": "Matic",
+            "date": "26 Oct 2024",
+            "price": "50000",
+            "status": "active",
+            "motor": {
+                "brand": "Yamaha",
+                "tipe": "NMAX",
+                "year": "2024",
+                "transmisi": "Matic",
+                "policeNumber": "D 1234 BJS",
+                "STNKNumber": "012266789"
+            }
+        },
+        {
+            "orderNumber": "IB00234566",
+            "tipe": "BeAT",
+            "transmisi": "Matic",
+            "date": "26 Oct 2024",
+            "price": "30000",
+            "status": "failed"
+        }
+    ],
+    "week": [
+        {
+            "orderNumber": "IB00234566",
+            "tipe": "BeAT",
+            "transmisi": "Matic",
+            "date": "26 Oct 2024",
+            "price": "30000",
+            "status": "completed",
+            "motor": {
+                "brand": "Honda",
+                "tipe": "BeAT",
+                "year": "2024",
+                "transmisi": "Matic",
+                "policeNumber": "D 1234 BJS",
+                "STNKNumber": "012266789"
+            }
+        },
+        {
+            "orderNumber": "IB00234566",
+            "tipe": "BeAT",
+            "transmisi": "Matic",
+            "date": "26 Oct 2024",
+            "price": "30000",
+            "status": "completed",
+            "motor": {
+                "brand": "Honda",
+                "tipe": "BeAT",
+                "year": "2024",
+                "transmisi": "Matic",
+                "policeNumber": "D 1234 BJS",
+                "STNKNumber": "012266789"
+            }
+        }
+    ]
+}

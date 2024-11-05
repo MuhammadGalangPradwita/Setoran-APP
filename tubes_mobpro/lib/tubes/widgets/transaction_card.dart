@@ -11,6 +11,7 @@ class TransactionCard extends StatelessWidget {
   final String status;
   final String orderNumber;
   final Color? color;
+  final String imagePath;
 
   const TransactionCard(
       {super.key,
@@ -20,6 +21,7 @@ class TransactionCard extends StatelessWidget {
       required this.price,
       required this.status,
       required this.orderNumber,
+      required this.imagePath,
       this.color});
 
   @override
@@ -34,8 +36,8 @@ class TransactionCard extends StatelessWidget {
         padding: EdgeInsets.all(8),
         child: Row(
           children: [
-            const Image(
-              image: AssetImage('assets/images/image_3.png'),
+            Image(
+              image: AssetImage(imagePath),
               // width: ,
               // height: 92,
             ),

@@ -46,7 +46,7 @@ class SignInPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     SizedBox(
-                      width: 144,
+                      width: 160,
                       child: ButtonOutlineWidget(
                         label: "Google",
                         press: () {
@@ -61,9 +61,12 @@ class SignInPage extends StatelessWidget {
                     ),
                     // Gap(64),
                     SizedBox(
-                        width: 144,
-                        child:
-                            ButtonOutlineWidget(label: "Facebook", press: () {},icon: FaIcon(FontAwesomeIcons.facebook),)),
+                        width: 160,
+                        child: ButtonOutlineWidget(
+                          label: "Facebook",
+                          press: () {},
+                          icon: FaIcon(FontAwesomeIcons.facebook),
+                        )),
                   ],
                 ),
                 const Gap(36),
@@ -133,9 +136,14 @@ class SignInPage extends StatelessWidget {
         const Gap(16),
         SizedBox(
             width: double.infinity,
-            child: ButtonWidget.primary(label: "Login", press: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const BottomNav()));
-            }))
+            child: ButtonWidget.primary(
+                label: "Login",
+                press: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const BottomNav()));
+                }))
       ],
     );
   }
