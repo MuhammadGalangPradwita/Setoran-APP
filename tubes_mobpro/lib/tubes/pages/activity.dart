@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tubes_mobpro/tubes/pages/detail_activity_page.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
