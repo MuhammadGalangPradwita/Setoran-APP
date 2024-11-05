@@ -2,10 +2,12 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tubes_mobpro/tubes/pages/sign_in_page.dart';
 import 'package:tubes_mobpro/tubes/widgets/button_widgets.dart';
 import 'package:tubes_mobpro/tubes/widgets/textField_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tubes_mobpro/tubes/widgets/google_login_dialog.dart';
 
 class SignUpPage extends StatelessWidget {
   const SignUpPage({super.key});
@@ -56,22 +58,27 @@ class SignUpPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     SizedBox(
-                      width: 144,
+                      width: 160,
                       child: ButtonOutlineWidget(
                         label: "Google",
-                        press: () {},
-                        icon: Container(
-                          width: 16,
-                          height: 16,
-                          child: Image(image: AssetImage('assets/images/google_icon.png')),
-                        ),
+                        press: () {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return GoogleLoginDialogue();
+                              });
+                        },
+                        icon: FaIcon(FontAwesomeIcons.google),
                       ),
                     ),
                     // Gap(64),
                     SizedBox(
-                        width: 144,
-                        child:
-                            ButtonOutlineWidget(label: "Google", press: () {},)),
+                        width: 160,
+                        child: ButtonOutlineWidget(
+                          label: "Facebook",
+                          press: () {},
+                          icon: FaIcon(FontAwesomeIcons.facebook),
+                        )),
                   ],
                 ),
                 const Gap(36),
