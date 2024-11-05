@@ -1,17 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:tubes_mobpro/tubes/pages/edit_personal_data_page.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 
-class EditProfilePage extends StatelessWidget {
+class EditProfilePage extends StatefulWidget {
   const EditProfilePage({super.key});
 
+  @override
+  State<EditProfilePage> createState() => _EditProfilePageState();
+}
+
+class _EditProfilePageState extends State<EditProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.N0,
       appBar: AppBar(
-        leading:
-            IconButton(onPressed: () {}, icon: const Icon(Icons.arrow_back)),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: const Icon(Icons.arrow_back),
+        ),
         title: const Text("Edit Profile"),
         backgroundColor: AppColors.B400,
         foregroundColor: AppColors.N0,
@@ -90,7 +100,12 @@ class EditProfilePage extends StatelessWidget {
               style: AppTextStyle.body2SemiBold,
             ),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const EditPersonalDataPage()));
+              },
               child: Text(
                 "Edit",
                 style:

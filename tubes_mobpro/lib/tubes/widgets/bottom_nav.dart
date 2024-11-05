@@ -57,7 +57,7 @@ class _BottomNavState extends State<BottomNav> {
       routes: {
         "/first": (final context) => const HomePage(),
         "/second": (final context) => const ActivityPage(),
-        "/third": (final context) => const DiscountPage(),
+        "/third": (final context) => DiscountPage(),
         "/fourth": (final context) => const AccountPage(),
       },
     );
