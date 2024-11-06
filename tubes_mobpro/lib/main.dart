@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:tubes_mobpro/tubes/pages/get_started_page.dart';
-import 'package:flutter/rendering.dart';
-import 'package:tubes_mobpro/tubes/pages/home_page.dart';
+import 'package:tubes_mobpro/notification_service.dart';
 
-// import 'package:tubes_mobpro/tubes/pages/home_page.dart';
-import 'package:tubes_mobpro/tubes/widgets/bottom_nav.dart';
+// final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+//     FlutterLocalNotificationsPlugin();
 
-void main() {
-  debugPaintSizeEnabled = false;
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await NotificationService().init();
+  // debugPaintSizeEnabled = false;
   runApp(const MyApp());
 }
 

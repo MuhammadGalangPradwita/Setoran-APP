@@ -5,7 +5,7 @@ import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 
 class TextfieldWidget extends StatefulWidget {
   final String? label;
-  // final TextEditingController? controller;
+  final TextEditingController? controller;
   final TextInputType? keyboardType;
   final bool? obscureText;
   final String? obscureCharacter;
@@ -24,14 +24,16 @@ class TextfieldWidget extends StatefulWidget {
       required this.hintText,
       this.prefixIcon,
       this.suffixIcon,
-      this.validator});
+      this.validator,
+      this.controller});
 
   const TextfieldWidget.password(
       {super.key,
       this.label = "",
       required this.hintText,
       this.prefixIcon,
-      this.validator})
+      this.validator,
+      this.controller})
       : keyboardType = TextInputType.visiblePassword,
         obscureText = true,
         obscureCharacter = "*",
@@ -95,7 +97,7 @@ class _TextfieldWidgetState extends State<TextfieldWidget> {
       }),
       Gap(widget.label != "" ? 4 : 0),
       TextFormField(
-        // controller: controller,
+        controller: widget.controller,
         validator: widget.validator,
         focusNode: _focusNode,
         keyboardType: widget.keyboardType!,

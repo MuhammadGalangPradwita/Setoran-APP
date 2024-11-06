@@ -5,6 +5,7 @@ import 'package:pinput/pinput.dart';
 import 'package:tubes_mobpro/tubes/pages/create_new_pass.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 import 'package:tubes_mobpro/tubes/widgets/button_widgets.dart';
+import 'package:tubes_mobpro/notification_service.dart';
 
 class OTPPage extends StatefulWidget {
   const OTPPage({super.key});
@@ -15,8 +16,17 @@ class OTPPage extends StatefulWidget {
 
 class _OTPPageState extends State<OTPPage> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final NotificationService _notificationService = NotificationService();
 
-  String validPin = '1234'; // buat contoh
+  String validPin = '7385'; // buat contoh
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    _notificationService.showNotification(
+        id: 1, title: "OTP", body: "[7385 is your OTP]");
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
