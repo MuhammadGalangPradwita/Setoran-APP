@@ -44,6 +44,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   awesome_dialog: ^3.2.1
   sliding_up_panel: ^2.0.0+1
+  flutter_local_notifications: ^18.0.0
 
 dev_dependencies:
   flutter_test:
