@@ -308,79 +308,84 @@ class DiscountCard extends Card {
                   )
               ),
             ),
-            Container(
-              color: Color.fromARGB(255, 217, 217, 217),
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      this.title,
-                      textAlign: TextAlign.left,
-                      style: GoogleFonts.poppins(
-                          fontSize: 12,
-                          color: AppColors.N800,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    Gap(8),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: AppColors.N400,
-                        borderRadius: BorderRadius.all(Radius.circular(4))
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 217, 217, 217),
+                  borderRadius: BorderRadius.only(topRight: Radius.circular(4), bottomRight: Radius.circular(4))
+                ),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        this.title,
+                        textAlign: TextAlign.left,
+                        style: GoogleFonts.poppins(
+                            fontSize: 12,
+                            color: AppColors.N800,
+                            fontWeight: FontWeight.w600),
                       ),
-                      child: Padding(
-                        padding: EdgeInsets.all(8),
-                        child: Row(
-                          children: [
-                            Text(
-                              this.code,
-                              textAlign: TextAlign.left,
-                              style: GoogleFonts.poppins(
-                                  fontSize: 12,
-                                  color: AppColors.N800,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            // Spacer(),
-                            Gap(140), // gak tau biar container width fill parent gimana
-                            InkWell(
-                              child: Text(
-                                'Copy',
+                      Gap(8),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: AppColors.N400,
+                          borderRadius: BorderRadius.all(Radius.circular(4))
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.all(8),
+                          child: Row(
+                            children: [
+                              Text(
+                                this.code,
                                 textAlign: TextAlign.left,
                                 style: GoogleFonts.poppins(
-                                    fontSize: 10,
-                                    color: Colors.blue,
+                                    fontSize: 12,
+                                    color: AppColors.N800,
                                     fontWeight: FontWeight.w600),
                               ),
-                            )
-                          ],
+                              // Spacer(),
+                              Spacer(), // gak tau biar container width fill parent gimana
+                              InkWell(
+                                child: Text(
+                                  'Copy',
+                                  textAlign: TextAlign.left,
+                                  style: GoogleFonts.poppins(
+                                      fontSize: 10,
+                                      color: Colors.blue,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    Gap(8),
-                    Text(
-                      this.description,
-                      textAlign: TextAlign.left,
-                      style: GoogleFonts.poppins(
-                          fontSize: 10,
-                          color: AppColors.N800,
-                          fontWeight: FontWeight.w400),
-                    ),
-                    Gap(8),
-                    InkWell(
-                      child: Text(
-                        'Terms and Conditions',
+                      Gap(8),
+                      Text(
+                        this.description,
                         textAlign: TextAlign.left,
                         style: GoogleFonts.poppins(
                             fontSize: 10,
-                            color: Colors.blue,
-                            fontWeight: FontWeight.w600),
+                            color: AppColors.N800,
+                            fontWeight: FontWeight.w400),
                       ),
-                      onTap: () {
-                        slidingPanelController!.open();
-                      },
-                    )
-                  ],
+                      Gap(8),
+                      InkWell(
+                        child: Text(
+                          'Terms and Conditions',
+                          textAlign: TextAlign.left,
+                          style: GoogleFonts.poppins(
+                              fontSize: 10,
+                              color: Colors.blue,
+                              fontWeight: FontWeight.w600),
+                        ),
+                        onTap: () {
+                          slidingPanelController!.open();
+                        },
+                      )
+                    ],
+                  ),
                 ),
               ),
             )
