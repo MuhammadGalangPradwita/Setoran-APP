@@ -125,7 +125,7 @@ class SignInPage extends StatelessWidget {
                       builder: (context) => ForgotPasswordPage(),
                     ));
               },
-              child: Text("Fortgot Password?",
+              child: Text("Forgot Password?",
                   style: GoogleFonts.poppins(
                     fontSize: 12,
                     decoration: TextDecoration.underline,
