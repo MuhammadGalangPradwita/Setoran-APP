@@ -4,6 +4,8 @@ import 'package:flutter/rendering.dart';
 
 import 'package:tubes_mobpro/tubes/pages/search_result_page.dart';
 
+import 'package:tubes_mobpro/tubes/pages/search_result_page.dart';
+
 void main() {
   debugPaintSizeEnabled = false;
   runApp(const MyApp());
