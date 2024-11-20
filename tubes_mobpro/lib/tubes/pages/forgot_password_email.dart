@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tubes_mobpro/tubes/pages/otp.dart';
 
 class ForgotPasswordPage extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
@@ -48,9 +49,7 @@ class ForgotPasswordPage extends StatelessWidget {
             Align(
               alignment: Alignment.centerRight,
               child: TextButton(
-                onPressed: () {
-                  
-                },
+                onPressed: () {},
                 child: const Text(
                   'Try looking for something else?',
                   style: TextStyle(color: Colors.black54),
@@ -65,6 +64,10 @@ class ForgotPasswordPage extends StatelessWidget {
                 onPressed: () {
                   // Handle send email action
                   if (_emailController.text.isNotEmpty) {
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const OTPPage()));
                     // Implement email sending logic disini
                   }
                 },
@@ -93,7 +96,6 @@ class ForgotPasswordPage extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-
                     // Navigate to sign up page
                   },
                   child: const Text(
