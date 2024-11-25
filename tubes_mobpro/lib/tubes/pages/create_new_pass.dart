@@ -44,7 +44,7 @@ class _CreateNewPassPageState extends State<CreateNewPassPage> {
           ],
         ),
       )),
-    );
+    ); 
   }
 
   Widget _form() {
