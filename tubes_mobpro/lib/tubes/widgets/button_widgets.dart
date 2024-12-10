@@ -17,20 +17,24 @@ class ButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: press,
-      // style: TextButton.styleFrom(
-      //   backgroundColor: const Color(0xFF009DFF),
-      // ),
-      style: ButtonStyle(
-        backgroundColor: WidgetStatePropertyAll(backgroundColor),
-      ),
-      child: Text(label,
-          style: GoogleFonts.poppins(
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
+        onPressed: press,
+        // style: TextButton.styleFrom(
+        //   backgroundColor: const Color(0xFF009DFF),
+        // ),
+        style: ButtonStyle(
+          backgroundColor: WidgetStatePropertyAll(backgroundColor),
+        ),
+        child: Text(
+          label,
+          // style: GoogleFonts.poppins(
+          //   fontSize: 16,
+          //   fontWeight: FontWeight.w500,
+          //   color: color,
+          // )),
+          style: AppTextStyle.body1SemiBold.copyWith(
             color: color,
-          )),
-    );
+          ),
+        ));
   }
 }
 
