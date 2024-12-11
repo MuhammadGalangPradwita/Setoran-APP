@@ -30,13 +30,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
   gap: ^3.0.1
-
   persistent_bottom_nav_bar: ^6.2.1
-
   google_fonts: ^6.2.1
-
   pinput: ^5.0.0
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -45,6 +41,9 @@ dependencies:
   awesome_dialog: ^3.2.1
   sliding_up_panel: ^2.0.0+1
   flutter_local_notifications: ^18.0.0
+  camera: ^0.11.0+2
+  permission_handler: ^11.3.1
+  path_provider: ^2.1.5
 
 dev_dependencies:
   flutter_test:
