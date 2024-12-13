@@ -9,6 +9,11 @@ class ButtonWidget extends StatelessWidget {
       : backgroundColor = AppColors.B400,
         color = AppColors.N0;
 
+  const ButtonWidget.secondary(
+      {super.key, required this.label, required this.press})
+      : backgroundColor = AppColors.N700,
+        color = AppColors.N0;
+
   final String label;
   final VoidCallback press;
   final Color backgroundColor;
