@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:tubes_mobpro/tubes/camera_service.dart';
+import 'package:tubes_mobpro/tubes/pages/edit_id_camera_page.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 import 'package:tubes_mobpro/tubes/widgets/button_widgets.dart';
 import 'package:tubes_mobpro/tubes/widgets/textField_widget.dart';
@@ -61,7 +63,16 @@ class _EditIDDataPageState extends State<EditIDDataPage> {
                   children: [
                     Expanded(
                         child: ButtonWidget.primary(
-                            label: "Continue", press: () {})),
+                            label: "Continue",
+                            press: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => EditIdCameraPage(
+                                        cameras:
+                                            CameraService.instance.cameras),
+                                  ));
+                            })),
                   ],
                 ),
               ],
