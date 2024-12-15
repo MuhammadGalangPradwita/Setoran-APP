@@ -209,7 +209,12 @@ class _SearchSectionState extends State<SearchSection> {
           ),
           const Text('Models'),
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const SearchResultPage()),
+              );
+            },
             child: _buildSearchField(_selectedModel, Icons.motorcycle),
           ),
           const SizedBox(height: 12),

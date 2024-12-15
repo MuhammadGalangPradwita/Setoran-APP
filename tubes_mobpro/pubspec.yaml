@@ -46,6 +46,10 @@ dependencies:
   path_provider: ^2.1.5
   google_mlkit_text_recognition: ^0.14.0
 
+  # Dependency supaya saat mengubah 1000000 ke string hasilnya akan seperti ini: 1,000,000.
+  # Untuk secara singkat, ini adalah number formatter. 
+  intl: ^0.18.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
