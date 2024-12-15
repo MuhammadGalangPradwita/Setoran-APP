@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:tubes_mobpro/tubes/pages/search_result_page.dart';
+import 'package:tubes_mobpro/tubes/services/motor.dart';
+import 'package:tubes_mobpro/tubes/services/motor_service.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 import 'package:tubes_mobpro/tubes/widgets/bottom_nav.dart';
 import 'package:tubes_mobpro/tubes/widgets/cardHomePage_widgets.dart';
 import 'package:tubes_mobpro/tubes/widgets/textField_widget.dart';
 import 'package:tubes_mobpro/tubes/widgets/button_widgets.dart';
-
-
 
 class HomepageScreen extends StatefulWidget {
   const HomepageScreen({super.key});
@@ -16,13 +17,11 @@ class HomepageScreen extends StatefulWidget {
 }
 
 enum MotorType { Matic, Manual }
-List<String> models=[
-  ''
-];
+
+List<String> models = [''];
 
 class _HomepageScreenState extends State<HomepageScreen> {
   @override
-
   MotorType? _selectedTransmission;
 
   @override
@@ -305,5 +304,3 @@ class _HomepageScreenState extends State<HomepageScreen> {
     );
   }
 }
-
-
