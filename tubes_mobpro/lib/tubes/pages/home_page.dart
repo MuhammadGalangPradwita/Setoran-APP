@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tubes_mobpro/tubes/pages/notification_page.dart';
-import 'package:tubes_mobpro/tubes/widgets/google_login_dialog.dart';
+import 'package:tubes_mobpro/tubes/pages/search_result_page.dart';
+import 'package:tubes_mobpro/tubes/services/motor.dart';
+import 'package:tubes_mobpro/tubes/services/motor_service.dart';
 import 'package:tubes_mobpro/tubes/widgets/textField_widget.dart';
 
 class HomePage extends StatelessWidget {
@@ -45,16 +47,18 @@ class HomeContent extends StatelessWidget {
     return AppBar(
       backgroundColor: Colors.blue,
       elevation: 0,
-      title: Column(
+      title: const Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [
+        children: [
           Text(
             'Good Morning,',
-            style: TextStyle(fontSize: 18, color: Colors.white, fontWeight:FontWeight.bold),
+            style: TextStyle(
+                fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),
           ),
           Text(
             'Michael',
-            style: TextStyle(fontSize: 18,color: Colors.white, fontWeight: FontWeight.bold),
+            style: TextStyle(
+                fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),
           ),
         ],
       ),
@@ -78,12 +82,12 @@ class HomeBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return const SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
+          children: [
             SearchSection(),
             SizedBox(height: 24),
             RecommendationSection(),
@@ -104,9 +108,8 @@ class HomeBody extends StatelessWidget {
 }
 
 enum MotorType { Matic, Manual }
-List<String> models=[
-  ''
-];
+
+List<String> models = [''];
 
 class SearchSection extends StatefulWidget {
   const SearchSection({super.key});
@@ -132,7 +135,8 @@ class _SearchSectionState extends State<SearchSection> {
           data: ThemeData.light().copyWith(
             primaryColor: Colors.blue,
             colorScheme: const ColorScheme.light(primary: Colors.blue),
-            buttonTheme: const ButtonThemeData(textTheme: ButtonTextTheme.primary),
+            buttonTheme:
+                const ButtonThemeData(textTheme: ButtonTextTheme.primary),
           ),
           child: child!,
         );
@@ -175,7 +179,8 @@ class _SearchSectionState extends State<SearchSection> {
           const Text('Rental Period'),
           GestureDetector(
             onTap: _showDateRangePicker,
-            child: _buildSearchField(_getDateRangeText(), Icons.calendar_month_rounded),
+            child: _buildSearchField(
+                _getDateRangeText(), Icons.calendar_month_rounded),
           ),
           const SizedBox(height: 12),
           SingleChildScrollView(
@@ -186,7 +191,7 @@ class _SearchSectionState extends State<SearchSection> {
                   Form.of(primaryFocus!.context!)!.save();
                 }
               },
-              child: Column(
+              child: const Column(
                 children: [
                   // TextFormField(
                   //   onSaved: (String? value) {
@@ -197,16 +202,14 @@ class _SearchSectionState extends State<SearchSection> {
                   //     }
                   //   },
                   // ),
-                TextfieldWidget(hintText: "models"),
+                  TextfieldWidget(hintText: "models"),
                 ],
               ),
             ),
           ),
           const Text('Models'),
           GestureDetector(
-            onTap: () {
-              
-            },
+            onTap: () {},
             child: _buildSearchField(_selectedModel, Icons.motorcycle),
           ),
           const SizedBox(height: 12),
@@ -230,7 +233,8 @@ class _SearchSectionState extends State<SearchSection> {
               Expanded(
                 child: ListTile(
                   title: const Text('Manual'),
-                  titleTextStyle: const TextStyle(fontSize: 12, color: Colors.black),
+                  titleTextStyle:
+                      const TextStyle(fontSize: 12, color: Colors.black),
                   leading: Radio<MotorType>(
                     value: MotorType.Manual,
                     groupValue: _selectedTransmission,
@@ -275,21 +279,21 @@ class RecommendationSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           'Recommendation',
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: 16),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
-            children: const [
+            children: [
               MotorcycleCard(name: 'BeAT', price: 30000),
               SizedBox(width: 16),
               MotorcycleCard(name: 'NMAX', price: 50000),
@@ -314,9 +318,9 @@ class VoucherSection extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Column(
+          const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
+            children: [
               Text(
                 'New Member',
                 style: TextStyle(
@@ -360,19 +364,19 @@ class MostPopularSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           'Most Popular',
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: 16),
         Row(
-          children: const [
+          children: [
             Expanded(child: MotorcycleCard(name: 'BeAT', price: 30000)),
             SizedBox(width: 16),
             Expanded(child: MotorcycleCard(name: 'NMAX', price: 50000)),
@@ -383,37 +387,58 @@ class MostPopularSection extends StatelessWidget {
   }
 }
 
-class DiscountSection extends StatelessWidget {
+class DiscountSection extends StatefulWidget {
   const DiscountSection({super.key});
 
   @override
+  State<DiscountSection> createState() => _DiscountSectionState();
+}
+
+class _DiscountSectionState extends State<DiscountSection> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Discount',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const SizedBox(height: 16),
-        GridView.count(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          crossAxisCount: 2,
-          mainAxisSpacing: 16,
-          crossAxisSpacing: 16,
-          childAspectRatio: 0.8,
-          children: const [
-            MotorcycleCard(name: 'BeAT', price: 30000),
-            MotorcycleCard(name: 'NMAX', price: 50000),
-            MotorcycleCard(name: 'NMAX', price: 50000),
-            MotorcycleCard(name: 'BeAT', price: 30000),
-          ],
-        ),
-      ],
+    return FutureBuilder<List<dynamic>>(
+      future: MotorService().fetch(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+              child:
+                  CircularProgressIndicator()); 
+        } else if (snapshot.hasError) {
+          return Center(
+              child: Text(
+                  'Error: ${snapshot.error}')); 
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return const Center(
+              child: Text('No motors available'));
+        } else {
+          final motors = snapshot.data!;
+          return GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisSpacing: 16,
+              crossAxisSpacing: 16,
+              childAspectRatio: 0.8,
+            ),
+            itemCount: motors.length,
+            itemBuilder: (context, index) {
+              final Motor motor = motors[index];
+              return MotorcycleCard(
+                name: motor.model, // Use model as the name
+                price: (motor.hargaHarian).toInt(), // Convert price
+              );
+            },
+          );
+        }
+      },
     );
   }
 }
@@ -423,9 +448,9 @@ class LastViewedSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: const [
+      children: [
         Text(
           'Last Viewed',
           style: TextStyle(
@@ -510,8 +535,8 @@ class MotorcycleCard extends StatelessWidget {
                   color: Colors.blue,
                 ),
               ),
-              Row(
-                children: const [
+              const Row(
+                children: [
                   Icon(
                     Icons.star,
                     size: 16,
