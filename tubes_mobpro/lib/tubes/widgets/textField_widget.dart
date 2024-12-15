@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 
 class TextfieldWidget extends StatefulWidget {
@@ -13,6 +12,8 @@ class TextfieldWidget extends StatefulWidget {
   final Widget? prefixIcon;
   final IconData? suffixIcon;
   final FormFieldValidator<String>? validator;
+  final int? maxLines;
+  final bool? readOnly;
 
   const TextfieldWidget(
       {super.key,
@@ -21,19 +22,23 @@ class TextfieldWidget extends StatefulWidget {
       this.keyboardType = TextInputType.text,
       this.obscureText = false,
       this.obscureCharacter = "*",
-      required this.hintText,
+      this.hintText,
       this.prefixIcon,
       this.suffixIcon,
       this.validator,
-      this.controller});
+      this.controller,
+      this.readOnly = false,
+      this.maxLines = 1});
 
   const TextfieldWidget.password(
       {super.key,
       this.label = "",
-      required this.hintText,
+      this.hintText,
       this.prefixIcon,
       this.validator,
-      this.controller})
+      this.controller,
+      this.readOnly = false,
+      this.maxLines = 1})
       : keyboardType = TextInputType.visiblePassword,
         obscureText = true,
         obscureCharacter = "*",
@@ -85,11 +90,7 @@ class _TextfieldWidgetState extends State<TextfieldWidget> {
         if (widget.label != "") {
           return Text(
             widget.label!,
-            style: GoogleFonts.poppins(
-              fontSize: 13,
-              fontWeight: FontWeight.normal,
-              color: Colors.black,
-            ),
+            style: AppTextStyle.body2SemiBold,
           );
         } else {
           return const SizedBox.shrink();
@@ -103,21 +104,18 @@ class _TextfieldWidgetState extends State<TextfieldWidget> {
         keyboardType: widget.keyboardType!,
         obscureText: _isObscured,
         obscuringCharacter: widget.obscureCharacter!,
-        style: GoogleFonts.poppins(
-          fontSize: 10,
-          fontWeight: FontWeight.normal,
-          color: Colors.black,
-        ),
+        style: AppTextStyle.body2Regular,
+        minLines: 1,
+        maxLines: widget.maxLines,
+        readOnly: widget.readOnly!,
         decoration: InputDecoration(
           contentPadding:
               const EdgeInsets.only(top: 10, bottom: 10, left: 20, right: 20),
           filled: true,
           fillColor: _isFocused ? AppColors.N0 : Colors.transparent,
           hintText: widget.hintText,
-          hintStyle: GoogleFonts.poppins(
-            fontSize: 10,
-            fontWeight: FontWeight.normal,
-            color: const Color.fromARGB(255, 129, 129, 129),
+          hintStyle: AppTextStyle.body2Regular.copyWith(
+            color: AppColors.N600,
           ),
           prefixIcon: widget.prefixIcon,
           // suffixIcon: Icon(widget.suffixIcon),
@@ -125,13 +123,13 @@ class _TextfieldWidgetState extends State<TextfieldWidget> {
               ? IconButton(onPressed: toogleObscure, icon: Icon(_suffixIcon))
               : Icon(_suffixIcon),
           border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(50.0),
+              borderRadius: BorderRadius.circular(8.0),
               borderSide: const BorderSide(
                 color: Color.fromARGB(255, 129, 129, 129),
                 width: 1.0,
               )),
           focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(50.0),
+              borderRadius: BorderRadius.circular(8.0),
               borderSide: const BorderSide(
                 color: Color.fromARGB(255, 129, 129, 129),
                 width: 1.0,
