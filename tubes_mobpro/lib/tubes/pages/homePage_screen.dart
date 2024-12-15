@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:tubes_mobpro/tubes/pages/search_result_page.dart';
+import 'package:tubes_mobpro/tubes/services/motor.dart';
+import 'package:tubes_mobpro/tubes/services/motor_service.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 import 'package:tubes_mobpro/tubes/widgets/cardHomePage_widgets.dart';
 import 'package:tubes_mobpro/tubes/widgets/textField_widget.dart';
 import 'package:tubes_mobpro/tubes/widgets/button_widgets.dart';
-
 
 class HomepageScreen extends StatefulWidget {
   const HomepageScreen({super.key});
@@ -14,13 +16,11 @@ class HomepageScreen extends StatefulWidget {
 }
 
 enum MotorType { Matic, Manual }
-List<String> models=[
-  ''
-];
+
+List<String> models = [''];
 
 class _HomepageScreenState extends State<HomepageScreen> {
   @override
-
   MotorType? _selectedTransmission;
 
   @override
@@ -29,56 +29,52 @@ class _HomepageScreenState extends State<HomepageScreen> {
       body: Stack(
         children: [
           Positioned(
-            child: Image.asset("assets/images/hpElement1.png", 
-              width: double.infinity, 
-              fit: BoxFit.cover,
-            )
-          ),
+              child: Image.asset(
+            "assets/images/hpElement1.png",
+            width: double.infinity,
+            fit: BoxFit.cover,
+          )),
           Positioned(
             top: 50,
             right: 30,
             child: IconButton(
-              color: AppColors.N0,
-              iconSize: 30,
-              onPressed: (){}, 
-              icon: const Icon(Icons.notifications)
-              ),
+                color: AppColors.N0,
+                iconSize: 30,
+                onPressed: () {},
+                icon: const Icon(Icons.notifications)),
           ),
           Positioned(
-            top: 40,
-            left: 30,
-            child:Text("Good Morning\nMichael",
-            style: AppTextStyle.h2Bold.copyWith(
-              color: AppColors.N0
-             ), 
-            )
-          ),
+              top: 40,
+              left: 30,
+              child: Text(
+                "Good Morning\nMichael",
+                style: AppTextStyle.h2Bold.copyWith(color: AppColors.N0),
+              )),
           Container(
             height: 400,
             width: double.infinity,
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(10)),
               color: Colors.white,
-              
             ),
             padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
             margin: const EdgeInsets.only(
-              top: 130, left: 30, right: 30, 
-              ),
+              top: 130,
+              left: 30,
+              right: 30,
+            ),
             child: Column(
               children: [
                 const Gap(20),
                 const TextfieldWidget(
-                  label: 'Select Date',
-                  prefixIcon: Icon(Icons.date_range_rounded),
-                  hintText: 'Choose the date...'
-                ),
+                    label: 'Select Date',
+                    prefixIcon: Icon(Icons.date_range_rounded),
+                    hintText: 'Choose the date...'),
                 const Gap(24),
                 const TextfieldWidget(
-                  label: 'Select Models',
-                  prefixIcon: Icon(Icons.motorcycle_rounded ),
-                  hintText: 'Chose the models...'
-                ),
+                    label: 'Select Models',
+                    prefixIcon: Icon(Icons.motorcycle_rounded),
+                    hintText: 'Chose the models...'),
                 const Gap(24),
                 Positioned(
                   child: SizedBox(
@@ -88,9 +84,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                       children: [
                         const Text(
                           'Models',
-                          style: TextStyle(
-                           
-                          ),
+                          style: TextStyle(),
                         ),
                         Row(
                           children: [
@@ -110,9 +104,11 @@ class _HomepageScreenState extends State<HomepageScreen> {
                             ),
                             Expanded(
                               child: ListTile(
-                                contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                                contentPadding:
+                                    const EdgeInsets.symmetric(horizontal: 0),
                                 title: const Text('Manual'),
-                                titleTextStyle: const TextStyle(fontSize: 15, color: Colors.black),
+                                titleTextStyle: const TextStyle(
+                                    fontSize: 15, color: Colors.black),
                                 leading: Radio<MotorType>(
                                   value: MotorType.Manual,
                                   groupValue: _selectedTransmission,
@@ -132,12 +128,16 @@ class _HomepageScreenState extends State<HomepageScreen> {
                 ),
                 const Gap(30),
                 SizedBox(
-                  width: 150,
-                  height: 40,
-                  child: ButtonWidget.primary(label: "Search", press:(){
-                    } 
-                  )
-                ),
+                    width: 150,
+                    height: 40,
+                    child: ButtonWidget.primary(
+                        label: "Search",
+                        press: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SearchResultPage()));
+                        })),
               ],
             ),
           ),
@@ -152,41 +152,54 @@ class _HomepageScreenState extends State<HomepageScreen> {
               children: [
                 Row(
                   children: [
-                   Container(
-                    margin: const EdgeInsets.only(left: 20,bottom: 10),
-                    child: const Text('Recomendation'),
-                   ),
+                    Container(
+                      margin: const EdgeInsets.only(left: 20, bottom: 10),
+                      child: const Text('Recomendation'),
+                    ),
                   ],
                 ),
-                const Expanded(
-                  child: SingleChildScrollView(
-                    child: Row(
-                    children: [
-                      // vehicleCard(
-                      //   height: 260,
-                      //   width: 200,
-                      //   margin: const EdgeInsets.only(top: 20,right: 20,left: 20),
-                      //   imagePath: "assets/images/NMAX_highRes.png",
-                      //   vehicleName: 'NMAX',
-                      //   rating: '4.8',
-                      //   transmition: 'Transmision: Matic',
-                      //   price: 'Rp. 30.000,00',
-                      // ),
-                      vehicleCardDiscount(
-                        height: 270,
-                        width: 200,
-                        margin: const EdgeInsets.only(top: 20,right: 20,left: 20),
-                        imagePath: "assets/images/NMAX_highRes.png",
-                        vehicleName: 'NMAX',
-                        rating: '4.8',
-                        transmition: 'Transmision: Matic',
-                        disPrice: '123',
-                        norPrice: '2022',
-                        )
-                     ],
-                    )
-                  )
-                )
+                Expanded(
+                  child: FutureBuilder<List<dynamic>>(
+                    future: MotorService().fetchAll(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Center(child: Text('Error: ${snapshot.error}'));
+                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                        return const Center(child: Text('No motors available'));
+                      } else {
+                        final motors = snapshot.data!;
+                        return GridView.builder(
+                          shrinkWrap: true,
+                          physics: const BouncingScrollPhysics(),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 16,
+                            crossAxisSpacing: 16,
+                            childAspectRatio: 0.8,
+                          ),
+                          itemCount: motors.length,
+                          itemBuilder: (context, index) {
+                            final Motor motor = motors[index];
+                            return vehicleCardDiscount(
+                              height: 270,
+                              width: 200,
+                              margin: const EdgeInsets.all(8),
+                              imagePath: "assets/images/NMAX.png",
+                              vehicleName: motor.tipe,
+                              rating: '4.8',
+                              transmition: 'Transmision: ${motor.transmisi}',
+                              disPrice: '123',
+                              norPrice: '2022',
+                            );
+                          },
+                        );
+                      }
+                    },
+                  ),
+                ),
               ],
             ),
           )
@@ -195,5 +208,3 @@ class _HomepageScreenState extends State<HomepageScreen> {
     );
   }
 }
-
-

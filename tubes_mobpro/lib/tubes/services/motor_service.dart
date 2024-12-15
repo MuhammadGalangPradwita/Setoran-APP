@@ -10,7 +10,7 @@ class MotorService extends ChangeNotifier {
 
   List<Motor> get motors => _motors;
 
-  Future<List<Motor>> fetch() async {
+  Future<List<Motor>> fetchAll() async {
     final response = await http.get(Uri.parse(apiUrl), headers: {'User-Agent':'CustomUserAgent'});
 
     if (response.statusCode == 200) {
@@ -22,4 +22,18 @@ class MotorService extends ChangeNotifier {
       throw Exception('Failed to fetch motor data');
     }
   }
+
+  Future<Motor> fetch(int id) async {
+    final response = await http.get(Uri.parse(apiUrl + '/$id'), headers: {'User-Agent':'CustomUserAgent'});
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+
+      final motor = Motor.fromJson(data);
+      return motor;
+    } else {
+      throw Exception('Failed to fetch motor data');
+    }
+  }
+
 }

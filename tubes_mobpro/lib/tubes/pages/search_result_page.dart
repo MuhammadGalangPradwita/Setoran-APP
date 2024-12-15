@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:tubes_mobpro/tubes/pages/search_result_detail.dart';
+import 'package:tubes_mobpro/tubes/services/motor.dart';
+import 'package:tubes_mobpro/tubes/services/motor_service.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 import 'package:intl/intl.dart';
 
@@ -65,20 +67,34 @@ class SearchResultPage extends StatelessWidget {
           child: Padding(
               padding:
                   const EdgeInsets.symmetric(vertical: 12, horizontal: 27.5),
-              child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 144 / 173,
-                      mainAxisSpacing: 12,
-                      crossAxisSpacing: 12),
-                  itemCount: motors.length,
-                  itemBuilder: (context, index) {
-                    final motor = motors[index];
-                    final diskonMotor = motor['diskon'];
-                    return SearchResultCard(
-                      index: index,
-                    );
-                  })),
+              child: FutureBuilder<List<dynamic>>(
+                future: MotorService().fetchAll(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return const Center(child: Text('No motors available'));
+                  } else {
+                    final motors = snapshot.data!;
+                    return GridView.builder(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                childAspectRatio: 144 / 173,
+                                mainAxisSpacing: 12,
+                                crossAxisSpacing: 12),
+                        itemCount: motors.length,
+                        itemBuilder: (context, index) {
+                          final Motor motor = motors[index];
+                          return SearchResultCard(
+                            index: motor.idMotor, nama: motor.tipe, transmission: motor.transmisi, image: 'assets/images/NMAX.png', harga: motor.hargaHarian, statusDiskon: false, rating: 4.0, persenDiskon: 0,
+                          );
+                        });
+                  }
+                },
+              )),
         ));
   }
 }
@@ -86,8 +102,20 @@ class SearchResultPage extends StatelessWidget {
 class SearchResultCard extends StatelessWidget {
   SearchResultCard({
     super.key,
-    required this.index,
+    required this.index, required this.nama, required this.transmission, required this.image, required this.harga, this.diskonMotor, required this.statusDiskon, required this.rating, required this.persenDiskon,
   });
+
+    final String nama;
+    final String transmission;
+    final String image;
+
+    final double harga;
+
+    final diskonMotor;
+
+    final bool statusDiskon;
+    final double rating;
+    final double persenDiskon;
 
 
   final formatter = NumberFormat("#,###");
@@ -96,27 +124,12 @@ class SearchResultCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-      final motor = motors[index];
-    
-
-      final String nama = motor['tipe'];
-      final String transmission = motor['transmisi'];
-      final String image = motor['image'];
-
-      final int harga = motor['harga'];
-      
-      final diskonMotor = motor['diskon'];
-
-      final bool statusDiskon = diskonMotor['status'];
-
-      final double rating = motor['rating'];
-      final double persenDiskon = diskonMotor['persen'];
-
     return InkWell(
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return SearchResultDetail(motorData: motor,);
+          return SearchResultDetail(
+            index: index,
+          );
         }));
       },
       child: Container(
