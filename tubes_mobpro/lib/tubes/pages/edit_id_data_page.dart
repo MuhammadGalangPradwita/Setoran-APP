@@ -19,7 +19,6 @@ class _EditIDDataPageState extends State<EditIDDataPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _type.text = "KTP";
     _no.text = "1234567894561238";

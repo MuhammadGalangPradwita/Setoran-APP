@@ -19,7 +19,8 @@ class _EditIdCameraPageState extends State<EditIdCameraPage> {
   @override
   void initState() {
     super.initState();
-    controller = CameraController(widget.cameras.first, ResolutionPreset.max);
+    controller = CameraController(widget.cameras[1], ResolutionPreset.max,
+        imageFormatGroup: ImageFormatGroup.nv21, enableAudio: false);
     controller.initialize().then((_) {
       if (!mounted) {
         return;
