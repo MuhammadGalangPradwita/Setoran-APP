@@ -65,10 +65,10 @@ class SignUpPage extends StatelessWidget {
                           showDialog(
                               context: context,
                               builder: (context) {
-                                return GoogleLoginDialogue();
+                                return const GoogleLoginDialogue();
                               });
                         },
-                        icon: FaIcon(FontAwesomeIcons.google),
+                        icon: const FaIcon(FontAwesomeIcons.google),
                       ),
                     ),
                     // Gap(64),
@@ -77,7 +77,7 @@ class SignUpPage extends StatelessWidget {
                         child: ButtonOutlineWidget(
                           label: "Facebook",
                           press: () {},
-                          icon: FaIcon(FontAwesomeIcons.facebook),
+                          icon: const FaIcon(FontAwesomeIcons.facebook),
                         )),
                   ],
                 ),
@@ -150,7 +150,7 @@ class SignUpPage extends StatelessWidget {
             child: ButtonWidget.primary(label: "Register", press: () {
               // demo sementara snackbar
               if (!clicked) {
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Password tidak sesuai')));
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Password tidak sesuai')));
                 clicked = true;
                 return;
               }

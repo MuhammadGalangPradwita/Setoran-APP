@@ -6,7 +6,7 @@ import 'package:tubes_mobpro/notification_service.dart';
 import 'package:tubes_mobpro/tubes/pages/search_result_page.dart';
 
 // final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-//     FlutterLocalNotificationsPlugin();
+// FlutterLocalNotificationsPlugin();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -53,3 +53,5 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
+
+

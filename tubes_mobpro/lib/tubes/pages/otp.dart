@@ -42,16 +42,16 @@ class _OTPPageState extends State<OTPPage> {
               style: GoogleFonts.poppins(
                   fontSize: 20, fontWeight: FontWeight.w600),
             ),
-            Gap(24),
+            const Gap(24),
             Text(
               "Please enter 4 digit sent to your email",
               style: GoogleFonts.poppins(
                 fontSize: 13,
               ),
             ),
-            Gap(24),
+            const Gap(24),
             _pinInputForm(),
-            Gap(24),
+            const Gap(24),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -87,7 +87,7 @@ class _OTPPageState extends State<OTPPage> {
                 return value == validPin ? null : "Pin is incorrect";
               },
             ),
-            Gap(24),
+            const Gap(24),
             SizedBox(
                 width: 300,
                 child: ButtonWidget.primary(
