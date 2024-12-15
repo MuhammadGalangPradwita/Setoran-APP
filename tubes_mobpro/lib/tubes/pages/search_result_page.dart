@@ -45,7 +45,7 @@ class SearchResultPage extends StatelessWidget {
                       crossAxisSpacing: 12),
                   itemCount: 9,
                   itemBuilder: (context, index) {
-                    return SearchResultCard();
+                    return const SearchResultCard();
                   })),
         ));
   }
@@ -61,7 +61,7 @@ class SearchResultCard extends StatelessWidget {
     return InkWell(
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return SearchResultDetail();
+          return const SearchResultDetail();
         }));
       },
       child: Container(

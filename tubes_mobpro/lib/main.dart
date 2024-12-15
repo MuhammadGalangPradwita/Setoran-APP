@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:tubes_mobpro/tubes/pages/get_started_page.dart';
 import 'package:tubes_mobpro/notification_service.dart';
 
 // final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-//     FlutterLocalNotificationsPlugin();
+// FlutterLocalNotificationsPlugin();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,3 +24,5 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+

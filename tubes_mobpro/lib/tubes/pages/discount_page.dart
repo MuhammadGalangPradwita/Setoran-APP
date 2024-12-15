@@ -41,7 +41,7 @@ class DiscountPage extends StatelessWidget {
         )
       );
       discountsCards.add(
-        Gap(8)
+        const Gap(8)
       );
     }
 
@@ -52,29 +52,29 @@ class DiscountPage extends StatelessWidget {
         foregroundColor: AppColors.N0,
       ),
       body: SlidingUpPanel(
-        borderRadius: BorderRadius.only(
+        borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(4),
           topRight: Radius.circular(4)
         ),
-        color: Color.fromARGB(255, 217, 217, 217),
+        color: const Color.fromARGB(255, 217, 217, 217),
         controller: slidingPanelController,
         panel: SingleChildScrollView(
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Gap(8),
+                const Gap(8),
                 Center(
                   child: Container(
                     height: 4,
                     width: 20,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Color.fromARGB(255, 126, 126, 126),
                       borderRadius: BorderRadius.all(Radius.circular(4))
                     ),
                   ),
                 ),
                 // icon atas slide up panel belum
-                Gap(8),
+                const Gap(8),
                 Center(
                   child: Text(
                     'Terms and Conditions',
@@ -85,7 +85,7 @@ class DiscountPage extends StatelessWidget {
                         fontWeight: FontWeight.bold),
                   ),
                 ),
-                Gap(8),
+                const Gap(8),
                 // Discount Information
                 _partiallyBoldText(
                   '• Discount Rp 20.000,00 ',
@@ -158,7 +158,7 @@ class DiscountPage extends StatelessWidget {
         minHeight: 0,
         body: SafeArea(
           child: Container(
-            color: Color.fromARGB(255, 235, 235, 235),
+            color: const Color.fromARGB(255, 235, 235, 235),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 28.0, vertical: 12),
               child: Column(
@@ -186,7 +186,7 @@ class DiscountPage extends StatelessWidget {
                             flex:2,
                             child: Container(
                               // color: Colors.white,
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.only(
                                   topLeft: Radius.circular(10),
@@ -194,7 +194,7 @@ class DiscountPage extends StatelessWidget {
                                   )
                               ),
                               child: Padding(
-                                padding: EdgeInsets.all(7),
+                                padding: const EdgeInsets.all(7),
                                 child: Column(
                                   children: [
                                       Text('New Member',style: GoogleFonts.poppins(
@@ -208,7 +208,7 @@ class DiscountPage extends StatelessWidget {
                                         color: Colors.blue,
                                         fontWeight: FontWeight.w600),
                                       ),
-                                      SizedBox(height:57, width: 75,child:  Image(image: AssetImage('assets/images/voucher-discount.png')))
+                                      const SizedBox(height:57, width: 75,child:  Image(image: AssetImage('assets/images/voucher-discount.png')))
                                   ],
                                 ),
                               ),
@@ -218,11 +218,11 @@ class DiscountPage extends StatelessWidget {
                             flex: 3,
                             child: Stack(
                               children: [
-                                  Container(  
+                                  SizedBox(  
                                   width: 189,
                                   height: 115,
                                 ),
-                                Positioned(
+                                const Positioned(
                                   top: -10,
                                   right: 0,
                                   child: SizedBox(
@@ -237,7 +237,7 @@ class DiscountPage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Gap(10),
+                  const Gap(10),
                   Text(
                     "Discount Code",
                     textAlign: TextAlign.left,
@@ -246,7 +246,7 @@ class DiscountPage extends StatelessWidget {
                         color: AppColors.N800,
                         fontWeight: FontWeight.w600),
                   ),
-                  Gap(10),
+                  const Gap(10),
                   ...discountsCards
                 ],
               ),
@@ -259,19 +259,19 @@ class DiscountPage extends StatelessWidget {
 
   // Helper widget for procedure steps with bold section
   Widget _partiallyBoldText(String boldText, String regularText, {double addedIndent=0}) {
-    var _indent = addedIndent;
+    var indent = addedIndent;
     return Padding(
       // padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
-      padding: EdgeInsets.only(left: 8 + _indent, right: 8, top: 8, bottom: 8),
+      padding: EdgeInsets.only(left: 8 + indent, right: 8, top: 8, bottom: 8),
       child: RichText(
         textAlign: TextAlign.left,
         text: TextSpan(
           text: boldText,
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
           children: [
             TextSpan(
               text: regularText,
-              style: TextStyle(fontWeight: FontWeight.normal),
+              style: const TextStyle(fontWeight: FontWeight.normal),
             ),
           ],
         ),
@@ -300,7 +300,7 @@ class DiscountCard extends Card {
           children: [
             Container(
               width: 6,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.blue,
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(4),
@@ -310,35 +310,35 @@ class DiscountCard extends Card {
             ),
             Expanded(
               child: Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Color.fromARGB(255, 217, 217, 217),
                   borderRadius: BorderRadius.only(topRight: Radius.circular(4), bottomRight: Radius.circular(4))
                 ),
                 child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        this.title,
+                        title,
                         textAlign: TextAlign.left,
                         style: GoogleFonts.poppins(
                             fontSize: 12,
                             color: AppColors.N800,
                             fontWeight: FontWeight.w600),
                       ),
-                      Gap(8),
+                      const Gap(8),
                       Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: AppColors.N400,
                           borderRadius: BorderRadius.all(Radius.circular(4))
                         ),
                         child: Padding(
-                          padding: EdgeInsets.all(8),
+                          padding: const EdgeInsets.all(8),
                           child: Row(
                             children: [
                               Text(
-                                this.code,
+                                code,
                                 textAlign: TextAlign.left,
                                 style: GoogleFonts.poppins(
                                     fontSize: 12,
@@ -346,7 +346,7 @@ class DiscountCard extends Card {
                                     fontWeight: FontWeight.w600),
                               ),
                               // Spacer(),
-                              Spacer(), // gak tau biar container width fill parent gimana
+                              const Spacer(), // gak tau biar container width fill parent gimana
                               InkWell(
                                 child: Text(
                                   'Copy',
@@ -361,16 +361,16 @@ class DiscountCard extends Card {
                           ),
                         ),
                       ),
-                      Gap(8),
+                      const Gap(8),
                       Text(
-                        this.description,
+                        description,
                         textAlign: TextAlign.left,
                         style: GoogleFonts.poppins(
                             fontSize: 10,
                             color: AppColors.N800,
                             fontWeight: FontWeight.w400),
                       ),
-                      Gap(8),
+                      const Gap(8),
                       InkWell(
                         child: Text(
                           'Terms and Conditions',

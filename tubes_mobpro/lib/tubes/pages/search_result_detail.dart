@@ -34,7 +34,7 @@ class SearchResultDetail extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Center(
-              child: Container(
+              child: SizedBox(
                 width: 210,
                 height: 184,
                 child: Image.asset(

@@ -45,9 +45,9 @@ class HomeContent extends StatelessWidget {
     return AppBar(
       backgroundColor: Colors.blue,
       elevation: 0,
-      title: Column(
+      title: const Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [
+        children: [
           Text(
             'Good Morning,',
             style: TextStyle(fontSize: 18, color: Colors.white, fontWeight:FontWeight.bold),
@@ -78,12 +78,12 @@ class HomeBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return const SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
+          children: [
             SearchSection(),
             SizedBox(height: 24),
             RecommendationSection(),
@@ -118,7 +118,7 @@ class SearchSection extends StatefulWidget {
 class _SearchSectionState extends State<SearchSection> {
   MotorType? _selectedTransmission;
   DateTimeRange? _selectedDateRange;
-  String _selectedModel = 'Search the models';
+  final String _selectedModel = 'Search the models';
   List<String> models = [];
   int index = 0;
 
@@ -182,11 +182,9 @@ class _SearchSectionState extends State<SearchSection> {
             child: Form(
               autovalidateMode: AutovalidateMode.always,
               onChanged: () {
-                if (Form.of(primaryFocus!.context!) != null) {
-                  Form.of(primaryFocus!.context!)!.save();
-                }
-              },
-              child: Column(
+                Form.of(primaryFocus!.context!)!.save();
+                            },
+              child: const Column(
                 children: [
                   // TextFormField(
                   //   onSaved: (String? value) {
@@ -275,21 +273,21 @@ class RecommendationSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           'Recommendation',
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: 16),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
-            children: const [
+            children: [
               MotorcycleCard(name: 'BeAT', price: 30000),
               SizedBox(width: 16),
               MotorcycleCard(name: 'NMAX', price: 50000),
@@ -314,9 +312,9 @@ class VoucherSection extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Column(
+          const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
+            children: [
               Text(
                 'New Member',
                 style: TextStyle(
@@ -360,19 +358,19 @@ class MostPopularSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           'Most Popular',
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: 16),
         Row(
-          children: const [
+          children: [
             Expanded(child: MotorcycleCard(name: 'BeAT', price: 30000)),
             SizedBox(width: 16),
             Expanded(child: MotorcycleCard(name: 'NMAX', price: 50000)),
@@ -423,9 +421,9 @@ class LastViewedSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return const Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: const [
+      children: [
         Text(
           'Last Viewed',
           style: TextStyle(
@@ -510,8 +508,8 @@ class MotorcycleCard extends StatelessWidget {
                   color: Colors.blue,
                 ),
               ),
-              Row(
-                children: const [
+              const Row(
+                children: [
                   Icon(
                     Icons.star,
                     size: 16,

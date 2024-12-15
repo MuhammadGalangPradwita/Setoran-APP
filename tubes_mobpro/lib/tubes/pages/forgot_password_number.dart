@@ -5,7 +5,6 @@ import 'package:tubes_mobpro/tubes/pages/otp.dart';
 import 'package:tubes_mobpro/tubes/pages/sign_up_page.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 import 'package:gap/gap.dart';
-import 'package:tubes_mobpro/notification_service.dart';
 // Import halaman email
 
 class ForgotPasswordPhonePage extends StatelessWidget {
