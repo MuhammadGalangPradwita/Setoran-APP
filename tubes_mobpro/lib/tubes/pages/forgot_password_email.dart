@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:tubes_mobpro/tubes/pages/otp.dart';
+import 'package:tubes_mobpro/tubes/pages/sign_up_page.dart';
+import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
+import 'package:gap/gap.dart';
+import 'forgot_password_number.dart';
 
 class ForgotPasswordPage extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
@@ -9,33 +14,34 @@ class ForgotPasswordPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.N0,
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
+            Text(
               'Forgot Password ?',
-              style: TextStyle(
+              style: GoogleFonts.poppins(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 8),
-            const Text(
-              'Please enter your email address to recieve a verification code.',
+            const Gap(20),
+            Text(
+              'Please enter your email address to receive a verification code.',
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: GoogleFonts.poppins(
                 color: Colors.black54,
                 fontSize: 14,
               ),
             ),
-            const SizedBox(height: 32),
+            const Gap(20),
             TextField(
               controller: _emailController,
               decoration: InputDecoration(
                 hintText: 'Enter your Email...',
-                hintStyle: const TextStyle(color: Colors.black38),
+                hintStyle: GoogleFonts.poppins(color: Colors.black38),
                 filled: true,
                 fillColor: Colors.grey[100],
                 border: OutlineInputBorder(
@@ -49,10 +55,18 @@ class ForgotPasswordPage extends StatelessWidget {
             Align(
               alignment: Alignment.centerRight,
               child: TextButton(
-                onPressed: () {},
-                child: const Text(
-                  'Try looking for something else?',
-                  style: TextStyle(color: Colors.black54),
+                onPressed: () {
+                  // Navigate to phone version
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ForgotPasswordPhonePage(),
+                    ),
+                  );
+                },
+                child: Text(
+                  'Use phone number instead?',
+                  style: GoogleFonts.poppins(color: Colors.black54),
                 ),
               ),
             ),
@@ -62,13 +76,13 @@ class ForgotPasswordPage extends StatelessWidget {
               height: 50,
               child: ElevatedButton(
                 onPressed: () {
-                  // Handle send email action
                   if (_emailController.text.isNotEmpty) {
                     Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const OTPPage()));
-                    // Implement email sending logic disini
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const OTPPage(),
+                      ),
+                    );
                   }
                 },
                 style: ElevatedButton.styleFrom(
@@ -77,9 +91,9 @@ class ForgotPasswordPage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                child: const Text(
+                child: Text(
                   'Send Email',
-                  style: TextStyle(
+                  style: GoogleFonts.poppins(
                     color: Colors.white,
                     fontSize: 16,
                   ),
@@ -90,17 +104,17 @@ class ForgotPasswordPage extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text(
+                Text(
                   "Don't have an account? ",
-                  style: TextStyle(color: Colors.black54),
+                  style: GoogleFonts.poppins(color: Colors.black54),
                 ),
                 GestureDetector(
                   onTap: () {
                     // Navigate to sign up page
                   },
-                  child: const Text(
+                  child: Text(
                     'Sign Up',
-                    style: TextStyle(
+                    style: GoogleFonts.poppins(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
                     ),

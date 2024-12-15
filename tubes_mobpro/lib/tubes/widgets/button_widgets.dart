@@ -9,6 +9,11 @@ class ButtonWidget extends StatelessWidget {
       : backgroundColor = AppColors.B400,
         color = AppColors.N0;
 
+  const ButtonWidget.secondary(
+      {super.key, required this.label, required this.press})
+      : backgroundColor = AppColors.N700,
+        color = AppColors.N0;
+
   final String label;
   final VoidCallback press;
   final Color backgroundColor;
@@ -17,20 +22,24 @@ class ButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: press,
-      // style: TextButton.styleFrom(
-      //   backgroundColor: const Color(0xFF009DFF),
-      // ),
-      style: ButtonStyle(
-        backgroundColor: WidgetStatePropertyAll(backgroundColor),
-      ),
-      child: Text(label,
-          style: GoogleFonts.poppins(
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
+        onPressed: press,
+        // style: TextButton.styleFrom(
+        //   backgroundColor: const Color(0xFF009DFF),
+        // ),
+        style: ButtonStyle(
+          backgroundColor: WidgetStatePropertyAll(backgroundColor),
+        ),
+        child: Text(
+          label,
+          // style: GoogleFonts.poppins(
+          //   fontSize: 16,
+          //   fontWeight: FontWeight.w500,
+          //   color: color,
+          // )),
+          style: AppTextStyle.body1SemiBold.copyWith(
             color: color,
-          )),
-    );
+          ),
+        ));
   }
 }
 
