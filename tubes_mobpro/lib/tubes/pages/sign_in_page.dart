@@ -53,10 +53,10 @@ class SignInPage extends StatelessWidget {
                           showDialog(
                               context: context,
                               builder: (context) {
-                                return GoogleLoginDialogue();
+                                return const GoogleLoginDialogue();
                               });
                         },
-                        icon: FaIcon(FontAwesomeIcons.google),
+                        icon: const FaIcon(FontAwesomeIcons.google),
                       ),
                     ),
                     // Gap(64),
@@ -65,7 +65,7 @@ class SignInPage extends StatelessWidget {
                         child: ButtonOutlineWidget(
                           label: "Facebook",
                           press: () {},
-                          icon: FaIcon(FontAwesomeIcons.facebook),
+                          icon: const FaIcon(FontAwesomeIcons.facebook),
                         )),
                   ],
                 ),

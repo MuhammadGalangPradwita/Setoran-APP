@@ -109,8 +109,8 @@ class _DetailActivityPageState extends State<DetailActivityPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Detail Motorcycle"),
-        Gap(8),
+        const Text("Detail Motorcycle"),
+        const Gap(8),
         Card(
           elevation: 2,
           color: AppColors.N0,
@@ -135,28 +135,28 @@ class _DetailActivityPageState extends State<DetailActivityPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Tahun'),
+                    const Text('Tahun'),
                     Text(widget.activity['motor']['year']),
                   ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Transmisi'),
+                    const Text('Transmisi'),
                     Text(widget.activity['motor']['transmisi']),
                   ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Police Number'),
+                    const Text('Police Number'),
                     Text(widget.activity['motor']['policeNumber']),
                   ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('STNK Number'),
+                    const Text('STNK Number'),
                     Text(widget.activity['motor']['STNKNumber']),
                   ],
                 ),

@@ -7,7 +7,7 @@ import 'package:tubes_mobpro/tubes/widgets/button_widgets.dart';
 import 'package:tubes_mobpro/tubes/widgets/textField_widget.dart';
 
 class CreateNewPassPage extends StatefulWidget {
-  CreateNewPassPage({super.key});
+  const CreateNewPassPage({super.key});
 
   @override
   State<CreateNewPassPage> createState() => _CreateNewPassPageState();
@@ -48,7 +48,7 @@ class _CreateNewPassPageState extends State<CreateNewPassPage> {
   }
 
   Widget _form() {
-    String _firstPass = '';
+    String firstPass = '';
     return Form(
         key: formKey,
         child: Column(
@@ -60,7 +60,7 @@ class _CreateNewPassPageState extends State<CreateNewPassPage> {
                 if (value!.isEmpty || value.length < 8) {
                   return "Password must have more than 8 characters";
                 } else {
-                  _firstPass = value;
+                  firstPass = value;
                   return null;
                 }
               },
@@ -70,7 +70,7 @@ class _CreateNewPassPageState extends State<CreateNewPassPage> {
               hintText: "Enter your new password",
               label: "Confirm Password",
               validator: (value) {
-                if (value != _firstPass) {
+                if (value != firstPass) {
                   return "Please Match yout password";
                 } else {
                   return null;

@@ -121,7 +121,7 @@ class SearchSection extends StatefulWidget {
 class _SearchSectionState extends State<SearchSection> {
   MotorType? _selectedTransmission;
   DateTimeRange? _selectedDateRange;
-  String _selectedModel = 'Search the models';
+  final String _selectedModel = 'Search the models';
   List<String> models = [];
   int index = 0;
 
@@ -187,10 +187,13 @@ class _SearchSectionState extends State<SearchSection> {
             child: Form(
               autovalidateMode: AutovalidateMode.always,
               onChanged: () {
+                Form.of(primaryFocus!.context!)!.save();
+                            },
                 if (Form.of(primaryFocus!.context!) != null) {
                   Form.of(primaryFocus!.context!)!.save();
                 }
               },
+
               child: const Column(
                 children: [
                   // TextFormField(
