@@ -139,6 +139,7 @@ class vehicleCardDiscount extends StatelessWidget {
   final String transmition;
   final String disPrice;
   final String norPrice;
+  
   const vehicleCardDiscount(
     {super.key,
     required this.width,
