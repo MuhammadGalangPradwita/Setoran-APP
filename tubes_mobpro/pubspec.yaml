@@ -46,6 +46,10 @@ dependencies:
   sliding_up_panel: ^2.0.0+1
   flutter_local_notifications: ^18.0.0
 
+  # Dependency supaya saat mengubah 1000000 ke string hasilnya akan seperti ini: 1,000,000.
+  # Untuk secara singkat, ini adalah number formatter. 
+  intl: ^0.18.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
