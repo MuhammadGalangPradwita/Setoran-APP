@@ -31,7 +31,12 @@ class _BottomNavState extends State<BottomNav> {
   }
 
   List<Widget> _buildScreens() {
-    return [const HomepageScreen(), const ActivityPage(), DiscountPage(), const AccountPage()];
+    return [
+      const HomepageScreen(),
+      const ActivityPage(),
+      DiscountPage(),
+      const AccountPage()
+    ];
   }
 
   List<PersistentBottomNavBarItem> _navBarsItems() {
