@@ -39,7 +39,7 @@ class TransactionCard extends StatelessWidget {
             Image(
               image: AssetImage(imagePath),
               // width: ,
-              // height: 92,
+              height: 100,
             ),
             const Gap(12),
             Expanded(

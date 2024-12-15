@@ -188,12 +188,10 @@ class _SearchSectionState extends State<SearchSection> {
               autovalidateMode: AutovalidateMode.always,
               onChanged: () {
                 Form.of(primaryFocus!.context!)!.save();
-                            },
                 if (Form.of(primaryFocus!.context!) != null) {
                   Form.of(primaryFocus!.context!)!.save();
                 }
               },
-
               child: const Column(
                 children: [
                   // TextFormField(
@@ -213,9 +211,10 @@ class _SearchSectionState extends State<SearchSection> {
           const Text('Models'),
           GestureDetector(
             onTap: () {
-            Navigator.push(
+              Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const SearchResultPage()),
+                MaterialPageRoute(
+                    builder: (context) => const SearchResultPage()),
               );
             },
             child: _buildSearchField(_selectedModel, Icons.motorcycle),
@@ -412,19 +411,14 @@ class _DiscountSectionState extends State<DiscountSection> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<dynamic>>(
-      future: MotorService().fetch(),
+      future: MotorService().fetchAll(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-              child:
-                  CircularProgressIndicator()); 
+          return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
-          return Center(
-              child: Text(
-                  'Error: ${snapshot.error}')); 
+          return Center(child: Text('Error: ${snapshot.error}'));
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return const Center(
-              child: Text('No motors available'));
+          return const Center(child: Text('No motors available'));
         } else {
           final motors = snapshot.data!;
           return GridView.builder(

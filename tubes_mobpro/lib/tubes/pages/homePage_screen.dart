@@ -33,56 +33,52 @@ class _HomepageScreenState extends State<HomepageScreen> {
             Stack(
               children: [
                 Positioned(
-                  child: Image.asset("assets/images/hpElement1.png", 
-                    width: double.infinity, 
-                    fit: BoxFit.cover,
-                  )
-                ),
+                    child: Image.asset(
+                  "assets/images/hpElement1.png",
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                )),
                 Positioned(
                   top: 50,
                   right: 30,
                   child: IconButton(
-                    color: AppColors.N0,
-                    iconSize: 30,
-                    onPressed: (){}, 
-                    icon: const Icon(Icons.notifications)
-                    ),
+                      color: AppColors.N0,
+                      iconSize: 30,
+                      onPressed: () {},
+                      icon: const Icon(Icons.notifications)),
                 ),
                 Positioned(
-                  top: 40,
-                  left: 30,
-                  child:Text("Good Morning\nMichael",
-                  style: AppTextStyle.h2Bold.copyWith(
-                    color: AppColors.N0
-                   ), 
-                  )
-                ),
+                    top: 40,
+                    left: 30,
+                    child: Text(
+                      "Good Morning\nMichael",
+                      style: AppTextStyle.h2Bold.copyWith(color: AppColors.N0),
+                    )),
                 Container(
                   height: 400,
                   width: double.infinity,
                   decoration: const BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                     color: Colors.white,
-                    
                   ),
                   padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
                   margin: const EdgeInsets.only(
-                    top: 130, left: 30, right: 30, 
-                    ),
+                    top: 130,
+                    left: 30,
+                    right: 30,
+                  ),
                   child: Column(
                     children: [
                       const Gap(20),
                       const TextfieldWidget(
-                        label: 'Select Date',
-                        prefixIcon: Icon(Icons.date_range_rounded),
-                        hintText: 'Choose the date...'
-                      ),
+                          label: 'Select Date',
+                          prefixIcon: Icon(Icons.date_range_rounded),
+                          hintText: 'Choose the date...'),
                       const Gap(24),
                       const TextfieldWidget(
-                        label: 'Select Models',
-                        prefixIcon: Icon(Icons.motorcycle_rounded ),
-                        hintText: 'Chose the models...'
-                      ),
+                          label: 'Select Models',
+                          prefixIcon: Icon(Icons.motorcycle_rounded),
+                          hintText: 'Chose the models...'),
                       const Gap(24),
                       Positioned(
                         child: SizedBox(
@@ -92,9 +88,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                             children: [
                               const Text(
                                 'Models',
-                                style: TextStyle(
-                                 
-                                ),
+                                style: TextStyle(),
                               ),
                               Row(
                                 children: [
@@ -114,9 +108,12 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                   ),
                                   Expanded(
                                     child: ListTile(
-                                      contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                              horizontal: 0),
                                       title: const Text('Manual'),
-                                      titleTextStyle: const TextStyle(fontSize: 15, color: Colors.black),
+                                      titleTextStyle: const TextStyle(
+                                          fontSize: 15, color: Colors.black),
                                       leading: Radio<MotorType>(
                                         value: MotorType.Manual,
                                         groupValue: _selectedTransmission,
@@ -136,171 +133,175 @@ class _HomepageScreenState extends State<HomepageScreen> {
                       ),
                       const Gap(30),
                       SizedBox(
-                        width: 150,
-                        height: 40,
-                        child: ButtonWidget.primary(label: "Search", press:(){
-                          } 
-                        )
-                      ),
+                          width: 150,
+                          height: 40,
+                          child: ButtonWidget.primary(
+                              label: "Search", press: () {})),
                     ],
                   ),
                 ),
               ],
             ),
             Container(
-                  margin: const EdgeInsets.only(top: 20, left: 20, right: 10),
-                  padding: const EdgeInsets.only(right: 20),
-                  // height: 300,
-                  width: double.infinity,
-                  // color: Colors.amber,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
+              margin: const EdgeInsets.only(top: 20, left: 20, right: 10),
+              padding: const EdgeInsets.only(right: 20),
+              // height: 300,
+              width: double.infinity,
+              // color: Colors.amber,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Row(
                     children: [
-                      Row(
-                        children: [
-                         Container(
-                          margin: const EdgeInsets.only(left: 10),
-                          child: const Text('Recomendation'),
-                         ),
-                        ],
+                      Container(
+                        margin: const EdgeInsets.only(left: 10),
+                        child: const Text('Recomendation'),
                       ),
-                      Row(
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      // vehicleCard(
+                      //   height: 260,
+                      //   width: 200,
+                      //   margin: const EdgeInsets.only(top: 20,right: 20,left: 20),
+                      //   imagePath: "assets/images/NMAX_highRes.png",
+                      //   vehicleName: 'NMAX',
+                      //   rating: '4.8',
+                      //   transmition: 'Transmision: Matic',
+                      //   price: 'Rp. 30.000,00',
+                      // ),
+                      vehicleCard(
+                        height: 260,
+                        width: 200,
+                        margin:
+                            const EdgeInsets.only(top: 20, right: 20, left: 20),
+                        imagePath: "assets/images/NMAX.png",
+                        vehicleName: 'NMAX',
+                        rating: '4.8',
+                        transmition: 'Transmision: Matic',
+                        price: 'Rp. 30.000,00',
+                      ),
+                      vehicleCard(
+                        height: 260,
+                        width: 200,
+                        margin:
+                            const EdgeInsets.only(top: 20, right: 20, left: 20),
+                        imagePath: "assets/images/NMAX.png",
+                        vehicleName: 'NMAX',
+                        rating: '4.8',
+                        transmition: 'Transmision: Matic',
+                        price: 'Rp. 30.000,00',
+                      )
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(left: 10, top: 20),
+                        child: const Text('Most Populer'),
+                      ),
+                    ],
+                  ),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
                       children: [
-                        // vehicleCard(
-                        //   height: 260,
-                        //   width: 200,
-                        //   margin: const EdgeInsets.only(top: 20,right: 20,left: 20),
-                        //   imagePath: "assets/images/NMAX_highRes.png",
-                        //   vehicleName: 'NMAX',
-                        //   rating: '4.8',
-                        //   transmition: 'Transmision: Matic',
-                        //   price: 'Rp. 30.000,00',
-                        // ),
                         vehicleCard(
                           height: 260,
                           width: 200,
-                          margin: const EdgeInsets.only(top: 20,right: 20,left: 20),
+                          margin: const EdgeInsets.only(
+                              top: 20, right: 20, left: 20),
                           imagePath: "assets/images/NMAX.png",
                           vehicleName: 'NMAX',
                           rating: '4.8',
                           transmition: 'Transmision: Matic',
                           price: 'Rp. 30.000,00',
                         ),
-                          vehicleCard(
+                        vehicleCard(
                           height: 260,
                           width: 200,
-                          margin: const EdgeInsets.only(top: 20,right: 20,left: 20),
+                          margin: const EdgeInsets.only(
+                              top: 20, right: 20, left: 20),
                           imagePath: "assets/images/NMAX.png",
                           vehicleName: 'NMAX',
                           rating: '4.8',
                           transmition: 'Transmision: Matic',
                           price: 'Rp. 30.000,00',
                         )
-                       ],
-                      ),
-                      Row(
-                        children: [
-                         Container(
-                          margin: const EdgeInsets.only(left: 10,top: 20),
-                          child: const Text('Most Populer'),
-                         ),
-                        ],
-                      ), 
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: [
-                          vehicleCard(
-                            height: 260,
-                            width: 200,
-                            margin: const EdgeInsets.only(top: 20,right: 20,left: 20),
-                            imagePath: "assets/images/NMAX.png",
-                            vehicleName: 'NMAX',
-                            rating: '4.8',
-                            transmition: 'Transmision: Matic',
-                            price: 'Rp. 30.000,00',
-                          ),
-                          vehicleCard(
-                            height: 260,
-                            width: 200,
-                            margin: const EdgeInsets.only(top: 20,right: 20,left: 20),
-                            imagePath: "assets/images/NMAX.png",
-                            vehicleName: 'NMAX',
-                            rating: '4.8',
-                            transmition: 'Transmision: Matic',
-                            price: 'Rp. 30.000,00',
-                          )
-                        ],
-                      ),
-                    ),
-                    Row(
-                        children: [
-                         Container(
-                          margin: const EdgeInsets.only(left: 10,top: 20),
-                          child: const Text('Discount'),
-                         ),
-                        ],
-                      ),
-                    Row(
-                      children: [
-                        vehicleCardDiscount(
-                                height: 270,
-                                width: 200,
-                                margin: const EdgeInsets.only(top: 20,right: 20,left: 20),
-                                imagePath: "assets/images/NMAX.png",
-                                vehicleName: 'NMAX',
-                                rating: '4.8',
-                                transmition: 'Transmision: Matic',
-                                disPrice: '123',
-                                norPrice: '2022',
-                          ),
-                        vehicleCardDiscount(
-                            height: 270,
-                            width: 200,
-                            margin: const EdgeInsets.only(top: 20,right: 20,left: 20),
-                            imagePath: "assets/images/NMAX.png",
-                            vehicleName: 'NMAX',
-                            rating: '4.8',
-                            transmition: 'Transmision: Matic',
-                            disPrice: '123',
-                            norPrice: '2022',
-                            )
                       ],
                     ),
-                    Row(
-                      children: [
-                        vehicleCardDiscount(
-                                height: 270,
-                                width: 200,
-                                margin: const EdgeInsets.only(top: 20,right: 20,left: 20),
-                                imagePath: "assets/images/NMAX.png",
-                                vehicleName: 'NMAX',
-                                rating: '4.8',
-                                transmition: 'Transmision: Matic',
-                                disPrice: '123',
-                                norPrice: '2022',
-                          ),
-                        vehicleCardDiscount(
-                            height: 270,
-                            width: 200,
-                            margin: const EdgeInsets.only(top: 20,right: 20,left: 20),
-                            imagePath: "assets/images/NMAX.png",
-                            vehicleName: 'NMAX',
-                            rating: '4.8',
-                            transmition: 'Transmision: Matic',
-                            disPrice: '123',
-                            norPrice: '2022',
-                            )
-                      ],
-                    ),
-                    
+                  ),
+                  Row(
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(left: 10, top: 20),
+                        child: const Text('Discount'),
+                      ),
                     ],
                   ),
-              )
+                  Row(
+                    children: [
+                      vehicleCardDiscount(
+                        height: 270,
+                        width: 200,
+                        margin:
+                            const EdgeInsets.only(top: 20, right: 20, left: 20),
+                        imagePath: "assets/images/NMAX.png",
+                        vehicleName: 'NMAX',
+                        rating: '4.8',
+                        transmition: 'Transmision: Matic',
+                        disPrice: '123',
+                        norPrice: '2022',
+                      ),
+                      vehicleCardDiscount(
+                        height: 270,
+                        width: 200,
+                        margin:
+                            const EdgeInsets.only(top: 20, right: 20, left: 20),
+                        imagePath: "assets/images/NMAX.png",
+                        vehicleName: 'NMAX',
+                        rating: '4.8',
+                        transmition: 'Transmision: Matic',
+                        disPrice: '123',
+                        norPrice: '2022',
+                      )
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      vehicleCardDiscount(
+                        height: 270,
+                        width: 200,
+                        margin:
+                            const EdgeInsets.only(top: 20, right: 20, left: 20),
+                        imagePath: "assets/images/NMAX.png",
+                        vehicleName: 'NMAX',
+                        rating: '4.8',
+                        transmition: 'Transmision: Matic',
+                        disPrice: '123',
+                        norPrice: '2022',
+                      ),
+                      vehicleCardDiscount(
+                        height: 270,
+                        width: 200,
+                        margin:
+                            const EdgeInsets.only(top: 20, right: 20, left: 20),
+                        imagePath: "assets/images/NMAX.png",
+                        vehicleName: 'NMAX',
+                        rating: '4.8',
+                        transmition: 'Transmision: Matic',
+                        disPrice: '123',
+                        norPrice: '2022',
+                      )
+                    ],
+                  ),
+                ],
+              ),
+            )
           ],
         ),
       ),
-      bottomNavigationBar: BottomNav(),
     );
   }
 }
