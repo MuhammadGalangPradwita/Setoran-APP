@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'motor.dart';
+import '../models/motor.dart';
 
 class MotorService extends ChangeNotifier {
   static const String apiUrl = 'https://de5a-2a09-bac5-d562-88c-00-da-142.ngrok-free.app/api/motors';
