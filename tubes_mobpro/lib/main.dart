@@ -6,7 +6,7 @@ import 'package:tubes_mobpro/notification_service.dart';
 import 'package:tubes_mobpro/tubes/pages/search_result_page.dart';
 
 // final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-//     FlutterLocalNotificationsPlugin();
+// FlutterLocalNotificationsPlugin();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,7 +18,6 @@ void main() async {
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
-
   @override
   State<MyApp> createState() => _MyAppState();
 }
@@ -53,3 +52,5 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
+
+

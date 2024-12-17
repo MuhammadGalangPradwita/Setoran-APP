@@ -33,13 +33,13 @@ class TransactionCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       child: Padding(
-        padding: EdgeInsets.all(8),
+        padding: const EdgeInsets.all(8),
         child: Row(
           children: [
             Image(
               image: AssetImage(imagePath),
               // width: ,
-              // height: 92,
+              height: 100,
             ),
             const Gap(12),
             Expanded(
@@ -58,7 +58,7 @@ class TransactionCard extends StatelessWidget {
                             color: AppColors.N0,
                             fontWeight: FontWeight.w600),
                       ),
-                      Gap(20),
+                      const Gap(20),
                       Text(
                         orderNumber,
                         style: GoogleFonts.poppins(
