@@ -43,7 +43,7 @@ class vehicleCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Card(
-              margin: const EdgeInsets.only(left: 20),
+              margin: const EdgeInsets.only(left: 20,top: 10),
               color: AppColors.N200 ,
               clipBehavior: Clip.hardEdge,
               child: InkWell(
@@ -72,7 +72,7 @@ class vehicleCard extends StatelessWidget {
                               style: AppTextStyle.body2Bold,
                             ),
                             
-                            const SizedBox(width: 85),  
+                            const SizedBox(width: 48),  
                             const Icon(
                               Icons.star,
                               color: Colors.amber,  
@@ -160,7 +160,7 @@ class vehicleCardDiscount extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Card(
-              margin: margin,
+              margin: EdgeInsets.only(left: 20,top: 10),
               color: AppColors.N200 ,
               clipBehavior: Clip.hardEdge,
               child: InkWell(
@@ -189,7 +189,7 @@ class vehicleCardDiscount extends StatelessWidget {
                               style: AppTextStyle.body2Bold,
                             ),
                             
-                            const SizedBox(width: 85),  
+                            const SizedBox(width: 48),  
                             const Icon(
                               Icons.star,
                               color: Colors.amber,  
@@ -251,6 +251,56 @@ class vehicleCardDiscount extends StatelessWidget {
             )
           ],
         ),
+    );
+  }
+}
+
+class VoucherCard extends StatelessWidget {
+  const VoucherCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        InkWell(
+          child: Container(
+            child: Row(
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(left: 10),
+                        child: Text('Voucher',
+                        style:AppTextStyle.body2Bold,),
+                      ),
+                      Expanded(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Container(
+                                child: TextButton(
+                                  onPressed: (){}, 
+                                  child: Text("More",
+                                  style: AppTextStyle.body3Regular,)),
+                              ),
+                            ],
+                        ),
+                      )
+                    ],
+                  ),
+           ),
+        ),
+         Container(
+          height: 150,
+          width:double.infinity,
+          margin: EdgeInsets.only(left: 20),
+          color: Colors.amber,
+          child: Column(
+                  children: [
+                    Text('galang')
+                  ],
+                 ),
+        ),
+      ],
+      
     );
   }
 }
