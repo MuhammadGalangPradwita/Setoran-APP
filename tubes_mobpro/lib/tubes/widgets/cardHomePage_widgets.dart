@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:tubes_mobpro/tubes/pages/search_result_detail.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 import 'package:tubes_mobpro/tubes/widgets/textField_widget.dart';
 
@@ -49,7 +51,12 @@ class vehicleCard extends StatelessWidget {
               child: InkWell(
                 splashColor: Colors.blue.withAlpha(30),
                 onTap: (){
-
+                  Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SearchResultDetail()
+                          )
+                  );
                 },
                 child: SizedBox(
                   width:width,
@@ -166,7 +173,12 @@ class vehicleCardDiscount extends StatelessWidget {
               child: InkWell(
                 splashColor: Colors.blue.withAlpha(30),
                 onTap: (){
-
+                  Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SearchResultDetail()
+                          )
+                  );
                 },
                 child: SizedBox(
                   width: width,
@@ -288,17 +300,79 @@ class VoucherCard extends StatelessWidget {
                   ),
            ),
         ),
-         Container(
-          height: 150,
-          width:double.infinity,
-          margin: EdgeInsets.only(left: 20),
-          color: Colors.amber,
-          child: Column(
-                  children: [
-                    Text('galang')
-                  ],
-                 ),
-        ),
+         Card(
+                    elevation: 0,
+                    color: Colors.blue,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: IntrinsicHeight(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Expanded(
+                            flex:2,
+                            child: Container(
+                              // color: Colors.white,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(10),
+                                  bottomLeft: Radius.circular(10)
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.1), // Shadow color
+                                      offset: const Offset(4, 4), // Position of shadow
+                                      blurRadius: 10, // Blur effect of shadow
+                                      spreadRadius: 2, // Spread effect of shadow
+                                    ),
+                                  ],
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(7),
+                                child: Column(
+                                  children: [
+                                      Text('New Member',style: GoogleFonts.poppins(
+                                        fontSize: 10,
+                                        color: Colors.blue,
+                                        fontWeight: FontWeight.w600
+                                        ),
+                                      ),
+                                      Text('SALE',style: GoogleFonts.poppins(
+                                        fontSize: 16,
+                                        color: Colors.blue,
+                                        fontWeight: FontWeight.w600),
+                                      ),
+                                      const SizedBox(height:57, width: 75,child:  Image(image: AssetImage('assets/images/voucher-discount.png')))
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 3,
+                            child: Stack(
+                              children: [
+                                  SizedBox(  
+                                  width: 189,
+                                  height: 115,
+                                ),
+                                const Positioned(
+                                  top: -10,
+                                  right: 0,
+                                  child: SizedBox(
+                                    width: 189,
+                                    height: 115,
+                                    child: Image(image: AssetImage('assets/images/voucher.png'))),
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
       ],
       
     );

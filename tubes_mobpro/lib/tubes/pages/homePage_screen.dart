@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:tubes_mobpro/tubes/pages/notification_page.dart';
+import 'package:tubes_mobpro/tubes/pages/searchResultPage.dart';
+import 'package:tubes_mobpro/tubes/pages/search_result_detail.dart';
+import 'package:tubes_mobpro/tubes/pages/search_result_page.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 import 'package:tubes_mobpro/tubes/widgets/bottom_nav.dart';
 import 'package:tubes_mobpro/tubes/widgets/cardHomePage_widgets.dart';
@@ -88,10 +91,17 @@ class _HomepageScreenState extends State<HomepageScreen> {
                 Container(
                   height: 400,
                   width: double.infinity,
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
                     color: Colors.white,
-                    
+                    boxShadow:[
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1), // Shadow color with opacity
+                        offset: const Offset(4, 4), // Shadow position (horizontal, vertical)
+                        blurRadius: 10, // How much the shadow will be blurred
+                        spreadRadius: 2,
+                      )
+                    ]
                   ),
                   padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
                   margin: const EdgeInsets.only(
@@ -173,6 +183,10 @@ class _HomepageScreenState extends State<HomepageScreen> {
                         width: 150,
                         height: 40,
                         child: ButtonWidget.primary(label: "Search", press:(){
+                            Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const SearchResult()));
                           } 
                         )
                       ),

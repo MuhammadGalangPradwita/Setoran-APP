@@ -3,9 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 
-class SearchResultDetail extends StatelessWidget {
+class SearchResultDetail extends StatefulWidget {
   const SearchResultDetail({super.key});
 
+  @override
+  State<SearchResultDetail> createState() => _SearchResultDetailState();
+}
+
+class _SearchResultDetailState extends State<SearchResultDetail> {
+   bool _isLoved = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,10 +27,23 @@ class SearchResultDetail extends StatelessWidget {
           children: [
             Text(
               'Details',
-              style: AppTextStyle.body3SemiBold,
+              style: AppTextStyle.body1SemiBold,
             ),
           ],
         ),
+        actions: [
+          IconButton(
+            icon: Icon(
+              _isLoved ? Icons.favorite : Icons.favorite_border,
+              color: _isLoved ? Colors.red : Colors.black, // Warna merah saat loved
+            ),
+            onPressed: () {
+              setState(() {
+                _isLoved = !_isLoved; // Toggle status loved
+              });
+            },
+          ),
+        ],
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -71,7 +90,7 @@ class SearchResultDetail extends StatelessWidget {
                                 size: 14,
                               ),
                               const SizedBox(
-                                width: 2,
+                                width: 5,
                               ),
                               Text(
                                 '4.8',
@@ -83,28 +102,28 @@ class SearchResultDetail extends StatelessWidget {
                       ),
                       Text(
                         'Matic, 2020',
-                        style: AppTextStyle.smallReguler,
+                        style: AppTextStyle.body3Regular,
                       ),
                       const SizedBox(
                         height: 12,
                       ),
                       Text(
                         'Deskripsi',
-                        style: AppTextStyle.body3SemiBold,
+                        style: AppTextStyle.body2SemiBold,
                       ),
                       const SizedBox(
                         height: 8,
                       ),
                       Text(
                         'This motorbike has ample legroom and a comfortable seating position, making it ideal for long-distance travel. The seat is designed with soft padding',
-                        style: AppTextStyle.smallReguler,
+                        style: AppTextStyle.body3Regular,
                       ),
                       const SizedBox(
                         height: 12,
                       ),
                       Text(
                         'Spesifikasi',
-                        style: AppTextStyle.body3SemiBold,
+                        style: AppTextStyle.body2SemiBold,
                       ),
                       const SizedBox(
                         height: 8,
@@ -114,9 +133,9 @@ class SearchResultDetail extends StatelessWidget {
                         children: [
                           Text(
                             'Brand',
-                            style: AppTextStyle.smallReguler,
+                            style: AppTextStyle.body3Regular,
                           ),
-                          Text('Yamaha', style: AppTextStyle.smallReguler),
+                          Text('Yamaha', style: AppTextStyle.body3Regular),
                         ],
                       ),
                       const SizedBox(
@@ -127,9 +146,9 @@ class SearchResultDetail extends StatelessWidget {
                         children: [
                           Text(
                             'Type',
-                            style: AppTextStyle.smallReguler,
+                            style: AppTextStyle.body3Regular,
                           ),
-                          Text('NMAX', style: AppTextStyle.smallReguler),
+                          Text('NMAX', style: AppTextStyle.body3Regular),
                         ],
                       ),
                       const SizedBox(
@@ -140,9 +159,9 @@ class SearchResultDetail extends StatelessWidget {
                         children: [
                           Text(
                             'Tahun',
-                            style: AppTextStyle.smallReguler,
+                            style: AppTextStyle.body3Regular,
                           ),
-                          Text('2024', style: AppTextStyle.smallReguler),
+                          Text('2024', style: AppTextStyle.body3Regular),
                         ],
                       ),
                       const SizedBox(
@@ -153,9 +172,9 @@ class SearchResultDetail extends StatelessWidget {
                         children: [
                           Text(
                             'Transmisi',
-                            style: AppTextStyle.smallReguler,
+                            style: AppTextStyle.body3Regular,
                           ),
-                          Text('Matic', style: AppTextStyle.smallReguler),
+                          Text('Matic', style: AppTextStyle.body3Regular),
                         ],
                       ),
                       const SizedBox(
@@ -166,9 +185,9 @@ class SearchResultDetail extends StatelessWidget {
                         children: [
                           Text(
                             'Police Number',
-                            style: AppTextStyle.smallReguler,
+                            style: AppTextStyle.body3Regular,
                           ),
-                          Text('D 1234 BKR', style: AppTextStyle.smallReguler),
+                          Text('D 1234 BKR', style: AppTextStyle.body3Regular),
                         ],
                       ),
                       const SizedBox(
