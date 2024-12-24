@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:tubes_mobpro/tubes/camera_service.dart';
+import 'package:localstorage/localstorage.dart';
+import 'package:provider/provider.dart';
+import 'package:tubes_mobpro/tubes/pages/auth_check.dart';
 import 'package:tubes_mobpro/tubes/pages/get_started_page.dart';
 import 'package:tubes_mobpro/notification_service.dart';
 import 'package:tubes_mobpro/tubes/pages/search_result_page.dart';
@@ -10,6 +13,7 @@ import 'package:tubes_mobpro/tubes/pages/search_result_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await initLocalStorage();
   await NotificationService().init();
   await CameraService.instance.initializeCameras();
   // debugPaintSizeEnabled = false;
@@ -18,7 +22,6 @@ void main() async {
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
-
   @override
   State<MyApp> createState() => _MyAppState();
 }
@@ -47,10 +50,17 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: GetStartedPage(),
-    );
+    return MultiProvider(
+              providers: [
+                ChangeNotifierProvider.value(
+                  value: AuthState(),
+                ),
+              ],
+                child: MaterialApp(
+              debugShowCheckedModeBanner: false,
+              home: AuthCheck(),
+            )
+          );
   }
 }
 

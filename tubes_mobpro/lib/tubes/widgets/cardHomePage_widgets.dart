@@ -54,7 +54,7 @@ class vehicleCard extends StatelessWidget {
                   Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => SearchResultDetail()
+                            builder: (context) => SearchResultDetail(index:1)
                           )
                   );
                 },
@@ -177,7 +177,7 @@ class vehicleCardDiscount extends StatelessWidget {
                   Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => SearchResultDetail()
+                            builder: (context) => SearchResultDetail(index:1)
                           )
                   );
                 },

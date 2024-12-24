@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:provider/provider.dart';
+import 'package:tubes_mobpro/tubes/api_utilities/auth.dart';
+import 'package:tubes_mobpro/tubes/pages/auth_check.dart';
 import 'package:tubes_mobpro/tubes/pages/edit_profile.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 
@@ -45,7 +48,9 @@ class AccountPage extends StatelessWidget {
                   child: _buildOptionList('Help & Support', Icons.help_outline),
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Provider.of<AuthState>(context, listen: false).logout();
+                  },
                   child: _buildOptionList('Log Out', Icons.logout_outlined),
                 ),
               ],
@@ -69,19 +74,23 @@ class AccountPage extends StatelessWidget {
                 radius: 60,
                 backgroundImage: AssetImage('assets/images/avatar.png'),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Akbar Faisal',
-                    style: AppTextStyle.body1Bold,
-                  ),
-                  Text(
-                    'akbarfaisal@email.com',
-                    style: AppTextStyle.smallReguler,
-                  )
-                ],
-              ),
+              Builder(builder: (context) {
+                // var auth = context.read(AuthState);
+                var auth = Provider.of<AuthState>(context);
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      auth.currentUser == null ? "":auth.currentUser!.nama,
+                      style: AppTextStyle.body1Bold,
+                    ),
+                    Text(
+                      auth.currentUser == null ? "":auth.currentUser!.email,
+                      style: AppTextStyle.smallReguler,
+                    )
+                  ],
+              );
+              }),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
