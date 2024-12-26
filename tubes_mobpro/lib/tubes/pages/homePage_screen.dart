@@ -135,7 +135,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                         ),
                       ),
                       const Gap(30),
-                      SizedBox( 
+                      SizedBox(
                           width: 150,
                           height: 40,
                           child: ButtonWidget.primary(
@@ -169,39 +169,52 @@ class _HomepageScreenState extends State<HomepageScreen> {
                       ),
                     ],
                   ),
-                  const Row(
-                    children: [
-                      // vehicleCard(
-                      //   height: 260,
-                      //   width: 200,
-                      //   margin: const EdgeInsets.only(top: 20,right: 20,left: 20),
-                      //   imagePath: "assets/images/NMAX_highRes.png",
-                      //   vehicleName: 'NMAX',
-                      //   rating: '4.8',
-                      //   transmition: 'Transmision: Matic',
-                      //   price: 'Rp. 30.000,00',
-                      // ),
-                      vehicleCard(
-                        height: 260,
-                        width: 200,
-                        margin: EdgeInsets.only(top: 20, right: 20, left: 20),
-                        imagePath: "assets/images/NMAX.png",
-                        vehicleName: 'NMAX',
-                        rating: '4.8',
-                        transmition: 'Transmision: Matic',
-                        price: 'Rp. 30.000,00',
-                      ),
-                      vehicleCard(
-                        height: 260,
-                        width: 200,
-                        margin: EdgeInsets.only(top: 20, right: 20, left: 20),
-                        imagePath: "assets/images/NMAX.png",
-                        vehicleName: 'NMAX',
-                        rating: '4.8',
-                        transmition: 'Transmision: Matic',
-                        price: 'Rp. 30.000,00',
-                      )
-                    ],
+                  FutureBuilder<List<Motor>>(
+                    future: MotorService().fetchAll(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Center(child: Text('Error: ${snapshot.error}'));
+                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                        return const Center(child: Text('No motors available'));
+                      } else {
+                        final List<Motor> motors = snapshot.data!;
+                        return SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              vehicleCard(
+                                height: 260,
+                                width: 200,
+                                margin: const EdgeInsets.only(
+                                    top: 20, right: 20, left: 20),
+                                imagePath: "assets/images/NMAX.png",
+                                vehicleName: motors[0].tipe,
+                                rating: '4.8',
+                                transmition:
+                                    "Transmision: ${motors[0].transmisi}",
+                                price:
+                                    "Rp. ${formatter.format(motors[0].hargaHarian)}",
+                              ),
+                              vehicleCard(
+                                height: 260,
+                                width: 200,
+                                margin: const EdgeInsets.only(
+                                    top: 20, right: 20, left: 20),
+                                imagePath: "assets/images/NMAX.png",
+                                vehicleName: motors[1].tipe,
+                                rating: '4.8',
+                                transmition:
+                                    "Transmision: ${motors[1].transmisi}",
+                                price:
+                                    "Rp. ${formatter.format(motors[1].hargaHarian)}",
+                              )
+                            ],
+                          ),
+                        );
+                      }
+                    },
                   ),
                   Row(
                     children: [

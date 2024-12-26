@@ -8,33 +8,6 @@ import 'package:tubes_mobpro/tubes/services/motor_service.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 import 'package:intl/intl.dart';
 
-final List<Map<String, dynamic>> motors = [
-  {
-    'brand': 'Yamaha',
-    'tipe': 'Nmax',
-    'tahun': 2020,
-    'transmisi': 'Matic',
-    'deskripsi':
-        'This motorbike has ample legroom and a comfortable seating position, making it ideal for long-distance travel. The seat is designed with soft padding',
-    'rating': 4.5,
-    'harga': 50000,
-    'diskon': {'status': true, 'persen': 0.2},
-    'image': 'assets/images/NMAX.png'
-  },
-  {
-    'brand': 'Yamaha',
-    'tipe': 'Nmax',
-    'tahun': 2020,
-    'transmisi': 'Matic',
-    'deskripsi':
-        'This motorbike has ample legroom and a comfortable seating position, making it ideal for long-distance travel. The seat is designed with soft padding',
-    'rating': 4.5,
-    'harga': 50000000,
-    'diskon': {'status': false, 'persen': 0.2},
-    'image': 'assets/images/NMAX.png'
-  },
-];
-
 class SearchResultPage extends StatelessWidget {
   const SearchResultPage({super.key});
 
@@ -87,7 +60,9 @@ class SearchResultPage extends StatelessWidget {
                                 crossAxisSpacing: 12),
                         itemCount: motors.length,
                         itemBuilder: (context, index) {
+
                           final Motor motor = motors[index];
+
                           return SearchResultCard(
                             index: motor.idMotor, nama: motor.tipe, transmission: motor.transmisi, image: 'assets/images/NMAX.png', harga: motor.hargaHarian, statusDiskon: false, rating: 4.0, persenDiskon: 0,
                           );
@@ -217,6 +192,7 @@ class SearchResultCard extends StatelessWidget {
                 children: [
                   Column(
                     children: [
+                      
                       // Harga aktual
                       Text(
                         !statusDiskon
