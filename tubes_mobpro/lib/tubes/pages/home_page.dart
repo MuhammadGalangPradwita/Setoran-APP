@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tubes_mobpro/tubes/pages/notification_page.dart';
 import 'package:tubes_mobpro/tubes/pages/search_result_page.dart';
-import 'package:tubes_mobpro/tubes/services/motor.dart';
+import 'package:tubes_mobpro/tubes/models/motor.dart';
 import 'package:tubes_mobpro/tubes/services/motor_service.dart';
 import 'package:tubes_mobpro/tubes/widgets/textField_widget.dart';
 

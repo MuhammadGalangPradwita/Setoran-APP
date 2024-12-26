@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:tubes_mobpro/tubes/services/motor.dart';
+import 'package:tubes_mobpro/tubes/models/motor.dart';
 import 'package:tubes_mobpro/tubes/services/motor_service.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 

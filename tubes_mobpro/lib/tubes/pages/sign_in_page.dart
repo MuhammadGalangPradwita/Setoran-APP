@@ -1,6 +1,11 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
+import 'package:provider/provider.dart';
+import 'package:tubes_mobpro/tubes/api_utilities/auth.dart';
+import 'package:tubes_mobpro/tubes/models/pengguna.dart';
+import 'package:tubes_mobpro/tubes/pages/auth_check.dart';
 import 'package:tubes_mobpro/tubes/pages/forgot_password_email.dart';
 import 'package:tubes_mobpro/tubes/widgets/button_widgets.dart';
 import 'package:tubes_mobpro/tubes/widgets/textField_widget.dart';
@@ -9,8 +14,16 @@ import 'package:tubes_mobpro/tubes/pages/sign_up_page.dart';
 import 'package:tubes_mobpro/tubes/widgets/google_login_dialog.dart';
 import 'package:tubes_mobpro/tubes/widgets/bottom_nav.dart';
 
-class SignInPage extends StatelessWidget {
-  const SignInPage({super.key});
+class SignInPage extends StatefulWidget {
+
+  @override
+  State<StatefulWidget> createState() => _SignInPageState();
+}
+
+class _SignInPageState extends State<SignInPage> {
+
+  final TextEditingController _email = TextEditingController();
+  final TextEditingController _password = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +93,7 @@ class SignInPage extends StatelessWidget {
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const SignUpPage()));
+                                builder: (context) => SignUpPage()));
                       },
                       child: Text(
                         "Sign Up",
@@ -103,15 +116,17 @@ class SignInPage extends StatelessWidget {
   Widget createForm(BuildContext context) {
     return Column(
       children: [
-        const TextfieldWidget(
+        TextfieldWidget(
           keyboardType: TextInputType.emailAddress,
           hintText: "Enter your email",
           label: "Email",
+          controller: _email,
         ),
         const Gap(24),
-        const TextfieldWidget.password(
+        TextfieldWidget.password(
           hintText: "Enter your password",
           label: "Password",
+          controller: _password,
         ),
         const Gap(16),
         Row(
@@ -139,11 +154,28 @@ class SignInPage extends StatelessWidget {
             child: ButtonWidget.primary(
                 label: "Login",
                 press: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const BottomNav()));
-                }))
+
+                  AuthApi.login(_email.text, _password.text).then((response) {
+                    if (response)
+                      Provider.of<AuthState>(context, listen: false).refreshCurrentUser(); // refresh currentUser
+                    else
+                      AwesomeDialog(
+                        context: context,
+                        dialogType: DialogType.error,
+                        headerAnimationLoop: false,
+                        animType: AnimType.bottomSlide,
+                        title: 'Gagal',
+                        desc: 'Login Gagal, (klik ok untuk menggunakan dummy account)',
+                        buttonsTextStyle: const TextStyle(color: Colors.black),
+                        showCloseIcon: false,
+                        btnOkOnPress: () {
+                          AuthState.dummy = Pengguna(id: 123, nama: "Akbar Faisal", email: "akbarfaisal@email.com");
+                          Provider.of<AuthState>(context, listen: false).refreshCurrentUser(); // refresh currentUser
+                        },
+                        btnCancelOnPress: () {},
+                        ).show();
+                    });
+                  }))
       ],
     );
   }
