@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'motor.dart';
+import '../models/motor.dart';
 
 class MotorService extends ChangeNotifier {
   static const String apiUrl = 'https://cots.up.railway.app/api/motors';
