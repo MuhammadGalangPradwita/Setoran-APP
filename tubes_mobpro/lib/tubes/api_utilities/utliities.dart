@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 // import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -13,22 +14,30 @@ class BaseApi {
   static LocalStorage storage = LocalStorage();
   // static FlutterSecureStorage storage = FlutterSecureStorage();
 
-  static Future<http.Response> getAuth(String url, {Map<String, dynamic> headers=const {}}) {
-    return http.get(Uri.parse(backendHost + url), headers: {
-      'Accept': 'application/json',
-      "Authorization": "Bearer ${storage.read(key: "access_token")}",
-      ...headers
-    });
+  static Future<http.Response> getAuth(String url, {Map<String, dynamic> headers=const {}}) async {
+    try {
+        return await http.get(Uri.parse(backendHost + url), headers: {
+          'Accept': 'application/json',
+          "Authorization": "Bearer ${storage.read(key: "access_token")}",
+          ...headers
+        });
+    } catch (e) {
+        return http.Response(jsonEncode({'error': 'Server is unreachable'}), 503);
+    }
   }
 
-  static Future<http.Response> postAuth(String url, String body, {Map<String, dynamic> headers=const {}}) {
-      return http.post(Uri.parse(backendHost + url), 
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        "Authorization": "Bearer ${storage.read(key: "access_token")}"
-      },
-      body: body);
+  static Future<http.Response> postAuth(String url, String body, {Map<String, dynamic> headers=const {}}) async {
+      try {
+        return await http.post(Uri.parse(backendHost + url), 
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            "Authorization": "Bearer ${storage.read(key: "access_token")}"
+          },
+          body: body);
+      } catch (e) {
+        return http.Response(jsonEncode({'error': 'Server is unreachable'}), 503);
+      }
   }
 }
 
