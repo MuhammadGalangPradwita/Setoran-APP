@@ -9,7 +9,7 @@ class PenggunaApi extends BaseApi {
   static Future<Pengguna?> getCurrentUser() async {
     var response = await BaseApi.getAuth("/api/current-user");
 
-    if (response.statusCode == 200) {
+    if (response.ok) {
 
       return Pengguna.fromJson(jsonDecode(response.body)["user"]);
     }

@@ -4,6 +4,8 @@ class Voucher {
   final String statusVoucher;
   final String tanggalMulai;
   final String tanggalAkhir;
+  final int persen;
+  final String kodeVoucher;
 
   Voucher({
     required this.idVoucher,
@@ -11,6 +13,8 @@ class Voucher {
     required this.statusVoucher,
     required this.tanggalMulai,
     required this.tanggalAkhir,
+    required this.persen,
+    required this.kodeVoucher,
   });
 
   factory Voucher.fromJson(Map<String, dynamic> json) {
@@ -20,6 +24,8 @@ class Voucher {
       statusVoucher: json['status_voucher'],
       tanggalMulai: json['tanggal_mulai'],
       tanggalAkhir: json['tanggal_akhir'],
+      persen: json['persen_voucher'],
+      kodeVoucher: json['kode_voucher'],
     );
   }
 }
