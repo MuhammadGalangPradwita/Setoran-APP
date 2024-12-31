@@ -55,7 +55,7 @@ class _BottomNavState extends State<BottomNav> {
     return RouteAndNavigatorSettings(
       initialRoute: "/",
       routes: {
-        "/first": (final context) => const HomepageScreen(),
+        "/first": (final context) => HomepageScreen(),
         "/second": (final context) => const ActivityPage(),
         "/third": (final context) => DiscountPage(),
         "/fourth": (final context) => const AccountPage(),

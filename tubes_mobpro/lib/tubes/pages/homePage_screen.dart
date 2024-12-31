@@ -95,9 +95,9 @@ class _HomepageScreenState extends State<HomepageScreen> {
                     color: Colors.white,
                     boxShadow:[
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.1), // Shadow color with opacity
-                        offset: const Offset(4, 4), // Shadow position (horizontal, vertical)
-                        blurRadius: 10, // How much the shadow will be blurred
+                        color: Colors.black.withOpacity(0.1), 
+                        offset: const Offset(4, 4), 
+                        blurRadius: 10, 
                         spreadRadius: 2,
                       )
                     ]
