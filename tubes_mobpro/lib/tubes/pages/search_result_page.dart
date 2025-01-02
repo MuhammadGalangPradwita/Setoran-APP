@@ -1,38 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tubes_mobpro/tubes/api_utilities/motor.dart';
+
 import 'package:tubes_mobpro/tubes/pages/search_result_detail.dart';
 import 'package:tubes_mobpro/tubes/models/motor.dart';
 import 'package:tubes_mobpro/tubes/services/motor_service.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 import 'package:intl/intl.dart';
-
-final List<Map<String, dynamic>> motors = [
-  {
-    'brand': 'Yamaha',
-    'tipe': 'Nmax',
-    'tahun': 2020,
-    'transmisi': 'Matic',
-    'deskripsi':
-        'This motorbike has ample legroom and a comfortable seating position, making it ideal for long-distance travel. The seat is designed with soft padding',
-    'rating': 4.5,
-    'harga': 50000,
-    'diskon': {'status': true, 'persen': 0.2},
-    'image': 'assets/images/NMAX.png'
-  },
-  {
-    'brand': 'Yamaha',
-    'tipe': 'Nmax',
-    'tahun': 2020,
-    'transmisi': 'Matic',
-    'deskripsi':
-        'This motorbike has ample legroom and a comfortable seating position, making it ideal for long-distance travel. The seat is designed with soft padding',
-    'rating': 4.5,
-    'harga': 50000000,
-    'diskon': {'status': false, 'persen': 0.2},
-    'image': 'assets/images/NMAX.png'
-  },
-];
 
 class SearchResultPage extends StatelessWidget {
   const SearchResultPage({super.key});
@@ -67,11 +42,12 @@ class SearchResultPage extends StatelessWidget {
               padding:
                   const EdgeInsets.symmetric(vertical: 12, horizontal: 27.5),
               child: FutureBuilder<List<dynamic>>(
-                future: MotorService().fetchAll(),
+                future: MotorAPi.getAll(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
+                    // print(snapshot.data);
                     return Center(child: Text('Error: ${snapshot.error}'));
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                     return const Center(child: Text('No motors available'));
@@ -86,9 +62,11 @@ class SearchResultPage extends StatelessWidget {
                                 crossAxisSpacing: 12),
                         itemCount: motors.length,
                         itemBuilder: (context, index) {
+
                           final Motor motor = motors[index];
+
                           return SearchResultCard(
-                            index: motor.idMotor, nama: motor.tipe, transmission: motor.transmisi, image: 'assets/images/NMAX.png', harga: motor.hargaHarian, statusDiskon: false, rating: 4.0, persenDiskon: 0,
+                            index: motor.idMotor, nama: motor.model, transmission: motor.transmisi, image: 'assets/images/NMAX.png', harga: motor.hargaHarian, statusDiskon: false, rating: 4.0, persenDiskon: 0,
                           );
                         });
                   }
@@ -216,6 +194,7 @@ class SearchResultCard extends StatelessWidget {
                 children: [
                   Column(
                     children: [
+                      
                       // Harga aktual
                       Text(
                         !statusDiskon
