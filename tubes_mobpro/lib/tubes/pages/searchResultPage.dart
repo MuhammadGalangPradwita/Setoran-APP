@@ -15,8 +15,8 @@ class SearchResult extends StatelessWidget {
     for (var motor in motors) {
       vehicleCards.add(
         vehicleCard(
-          height: 210,
-          width: 160,
+          // height: 210,
+          // width: 160,
           margin: const EdgeInsets.only(top: 20, right: 20, left: 20),
           imagePath: "assets/images/NMAX.png",
           vehicleName: motor.brand,

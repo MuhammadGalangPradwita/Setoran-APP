@@ -2,10 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:tubes_mobpro/tubes/pages/activity.dart';
-import 'package:tubes_mobpro/tubes/pages/homePage_screen.dart';
+// import 'package:tubes_mobpro/tubes/pages/homePage_screen.dart';
 
 import 'package:tubes_mobpro/tubes/pages/discount_page.dart';
 import 'package:tubes_mobpro/tubes/pages/account_page.dart';
+
+import '../pages/homePage_screen.dart';
 
 class BottomNav extends StatefulWidget {
   const BottomNav({super.key});

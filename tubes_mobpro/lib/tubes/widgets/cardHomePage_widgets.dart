@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tubes_mobpro/tubes/pages/discount_page.dart';
 import 'package:tubes_mobpro/tubes/pages/search_result_detail.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 import 'package:tubes_mobpro/tubes/widgets/textField_widget.dart';
 
 class vehicleCard extends StatelessWidget {
-  final double width;
-  final double height;
+  // final double width;
+  // final double height;
   final EdgeInsetsGeometry margin;
   final String imagePath;
   final String vehicleName;
@@ -16,8 +17,8 @@ class vehicleCard extends StatelessWidget {
   
   const vehicleCard(
       {super.key,
-      required this.width,
-      required this.height,
+      // required this.width,
+      // required this.height,
       required this.margin,
       required this.imagePath,
       required this.vehicleName,
@@ -45,7 +46,7 @@ class vehicleCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Card(
-              margin: const EdgeInsets.only(left: 20,top: 10),
+              margin: const EdgeInsets.only(left: 0,top: 10),
               color: AppColors.N200 ,
               clipBehavior: Clip.hardEdge,
               child: InkWell(
@@ -59,8 +60,8 @@ class vehicleCard extends StatelessWidget {
                   );
                 },
                 child: SizedBox(
-                  width:width,
-                  height: height,
+                  width:180,
+                  height: 250,
                   child: Column(
                     children: [
                       Container(
@@ -137,8 +138,8 @@ class vehicleCard extends StatelessWidget {
 }
 
 class vehicleCardDiscount extends StatelessWidget {
-  final double width;
-  final double height;
+  // final double width;
+  // final double height;
   final EdgeInsetsGeometry margin;
   final String imagePath;
   final String vehicleName;
@@ -149,8 +150,8 @@ class vehicleCardDiscount extends StatelessWidget {
   
   const vehicleCardDiscount(
     {super.key,
-    required this.width,
-    required this.height,
+    // required this.width,
+    // required this.height,
     required this.margin,
     required this.imagePath,
     required this.vehicleName,
@@ -165,10 +166,10 @@ class vehicleCardDiscount extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
+          // mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Card(
-              margin: EdgeInsets.only(left: 20,top: 10),
+              // margin: EdgeInsets.only(left: 20,top: 10),
               color: AppColors.N200 ,
               clipBehavior: Clip.hardEdge,
               child: InkWell(
@@ -182,8 +183,8 @@ class vehicleCardDiscount extends StatelessWidget {
                   );
                 },
                 child: SizedBox(
-                  width: width,
-                  height: height,
+                  width: 175,
+                  height: 270,
                   child: Column(
                     children: [
                       Container(
@@ -290,7 +291,14 @@ class VoucherCard extends StatelessWidget {
                             children: [
                               Container(
                                 child: TextButton(
-                                  onPressed: (){}, 
+                                  onPressed: (){
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>  DiscountPage(), 
+                                      ),
+                                    );
+                                  }, 
                                   child: Text("More",
                                   style: AppTextStyle.body3Regular,)),
                               ),
