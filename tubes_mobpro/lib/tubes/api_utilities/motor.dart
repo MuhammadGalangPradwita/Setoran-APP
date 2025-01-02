@@ -5,15 +5,23 @@ import 'package:tubes_mobpro/tubes/models/motor.dart';
 
 class MotorAPi extends BaseApi {
   static Future<List<Motor>> getAll() async {
-    var response = await BaseApi.getAuth("/api/generic/motors");
+      var response = await BaseApi.getAuth("/api/generic/motors");
 
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body) as List;
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body) as List;
 
-      // print("Data: ${data}");
+        return data.map((json) => Motor.fromJson(json)).toList();
+      }
 
-      return data.map((json) {
-        // print(json);
+      throw Exception("Exception: ${response.body}");
+  }
+
+  static Future<List<Motor>> filtered(String date, String transmission, String model) async {
+          var response = await BaseApi.postAuth("/api/motor/filtered", jsonEncode({
+        'model': model,
+        'date': date,
+        'transmission': transmission,
+      }));
 
         // json.remove("created_at");
         // json.remove("updated_at");

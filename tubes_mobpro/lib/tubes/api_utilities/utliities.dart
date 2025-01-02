@@ -7,9 +7,8 @@ import 'package:localstorage/localstorage.dart';
 
 class BaseApi {
   // asumsi ini, mungkin nanti bisa buat file .env buat set host nya
-  static String backendHost =
-      "https://bf3c-2a09-bac5-3a23-1d0f-00-2e5-76.ngrok-free.app";
-
+  static String backendHost = "http://10.0.2.2:8000";
+  
   // bisa ganti nanti ke secure storage
   static LocalStorage storage = LocalStorage();
   // static FlutterSecureStorage storage = FlutterSecureStorage();

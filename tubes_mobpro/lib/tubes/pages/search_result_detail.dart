@@ -8,15 +8,28 @@ import 'package:tubes_mobpro/tubes/services/motor_service.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 
 class SearchResultDetail extends StatefulWidget {
-  const SearchResultDetail({super.key, required this.index});
+  final Map<String, dynamic> motorData = {
+    'tipe': 'Yamaha NMAX',
+    'transmisi': 'Matic',
+    'image': 'assets/images/NMAX.png',
+    'harga': 50000,
+    'diskon': {
+      'status': true,
+      'persen': 10,
+    },
+    'rating': 4.8,
+  };
 
   final int index;
+
+  SearchResultDetail({super.key, required this.index});
 
   @override
   State<SearchResultDetail> createState() => _SearchResultDetailState();
 }
 
 class _SearchResultDetailState extends State<SearchResultDetail> {
+   bool _isLoved = false;
 
   final formatter = NumberFormat("#,###");
 
@@ -37,10 +50,23 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
             Text(
               // Nama page
               'Details',
-              style: AppTextStyle.body3SemiBold,
+              style: AppTextStyle.body1SemiBold,
             ),
           ],
         ),
+        actions: [
+          IconButton(
+            icon: Icon(
+              _isLoved ? Icons.favorite : Icons.favorite_border,
+              color: _isLoved ? Colors.red : Colors.black, // Warna merah saat loved
+            ),
+            onPressed: () {
+              setState(() {
+                _isLoved = !_isLoved; // Toggle status loved
+              });
+            },
+          ),
+        ],
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),

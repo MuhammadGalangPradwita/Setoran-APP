@@ -6,6 +6,7 @@ class Voucher {
   final String tanggalAkhir;
   final int persen;
   final String kodeVoucher;
+
   Voucher({
     required this.idVoucher,
     required this.namaVoucher,
