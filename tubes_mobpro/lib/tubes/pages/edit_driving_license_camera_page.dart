@@ -57,7 +57,7 @@ class _EditDrivingLicenseCameraPageState
             },
             icon: const Icon(Icons.arrow_back),
           ),
-          title: const Text("Edit ID"),
+          title: const Text("Edit Driver License"),
           backgroundColor: AppColors.B400,
           foregroundColor: AppColors.N0,
         ),

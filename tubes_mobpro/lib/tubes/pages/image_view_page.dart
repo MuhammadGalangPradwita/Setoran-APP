@@ -79,7 +79,8 @@ class _ImageViewPageState extends State<ImageViewPage> {
               ),
               const Gap(16),
               TextfieldWidget(
-                readOnly: true,
+                readOnly: false,
+                keyboardType: TextInputType.number,
                 label: "ID No",
                 controller: controller,
               ),
@@ -136,11 +137,14 @@ class _ImageViewPageState extends State<ImageViewPage> {
   }
 
   String extractNIK(List<String> texts) {
-    final exp = RegExp(r'\b\d{16}\b');
+    final exp = RegExp(r'\b\d{14,}\b');
     for (var text in texts) {
-      text =
-          text.replaceAll('i', '1').replaceAll('l', '1').replaceAll('B', '3');
-      print(text);
+      text = text
+          .replaceAll('i', '1')
+          .replaceAll('l', '1')
+          .replaceAll('B', '3')
+          .replaceAll('?', '2');
+      print('edited: ' + text);
       final match = exp.firstMatch(text);
       if (match != null) {
         return match.group(0)!;
