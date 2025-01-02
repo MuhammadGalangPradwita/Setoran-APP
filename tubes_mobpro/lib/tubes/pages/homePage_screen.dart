@@ -29,6 +29,8 @@ class _HomepageScreenState extends State<HomepageScreen> {
   final TextEditingController _dateController = TextEditingController();
   final formatter = NumberFormat("#,###");
 
+  final _modelController = TextEditingController();
+
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -112,31 +114,31 @@ class _HomepageScreenState extends State<HomepageScreen> {
     child: Row(
       children: [
         vehicleCard(
-                                margin: const EdgeInsets.only(top: 20, right: 10,left: 10),
-                                imagePath: "assets/images/NMAX.png",
-                                vehicleName: "NMAX",
-                                rating: '4.8',
-                                transmition: "Transmission: Matic",
-                                price: "Rp. 70.000,00",
-                              ),
-                              SizedBox(width: 10,),
-                              vehicleCard(
-                                margin: const EdgeInsets.only(top: 20, ),
-                                imagePath: "assets/images/BeAT.png",
-                                vehicleName: "BeAT",
-                                rating: '4.8',
-                                transmition: "Transmission: Matic",
-                                price: "Rp. 40.000,00",
-                              ),
-                              SizedBox(width: 10,),
-                              vehicleCard(
-                                margin: const EdgeInsets.only(top: 20, right: 10,left: 10),
-                                imagePath: "assets/images/NMAX.png",
-                                vehicleName: "Vario",
-                                rating: '4.8',
-                                transmition: "Transmission: Matic",
-                                price: "Rp. 50.000,00",
-                              ),// Menambahkan semua vehicleCard ke dalam Row
+            margin: const EdgeInsets.only(top: 20, right: 10,left: 10),
+            imagePath: "assets/images/NMAX.png",
+            vehicleName: "NMAX",
+            rating: '4.8',
+            transmition: "Transmission: Matic",
+            price: "Rp. 70.000,00",
+          ),
+          SizedBox(width: 10,),
+          vehicleCard(
+            margin: const EdgeInsets.only(top: 20, ),
+            imagePath: "assets/images/BeAT.png",
+            vehicleName: "BeAT",
+            rating: '4.8',
+            transmition: "Transmission: Matic",
+            price: "Rp. 40.000,00",
+          ),
+          SizedBox(width: 10,),
+          vehicleCard(
+            margin: const EdgeInsets.only(top: 20, right: 10,left: 10),
+            imagePath: "assets/images/NMAX.png",
+            vehicleName: "Vario",
+            rating: '4.8',
+            transmition: "Transmission: Matic",
+            price: "Rp. 50.000,00",
+          ),// Menambahkan semua vehicleCard ke dalam Row
       ],
     ),
   );
@@ -223,9 +225,10 @@ class _HomepageScreenState extends State<HomepageScreen> {
                         ),
                       ),
                       const Gap(24),
-                      const TextfieldWidget(
+                      TextfieldWidget(
                         label: 'Select Models',
                         prefixIcon: Icon(Icons.motorcycle_rounded),
+                        controller: _modelController,
                         hintText: 'Choose the models...'
                       ),
                       const Gap(24),
@@ -274,7 +277,10 @@ class _HomepageScreenState extends State<HomepageScreen> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const SearchResult()
+                                  builder: (context) => SearchResult(
+                                    date: _dateController.text, 
+                                    model: _modelController.text, 
+                                    transimission: _selectedTransmission != null ? _selectedTransmission!.name : "",)
                                 )
                               );
                             }
