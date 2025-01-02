@@ -23,15 +23,13 @@ class MotorAPi extends BaseApi {
         'transmission': transmission,
       }));
 
-        // json.remove("created_at");
-        // json.remove("updated_at");
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body) as List;
 
-        // print(json);
-        return Motor.fromJson(json);
-      }).toList();
-    }
+        return data.map((json) => Motor.fromJson(json)).toList();
+      }
 
-    throw Exception("Exception: ${response.body}");
+      throw Exception("Exception: ${response.body}");
   }
 
   static Future<Motor> getMotor(int id) async {

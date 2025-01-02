@@ -16,9 +16,6 @@ class VoucherAPi extends BaseApi {
       throw Exception("Exception: ${response.body}");
   }
 
-  static Future<List<Voucher>> getActive() async {
-    final String today = DateTime.now().toIso8601String().split('T').first;
-    var response = await BaseApi.getAuth("/api/voucher/filtered?status=aktif&start=$today&end=$today");
 
   static Future<List<Voucher>> getActive() async {
     final String today = DateTime.now().toIso8601String().split('T').first;
