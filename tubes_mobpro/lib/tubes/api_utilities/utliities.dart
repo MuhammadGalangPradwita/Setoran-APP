@@ -5,39 +5,41 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:localstorage/localstorage.dart';
 
-
 class BaseApi {
   // asumsi ini, mungkin nanti bisa buat file .env buat set host nya
-  static String backendHost = "http://127.0.0.1:8000";
-  
+  static String backendHost =
+      "https://bf3c-2a09-bac5-3a23-1d0f-00-2e5-76.ngrok-free.app";
+
   // bisa ganti nanti ke secure storage
   static LocalStorage storage = LocalStorage();
   // static FlutterSecureStorage storage = FlutterSecureStorage();
 
-  static Future<http.Response> getAuth(String url, {Map<String, dynamic> headers=const {}}) async {
+  static Future<http.Response> getAuth(String url,
+      {Map<String, dynamic> headers = const {}}) async {
     try {
-        return await http.get(Uri.parse(backendHost + url), headers: {
-          'Accept': 'application/json',
-          "Authorization": "Bearer ${storage.read(key: "access_token")}",
-          ...headers
-        });
+      return await http.get(Uri.parse(backendHost + url), headers: {
+        'Accept': 'application/json',
+        "Authorization": "Bearer ${storage.read(key: "access_token")}",
+        ...headers
+      });
     } catch (e) {
-        return http.Response(jsonEncode({'error': 'Server is unreachable'}), 503);
+      return http.Response(jsonEncode({'error': 'Server is unreachable'}), 503);
     }
   }
 
-  static Future<http.Response> postAuth(String url, String body, {Map<String, dynamic> headers=const {}}) async {
-      try {
-        return await http.post(Uri.parse(backendHost + url), 
+  static Future<http.Response> postAuth(String url, String body,
+      {Map<String, dynamic> headers = const {}}) async {
+    try {
+      return await http.post(Uri.parse(backendHost + url),
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
             "Authorization": "Bearer ${storage.read(key: "access_token")}"
           },
           body: body);
-      } catch (e) {
-        return http.Response(jsonEncode({'error': 'Server is unreachable'}), 503);
-      }
+    } catch (e) {
+      return http.Response(jsonEncode({'error': 'Server is unreachable'}), 503);
+    }
   }
 }
 
@@ -48,15 +50,15 @@ extension IsOk on http.Response {
 }
 
 class LocalStorage {
-  String read({String key=""}) {
+  String read({String key = ""}) {
     return localStorage.getItem(key) ?? "";
   }
 
-  void write({String key="", dynamic value=""}) {
+  void write({String key = "", dynamic value = ""}) {
     localStorage.setItem(key, value);
   }
 
-  void delete({String key=""}) {
+  void delete({String key = ""}) {
     localStorage.removeItem(key);
   }
 }

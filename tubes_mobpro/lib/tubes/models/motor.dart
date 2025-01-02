@@ -28,6 +28,11 @@ class Motor {
   });
 
   factory Motor.fromJson(Map<String, dynamic> json) {
+
+    // json.forEach((key, value) {
+    //   print("Key: $key, Value: $value, Type: ${value.runtimeType}");
+    // });
+
     return Motor(
       idMotor: json['id_motor'],
       platNomor: json['plat_nomor'],
@@ -40,7 +45,7 @@ class Motor {
       tahun: json['tahun'],
       transmisi: json['transmisi'],
       statusMotor: json['status_motor'],
-      hargaHarian: double.parse(json['harga_harian']),
+      hargaHarian: double.parse(json['harga_harian'].toString()),    
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tubes_mobpro/tubes/api_utilities/motor.dart';
 
 import 'package:tubes_mobpro/tubes/pages/search_result_detail.dart';
 import 'package:tubes_mobpro/tubes/models/motor.dart';
@@ -41,11 +42,12 @@ class SearchResultPage extends StatelessWidget {
               padding:
                   const EdgeInsets.symmetric(vertical: 12, horizontal: 27.5),
               child: FutureBuilder<List<dynamic>>(
-                future: MotorService().fetchAll(),
+                future: MotorAPi.getAll(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
+                    // print(snapshot.data);
                     return Center(child: Text('Error: ${snapshot.error}'));
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                     return const Center(child: Text('No motors available'));
@@ -64,7 +66,7 @@ class SearchResultPage extends StatelessWidget {
                           final Motor motor = motors[index];
 
                           return SearchResultCard(
-                            index: motor.idMotor, nama: motor.tipe, transmission: motor.transmisi, image: 'assets/images/NMAX.png', harga: motor.hargaHarian, statusDiskon: false, rating: 4.0, persenDiskon: 0,
+                            index: motor.idMotor, nama: motor.model, transmission: motor.transmisi, image: 'assets/images/NMAX.png', harga: motor.hargaHarian, statusDiskon: false, rating: 4.0, persenDiskon: 0,
                           );
                         });
                   }

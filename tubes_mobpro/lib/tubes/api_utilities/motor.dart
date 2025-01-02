@@ -1,21 +1,41 @@
-
-
 import 'dart:convert';
 
 import 'package:tubes_mobpro/tubes/api_utilities/utliities.dart';
 import 'package:tubes_mobpro/tubes/models/motor.dart';
 
 class MotorAPi extends BaseApi {
-
   static Future<List<Motor>> getAll() async {
-      var response = await BaseApi.getAuth("/api/motors");
+    var response = await BaseApi.getAuth("/api/generic/motors");
 
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body) as List;
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body) as List;
 
-        return data.map((json) => Motor.fromJson(json)).toList();
-      }
+      // print("Data: ${data}");
 
-      throw Exception("Exception: ${response.body}");
+      return data.map((json) {
+        // print(json);
+
+        // json.remove("created_at");
+        // json.remove("updated_at");
+
+        // print(json);
+        return Motor.fromJson(json);
+      }).toList();
+    }
+
+    throw Exception("Exception: ${response.body}");
   }
+
+  static Future<Motor> getMotor(int id) async {
+    var response = await BaseApi.getAuth("/api/generic/motors/${id}");
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+
+      return Motor.fromJson(data);
+    }
+
+    throw Exception("Exception: ${response.body}");
+  }
+
 }
