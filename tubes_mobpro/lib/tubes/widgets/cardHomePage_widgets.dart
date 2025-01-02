@@ -46,7 +46,7 @@ class vehicleCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Card(
-              margin: const EdgeInsets.only(left: 0,top: 10),
+              // margin: const EdgeInsets.only(left: 0,top: 10),
               color: AppColors.N200 ,
               clipBehavior: Clip.hardEdge,
               child: InkWell(

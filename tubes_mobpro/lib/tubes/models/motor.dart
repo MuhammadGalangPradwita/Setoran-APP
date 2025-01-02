@@ -40,7 +40,7 @@ class Motor {
       tahun: json['tahun'],
       transmisi: json['transmisi'],
       statusMotor: json['status_motor'],
-      hargaHarian: double.parse(json['harga_harian']),
+      hargaHarian: double.parse(json['harga_harian'].toString()),
     );
   }
 }

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:tubes_mobpro/tubes/api_utilities/motor.dart';
 import 'package:tubes_mobpro/tubes/models/motor.dart';
+import 'package:tubes_mobpro/tubes/pages/auth_check.dart';
 import 'package:tubes_mobpro/tubes/pages/notification_page.dart';
+import 'package:tubes_mobpro/tubes/pages/searchResultPage.dart';
 import 'package:tubes_mobpro/tubes/pages/search_result_page.dart';
 import 'package:tubes_mobpro/tubes/services/motor_service.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
@@ -41,6 +44,104 @@ class _HomepageScreenState extends State<HomepageScreen> {
       });
     }
   }
+  Widget buildMotorList(List<Motor> motors) {
+  List<Widget> rows = [];
+    for (int i = 0; i < motors.length; i += 2) {
+      // Ambil dua motor sekaligus untuk setiap baris
+      int endIndex = i + 1;
+      if (endIndex >= motors.length) endIndex = i;
+
+      rows.add(
+        Row(
+          children: [
+            vehicleCardDiscount(
+              margin: const EdgeInsets.only(top: 20, left: 10, right: 10),
+              // imagePath: motors[i].imagePath,  // Asumsikan ada properti imagePath di Motor
+              imagePath: "assets/images/NMAX.png",
+              vehicleName: motors[i].model,  // Ganti dengan data motor yang sesuai
+              // rating: motors[i].brand.toString(),  // Ganti dengan rating motor
+              rating: '4.8',
+              transmition: 'Transmission: ${motors[i].transmisi}',  // Asumsikan ada properti transmisi
+              disPrice: 'Rp. ${formatter.format(motors[i].hargaHarian)}',  // Ganti dengan harga diskon
+              norPrice: 'Rp. ${formatter.format(motors[i].hargaHarian)}',  // Ganti dengan harga normal
+            ),
+            if (endIndex < motors.length)  // Jika ada motor kedua di baris yang sama
+              vehicleCardDiscount(
+                margin: const EdgeInsets.only(top: 20, left: 10, right: 10),
+                // imagePath: motors[endIndex].imagePath,  // Asumsikan ada properti imagePath di Motor
+                imagePath: "assets/images/NMAX.png",
+                vehicleName: motors[endIndex].model,  // Ganti dengan data motor yang sesuai
+                rating: '4.8',
+                // rating: motors[endIndex].brand.toString(),  // Ganti dengan rating motor
+                transmition: 'Transmission: ${motors[endIndex].transmisi}',  // Asumsikan ada properti transmisi
+                disPrice: 'Rp. ${formatter.format(motors[endIndex].hargaHarian)}',  // Ganti dengan harga diskon
+                norPrice: 'Rp. ${formatter.format(motors[endIndex].hargaHarian)}',  // Ganti dengan harga normal
+              ),
+          ],
+        ),
+      );
+      rows.add(const SizedBox(height: 10));  // Jarak antar baris
+    }
+
+    return Column(
+      children: rows,
+    );
+  }
+
+  Widget buildHorizontalVehicleList(List<Motor> motors) {
+  // Membuat list widget untuk vehicleCard
+  List<Widget> vehicleCards = motors.map((motor) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 20, left: 10, right: 10),
+      child: vehicleCard(
+        margin: const EdgeInsets.only(top: 20, left: 10, right: 10),
+        // imagePath: motor.imagePath ?? "assets/images/default.png", // Pastikan ada 'imagePath' pada model Motor
+        imagePath: "assets/images/NMAX.png",
+        vehicleName: motor.tipe,
+        // rating: motor.rating?.toString() ?? '4.8',  // Assuming rating is a field in Motor model
+        rating: '4.8',
+        transmition: "Transmission: ${motor.transmisi}",
+        price: "Rp. ${formatter.format(motor.hargaHarian)}", // Format harga
+      ),
+    );
+  }).toList();
+
+  // Menambahkan SizedBox di antara setiap vehicleCard
+  return SingleChildScrollView(
+    scrollDirection: Axis.horizontal,
+    child: Row(
+      children: [
+        vehicleCard(
+                                margin: const EdgeInsets.only(top: 20, right: 10,left: 10),
+                                imagePath: "assets/images/NMAX.png",
+                                vehicleName: "NMAX",
+                                rating: '4.8',
+                                transmition: "Transmission: Matic",
+                                price: "Rp. 70.000,00",
+                              ),
+                              SizedBox(width: 10,),
+                              vehicleCard(
+                                margin: const EdgeInsets.only(top: 20, ),
+                                imagePath: "assets/images/BeAT.png",
+                                vehicleName: "BeAT",
+                                rating: '4.8',
+                                transmition: "Transmission: Matic",
+                                price: "Rp. 40.000,00",
+                              ),
+                              SizedBox(width: 10,),
+                              vehicleCard(
+                                margin: const EdgeInsets.only(top: 20, right: 10,left: 10),
+                                imagePath: "assets/images/NMAX.png",
+                                vehicleName: "Vario",
+                                rating: '4.8',
+                                transmition: "Transmission: Matic",
+                                price: "Rp. 50.000,00",
+                              ),// Menambahkan semua vehicleCard ke dalam Row
+      ],
+    ),
+  );
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -77,9 +178,15 @@ class _HomepageScreenState extends State<HomepageScreen> {
                 Positioned(
                   top: 40,
                   left: 30,
-                  child: Text(
-                    "Good Morning\nMichael",
-                    style: AppTextStyle.h2Bold.copyWith(color: AppColors.N0),
+                  child: Builder(
+                    
+                    builder: (context) {
+                      var auth = Provider.of<AuthState>(context);
+                      return Text(
+                        "Good Morning\n${auth.currentUser == null ? "" : auth.currentUser!.nama}",
+                        style: AppTextStyle.h2Bold.copyWith(color: AppColors.N0),
+                      );
+                    }
                   )
                 ),
                 Container(
@@ -167,7 +274,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const SearchResultPage()
+                                  builder: (context) => const SearchResult()
                                 )
                               );
                             }
@@ -207,7 +314,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                 margin: const EdgeInsets.only(
                                     top: 20, right: 20, left: 20),
                                 imagePath: "assets/images/NMAX.png",
-                                vehicleName: motors[0].brand,
+                                vehicleName: motors[1].model,
                                 rating: '4.8',
                                 transmition:
                                     "Transmision: ${motors[0].transmisi}",
@@ -220,7 +327,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                 margin: const EdgeInsets.only(
                                     top: 20, right: 20, left: 20),
                                 imagePath: "assets/images/NMAX.png",
-                                vehicleName: snapshot.data![1].brand,
+                                vehicleName: motors[1].model,
                                 rating: '4.8',
                                 transmition:
                                     "Transmision: ${motors[1].transmisi}",
@@ -242,149 +349,37 @@ class _HomepageScreenState extends State<HomepageScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text('Most Popular', style: AppTextStyle.body2Bold),
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: [
-                              vehicleCard(
-                                margin: const EdgeInsets.only(top: 20, right: 10,left: 10),
-                                imagePath: "assets/images/NMAX.png",
-                                vehicleName: "NMAX",
-                                rating: '4.8',
-                                transmition: "Transmission: Matic",
-                                price: "Rp. 70.000,00",
-                              ),
-                              SizedBox(width: 10,),
-                              vehicleCard(
-                                margin: const EdgeInsets.only(top: 20, ),
-                                imagePath: "assets/images/BeAT.png",
-                                vehicleName: "BeAT",
-                                rating: '4.8',
-                                transmition: "Transmission: Matic",
-                                price: "Rp. 40.000,00",
-                              ),
-                              SizedBox(width: 10,),
-                              vehicleCard(
-                                margin: const EdgeInsets.only(top: 20, right: 10,left: 10),
-                                imagePath: "assets/images/NMAX.png",
-                                vehicleName: "Vario",
-                                rating: '4.8',
-                                transmition: "Transmission: Matic",
-                                price: "Rp. 50.000,00",
-                              ),
-                            ],
-                          ),
+                        FutureBuilder<List<Motor>>(
+                          future: MotorAPi.getAll(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return const Center(child: CircularProgressIndicator());
+                            } else if (snapshot.hasError) {
+                              return Center(child: Text('Error: ${snapshot.error}'));
+                            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                              return const Center(child: Text('No motors available'));
+                            } else {
+                              final List<Motor> motors = snapshot.data!;
+                              return buildHorizontalVehicleList(motors);
+                            }
+                          },
                         ),
                         const Gap(20),
                         Text('Discount', style: AppTextStyle.body2Bold),
-                        Column(
-                          
-                          children: [
-                            // Row 1 
-                            Row(
-                              children: [
-                                vehicleCardDiscount(
-                                  margin: const EdgeInsets.only(top: 20,left: 10,right: 10),
-                                  imagePath: "assets/images/NMAX.png",
-                                  vehicleName: 'NMAX',
-                                  rating: '4.8',
-                                  transmition: 'Transmission: Matic',
-                                  disPrice: 'Rp. 50.000,00',
-                                  norPrice: 'Rp. 70.000,00',
-                                ),
-                                vehicleCardDiscount(
-                                  margin: const EdgeInsets.only(top: 20,left: 10,right: 10),
-                                  imagePath: "assets/images/NMAX.png",
-                                  vehicleName: 'NMAX',
-                                  rating: '4.8',
-                                  transmition: 'Transmission: Matic',
-                                  disPrice: 'Rp. 50.000,00',
-                                  norPrice: 'Rp. 70.000,00',
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 10,),
-                            // Row 2
-                            Row(
-                              
-                              children: [
-                                vehicleCardDiscount(
-                                  
-                                  margin: const EdgeInsets.only(top: 20,left: 10,right: 10),
-                                  imagePath: "assets/images/NMAX.png",
-                                  vehicleName: 'NMAX',
-                                  rating: '4.8',
-                                  transmition: 'Transmission: Matic',
-                                  disPrice: 'Rp. 50.000,00',
-                                  norPrice: 'Rp. 70.000,00',
-                                ),
-                                vehicleCardDiscount(
-                                  
-                                  margin: const EdgeInsets.only(top: 20,left: 10,right: 10),
-                                  imagePath: "assets/images/NMAX.png",
-                                  vehicleName: 'NMAX',
-                                  rating: '4.8',
-                                  transmition: 'Transmission: Matic',
-                                  disPrice: 'Rp. 50.000,00',
-                                  norPrice: 'Rp. 70.000,00',
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 10,),
-                            // Row 3
-                            Row(
-                              
-                              children: [
-                                vehicleCardDiscount(
-                                  
-                                  margin: const EdgeInsets.only(top: 20,left: 10,right: 10),
-                                  imagePath: "assets/images/NMAX.png",
-                                  vehicleName: 'NMAX',
-                                  rating: '4.8',
-                                  transmition: 'Transmission: Matic',
-                                  disPrice: 'Rp. 50.000,00',
-                                  norPrice: 'Rp. 70.000,00',
-                                ),
-                                vehicleCardDiscount(
-                                  
-                                  margin: const EdgeInsets.only(top: 20,left: 10,right: 10),
-                                  imagePath: "assets/images/NMAX.png",
-                                  vehicleName: 'NMAX',
-                                  rating: '4.8',
-                                  transmition: 'Transmission: Matic',
-                                  disPrice: 'Rp. 50.000,00',
-                                  norPrice: 'Rp. 70.000,00',
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 10,),
-                            // Row 4
-                            Row(
-                            
-                              children: [
-                                vehicleCardDiscount(
-                                  
-                                 margin: const EdgeInsets.only(top: 20,left: 10,right: 10),
-                                  imagePath: "assets/images/NMAX.png",
-                                  vehicleName: 'NMAX',
-                                  rating: '4.8',
-                                  transmition: 'Transmission: Matic',
-                                  disPrice: 'Rp. 50.000,00',
-                                  norPrice: 'Rp. 70.000,00',
-                                ),
-                                vehicleCardDiscount(
-                                
-                                  margin: const EdgeInsets.only(top: 20,left: 10,right: 10),
-                                  imagePath: "assets/images/NMAX.png",
-                                  vehicleName: 'NMAX',
-                                  rating: '4.8',
-                                  transmition: 'Transmission: Matic',
-                                  disPrice: 'Rp. 50.000,00',
-                                  norPrice: 'Rp. 70.000,00',
-                                ),
-                              ],
-                            ),
-                          ],
+                        FutureBuilder<List<Motor>>(
+                          future: MotorAPi.getAll(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return const Center(child: CircularProgressIndicator());
+                            } else if (snapshot.hasError) {
+                              return Center(child: Text('Error: ${snapshot.error}'));
+                            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                              return const Center(child: Text('No motors available'));
+                            } else {
+                              final List<Motor> motors = snapshot.data!;
+                              return buildMotorList(motors);
+                            }
+                          },
                         ),
                       ],
                     ),
