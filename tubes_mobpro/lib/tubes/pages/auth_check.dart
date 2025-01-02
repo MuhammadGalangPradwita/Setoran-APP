@@ -61,7 +61,7 @@ class _AuthCheckState extends State<AuthCheck> {
           // Handle errors if needed
           return Scaffold(
             body: Center(
-              child: Text("Something went wrong!"),
+              child: Text(snapshot.error.toString()),
             ),
           );
         } else {

@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import 'package:tubes_mobpro/tubes/pages/search_result_detail.dart';
 import 'package:tubes_mobpro/tubes/models/motor.dart';
 import 'package:tubes_mobpro/tubes/services/motor_service.dart';

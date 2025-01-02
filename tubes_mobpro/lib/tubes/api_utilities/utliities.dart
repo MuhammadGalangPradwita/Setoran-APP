@@ -8,7 +8,7 @@ import 'package:localstorage/localstorage.dart';
 
 class BaseApi {
   // asumsi ini, mungkin nanti bisa buat file .env buat set host nya
-  static String backendHost = "http://127.0.0.1:8000";
+  static String backendHost = "http://10.0.2.2:8000";
   
   // bisa ganti nanti ke secure storage
   static LocalStorage storage = LocalStorage();

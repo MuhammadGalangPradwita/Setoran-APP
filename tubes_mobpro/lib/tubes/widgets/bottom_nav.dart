@@ -2,11 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:tubes_mobpro/tubes/pages/activity.dart';
-import 'package:tubes_mobpro/tubes/pages/homePage_screen.dart';
+// import 'package:tubes_mobpro/tubes/pages/homePage_screen.dart';
 
-import 'package:tubes_mobpro/tubes/pages/home_page.dart';
 import 'package:tubes_mobpro/tubes/pages/discount_page.dart';
 import 'package:tubes_mobpro/tubes/pages/account_page.dart';
+
+import '../pages/homePage_screen.dart';
 
 class BottomNav extends StatefulWidget {
   const BottomNav({super.key});
@@ -31,12 +32,7 @@ class _BottomNavState extends State<BottomNav> {
   }
 
   List<Widget> _buildScreens() {
-    return [
-      const HomepageScreen(),
-      const ActivityPage(),
-      DiscountPage(),
-      const AccountPage()
-    ];
+    return [const HomepageScreen(), const ActivityPage(), DiscountPage(), const AccountPage()];
   }
 
   List<PersistentBottomNavBarItem> _navBarsItems() {
@@ -61,7 +57,7 @@ class _BottomNavState extends State<BottomNav> {
     return RouteAndNavigatorSettings(
       initialRoute: "/",
       routes: {
-        "/first": (final context) => const HomepageScreen(),
+        "/first": (final context) => HomepageScreen(),
         "/second": (final context) => const ActivityPage(),
         "/third": (final context) => DiscountPage(),
         "/fourth": (final context) => const AccountPage(),
