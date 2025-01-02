@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:tubes_mobpro/tubes/pages/edit_driving_license_page.dart';
 import 'package:tubes_mobpro/tubes/pages/edit_id_data_page.dart';
 import 'package:tubes_mobpro/tubes/pages/edit_personal_data_page.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
@@ -263,7 +264,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   style: AppTextStyle.body2SemiBold,
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const EditDrivingLicensePage(),
+                        ));
+                  },
                   child: Text(
                     "Edit",
                     style: AppTextStyle.body2SemiBold

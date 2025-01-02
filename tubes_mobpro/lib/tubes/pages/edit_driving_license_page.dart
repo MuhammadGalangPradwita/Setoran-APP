@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:tubes_mobpro/tubes/camera_service.dart';
+import 'package:tubes_mobpro/tubes/pages/edit_driving_license_camera_page.dart';
 import 'package:tubes_mobpro/tubes/pages/edit_id_camera_page.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 import 'package:tubes_mobpro/tubes/widgets/button_widgets.dart';
@@ -72,9 +73,10 @@ class _EditDrivingLicensePageState extends State<EditDrivingLicensePage> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => EditIdCameraPage(
-                                        cameras:
-                                            CameraService.instance.cameras),
+                                    builder: (context) =>
+                                        EditDrivingLicenseCameraPage(
+                                            cameras:
+                                                CameraService.instance.cameras),
                                   ));
                             })),
                   ],
