@@ -98,12 +98,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
       child: vehicleCard(
         margin: const EdgeInsets.only(top: 20, left: 10, right: 10),
         // imagePath: motor.imagePath ?? "assets/images/default.png", // Pastikan ada 'imagePath' pada model Motor
-        imagePath: "assets/images/NMAX.png",
-        vehicleName: motor.tipe,
-        // rating: motor.rating?.toString() ?? '4.8',  // Assuming rating is a field in Motor model
-        rating: '4.8',
-        transmition: "Transmission: ${motor.transmisi}",
-        price: "Rp. ${formatter.format(motor.hargaHarian)}", // Format harga
+        motor: motor,
       ),
     );
   }).toList();
@@ -113,32 +108,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
     scrollDirection: Axis.horizontal,
     child: Row(
       children: [
-        vehicleCard(
-            margin: const EdgeInsets.only(top: 20, right: 10,left: 10),
-            imagePath: "assets/images/NMAX.png",
-            vehicleName: "NMAX",
-            rating: '4.8',
-            transmition: "Transmission: Matic",
-            price: "Rp. 70.000,00",
-          ),
-          SizedBox(width: 10,),
-          vehicleCard(
-            margin: const EdgeInsets.only(top: 20, ),
-            imagePath: "assets/images/BeAT.png",
-            vehicleName: "BeAT",
-            rating: '4.8',
-            transmition: "Transmission: Matic",
-            price: "Rp. 40.000,00",
-          ),
-          SizedBox(width: 10,),
-          vehicleCard(
-            margin: const EdgeInsets.only(top: 20, right: 10,left: 10),
-            imagePath: "assets/images/NMAX.png",
-            vehicleName: "Vario",
-            rating: '4.8',
-            transmition: "Transmission: Matic",
-            price: "Rp. 50.000,00",
-          ),// Menambahkan semua vehicleCard ke dalam Row
+        ...vehicleCards
       ],
     ),
   );
@@ -319,26 +289,14 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                 // width: 200,
                                 margin: const EdgeInsets.only(
                                     top: 20, right: 20, left: 20),
-                                imagePath: "assets/images/NMAX.png",
-                                vehicleName: motors[1].model,
-                                rating: '4.8',
-                                transmition:
-                                    "Transmision: ${motors[0].transmisi}",
-                                price:
-                                    "Rp. ${formatter.format(motors[0].hargaHarian)}",
+                                motor: motors[0],
                               ),
                               vehicleCard(
                                 // height: 260,
                                 // width: 200,
                                 margin: const EdgeInsets.only(
                                     top: 20, right: 20, left: 20),
-                                imagePath: "assets/images/NMAX.png",
-                                vehicleName: motors[1].model,
-                                rating: '4.8',
-                                transmition:
-                                    "Transmision: ${motors[1].transmisi}",
-                                price:
-                                    "Rp. ${formatter.format(motors[1].hargaHarian)}",
+                                motor: motors[1],
                               )
                             ],
                           ),

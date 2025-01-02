@@ -43,4 +43,9 @@ class Motor {
       hargaHarian: double.parse(json['harga_harian'].toString()),
     );
   }
+
+  // update kalau udah ada yang buat bagian gambar dan rating motor (atau jadi attribut)
+  List<String> getImages() {
+    return ["assets/images/NMAX.png", "assets/images/NMAX.png", "assets/images/NMAX.png", "assets/images/NMAX.png"];
+  }
 }

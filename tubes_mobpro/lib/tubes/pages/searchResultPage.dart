@@ -22,11 +22,7 @@ class SearchResult extends StatelessWidget {
           // height: 210,
           // width: 160,
           margin: const EdgeInsets.only(top: 20, right: 20, left: 20),
-          imagePath: "assets/images/NMAX.png",
-          vehicleName: motor.brand,
-          rating: "4.8",
-          transmition: motor.transmisi,
-          price: motor.hargaHarian.toString(),
+          motor: motor,
         ),
       );
     }
@@ -66,11 +62,11 @@ class SearchResult extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Yamaha, NMAX',
+                model == "" ? "-" : model,
                 style: AppTextStyle.body1SemiBold,
               ),
               Text(
-                'Sun, 26 Oct 2024 ',
+                date == "" ? "-" : date,
                 style: AppTextStyle.body3Regular,
               )
             ],
