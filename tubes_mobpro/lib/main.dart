@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 import 'package:tubes_mobpro/tubes/pages/auth_check.dart';
 import 'package:tubes_mobpro/tubes/pages/get_started_page.dart';
 import 'package:tubes_mobpro/notification_service.dart';
-import 'package:tubes_mobpro/tubes/pages/search_result_page.dart';
 
 // final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 // FlutterLocalNotificationsPlugin();
@@ -63,5 +62,3 @@ class _MyAppState extends State<MyApp> {
           );
   }
 }
-
-

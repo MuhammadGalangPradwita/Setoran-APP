@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:tubes_mobpro/tubes/api_utilities/auth.dart';
 import 'package:tubes_mobpro/tubes/pages/auth_check.dart';
 import 'package:tubes_mobpro/tubes/pages/edit_profile.dart';
+import 'package:tubes_mobpro/tubes/pages/my_motorcycle_page.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 
 class AccountPage extends StatelessWidget {
@@ -14,7 +15,7 @@ class AccountPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.N0,
       appBar: AppBar(
-        title: const Text("Activity"),
+        title: const Text("Account"),
         backgroundColor: AppColors.B400,
         foregroundColor: AppColors.N0,
       ),
@@ -31,7 +32,14 @@ class AccountPage extends StatelessWidget {
                   child: _buildOptionList('Payment Method', Icons.credit_card),
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              const MyMotorcyclePage(isRegistered: false),
+                        ));
+                  },
                   child: _buildOptionList('My Motorcycle', Icons.motorcycle),
                 ),
                 InkWell(
