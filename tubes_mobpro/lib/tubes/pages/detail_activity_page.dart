@@ -26,7 +26,7 @@ class _DetailActivityPageState extends State<DetailActivityPage> {
   @override
   void initState() {
     super.initState();
-    _isFailed = widget.transaksi.status == 'batal';
+    _isFailed = widget.transaksi.statusTransaksi == 'batal';
     _paymentColor = _isFailed ? AppColors.R400 : AppColors.G500;
     loadMotor();
     // loadPembayaran();
@@ -35,7 +35,7 @@ class _DetailActivityPageState extends State<DetailActivityPage> {
   Future<void> loadMotor() async {
     final result = await MotorAPi.getById(widget.transaksi.idMotor);
     final resultPembayaran =
-        await PembayaranApi.getByIdTransaksi(widget.transaksi.id);
+        await PembayaranApi.getByIdTransaksi(widget.transaksi.idTransaksi);
     setState(() {
       motor = result;
       pembayaran = resultPembayaran;
@@ -95,7 +95,7 @@ class _DetailActivityPageState extends State<DetailActivityPage> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text(
-                  widget.transaksi.id.toString(),
+                  widget.transaksi.idTransaksi.toString(),
                   style: AppTextStyle.body3SemiBold
                       .copyWith(color: AppColors.N600),
                 ),

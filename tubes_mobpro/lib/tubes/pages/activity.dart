@@ -13,51 +13,6 @@ import 'package:tubes_mobpro/tubes/pages/detail_activity_page.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 import 'package:tubes_mobpro/tubes/widgets/transaction_card.dart';
 
-List<Map<String, dynamic>> transactionData = const [
-  {
-    "group": "today",
-    "riwayat": [
-      {
-        "tipe": "NMAX",
-        "transmisi": "Matic",
-        "date": "26 Oct 2024",
-        "price": "50000",
-        "orderNumber": "IB00234566",
-        "status": "active",
-      },
-      {
-        "tipe": "NMAX",
-        "transmisi": "Matic",
-        "date": "26 Oct 2024",
-        "price": "50000",
-        "orderNumber": "IB00234566",
-        "status": "failed",
-      }
-    ]
-  },
-  {
-    "group": "This Week",
-    "riwayat": [
-      {
-        "tipe": "NMAX",
-        "transmisi": "Matic",
-        "date": "26 Oct 2024",
-        "price": "50000",
-        "orderNumber": "IB00234566",
-        "status": "completed",
-      },
-      {
-        "tipe": "NMAX",
-        "transmisi": "Matic",
-        "date": "26 Oct 2024",
-        "price": "50000",
-        "orderNumber": "IB00234566",
-        "status": "completed",
-      }
-    ]
-  }
-];
-
 class ActivityPage extends StatefulWidget {
   const ActivityPage({super.key});
 
@@ -65,13 +20,8 @@ class ActivityPage extends StatefulWidget {
   State<ActivityPage> createState() => _ActivityPageState();
 }
 
-enum TimeFilter { today, week, month }
-
 class _ActivityPageState extends State<ActivityPage> {
-  Map<String, dynamic> _items = {};
   late Future<List<Transaksi>?> dataList;
-
-  TimeFilter selectedPeriod = TimeFilter.week;
 
   @override
   void initState() {
@@ -150,18 +100,6 @@ class _ActivityPageState extends State<ActivityPage> {
   Widget _buildContent(List<Transaksi> data) {
     return TabBarView(
         children: [lastWeekTab(data), lastMonthTab(data), earlierTab(data)]);
-  }
-
-  Future<void> readJSON() async {
-    await Future.delayed(Duration.zero);
-    final String response =
-        await rootBundle.loadString('assets/sampleActivity.json');
-    final data = await json.decode(response);
-    Future.microtask(() {
-      setState(() {
-        _items = data;
-      });
-    });
   }
 
   Future<List<Transaksi>?> fetchData() async {

@@ -44,7 +44,7 @@ class _TransactionCardState extends State<TransactionCard> {
     }
     return Card(
       elevation: 0,
-      color: setColor(widget.transaksi.status),
+      color: setColor(widget.transaksi.statusTransaksi),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
@@ -72,7 +72,7 @@ class _TransactionCardState extends State<TransactionCard> {
                       ),
                       const Gap(20),
                       Text(
-                        widget.transaksi.id.toString(),
+                        widget.transaksi.idTransaksi.toString(),
                         style: GoogleFonts.poppins(
                             fontSize: 10, color: AppColors.N0),
                       ),
@@ -96,7 +96,7 @@ class _TransactionCardState extends State<TransactionCard> {
                         GoogleFonts.poppins(fontSize: 10, color: AppColors.N0),
                   ),
                   Text(
-                    widget.transaksi.status,
+                    widget.transaksi.statusTransaksi,
                     style:
                         GoogleFonts.poppins(fontSize: 10, color: AppColors.N0),
                   ),
