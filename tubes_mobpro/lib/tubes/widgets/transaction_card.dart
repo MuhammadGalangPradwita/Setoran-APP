@@ -1,34 +1,50 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
+import 'package:tubes_mobpro/tubes/api_utilities/motor.dart';
+import 'package:tubes_mobpro/tubes/models/motor.dart';
+import 'package:tubes_mobpro/tubes/models/transaksi.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
+import 'package:tubes_mobpro/tubes/utilities/app_util.dart';
 
-class TransactionCard extends StatelessWidget {
-  final String vehicleName;
-  final String transmissionType;
-  final String date;
-  final String price;
-  final String status;
-  final String orderNumber;
-  final Color? color;
-  final String imagePath;
+class TransactionCard extends StatefulWidget {
+  final Transaksi transaksi;
 
-  const TransactionCard(
-      {super.key,
-      required this.vehicleName,
-      required this.transmissionType,
-      required this.date,
-      required this.price,
-      required this.status,
-      required this.orderNumber,
-      required this.imagePath,
-      this.color});
+  const TransactionCard({super.key, required this.transaksi});
+
+  @override
+  State<TransactionCard> createState() => _TransactionCardState();
+}
+
+class _TransactionCardState extends State<TransactionCard> {
+  Motor? motor;
+  // Image? image;
+  String? imagePath;
+
+  @override
+  void initState() {
+    super.initState();
+    loadMotor();
+  }
+
+  Future<void> loadMotor() async {
+    final result = await MotorAPi.getById(widget.transaksi.idMotor);
+    setState(() {
+      motor = result;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    if (motor == null) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
     return Card(
       elevation: 0,
-      color: setColor(status),
+      color: setColor(widget.transaksi.status),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
@@ -36,11 +52,7 @@ class TransactionCard extends StatelessWidget {
         padding: const EdgeInsets.all(8),
         child: Row(
           children: [
-            Image(
-              image: AssetImage(imagePath),
-              // width: ,
-              height: 100,
-            ),
+            _buildImage(),
             const Gap(12),
             Expanded(
               child: Column(
@@ -52,7 +64,7 @@ class TransactionCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        vehicleName,
+                        motor!.model,
                         style: GoogleFonts.poppins(
                             fontSize: 18,
                             color: AppColors.N0,
@@ -60,29 +72,31 @@ class TransactionCard extends StatelessWidget {
                       ),
                       const Gap(20),
                       Text(
-                        orderNumber,
+                        widget.transaksi.id.toString(),
                         style: GoogleFonts.poppins(
                             fontSize: 10, color: AppColors.N0),
                       ),
                     ],
                   ),
                   Text(
-                    transmissionType,
+                    motor!.transmisi,
                     style:
                         GoogleFonts.poppins(fontSize: 10, color: AppColors.N0),
                   ),
                   Text(
-                    date,
+                    // widget.transaksi.tanggalMulai.toString(),
+                    AppUtil.formatDate(widget.transaksi.tanggalMulai),
                     style:
                         GoogleFonts.poppins(fontSize: 10, color: AppColors.N0),
                   ),
                   Text(
-                    price,
+                    // 'Rp${formatter.format(widget.transaksi.nominal)}',
+                    AppUtil.formatPrice(widget.transaksi.nominal),
                     style:
                         GoogleFonts.poppins(fontSize: 10, color: AppColors.N0),
                   ),
                   Text(
-                    status,
+                    widget.transaksi.status,
                     style:
                         GoogleFonts.poppins(fontSize: 10, color: AppColors.N0),
                   ),
@@ -96,12 +110,27 @@ class TransactionCard extends StatelessWidget {
   }
 
   Color setColor(String status) {
-    if (status == "active") {
+    if (status == "berlangsung") {
       return AppColors.B400;
-    } else if (status == "completed") {
+    } else if (status == "selesai") {
       return AppColors.G500;
     } else {
       return AppColors.R400;
+    }
+  }
+
+  Widget _buildImage() {
+    if (imagePath != null) {
+      return Image(
+        image: AssetImage(imagePath!),
+        // width: ,
+        height: 100,
+      );
+    } else {
+      return SizedBox(
+        height: 100,
+        width: 100,
+      );
     }
   }
 }
