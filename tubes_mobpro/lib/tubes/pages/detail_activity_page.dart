@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:tubes_mobpro/tubes/api_utilities/motor.dart';
+import 'package:tubes_mobpro/tubes/api_utilities/pembayaran.dart';
+import 'package:tubes_mobpro/tubes/models/motor.dart';
+import 'package:tubes_mobpro/tubes/models/pembayaran.dart';
+import 'package:tubes_mobpro/tubes/models/transaksi.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
+import 'package:tubes_mobpro/tubes/utilities/app_util.dart';
 
 class DetailActivityPage extends StatefulWidget {
-  final Map<String, dynamic> activity;
+  final Transaksi transaksi;
 
-  const DetailActivityPage({super.key, required this.activity});
+  const DetailActivityPage({super.key, required this.transaksi});
 
   @override
   State<DetailActivityPage> createState() => _DetailActivityPageState();
@@ -14,17 +20,42 @@ class DetailActivityPage extends StatefulWidget {
 class _DetailActivityPageState extends State<DetailActivityPage> {
   late bool _isFailed;
   late Color _paymentColor;
+  Motor? motor;
+  Pembayaran? pembayaran;
 
   @override
   void initState() {
     super.initState();
-
-    _isFailed = (widget.activity['status'] == 'failed');
+    _isFailed = widget.transaksi.statusTransaksi == 'batal';
     _paymentColor = _isFailed ? AppColors.R400 : AppColors.G500;
+    loadMotor();
+    // loadPembayaran();
   }
+
+  Future<void> loadMotor() async {
+    final result = await MotorAPi.getById(widget.transaksi.idMotor);
+    final resultPembayaran =
+        await PembayaranApi.getByIdTransaksi(widget.transaksi.idTransaksi);
+    setState(() {
+      motor = result;
+      pembayaran = resultPembayaran;
+    });
+  }
+
+  // Future<void> loadPembayaran() async {
+  //   final result = await PembayaranApi.getByIdTransaksi(widget.transaksi.id);
+  //   setState(() {
+  //     pembayaran = result;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
+    if (motor == null || pembayaran == null) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
     return Scaffold(
       backgroundColor: AppColors.N0,
       appBar: AppBar(
@@ -42,7 +73,7 @@ class _DetailActivityPageState extends State<DetailActivityPage> {
         child: Column(
           children: (_isFailed)
               ? [_paymentDetailCard()]
-              : [_paymentDetailCard(), const Gap(12), _motorDetailCard()],
+              : [_paymentDetailCard(), const Gap(20), _motorDetailCard()],
         ),
       ),
     );
@@ -58,45 +89,51 @@ class _DetailActivityPageState extends State<DetailActivityPage> {
           children: [
             Text("Payment ${_isFailed ? 'Failed' : "Succes"}",
                 style:
-                    AppTextStyle.body3SemiBold.copyWith(color: _paymentColor)),
+                    AppTextStyle.body1SemiBold.copyWith(color: _paymentColor)),
             const Gap(8),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text(
-                  widget.activity['orderNumber'],
-                  style: AppTextStyle.smallSemiBold
+                  widget.transaksi.idTransaksi.toString(),
+                  style: AppTextStyle.body3SemiBold
                       .copyWith(color: AppColors.N600),
                 ),
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [const Text("Type"), Text(widget.activity['tipe'])],
+              children: [
+                const Text("Rent Date"),
+                Text(AppUtil.formatDate(widget.transaksi.tanggalMulai))
+              ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text("Rent Date"),
-                Text(widget.activity['date'])
+                const Text("Rent Duration"),
+                Text('${widget.transaksi.durasi} Hari')
               ],
             ),
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("Payment Method"),
-                // Text(widget.activity['date']),
+                Text(pembayaran!.metode),
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [const Text("Price"), Text(widget.activity['price'])],
+              children: [
+                const Text("Price"),
+                Text(AppUtil.formatPrice(pembayaran!.nominal))
+              ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text("Status"),
-                Text(widget.activity['status'].toString())
+                Text(pembayaran!.statusPembayaran)
               ],
             ),
           ],
@@ -109,7 +146,10 @@ class _DetailActivityPageState extends State<DetailActivityPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text("Detail Motorcycle"),
+        Text(
+          "Detail Motorcycle",
+          style: AppTextStyle.body2SemiBold,
+        ),
         const Gap(8),
         Card(
           elevation: 2,
@@ -122,42 +162,42 @@ class _DetailActivityPageState extends State<DetailActivityPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text('Brand'),
-                    Text(widget.activity['motor']['brand']),
+                    Text(motor!.brand),
                   ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text('Type'),
-                    Text(widget.activity['motor']['tipe']),
+                    Text(motor!.tipe),
                   ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text('Tahun'),
-                    Text(widget.activity['motor']['year']),
+                    Text(motor!.tahun.toString()),
                   ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text('Transmisi'),
-                    Text(widget.activity['motor']['transmisi']),
+                    Text(motor!.transmisi),
                   ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text('Police Number'),
-                    Text(widget.activity['motor']['policeNumber']),
+                    Text(motor!.platNomor),
                   ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text('STNK Number'),
-                    Text(widget.activity['motor']['STNKNumber']),
+                    Text(motor!.nomorSTNK),
                   ],
                 ),
               ],
