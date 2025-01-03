@@ -44,8 +44,9 @@ class _HomepageScreenState extends State<HomepageScreen> {
       });
     }
   }
+
   Widget buildMotorList(List<Motor> motors) {
-  List<Widget> rows = [];
+    List<Widget> rows = [];
     for (int i = 0; i < motors.length; i += 2) {
       // Ambil dua motor sekaligus untuk setiap baris
       int endIndex = i + 1;
@@ -58,29 +59,38 @@ class _HomepageScreenState extends State<HomepageScreen> {
               margin: const EdgeInsets.only(top: 20, left: 10, right: 10),
               // imagePath: motors[i].imagePath,  // Asumsikan ada properti imagePath di Motor
               imagePath: "assets/images/NMAX.png",
-              vehicleName: motors[i].model,  // Ganti dengan data motor yang sesuai
+              vehicleName:
+                  motors[i].model, // Ganti dengan data motor yang sesuai
               // rating: motors[i].brand.toString(),  // Ganti dengan rating motor
               rating: '4.8',
-              transmition: 'Transmission: ${motors[i].transmisi}',  // Asumsikan ada properti transmisi
-              disPrice: 'Rp. ${formatter.format(motors[i].hargaHarian)}',  // Ganti dengan harga diskon
-              norPrice: 'Rp. ${formatter.format(motors[i].hargaHarian)}',  // Ganti dengan harga normal
+              transmition:
+                  'Transmission: ${motors[i].transmisi}', // Asumsikan ada properti transmisi
+              disPrice:
+                  'Rp. ${formatter.format(motors[i].hargaHarian)}', // Ganti dengan harga diskon
+              norPrice:
+                  'Rp. ${formatter.format(motors[i].hargaHarian)}', // Ganti dengan harga normal
             ),
-            if (endIndex < motors.length)  // Jika ada motor kedua di baris yang sama
+            if (endIndex <
+                motors.length) // Jika ada motor kedua di baris yang sama
               vehicleCardDiscount(
                 margin: const EdgeInsets.only(top: 20, left: 10, right: 10),
                 // imagePath: motors[endIndex].imagePath,  // Asumsikan ada properti imagePath di Motor
                 imagePath: "assets/images/NMAX.png",
-                vehicleName: motors[endIndex].model,  // Ganti dengan data motor yang sesuai
+                vehicleName: motors[endIndex]
+                    .model, // Ganti dengan data motor yang sesuai
                 rating: '4.8',
                 // rating: motors[endIndex].brand.toString(),  // Ganti dengan rating motor
-                transmition: 'Transmission: ${motors[endIndex].transmisi}',  // Asumsikan ada properti transmisi
-                disPrice: 'Rp. ${formatter.format(motors[endIndex].hargaHarian)}',  // Ganti dengan harga diskon
-                norPrice: 'Rp. ${formatter.format(motors[endIndex].hargaHarian)}',  // Ganti dengan harga normal
+                transmition:
+                    'Transmission: ${motors[endIndex].transmisi}', // Asumsikan ada properti transmisi
+                disPrice:
+                    'Rp. ${formatter.format(motors[endIndex].hargaHarian)}', // Ganti dengan harga diskon
+                norPrice:
+                    'Rp. ${formatter.format(motors[endIndex].hargaHarian)}', // Ganti dengan harga normal
               ),
           ],
         ),
       );
-      rows.add(const SizedBox(height: 10));  // Jarak antar baris
+      rows.add(const SizedBox(height: 10)); // Jarak antar baris
     }
 
     return Column(
@@ -89,59 +99,64 @@ class _HomepageScreenState extends State<HomepageScreen> {
   }
 
   Widget buildHorizontalVehicleList(List<Motor> motors) {
-  // Membuat list widget untuk vehicleCard
-  List<Widget> vehicleCards = motors.map((motor) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 20, left: 10, right: 10),
-      child: vehicleCard(
-        margin: const EdgeInsets.only(top: 20, left: 10, right: 10),
-        // imagePath: motor.imagePath ?? "assets/images/default.png", // Pastikan ada 'imagePath' pada model Motor
-        imagePath: "assets/images/NMAX.png",
-        vehicleName: motor.tipe,
-        // rating: motor.rating?.toString() ?? '4.8',  // Assuming rating is a field in Motor model
-        rating: '4.8',
-        transmition: "Transmission: ${motor.transmisi}",
-        price: "Rp. ${formatter.format(motor.hargaHarian)}", // Format harga
+    // Membuat list widget untuk vehicleCard
+    List<Widget> vehicleCards = motors.map((motor) {
+      return Padding(
+        padding: const EdgeInsets.only(
+          top: 20,
+        ),
+        child: vehicleCard(
+          margin: const EdgeInsets.only(
+            top: 20,
+          ),
+          // imagePath: motor.imagePath ?? "assets/images/default.png", // Pastikan ada 'imagePath' pada model Motor
+          imagePath: "assets/images/NMAX.png",
+          vehicleName: motor.tipe,
+          // rating: motor.rating?.toString() ?? '4.8',  // Assuming rating is a field in Motor model
+          rating: '4.8',
+          transmition: "Transmission: ${motor.transmisi}",
+          price: "Rp. ${formatter.format(motor.hargaHarian)}", // Format harga
+        ),
+      );
+    }).toList();
+
+    // Menambahkan SizedBox di antara setiap vehicleCard
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: [
+          vehicleCard(
+            margin: const EdgeInsets.only(top: 20, right: 10, left: 10),
+            imagePath: "assets/images/NMAX.png",
+            vehicleName: motors[1].model,
+            rating: '4.8',
+            transmition: "Transmision: ${motors[0].transmisi}",
+            price: "Rp. ${formatter.format(motors[0].hargaHarian)}",
+          ),
+
+          vehicleCard(
+            margin: const EdgeInsets.only(
+              top: 20,left: 10, right: 10
+            ),
+            imagePath: "assets/images/NMAX.png",
+            vehicleName: motors[1].model,
+            rating: '4.8',
+            transmition: "Transmision: ${motors[0].transmisi}",
+            price: "Rp. ${formatter.format(motors[0].hargaHarian)}",
+          ),
+
+          vehicleCard(
+            margin: const EdgeInsets.only(top: 20, right: 10, left: 10),
+            imagePath: "assets/images/NMAX.png",
+            vehicleName: motors[1].model,
+            rating: '4.8',
+            transmition: "Transmision: ${motors[0].transmisi}",
+            price: "Rp. ${formatter.format(motors[0].hargaHarian)}",
+          ), // Menambahkan semua vehicleCard ke dalam Row
+        ],
       ),
     );
-  }).toList();
-
-  // Menambahkan SizedBox di antara setiap vehicleCard
-  return SingleChildScrollView(
-    scrollDirection: Axis.horizontal,
-    child: Row(
-      children: [
-        vehicleCard(
-                                margin: const EdgeInsets.only(top: 20, right: 10,left: 10),
-                                imagePath: "assets/images/NMAX.png",
-                                vehicleName: "NMAX",
-                                rating: '4.8',
-                                transmition: "Transmission: Matic",
-                                price: "Rp. 70.000,00",
-                              ),
-                              SizedBox(width: 10,),
-                              vehicleCard(
-                                margin: const EdgeInsets.only(top: 20, ),
-                                imagePath: "assets/images/BeAT.png",
-                                vehicleName: "BeAT",
-                                rating: '4.8',
-                                transmition: "Transmission: Matic",
-                                price: "Rp. 40.000,00",
-                              ),
-                              SizedBox(width: 10,),
-                              vehicleCard(
-                                margin: const EdgeInsets.only(top: 20, right: 10,left: 10),
-                                imagePath: "assets/images/NMAX.png",
-                                vehicleName: "Vario",
-                                rating: '4.8',
-                                transmition: "Transmission: Matic",
-                                price: "Rp. 50.000,00",
-                              ),// Menambahkan semua vehicleCard ke dalam Row
-      ],
-    ),
-  );
-}
-
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -162,33 +177,28 @@ class _HomepageScreenState extends State<HomepageScreen> {
                   top: 50,
                   right: 30,
                   child: IconButton(
-                    color: AppColors.N0,
-                    iconSize: 30,
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const NotificationPage()
-                        )
-                      );
-                    },
-                    icon: const Icon(Icons.notifications)
-                  ),
+                      color: AppColors.N0,
+                      iconSize: 30,
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const NotificationPage()));
+                      },
+                      icon: const Icon(Icons.notifications)),
                 ),
                 Positioned(
-                  top: 40,
-                  left: 30,
-                  child: Builder(
-                    
-                    builder: (context) {
+                    top: 40,
+                    left: 30,
+                    child: Builder(builder: (context) {
                       var auth = Provider.of<AuthState>(context);
                       return Text(
                         "Good Morning\n${auth.currentUser == null ? "" : auth.currentUser!.nama}",
-                        style: AppTextStyle.h2Bold.copyWith(color: AppColors.N0),
+                        style:
+                            AppTextStyle.h2Bold.copyWith(color: AppColors.N0),
                       );
-                    }
-                  )
-                ),
+                    })),
                 Container(
                   margin: const EdgeInsets.only(
                     top: 130,
@@ -197,17 +207,16 @@ class _HomepageScreenState extends State<HomepageScreen> {
                   ),
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        offset: const Offset(4, 4),
-                        blurRadius: 10,
-                        spreadRadius: 2,
-                      )
-                    ]
-                  ),
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          offset: const Offset(4, 4),
+                          blurRadius: 10,
+                          spreadRadius: 2,
+                        )
+                      ]),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -224,10 +233,9 @@ class _HomepageScreenState extends State<HomepageScreen> {
                       ),
                       const Gap(24),
                       const TextfieldWidget(
-                        label: 'Select Models',
-                        prefixIcon: Icon(Icons.motorcycle_rounded),
-                        hintText: 'Choose the models...'
-                      ),
+                          label: 'Select Models',
+                          prefixIcon: Icon(Icons.motorcycle_rounded),
+                          hintText: 'Choose the models...'),
                       const Gap(24),
                       const Text('Models'),
                       Row(
@@ -266,20 +274,17 @@ class _HomepageScreenState extends State<HomepageScreen> {
                       const Gap(30),
                       Center(
                         child: SizedBox(
-                          width: 150,
-                          height: 40,
-                          child: ButtonWidget.primary(
-                            label: "Search",
-                            press: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const SearchResult()
-                                )
-                              );
-                            }
-                          )
-                        ),
+                            width: 150,
+                            height: 40,
+                            child: ButtonWidget.primary(
+                                label: "Search",
+                                press: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const SearchResult()));
+                                })),
                       ),
                     ],
                   ),
@@ -292,8 +297,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('Recommendation', style: AppTextStyle.body2Bold),
-
-                   FutureBuilder<List<Motor>>(
+                  FutureBuilder<List<Motor>>(
                     future: MotorAPi.getAll(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
@@ -352,12 +356,17 @@ class _HomepageScreenState extends State<HomepageScreen> {
                         FutureBuilder<List<Motor>>(
                           future: MotorAPi.getAll(),
                           builder: (context, snapshot) {
-                            if (snapshot.connectionState == ConnectionState.waiting) {
-                              return const Center(child: CircularProgressIndicator());
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const Center(
+                                  child: CircularProgressIndicator());
                             } else if (snapshot.hasError) {
-                              return Center(child: Text('Error: ${snapshot.error}'));
-                            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                              return const Center(child: Text('No motors available'));
+                              return Center(
+                                  child: Text('Error: ${snapshot.error}'));
+                            } else if (!snapshot.hasData ||
+                                snapshot.data!.isEmpty) {
+                              return const Center(
+                                  child: Text('No motors available'));
                             } else {
                               final List<Motor> motors = snapshot.data!;
                               return buildHorizontalVehicleList(motors);
@@ -369,12 +378,17 @@ class _HomepageScreenState extends State<HomepageScreen> {
                         FutureBuilder<List<Motor>>(
                           future: MotorAPi.getAll(),
                           builder: (context, snapshot) {
-                            if (snapshot.connectionState == ConnectionState.waiting) {
-                              return const Center(child: CircularProgressIndicator());
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const Center(
+                                  child: CircularProgressIndicator());
                             } else if (snapshot.hasError) {
-                              return Center(child: Text('Error: ${snapshot.error}'));
-                            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                              return const Center(child: Text('No motors available'));
+                              return Center(
+                                  child: Text('Error: ${snapshot.error}'));
+                            } else if (!snapshot.hasData ||
+                                snapshot.data!.isEmpty) {
+                              return const Center(
+                                  child: Text('No motors available'));
                             } else {
                               final List<Motor> motors = snapshot.data!;
                               return buildMotorList(motors);
