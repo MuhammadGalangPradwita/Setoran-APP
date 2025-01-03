@@ -8,7 +8,11 @@ import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 import 'package:tubes_mobpro/tubes/widgets/cardHomePage_widgets.dart';
 
 class SearchResult extends StatelessWidget {
-  const SearchResult({super.key});
+  const SearchResult({super.key, required this.date, required this.transimission, required this.model});
+
+  final String date; // tolong test lagi nanti
+  final String transimission;
+  final String model;
 
    Widget buildVehicleRow(List<Motor> motors) {
     List<Widget> vehicleCards = [];
@@ -18,11 +22,7 @@ class SearchResult extends StatelessWidget {
           // height: 210,
           // width: 160,
           margin: const EdgeInsets.only(top: 20, right: 20, left: 20),
-          imagePath: "assets/images/NMAX.png",
-          vehicleName: motor.brand,
-          rating: "4.8",
-          transmition: motor.transmisi,
-          price: motor.hargaHarian.toString(),
+          motor: motor,
         ),
       );
     }
@@ -62,11 +62,11 @@ class SearchResult extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Yamaha, NMAX',
+                model == "" ? "-" : model,
                 style: AppTextStyle.body1SemiBold,
               ),
               Text(
-                'Sun, 26 Oct 2024 ',
+                date == "" ? "-" : date,
                 style: AppTextStyle.body3Regular,
               )
             ],
@@ -75,7 +75,7 @@ class SearchResult extends StatelessWidget {
       ),
       
       body: FutureBuilder(
-        future: MotorAPi.getAll(),
+        future: MotorAPi.filtered(date, transimission, model),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());

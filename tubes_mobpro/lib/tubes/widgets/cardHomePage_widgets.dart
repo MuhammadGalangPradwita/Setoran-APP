@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tubes_mobpro/tubes/api_utilities/ulasan.dart';
+import 'package:tubes_mobpro/tubes/models/motor.dart';
 import 'package:tubes_mobpro/tubes/pages/discount_page.dart';
 import 'package:tubes_mobpro/tubes/pages/search_result_detail.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
@@ -9,22 +11,14 @@ class vehicleCard extends StatelessWidget {
   // final double width;
   // final double height;
   final EdgeInsetsGeometry margin;
-  final String imagePath;
-  final String vehicleName;
-  final String rating;
-  final String transmition;
-  final String price;
+  final Motor motor;
   
   const vehicleCard(
       {super.key,
       // required this.width,
       // required this.height,
       required this.margin,
-      required this.imagePath,
-      required this.vehicleName,
-      required this.rating,
-      required this.transmition,
-      required this.price
+      required this.motor
       }
     );
 
@@ -66,7 +60,7 @@ class vehicleCard extends StatelessWidget {
                     children: [
                       Container(
                         margin: margin,
-                        child:Image.asset(imagePath)
+                        child:Image.asset(motor.getImages()[0])
                       ),
                       const SizedBox(height: 10,),
                       Container(
@@ -75,7 +69,7 @@ class vehicleCard extends StatelessWidget {
                         child: Row(
                           children: [
                             Text(
-                              vehicleName,
+                              "${motor.brand}, ${motor.model}",
                               textAlign: TextAlign.left,
                               style: AppTextStyle.body2Bold,
                             ),
@@ -87,14 +81,26 @@ class vehicleCard extends StatelessWidget {
                               size: 18,  
                             ),
 
-                            const SizedBox(width: 5),  
-                            Text(
-                              rating,
-                              style: TextStyle(
-                                fontSize: 16,  
-                                color: Colors.black,  
-                              ),
-                            ),
+                          const SizedBox(width: 5),  
+                           FutureBuilder<double?>(future: UlasanApi.getMotorAvg(motor.idMotor), builder: (context, snapshot) {
+                            if (snapshot.hasData){
+                              return Text(
+                                snapshot.data == null ? "-" : snapshot.data.toString(),
+                                style: TextStyle(
+                                  fontSize: 16,  
+                                  color: Colors.black,  
+                                ),
+                              );
+                            }
+
+                            return Text(
+                                "-",
+                                style: TextStyle(
+                                  fontSize: 16,  
+                                  color: Colors.black,  
+                                ),
+                              );
+                           })
                           ],
                         ),
                       ),
@@ -103,7 +109,7 @@ class vehicleCard extends StatelessWidget {
                         width: double.infinity,
                         margin: const EdgeInsets.only(left: 10),
                         child: Text(
-                          transmition,
+                          motor.transmisi,
                         textAlign: TextAlign.left,
                         style: AppTextStyle.body3Regular,)
                       ),
@@ -114,7 +120,7 @@ class vehicleCard extends StatelessWidget {
                         child: Row(
                           children: [
                              Text(
-                              price,
+                              motor.hargaHarian.toString(),
                               textAlign: TextAlign.left,
                               style: AppTextStyle.body2Bold,
                             ),

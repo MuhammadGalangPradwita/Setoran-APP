@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:tubes_mobpro/tubes/api_utilities/motor.dart';
 import 'package:tubes_mobpro/tubes/models/motor.dart';
+import 'package:tubes_mobpro/tubes/pages/motor_book_page.dart';
 import 'package:tubes_mobpro/tubes/services/motor_service.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 
@@ -70,7 +72,7 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
       ),
       body: SafeArea(
         child: FutureBuilder<Motor>(
-            future: MotorService().fetch(widget.index),
+            future: MotorAPi.getMotor(widget.index),
             builder:
                 (BuildContext context, AsyncSnapshot<Motor> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
@@ -119,7 +121,7 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
                                     children: [
                                       // Nama motor
                                       Text(
-                                        '${motor.brand}, ${motor.tipe}',
+                                        '${motor.model}, ${motor.tipe}',
                                         style: AppTextStyle.body2SemiBold,
                                       ),
                                       Row(
@@ -334,9 +336,11 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
                               const SizedBox(
                                 width: 10,
                               ),
+
+                              // Booking Motor
                               ElevatedButton(
                                 onPressed: () {
-                                  print('Book Now clicked');
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => BookMotorcyclePage(motor: motor,)));
                                 },
                                 style: ElevatedButton.styleFrom(
                                     padding: const EdgeInsets.symmetric(

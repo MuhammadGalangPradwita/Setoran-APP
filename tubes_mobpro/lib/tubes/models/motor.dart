@@ -28,6 +28,11 @@ class Motor {
   });
 
   factory Motor.fromJson(Map<String, dynamic> json) {
+
+    // json.forEach((key, value) {
+    //   print("Key: $key, Value: $value, Type: ${value.runtimeType}");
+    // });
+
     return Motor(
       idMotor: json['id_motor'],
       platNomor: json['plat_nomor'],
@@ -42,5 +47,10 @@ class Motor {
       statusMotor: json['status_motor'],
       hargaHarian: double.parse(json['harga_harian'].toString()),
     );
+  }
+
+  // update kalau udah ada yang buat bagian gambar dan rating motor (atau jadi attribut)
+  List<String> getImages() {
+    return ["assets/images/NMAX.png", "assets/images/NMAX.png", "assets/images/NMAX.png", "assets/images/NMAX.png"];
   }
 }
