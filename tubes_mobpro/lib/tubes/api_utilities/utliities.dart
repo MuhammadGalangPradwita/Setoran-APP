@@ -37,7 +37,7 @@ class BaseApi {
           },
           body: body);
     } catch (e) {
-      return http.Response(jsonEncode({'error': 'Server is unreachable'}), 503);
+      return http.Response(jsonEncode({'error': 'Server is unreachable' + e.toString()}), 503);
     }
   }
 }
