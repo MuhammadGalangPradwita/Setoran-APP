@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tubes_mobpro/tubes/api_utilities/notifApi.dart';
+import 'package:tubes_mobpro/tubes/api_utilities/transaksi.dart';
 import 'package:tubes_mobpro/tubes/pages/detail_activity_page.dart';
 import 'package:tubes_mobpro/tubes/pages/edit_profile.dart';
 
@@ -15,8 +17,10 @@ class Notifikasi {
   final String deskripsi;
   final Navigasi navigasi;
   final Map<String, dynamic>? dataNavigasi;
-  final bool isSent;
-  final bool isRead;
+  bool isSent;
+  bool isRead;
+
+  final DateTime createdAt;
 
   Notifikasi({
     required this.idNotifikasi,
@@ -27,6 +31,7 @@ class Notifikasi {
     this.dataNavigasi,
     required this.isSent,
     required this.isRead,
+    required this.createdAt
   });
 
   factory Notifikasi.fromJson(Map<String, dynamic> json) {
@@ -39,6 +44,7 @@ class Notifikasi {
       dataNavigasi: json['data_navigasi'] as Map<String, dynamic>?,
       isSent: json['is_sent'] as bool,
       isRead: json['is_read'] as bool,
+      createdAt: DateTime.parse(json["created_at"]),
     );
   }
 
@@ -54,11 +60,32 @@ class Notifikasi {
   }
 
   /// kalau notif di klik bisa panggil ini
-  void navigate(BuildContext context) {
+  void onClick(BuildContext context) {
+    // mark as read, uncomment setelah testing
+    // NotifApi.read(idNotifikasi);
+
     switch (navigasi) {
       case Navigasi.transaksi:
+
+        if (dataNavigasi == null || !dataNavigasi!.containsKey("id_transaksi"))
+          return;
+
         Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-          return DetailActivityPage(activity: {},); // harus di benerin sesuai parameter activity
+          return FutureBuilder(
+            future: TransaksiApi.getTransaksi(dataNavigasi!["id_transaksi"]), 
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return Center(child: Text('Error: ${snapshot.error}'));
+              } else if (!snapshot.hasData) {
+                return const Center(child: Text('Transaction not found'));
+              } else {
+                if (snapshot.data == null)
+                  return Center(child: Text('Error: transaction with id ${dataNavigasi!["id_transaksi"]} not found'));
+                return DetailActivityPage(transaksi: snapshot.data!,);
+              }
+            });
         }));
         break;
       case Navigasi.editProfile:
