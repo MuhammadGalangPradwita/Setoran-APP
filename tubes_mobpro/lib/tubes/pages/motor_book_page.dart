@@ -265,8 +265,7 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text('Original fees',
-                      style: TextStyle(fontSize: 14.0)),
+                  const Text('Original fees', style: TextStyle(fontSize: 14.0)),
                   Text(
                       'Rp. ${formatter.format(widget.motor.hargaHarian * rentTime!.duration.inHours)}',
                       style: const TextStyle(fontSize: 14.0)),
@@ -371,7 +370,7 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
 
     try {
       // Call API to store the transaction
-      var response = await TransaksiAPI.postTransaksi(payload);
+      var response = await TransaksiApi.postTransaksi(payload);
 
       // If successful, show a success message and navigate to home
       ScaffoldMessenger.of(context).showSnackBar(
@@ -379,12 +378,10 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
       );
 
       Navigator.of(context).popUntil((route) => route.isFirst);
-
     } catch (e) {
       // Handle unexpected errors
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error: $e')),
-
       );
 
       print(e);

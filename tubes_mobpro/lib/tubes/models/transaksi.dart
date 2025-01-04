@@ -1,12 +1,13 @@
 class Transaksi {
-  final int idTransaksi;
   final int idMotor;
   final int idPelanggan;
-  final String tanggalMulai;
-  final String tanggalSelesai;
-  final String statusTransaksi;
+  final DateTime tanggalMulai;
+  final DateTime tanggalSelesai;
   final int durasi;
-  final double nominal;
+  final int nominal;
+  final DateTime createdAt;
+  final int idTransaksi;
+  final String statusTransaksi;
 
   Transaksi({
     required this.idTransaksi,
@@ -14,21 +15,23 @@ class Transaksi {
     required this.idPelanggan,
     required this.tanggalMulai,
     required this.tanggalSelesai,
-    required this.statusTransaksi,
     required this.durasi,
     required this.nominal,
+    required this.createdAt,
+    required this.statusTransaksi,
   });
 
   factory Transaksi.fromJson(Map<String, dynamic> json) {
     return Transaksi(
       idTransaksi: json['id_transaksi'],
-      idMotor: json['id_motor'],
-      idPelanggan: json['id_pelanggan'],
-      tanggalMulai: json['tanggal_mulai'],
-      tanggalSelesai: json['tanggal_selesai'],
+      idMotor: json["id_motor"],
+      idPelanggan: json["id_pelanggan"],
+      tanggalMulai: DateTime.parse(json["tanggal_mulai"]),
+      tanggalSelesai: DateTime.parse(json["tanggal_selesai"]),
+      durasi: json["durasi"],
+      nominal: json["nominal"],
+      createdAt: DateTime.parse(json["created_at"]),
       statusTransaksi: json['status_transaksi'],
-      durasi: json['durasi'],
-      nominal: double.parse(json['nominal'].toString()),
     );
   }
 

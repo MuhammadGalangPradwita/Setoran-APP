@@ -5,31 +5,42 @@ import 'package:tubes_mobpro/tubes/models/motor.dart';
 
 class MotorAPi extends BaseApi {
   static Future<List<Motor>> getAll() async {
-      var response = await BaseApi.getAuth("/api/generic/motors");
+    var response = await BaseApi.getAuth("/api/generic/motors");
 
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body) as List;
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body) as List;
 
-        return data.map((json) => Motor.fromJson(json)).toList();
-      }
+      return data.map((json) => Motor.fromJson(json)).toList();
+    }
 
-      throw Exception("Exception: ${response.body}");
+    throw Exception("Exception: ${response.body}");
   }
 
-  static Future<List<Motor>> filtered(String date, String transmission, String model) async {
-          var response = await BaseApi.postAuth("/api/motor/filtered", jsonEncode({
-        'model': model,
-        'date': date,
-        'transmission': transmission,
-      }));
+  static Future<Motor?> getById(int id) async {
+    var response = await BaseApi.getAuth("/api/generic/motors/$id");
 
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body) as List;
+    if (response.statusCode == 200) {
+      return Motor.fromJson(jsonDecode(response.body));
+    }
+  }
 
-        return data.map((json) => Motor.fromJson(json)).toList();
-      }
+  static Future<List<Motor>> filtered(
+      String date, String transmission, String model) async {
+    var response = await BaseApi.postAuth(
+        "/api/motor/filtered",
+        jsonEncode({
+          'model': model,
+          'date': date,
+          'transmission': transmission,
+        }));
 
-      throw Exception("Exception: ${response.body}");
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body) as List;
+
+      return data.map((json) => Motor.fromJson(json)).toList();
+    }
+
+    throw Exception("Exception: ${response.body}");
   }
 
   static Future<Motor> getMotor(int id) async {
@@ -43,5 +54,4 @@ class MotorAPi extends BaseApi {
 
     throw Exception("Exception: ${response.body}");
   }
-
 }
