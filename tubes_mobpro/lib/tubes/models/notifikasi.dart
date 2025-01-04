@@ -41,7 +41,7 @@ class Notifikasi {
       judul: json['judul'] as String,
       deskripsi: json['deskripsi'] as String,
       navigasi: _navigasiFromString(json['navigasi'] as String),
-      dataNavigasi: json['data_navigasi'] as Map<String, dynamic>?,
+      dataNavigasi: json['data_navigasi'] is Map<String, dynamic> ? json['data_navigasi'] as Map<String, dynamic>? : null,
       isSent: json['is_sent'] as bool,
       isRead: json['is_read'] as bool,
       createdAt: DateTime.parse(json["created_at"]),

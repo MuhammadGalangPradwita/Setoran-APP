@@ -6,7 +6,7 @@ import 'package:tubes_mobpro/tubes/models/notifikasi.dart';
 
 class NotifApi extends BaseApi {
   static Future<List<Notifikasi>> getAll() async {
-      var response = await BaseApi.getAuth("/api/generic/notifs");
+      var response = await BaseApi.getAuth("/api/notif/get-all");
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body) as List;
