@@ -5,7 +5,7 @@ import 'package:tubes_mobpro/tubes/api_utilities/motor.dart';
 
 import 'package:tubes_mobpro/tubes/pages/search_result_detail.dart';
 import 'package:tubes_mobpro/tubes/models/motor.dart';
-import 'package:tubes_mobpro/tubes/services/motor_service.dart';
+import 'package:tubes_mobpro/tubes/services/firebase_notification_service.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 import 'package:intl/intl.dart';
 

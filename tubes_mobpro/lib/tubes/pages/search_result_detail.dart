@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:tubes_mobpro/tubes/api_utilities/motor.dart';
 import 'package:tubes_mobpro/tubes/models/motor.dart';
 import 'package:tubes_mobpro/tubes/pages/motor_book_page.dart';
-import 'package:tubes_mobpro/tubes/services/motor_service.dart';
+import 'package:tubes_mobpro/tubes/services/firebase_notification_service.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 
 class SearchResultDetail extends StatefulWidget {
