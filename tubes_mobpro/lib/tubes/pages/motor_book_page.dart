@@ -163,20 +163,22 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
                     // Button
                     ElevatedButton(
                       onPressed: () async {
-                        List<Voucher> voucherList = await VoucherAPi.getAll();
-
-                        setState(() {
-                          try {
-                            voucher = voucherList.firstWhere(
-                                (v) => v.kodeVoucher == kodeVoucher);
-                            VoucherResultMessage =
-                                'Voucher code "${voucher!.namaVoucher}" applied!';
-                          } catch (e) {
-                            voucher = null;
-                            VoucherResultMessage =
-                                'Please enter a valid voucher code.';
+                        
+                        VoucherAPi.checkVoucher(kodeVoucher!).then((result) {
+                          setState(() {
+                          if (kodeVoucher != null) {
+                            voucher = result;
                           }
+
+                          if (voucher == null)
+                              VoucherResultMessage =
+                                  'Please enter a valid voucher code.';
+                          else 
+                              VoucherResultMessage =
+                                  'Voucher code "${voucher!.namaVoucher}" applied!';
+                          });
                         });
+      
                       },
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(
