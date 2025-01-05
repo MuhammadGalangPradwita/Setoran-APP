@@ -10,10 +10,11 @@ import 'tubes/services/firebase_notification_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  // await Firebase.initializeApp();
   await FirebaseNotificationService().initialize();
   await initLocalStorage();
   await CameraService.instance.initializeCameras();
+  await FirebaseNotificationService().getToken();
   runApp(const MyApp());
 }
 

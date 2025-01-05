@@ -2,6 +2,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:tubes_mobpro/firebase_options.dart';
+import 'package:tubes_mobpro/tubes/api_utilities/notifApi.dart';
 
 class FirebaseNotificationService {
   static final FirebaseNotificationService _instance =
@@ -22,7 +24,7 @@ class FirebaseNotificationService {
   );
 
   Future<void> initialize() async {
-    await Firebase.initializeApp();
+    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
     await _flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
@@ -74,13 +76,16 @@ class FirebaseNotificationService {
 
   static Future<void> _firebaseMessagingBackgroundHandler(
       RemoteMessage message) async {
-    await Firebase.initializeApp();
+    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
     print('Handling a background message ${message.messageId}');
   }
 
   Future<void> getToken() async {
     String? token = await FirebaseMessaging.instance.getToken();
-    print('TOKEN: $token');
+    // if (token != null) {
+      print("registering $token");
+      NotifApi.register(token!);
+    // }
   }
 
   void _showDialog(RemoteNotification notification) {

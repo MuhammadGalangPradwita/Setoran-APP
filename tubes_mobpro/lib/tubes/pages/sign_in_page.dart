@@ -7,6 +7,7 @@ import 'package:tubes_mobpro/tubes/api_utilities/auth.dart';
 import 'package:tubes_mobpro/tubes/models/pengguna.dart';
 import 'package:tubes_mobpro/tubes/pages/auth_check.dart';
 import 'package:tubes_mobpro/tubes/pages/forgot_password_email.dart';
+import 'package:tubes_mobpro/tubes/services/firebase_notification_service.dart';
 import 'package:tubes_mobpro/tubes/widgets/button_widgets.dart';
 import 'package:tubes_mobpro/tubes/widgets/textField_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -155,10 +156,11 @@ class _SignInPageState extends State<SignInPage> {
                 label: "Login",
                 press: () {
 
-                  AuthApi.login(_email.text, _password.text).then((response) {
-                    if (response)
+                  AuthApi.login(_email.text, _password.text).then((response) async {
+                    if (response) {
                       Provider.of<AuthState>(context, listen: false).refreshCurrentUser(); // refresh currentUser
-                    else
+                      await FirebaseNotificationService().getToken(); // register device token setelah login berhasil
+                    } else
                       AwesomeDialog(
                         context: context,
                         dialogType: DialogType.error,
