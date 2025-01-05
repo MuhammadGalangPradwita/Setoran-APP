@@ -29,7 +29,7 @@ class VoucherAPi extends BaseApi {
   }
 
     static Future<Voucher?> checkVoucher(String kodeVoucher) async {
-      var response = await BaseApi.getAuth("/api/voucher/active");
+      var response = await BaseApi.getAuth("/api/voucher/check/$kodeVoucher");
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
 

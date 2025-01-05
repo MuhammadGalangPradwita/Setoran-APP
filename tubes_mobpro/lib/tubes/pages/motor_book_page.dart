@@ -366,8 +366,8 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
       'tanggal_selesai': range.end.toIso8601String(),
       'status_transaksi':
           'dibuat', // Default status when creating a transaction
-      'durasi': range.duration.inDays, // Assuming duration is in days
-      'nominal': finalFees,
+      'durasi': range.duration.inDays, // gak perlu lagi, kalkulasi di backend berdasarkan tanggal
+      'id_voucher': voucher?.idVoucher,
     };
 
     try {
