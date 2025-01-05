@@ -62,7 +62,7 @@ class Notifikasi {
   /// kalau notif di klik bisa panggil ini
   void onClick(BuildContext context) {
     // mark as read, uncomment setelah testing
-    // NotifApi.read(idNotifikasi);
+    NotifApi.read(idNotifikasi);
 
     switch (navigasi) {
       case Navigasi.transaksi:

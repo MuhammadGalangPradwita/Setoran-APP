@@ -18,9 +18,7 @@ class VoucherAPi extends BaseApi {
 
 
   static Future<List<Voucher>> getActive() async {
-    final String today = DateTime.now().toIso8601String().split('T').first;
-    var response = await BaseApi.getAuth(
-        "/api/voucher/filtered?status=aktif&start=$today&end=$today");
+    var response = await BaseApi.getAuth("/api/voucher/active");
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body) as List;
 
@@ -29,4 +27,19 @@ class VoucherAPi extends BaseApi {
 
     throw Exception("Exception: ${response.body}");
   }
+
+    static Future<Voucher?> checkVoucher(String kodeVoucher) async {
+      var response = await BaseApi.getAuth("/api/voucher/check/$kodeVoucher");
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+
+        if (data['valid']) {
+          return Voucher.fromJson(data['voucher']);
+        }
+        // kode voucher tidak ditemukan/tidak valid
+        return null;
+      }
+
+      throw Exception("Exception: ${response.body}");
+    }
 }
