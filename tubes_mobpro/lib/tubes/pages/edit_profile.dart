@@ -253,7 +253,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const EditIDDataPage()));
+                            builder: (context) => EditIDDataPage(
+                                  pengguna: pengguna!,
+                                )));
                   },
                   child: Text(
                     "Edit",
@@ -311,7 +313,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const EditDrivingLicensePage(),
+                          builder: (context) => EditDrivingLicensePage(
+                              number: pelanggan!.nomorSIM!.toString()),
                         ));
                   },
                   child: Text(
