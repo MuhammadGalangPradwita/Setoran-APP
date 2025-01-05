@@ -117,7 +117,7 @@ class _EditDrivingLicenseCameraPageState
       Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ImageViewPage(
+            builder: (context) => SIMImageViewPage(
               imagePath: imageFile!.path,
             ),
           ));

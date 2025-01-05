@@ -1,27 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:tubes_mobpro/tubes/camera_service.dart';
+import 'package:tubes_mobpro/tubes/models/pengguna.dart';
 import 'package:tubes_mobpro/tubes/pages/edit_id_camera_page.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 import 'package:tubes_mobpro/tubes/widgets/button_widgets.dart';
 import 'package:tubes_mobpro/tubes/widgets/textField_widget.dart';
 
 class EditIDDataPage extends StatefulWidget {
-  const EditIDDataPage({super.key});
+  final Pengguna pengguna;
+  const EditIDDataPage({super.key, required this.pengguna});
 
   @override
   State<EditIDDataPage> createState() => _EditIDDataPageState();
 }
 
 class _EditIDDataPageState extends State<EditIDDataPage> {
-  TextEditingController _type = TextEditingController();
-  TextEditingController _no = TextEditingController();
+  final TextEditingController _type = TextEditingController();
+  final TextEditingController _no = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     _type.text = "KTP";
-    _no.text = "1234567894561238";
+    _no.text = widget.pengguna.nomorKTP!;
   }
 
   @override

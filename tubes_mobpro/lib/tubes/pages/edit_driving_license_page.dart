@@ -8,7 +8,8 @@ import 'package:tubes_mobpro/tubes/widgets/button_widgets.dart';
 import 'package:tubes_mobpro/tubes/widgets/textField_widget.dart';
 
 class EditDrivingLicensePage extends StatefulWidget {
-  const EditDrivingLicensePage({super.key});
+  final String number;
+  const EditDrivingLicensePage({super.key, required this.number});
 
   @override
   State<EditDrivingLicensePage> createState() => _EditDrivingLicensePageState();
@@ -22,7 +23,7 @@ class _EditDrivingLicensePageState extends State<EditDrivingLicensePage> {
   void initState() {
     super.initState();
     _status.text = "valid";
-    _no.text = "1328-0112-000039";
+    _no.text = widget.number;
   }
 
   @override

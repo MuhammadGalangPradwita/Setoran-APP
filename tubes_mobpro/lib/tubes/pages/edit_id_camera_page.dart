@@ -115,7 +115,7 @@ class _EditIdCameraPageState extends State<EditIdCameraPage> {
       Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ImageViewPage(
+            builder: (context) => KTPImageViewPage(
               imagePath: imageFile!.path,
             ),
           ));
