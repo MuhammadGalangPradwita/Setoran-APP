@@ -7,7 +7,13 @@ class AppUtil {
   }
 
   static String formatDate(DateTime date) {
-    final formatter = DateFormat('dd MMM yyyy');
+    final formatter = DateFormat('dd MMMM yyyy');
     return formatter.format(date);
+  }
+
+  static String formatDateFromString(String date) {
+    // anggap format string 'yyyy-MM-dd'
+    final formatter = DateFormat('dd MMMM yyyy');
+    return formatter.format(DateTime.parse(date));
   }
 }

@@ -1,12 +1,15 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:tubes_mobpro/tubes/models/pengguna.dart';
 import 'package:tubes_mobpro/tubes/pages/image_view_page.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 
 class EditIdCameraPage extends StatefulWidget {
   final List<CameraDescription> cameras;
-  const EditIdCameraPage({super.key, required this.cameras});
+  final Pengguna pengguna;
+  const EditIdCameraPage(
+      {super.key, required this.cameras, required this.pengguna});
 
   @override
   State<EditIdCameraPage> createState() => _EditIdCameraPageState();
@@ -115,7 +118,8 @@ class _EditIdCameraPageState extends State<EditIdCameraPage> {
       Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ImageViewPage(
+            builder: (context) => KTPImageViewPage(
+              pengguna: widget.pengguna,
               imagePath: imageFile!.path,
             ),
           ));
