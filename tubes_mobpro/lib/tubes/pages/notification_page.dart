@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:tubes_mobpro/tubes/models/notificationsItem.dart';
+import 'package:tubes_mobpro/tubes/models/notifikasi.dart';
 import 'package:tubes_mobpro/tubes/pages/notificationDetailPage.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
+import 'package:tubes_mobpro/tubes/utilities/app_util.dart';
 
 
 class NotificationPage extends StatefulWidget {
@@ -14,46 +16,53 @@ class NotificationPage extends StatefulWidget {
 
 class _NotificationPageState extends State<NotificationPage> {
   // Sample notification data
-  final List<NotificationItem> notifications = [
-    NotificationItem(
-      title: "Transaction successful",
-      message: "You have successfully made a transaction. Be careful when driving.",
-      date: "26 Oct 2024",
-      isRead: true,
-      transactionId: "1800234356",
-      type: "NMAX",
-      startDate: "26 Oct 2024",
-      endDate: "26 Oct 2024",
-      paymentMethod: "Bank Transfer",
-      price: "Rp. 50.000,00",
-      status: "Success",
+  final List<Notifikasi> notifications = [
+    Notifikasi(
+      idNotifikasi: 0,
+      idPengguna: 0,
+      judul: "Lengkapi data",
+      deskripsi: "Silahkan lengkapi data data anda di halaman edit profile",
+      navigasi: Navigasi.editProfile,
+      dataNavigasi: null,
+      isRead: false, isSent: false,
+      createdAt: DateTime.now()
     ),
-    NotificationItem(
-      title: "Transaction failed",
-      message: "Sorry, your transaction failed. Try reordering",
-      date: "26 Oct 2024",
-      isRead: false,
-      transactionId: "1800234357",
-      type: "NMAX",
-      startDate: "26 Oct 2024",
-      endDate: "26 Oct 2024",
-      paymentMethod: "Bank Transfer",
-      price: "Rp. 50.000,00",
-      status: "Failed",
+    Notifikasi(
+      idNotifikasi: 0,
+      idPengguna: 0,
+      judul: "Transaksi di ...",
+      deskripsi: "Update mengenai transaksi",
+      navigasi: Navigasi.transaksi,
+      dataNavigasi: {"id_transaksi": 1},
+      isRead: false, isSent: false,
+      createdAt: DateTime.now()
     ),
-    NotificationItem(
-      title: "Transaction successful",
-      message: "You have successfully made a transaction. Be careful when driving.",
-      date: "25 Oct 2024",
-      isRead: false,
-      transactionId: "1800234358",
-      type: "NMAX",
-      startDate: "25 Oct 2024",
-      endDate: "25 Oct 2024",
-      paymentMethod: "Bank Transfer",
-      price: "Rp. 50.000,00",
-      status: "Success",
-    ),
+    // NotificationItem(
+    //   title: "Transaction failed",
+    //   message: "Sorry, your transaction failed. Try reordering",
+    //   date: "26 Oct 2024",
+    //   isRead: false,
+    //   transactionId: "1800234357",
+    //   type: "NMAX",
+    //   startDate: "26 Oct 2024",
+    //   endDate: "26 Oct 2024",
+    //   paymentMethod: "Bank Transfer",
+    //   price: "Rp. 50.000,00",
+    //   status: "Failed",
+    // ),
+    // NotificationItem(
+    //   title: "Transaction successful",
+    //   message: "You have successfully made a transaction. Be careful when driving.",
+    //   date: "25 Oct 2024",
+    //   isRead: false,
+    //   transactionId: "1800234358",
+    //   type: "NMAX",
+    //   startDate: "25 Oct 2024",
+    //   endDate: "25 Oct 2024",
+    //   paymentMethod: "Bank Transfer",
+    //   price: "Rp. 50.000,00",
+    //   status: "Success",
+    // ),
   ];
 
   @override
@@ -92,14 +101,15 @@ class _NotificationPageState extends State<NotificationPage> {
                       setState(() {
                         notifications[index].isRead = true;
                       });
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => NotificationDetailPage(
-                              notification: notifications[index]
-                            )
-                          )
-                      );
+                      notifications[index].onClick(context);
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //       builder: (context) => NotificationDetailPage(
+                      //         notification: notifications[index]
+                      //       )
+                      //     )
+                      // );
                     },
                     child: NotificationCard(
                       notification: notifications[index],
@@ -116,7 +126,7 @@ class _NotificationPageState extends State<NotificationPage> {
 }
 
 class NotificationCard extends StatelessWidget {
-  final NotificationItem notification;
+  final Notifikasi notification;
 
   const NotificationCard({
     super.key,
@@ -142,13 +152,13 @@ class NotificationCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                notification.title,
+                notification.judul,
                 style: AppTextStyle.body2Bold.copyWith(
                     color: Colors.black
                    ),
               ),
               Text(
-                notification.date,
+                AppUtil.formatDate(notification.createdAt),
                 style: AppTextStyle.body3Regular.copyWith(
                     color: Colors.black
                    ),
@@ -157,7 +167,7 @@ class NotificationCard extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            notification.message,
+            notification.deskripsi,
             style: AppTextStyle.body2Regular.copyWith(
                     color: AppColors.N700
                    ),

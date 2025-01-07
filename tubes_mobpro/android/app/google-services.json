@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "223564369184",
+    "project_id": "setoran-66735",
+    "storage_bucket": "setoran-66735.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:223564369184:android:71cbe9304b3fea91051b45",
+        "android_client_info": {
+          "package_name": "com.example.tubes_mobpro"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmBd5_L7xurMeKe2X4X3frTXpwvAtgf18"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:223564369184:android:1229dd9e439603e0051b45",
+        "android_client_info": {
+          "package_name": "com.setoran.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmBd5_L7xurMeKe2X4X3frTXpwvAtgf18"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

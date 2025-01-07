@@ -8,7 +8,7 @@ import 'package:tubes_mobpro/tubes/pages/auth_check.dart';
 import 'package:tubes_mobpro/tubes/pages/notification_page.dart';
 import 'package:tubes_mobpro/tubes/pages/searchResultPage.dart';
 import 'package:tubes_mobpro/tubes/pages/search_result_page.dart';
-import 'package:tubes_mobpro/tubes/services/motor_service.dart';
+import 'package:tubes_mobpro/tubes/services/firebase_notification_service.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 import 'package:tubes_mobpro/tubes/widgets/cardHomePage_widgets.dart';
 import 'package:tubes_mobpro/tubes/widgets/textField_widget.dart';

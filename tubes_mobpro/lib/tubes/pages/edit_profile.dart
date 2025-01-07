@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:tubes_mobpro/tubes/api_utilities/pelanggan.dart';
+import 'package:tubes_mobpro/tubes/api_utilities/pengguna.dart';
+import 'package:tubes_mobpro/tubes/models/pelanggan.dart';
+import 'package:tubes_mobpro/tubes/models/pengguna.dart';
 import 'package:tubes_mobpro/tubes/pages/edit_driving_license_page.dart';
 import 'package:tubes_mobpro/tubes/pages/edit_id_data_page.dart';
 import 'package:tubes_mobpro/tubes/pages/edit_personal_data_page.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
+import 'package:tubes_mobpro/tubes/utilities/app_util.dart';
 
 class EditProfilePage extends StatefulWidget {
   const EditProfilePage({super.key});
@@ -13,6 +18,29 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
+  Pelanggan? pelanggan;
+  Pengguna? pengguna;
+
+  @override
+  void initState() {
+    super.initState();
+    loadData();
+  }
+
+  void loadData() async {
+    final resultPengguna = await PenggunaApi.getCurrentUser();
+    final result = await PelangganApi.getCurrentPelanggan(resultPengguna!.id);
+    setState(() {
+      pengguna = resultPengguna;
+      pelanggan = result;
+    });
+  }
+
+  Future<void> refresh() async {
+    print("Refreshed");
+    loadData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,20 +56,29 @@ class _EditProfilePageState extends State<EditProfilePage> {
         backgroundColor: AppColors.B400,
         foregroundColor: AppColors.N0,
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            children: [
-              _profilePictureSection(),
-              const Gap(32),
-              _personalDataSection(),
-              const Gap(24),
-              _IDSection(),
-              const Gap(24),
-              _DrivingLicenseSection(),
-            ],
-          ),
+      body: RefreshIndicator(onRefresh: refresh, child: _buildContent()),
+    );
+  }
+
+  Widget _buildContent() {
+    if (pelanggan == null) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+    return SingleChildScrollView(
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            _profilePictureSection(),
+            const Gap(32),
+            _personalDataSection(),
+            const Gap(24),
+            _IDSection(),
+            const Gap(24),
+            _DrivingLicenseSection(),
+          ],
         ),
       ),
     );
@@ -106,7 +143,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const EditPersonalDataPage()));
+                        builder: (context) => EditPersonalDataPage(
+                              pengguna: pengguna!,
+                            )));
               },
               child: Text(
                 "Edit",
@@ -123,7 +162,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 'Nama',
                 style: AppTextStyle.smallReguler,
               ),
-              Text('Akbar Faisal', style: AppTextStyle.body2Regular)
+              Text(pengguna!.nama, style: AppTextStyle.body2Regular)
             ],
           ),
           const Gap(12),
@@ -134,21 +173,25 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 'Birth Date',
                 style: AppTextStyle.smallReguler,
               ),
-              Text('30 September 1965', style: AppTextStyle.body2Regular)
-            ],
-          ),
-          const Gap(12),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
               Text(
-                'Gender',
-                style: AppTextStyle.smallReguler,
-              ),
-              Text('Male', style: AppTextStyle.body2Regular)
+                  pengguna!.tanggalLahir == null
+                      ? ""
+                      : AppUtil.formatDateFromString(pengguna!.tanggalLahir!),
+                  style: AppTextStyle.body2Regular)
             ],
           ),
           const Gap(12),
+          // Column(
+          //   crossAxisAlignment: CrossAxisAlignment.start,
+          //   children: [
+          //     Text(
+          //       'Gender',
+          //       style: AppTextStyle.smallReguler,
+          //     ),
+          //     Text('Male', style: AppTextStyle.body2Regular)
+          //   ],
+          // ),
+          // const Gap(12),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -156,8 +199,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 'Addres',
                 style: AppTextStyle.smallReguler,
               ),
-              Text(
-                  'Jl. Telekomunikasi. 1, Sukapura, Kec. Dayeuhkolot, Kabupaten Bandung, Jawa Barat 40257',
+              Text(pengguna!.alamat == null ? "" : pengguna!.alamat!,
                   style: AppTextStyle.body2Regular)
             ],
           ),
@@ -169,7 +211,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 'Phone Number',
                 style: AppTextStyle.smallReguler,
               ),
-              Text('+62812456789', style: AppTextStyle.body2Regular)
+              Text(
+                  pengguna!.nomorTelepon == null ? "" : pengguna!.nomorTelepon!,
+                  style: AppTextStyle.body2Regular)
             ],
           ),
           const Gap(12),
@@ -180,7 +224,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 'Email',
                 style: AppTextStyle.smallReguler,
               ),
-              Text('akbarfaisal@email.com', style: AppTextStyle.body2Regular)
+              Text(pengguna!.email, style: AppTextStyle.body2Regular)
             ],
           ),
         ],
@@ -211,7 +255,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const EditIDDataPage()));
+                            builder: (context) => EditIDDataPage(
+                                  pengguna: pengguna!,
+                                )));
                   },
                   child: Text(
                     "Edit",
@@ -239,7 +285,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     'ID No.',
                     style: AppTextStyle.smallReguler,
                   ),
-                  Text('1234567894561238', style: AppTextStyle.body2Regular)
+                  Text(pengguna!.nomorKTP == null ? "" : pengguna!.nomorKTP!,
+                      style: AppTextStyle.body2Regular)
                 ],
               ),
             ]));
@@ -268,7 +315,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const EditDrivingLicensePage(),
+                          builder: (context) => EditDrivingLicensePage(
+                            number: pelanggan!.nomorSIM!.toString(),
+                            pelanggan: pelanggan!,
+                          ),
                         ));
                   },
                   child: Text(
@@ -297,7 +347,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     'No.',
                     style: AppTextStyle.smallReguler,
                   ),
-                  Text('1328-0112-000039', style: AppTextStyle.body2Regular)
+                  Text(pelanggan!.nomorSIM, style: AppTextStyle.body2Regular)
                 ],
               ),
             ]));

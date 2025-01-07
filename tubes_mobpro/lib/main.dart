@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:tubes_mobpro/tubes/camera_service.dart';
-import 'package:localstorage/localstorage.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:tubes_mobpro/tubes/pages/auth_check.dart';
-import 'package:tubes_mobpro/tubes/pages/get_started_page.dart';
-import 'package:tubes_mobpro/notification_service.dart';
+import 'package:localstorage/localstorage.dart';
 
-// final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-// FlutterLocalNotificationsPlugin();
+import 'tubes/services/firebase_notification_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // await Firebase.initializeApp();
+  await FirebaseNotificationService().initialize();
   await initLocalStorage();
-  await NotificationService().init();
   await CameraService.instance.initializeCameras();
-  // debugPaintSizeEnabled = false;
+  await FirebaseNotificationService().getToken();
   runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
   @override
   State<MyApp> createState() => _MyAppState();
 }
@@ -31,6 +31,7 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     requestStoragePermission();
     requestCameraStatus();
+    FirebaseNotificationService().getToken();
   }
 
   void requestCameraStatus() async {
@@ -50,15 +51,15 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-              providers: [
-                ChangeNotifierProvider.value(
-                  value: AuthState(),
-                ),
-              ],
-                child: MaterialApp(
-              debugShowCheckedModeBanner: false,
-              home: AuthCheck(),
-            )
-          );
+      providers: [
+        ChangeNotifierProvider.value(
+          value: AuthState(),
+        ),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: AuthCheck(),
+      ),
+    );
   }
 }
