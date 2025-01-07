@@ -11,6 +11,7 @@ class Motor {
   final String transmisi;
   final String statusMotor;
   final double hargaHarian;
+  // final double hargaDiskon;
 
   Motor({
     required this.idMotor,
@@ -25,6 +26,7 @@ class Motor {
     required this.transmisi,
     required this.statusMotor,
     required this.hargaHarian,
+    // required this.hargaDiskon,
   });
 
   factory Motor.fromJson(Map<String, dynamic> json) {
@@ -41,6 +43,7 @@ class Motor {
       transmisi: json['transmisi'],
       statusMotor: json['status_motor'],
       hargaHarian: double.parse(json['harga_harian'].toString()),
+      // hargaDiskon: double.parse(json['diskon_amount'].toString()),
     );
   }
 }
