@@ -7,7 +7,7 @@ class AppUtil {
   }
 
   static String formatDate(DateTime date) {
-    final formatter = DateFormat('dd MMM yyyy');
+    final formatter = DateFormat('dd MMMM yyyy');
     return formatter.format(date);
   }
 

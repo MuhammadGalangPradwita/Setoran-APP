@@ -8,7 +8,7 @@ import 'package:localstorage/localstorage.dart';
 class BaseApi {
   // asumsi ini, mungkin nanti bisa buat file .env buat set host nya
   static String backendHost = "http://10.0.2.2:8000";
-  
+
   // bisa ganti nanti ke secure storage
   static LocalStorage storage = LocalStorage();
   // static FlutterSecureStorage storage = FlutterSecureStorage();
@@ -37,7 +37,24 @@ class BaseApi {
           },
           body: body);
     } catch (e) {
-      return http.Response(jsonEncode({'error': 'Server is unreachable' + e.toString()}), 503);
+      return http.Response(
+          jsonEncode({'error': 'Server is unreachable' + e.toString()}), 503);
+    }
+  }
+
+  static Future<http.Response> putAuth(String url, String body,
+      {Map<String, dynamic> headers = const {}}) async {
+    try {
+      return await http.put(Uri.parse(backendHost + url),
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            "Authorization": "Bearer ${storage.read(key: "access_token")}"
+          },
+          body: body);
+    } catch (e) {
+      return http.Response(
+          jsonEncode({'error': 'Server is unreachable' + e.toString()}), 503);
     }
   }
 }
