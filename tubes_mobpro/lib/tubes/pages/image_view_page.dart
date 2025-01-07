@@ -5,13 +5,19 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
+import 'package:tubes_mobpro/tubes/api_utilities/pelanggan.dart';
+import 'package:tubes_mobpro/tubes/api_utilities/pengguna.dart';
+import 'package:tubes_mobpro/tubes/models/pelanggan.dart';
+import 'package:tubes_mobpro/tubes/models/pengguna.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 import 'package:tubes_mobpro/tubes/widgets/button_widgets.dart';
 import 'package:tubes_mobpro/tubes/widgets/textField_widget.dart';
 
 class KTPImageViewPage extends StatefulWidget {
   final String imagePath;
-  const KTPImageViewPage({super.key, required this.imagePath});
+  final Pengguna pengguna;
+  const KTPImageViewPage(
+      {super.key, required this.imagePath, required this.pengguna});
 
   @override
   State<KTPImageViewPage> createState() => _KTPImageViewPageState();
@@ -103,7 +109,10 @@ class _KTPImageViewPageState extends State<KTPImageViewPage> {
                         const Gap(16),
                         Expanded(
                             child: ButtonWidget.primary(
-                                label: "Confirm", press: () {}))
+                                label: "Confirm",
+                                press: () {
+                                  _saveId();
+                                }))
                       ],
                     ),
                   ],
@@ -116,8 +125,17 @@ class _KTPImageViewPageState extends State<KTPImageViewPage> {
     );
   }
 
-  void _saveId() {
+  void _saveId() async {
     // save id to database
+    if (controller.text.isNotEmpty && controller.text.length == 16) {
+      widget.pengguna.nomorKTP = controller.text;
+      await PenggunaApi.updatePengguna(widget.pengguna);
+      Navigator.of(context)
+        ..pop()
+        ..pop()
+        ..pop()
+        ..pop();
+    }
   }
 
   Future<String?> _extractText(File file) async {
@@ -160,7 +178,9 @@ class _KTPImageViewPageState extends State<KTPImageViewPage> {
 
 class SIMImageViewPage extends StatefulWidget {
   final String imagePath;
-  const SIMImageViewPage({super.key, required this.imagePath});
+  final Pelanggan pelanggan;
+  const SIMImageViewPage(
+      {super.key, required this.imagePath, required this.pelanggan});
 
   @override
   State<SIMImageViewPage> createState() => _SIMImageViewPageState();
@@ -252,7 +272,10 @@ class _SIMImageViewPageState extends State<SIMImageViewPage> {
                         const Gap(16),
                         Expanded(
                             child: ButtonWidget.primary(
-                                label: "Confirm", press: () {}))
+                                label: "Confirm",
+                                press: () {
+                                  _saveId(context);
+                                }))
                       ],
                     ),
                   ],
@@ -265,8 +288,17 @@ class _SIMImageViewPageState extends State<SIMImageViewPage> {
     );
   }
 
-  void _saveId() {
+  void _saveId(BuildContext context) async {
     // save id to database
+    if (controller.text.isNotEmpty) {
+      widget.pelanggan.nomorSIM = controller.text;
+      await PelangganApi.updatePelanggan(widget.pelanggan);
+      Navigator.of(context)
+        ..pop()
+        ..pop()
+        ..pop()
+        ..pop();
+    }
   }
 
   Future<String?> _extractText(File file) async {

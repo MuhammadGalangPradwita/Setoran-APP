@@ -143,7 +143,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const EditPersonalDataPage()));
+                        builder: (context) => EditPersonalDataPage(
+                              pengguna: pengguna!,
+                            )));
               },
               child: Text(
                 "Edit",
@@ -179,17 +181,17 @@ class _EditProfilePageState extends State<EditProfilePage> {
             ],
           ),
           const Gap(12),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Gender',
-                style: AppTextStyle.smallReguler,
-              ),
-              Text('Male', style: AppTextStyle.body2Regular)
-            ],
-          ),
-          const Gap(12),
+          // Column(
+          //   crossAxisAlignment: CrossAxisAlignment.start,
+          //   children: [
+          //     Text(
+          //       'Gender',
+          //       style: AppTextStyle.smallReguler,
+          //     ),
+          //     Text('Male', style: AppTextStyle.body2Regular)
+          //   ],
+          // ),
+          // const Gap(12),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -314,7 +316,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => EditDrivingLicensePage(
-                              number: pelanggan!.nomorSIM!.toString()),
+                            number: pelanggan!.nomorSIM!.toString(),
+                            pelanggan: pelanggan!,
+                          ),
                         ));
                   },
                   child: Text(

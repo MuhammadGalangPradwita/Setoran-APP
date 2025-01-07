@@ -70,8 +70,9 @@ class _EditIDDataPageState extends State<EditIDDataPage> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => EditIdCameraPage(
-                                        cameras:
-                                            CameraService.instance.cameras),
+                                      cameras: CameraService.instance.cameras,
+                                      pengguna: widget.pengguna,
+                                    ),
                                   ));
                             })),
                   ],

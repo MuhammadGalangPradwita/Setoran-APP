@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:tubes_mobpro/tubes/camera_service.dart';
+import 'package:tubes_mobpro/tubes/models/pelanggan.dart';
 import 'package:tubes_mobpro/tubes/pages/edit_driving_license_camera_page.dart';
 import 'package:tubes_mobpro/tubes/pages/edit_id_camera_page.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
@@ -9,7 +10,9 @@ import 'package:tubes_mobpro/tubes/widgets/textField_widget.dart';
 
 class EditDrivingLicensePage extends StatefulWidget {
   final String number;
-  const EditDrivingLicensePage({super.key, required this.number});
+  final Pelanggan pelanggan;
+  const EditDrivingLicensePage(
+      {super.key, required this.number, required this.pelanggan});
 
   @override
   State<EditDrivingLicensePage> createState() => _EditDrivingLicensePageState();
@@ -76,8 +79,9 @@ class _EditDrivingLicensePageState extends State<EditDrivingLicensePage> {
                                   MaterialPageRoute(
                                     builder: (context) =>
                                         EditDrivingLicenseCameraPage(
-                                            cameras:
-                                                CameraService.instance.cameras),
+                                      cameras: CameraService.instance.cameras,
+                                      pelanggan: widget.pelanggan,
+                                    ),
                                   ));
                             })),
                   ],

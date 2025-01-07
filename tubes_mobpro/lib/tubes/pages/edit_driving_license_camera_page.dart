@@ -1,12 +1,15 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:tubes_mobpro/tubes/models/pelanggan.dart';
 import 'package:tubes_mobpro/tubes/pages/image_view_page.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 
 class EditDrivingLicenseCameraPage extends StatefulWidget {
   final List<CameraDescription> cameras;
-  const EditDrivingLicenseCameraPage({super.key, required this.cameras});
+  final Pelanggan pelanggan;
+  const EditDrivingLicenseCameraPage(
+      {super.key, required this.cameras, required this.pelanggan});
 
   @override
   State<EditDrivingLicenseCameraPage> createState() =>
@@ -119,6 +122,7 @@ class _EditDrivingLicenseCameraPageState
           MaterialPageRoute(
             builder: (context) => SIMImageViewPage(
               imagePath: imageFile!.path,
+              pelanggan: widget.pelanggan,
             ),
           ));
     } catch (e) {
