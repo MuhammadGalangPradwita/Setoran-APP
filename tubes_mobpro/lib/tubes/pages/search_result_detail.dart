@@ -2,10 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tubes_mobpro/tubes/api_utilities/motor.dart';
+import 'package:tubes_mobpro/tubes/api_utilities/transaksi.dart';
 import 'package:tubes_mobpro/tubes/models/motor.dart';
+import 'package:tubes_mobpro/tubes/models/transaksi.dart';
 import 'package:tubes_mobpro/tubes/pages/motor_book_page.dart';
 import 'package:tubes_mobpro/tubes/services/firebase_notification_service.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
+
+import '../api_utilities/pengguna.dart';
 
 class SearchResultDetail extends StatefulWidget {
   final Map<String, dynamic> motorData = {
@@ -32,6 +36,12 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
    bool _isLoved = false;
 
   final formatter = NumberFormat("#,###");
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -365,5 +375,20 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
             }),
       ),
     );
+  }
+
+  Future<bool> isRented() async {
+
+    int userId = (await PenggunaApi.getCurrentUser())!.id;
+
+    List<Transaksi>? transaksiList = (await TransaksiApi.getByPelanggan(userId));
+
+    if (transaksiList != null) {
+      bool exists = transaksiList.any((v) => v.idMotor == widget.index);
+
+      return exists;
+    }
+
+    return false;
   }
 }
