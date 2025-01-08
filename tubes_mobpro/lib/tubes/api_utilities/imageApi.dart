@@ -5,20 +5,20 @@ import 'package:http/http.dart' as http;
 import 'package:tubes_mobpro/tubes/api_utilities/utliities.dart';
 
 class ImageApi extends BaseApi {
-  
   static Future<int?> uploadImage(File image, String label) async {
     try {
-      final uri = Uri.parse(BaseApi.backendHost + '/api/image'); // Replace with your backend URL
+      final uri = Uri.parse(
+          BaseApi.backendHost + '/api/image'); // Replace with your backend URL
       final request = http.MultipartRequest('POST', uri);
 
       request.files.add(await http.MultipartFile.fromPath('image', image.path));
-      
+
       request.fields['label'] = label;
 
       request.headers.addAll({
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            "Authorization": "Bearer ${BaseApi.storage.read(key: "access_token")}"
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        "Authorization": "Bearer ${BaseApi.storage.read(key: "access_token")}"
       });
 
       final response = await request.send();
@@ -29,7 +29,9 @@ class ImageApi extends BaseApi {
 
         return data['id'];
       } else {
-        print("Error: ${http.Response.fromStream(response).then((val) { print(val.body); })}");
+        print("Error: ${http.Response.fromStream(response).then((val) {
+          print(val.body);
+        })}");
         return null;
       }
     } catch (e) {
@@ -40,7 +42,15 @@ class ImageApi extends BaseApi {
 
   static NetworkImage getImage(int id) {
     return NetworkImage(BaseApi.backendHost + "/api/image/$id", headers: {
-            "Authorization": "Bearer ${BaseApi.storage.read(key: "access_token")}"
-      });
+      "Authorization": "Bearer ${BaseApi.storage.read(key: "access_token")}"
+    });
+  }
+
+  static Image getImageImage(int id) {
+    final result = NetworkImage(BaseApi.backendHost + "/api/image/$id",
+        headers: {
+          "Authorization": "Bearer ${BaseApi.storage.read(key: "access_token")}"
+        });
+    return Image.network(result.url);
   }
 }

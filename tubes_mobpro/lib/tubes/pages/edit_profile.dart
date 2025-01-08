@@ -1,9 +1,15 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:tubes_mobpro/tubes/api_utilities/imageApi.dart';
+import 'package:tubes_mobpro/tubes/api_utilities/image_data.dart';
 import 'package:tubes_mobpro/tubes/api_utilities/pelanggan.dart';
 import 'package:tubes_mobpro/tubes/api_utilities/pengguna.dart';
+import 'package:tubes_mobpro/tubes/models/image_data.dart';
 import 'package:tubes_mobpro/tubes/models/pelanggan.dart';
 import 'package:tubes_mobpro/tubes/models/pengguna.dart';
+import 'package:tubes_mobpro/tubes/pages/avatar_preview_page.dart';
 import 'package:tubes_mobpro/tubes/pages/edit_driving_license_page.dart';
 import 'package:tubes_mobpro/tubes/pages/edit_id_data_page.dart';
 import 'package:tubes_mobpro/tubes/pages/edit_personal_data_page.dart';
@@ -20,6 +26,9 @@ class EditProfilePage extends StatefulWidget {
 class _EditProfilePageState extends State<EditProfilePage> {
   Pelanggan? pelanggan;
   Pengguna? pengguna;
+  late NetworkImage avatar;
+  // late ImageData profilePicture;
+  late Image profilePicture;
 
   @override
   void initState() {
@@ -30,9 +39,15 @@ class _EditProfilePageState extends State<EditProfilePage> {
   void loadData() async {
     final resultPengguna = await PenggunaApi.getCurrentUser();
     final result = await PelangganApi.getCurrentPelanggan(resultPengguna!.id);
+    final resultImage = ImageApi.getImage(resultPengguna.idGambar!);
+    final resultProfile =
+        await ImageApi.getImageImage(resultPengguna.idGambar!);
+    // final resultProfile = await ImageDataApi.getImage(resultPengguna.idGambar!);
     setState(() {
       pengguna = resultPengguna;
       pelanggan = result;
+      avatar = resultImage;
+      // profilePicture = resultProfile!;
     });
   }
 
@@ -88,33 +103,47 @@ class _EditProfilePageState extends State<EditProfilePage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Stack(
-          children: [
-            CircleAvatar(
-              radius: 70, // Adjust size as needed
-              backgroundColor: Colors.grey[200],
-              backgroundImage: const AssetImage('assets/images/avatar.png'),
-            ),
-            Positioned(
-              bottom: 0,
-              right: 10,
-              child: InkWell(
-                onTap: () {},
-                child: Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: const BoxDecoration(
-                    color: AppColors.N100,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    Icons.camera_alt,
-                    size: 20,
-                    color: AppColors.N800,
+        InkWell(
+          onTap: () {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => AvatarPreviewPage(
+                image: profilePicture,
+              ),
+            ));
+          },
+          child: Stack(
+            children: [
+              CircleAvatar(
+                radius: 70, // Adjust size as needed
+                backgroundColor: Colors.grey[200],
+                // backgroundImage: const AssetImage('assets/images/avatar.png'),
+                backgroundImage: avatar,
+                // backgroundImage: profilePicture.image,
+                // backgroundImage: profilePicture == null
+                //     ? const AssetImage('assets/images/avatar.png')
+                //     : Image.memory(profilePicture!.data!).image,
+              ),
+              Positioned(
+                bottom: 0,
+                right: 10,
+                child: InkWell(
+                  onTap: () {},
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: const BoxDecoration(
+                      color: AppColors.N100,
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.camera_alt,
+                      size: 20,
+                      color: AppColors.N800,
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         )
       ],
     );
