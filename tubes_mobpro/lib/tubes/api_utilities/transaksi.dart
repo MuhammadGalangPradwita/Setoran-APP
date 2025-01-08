@@ -56,4 +56,14 @@ class TransaksiApi extends BaseApi {
 
     throw Exception("Error creating transaction: ${response.body}");
   }
+
+  static Future<List<Transaksi>?> getByMitra(int idMitra) async {
+    final response = await BaseApi.getAuth("/api/transaksi/mitra/$idMitra");
+    if (response.ok) {
+      final data = jsonDecode(response.body) as List;
+      return data.map((json) => Transaksi.fromJson(json)).toList();
+    }
+
+    return [];
+  }
 }

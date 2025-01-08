@@ -54,4 +54,15 @@ class MotorAPi extends BaseApi {
 
     throw Exception("Exception: ${response.body}");
   }
+
+  static Future<List<Motor>?> getByMitra(int idMitra) async {
+    final response = await BaseApi.getAuth("/api/motor/mitra/$idMitra");
+
+    if (response.ok) {
+      final data = jsonDecode(response.body) as List;
+      return data.map((json) => Motor.fromJson(json)).toList();
+    }
+
+    return [];
+  }
 }

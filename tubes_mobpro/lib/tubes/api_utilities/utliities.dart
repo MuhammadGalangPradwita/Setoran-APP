@@ -57,6 +57,19 @@ class BaseApi {
           jsonEncode({'error': 'Server is unreachable' + e.toString()}), 503);
     }
   }
+
+  static Future<http.Response> getImageAuth(String url,
+      {Map<String, dynamic> headers = const {}}) async {
+    try {
+      return await http.get(Uri.parse(backendHost + url), headers: {
+        'Accept': 'image/jpeg',
+        "Authorization": "Bearer ${storage.read(key: "access_token")}",
+        ...headers
+      });
+    } catch (e) {
+      return http.Response(jsonEncode({'error': 'Server is unreachable'}), 503);
+    }
+  }
 }
 
 extension IsOk on http.Response {
