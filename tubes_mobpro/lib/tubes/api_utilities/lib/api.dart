@@ -32,6 +32,7 @@ part 'api/auth_api.dart';
 part 'api/motor_api.dart';
 part 'api/notifikasi_api.dart';
 part 'api/pelanggan_api.dart';
+part 'api/pengguna_api.dart';
 part 'api/setoran_apinet_api.dart';
 part 'api/storage_api.dart';
 part 'api/voucher_api.dart';
