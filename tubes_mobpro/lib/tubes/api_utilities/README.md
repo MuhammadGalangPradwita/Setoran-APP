@@ -67,6 +67,8 @@ Class | Method | HTTP request | Description
 *AuthApi* | [**authRegisterPost**](doc//AuthApi.md#authregisterpost) | **POST** /Auth/register | 
 *MotorApi* | [**apiMotorGet**](doc//MotorApi.md#apimotorget) | **GET** /api/Motor | 
 *MotorApi* | [**apiMotorIdGet**](doc//MotorApi.md#apimotoridget) | **GET** /api/Motor/{id} | 
+*MotorApi* | [**apiMotorIdPut**](doc//MotorApi.md#apimotoridput) | **PUT** /api/Motor/{id} | 
+*MotorApi* | [**apiMotorIdUlasansGet**](doc//MotorApi.md#apimotoridulasansget) | **GET** /api/Motor/{id}/ulasans | 
 *MotorApi* | [**apiMotorPost**](doc//MotorApi.md#apimotorpost) | **POST** /api/Motor | 
 *NotifikasiApi* | [**notifikasiGenericIdDelete**](doc//NotifikasiApi.md#notifikasigenericiddelete) | **DELETE** /Notifikasi/generic/{id} | 
 *NotifikasiApi* | [**notifikasiGenericIdGet**](doc//NotifikasiApi.md#notifikasigenericidget) | **GET** /Notifikasi/generic/{id} | 
@@ -75,6 +77,11 @@ Class | Method | HTTP request | Description
 *NotifikasiApi* | [**notifikasiRegisterDevicePost**](doc//NotifikasiApi.md#notifikasiregisterdevicepost) | **POST** /Notifikasi/registerDevice | 
 *NotifikasiApi* | [**notifikasiSendPost**](doc//NotifikasiApi.md#notifikasisendpost) | **POST** /Notifikasi/send | 
 *PelangganApi* | [**pelangganCurrentPelangganGet**](doc//PelangganApi.md#pelanggancurrentpelangganget) | **GET** /Pelanggan/currentPelanggan | 
+*PembayaranApi* | [**apiPembayaranGet**](doc//PembayaranApi.md#apipembayaranget) | **GET** /api/Pembayaran | 
+*PembayaranApi* | [**apiPembayaranIdGet**](doc//PembayaranApi.md#apipembayaranidget) | **GET** /api/Pembayaran/{id} | 
+*PembayaranApi* | [**apiPembayaranIdPut**](doc//PembayaranApi.md#apipembayaranidput) | **PUT** /api/Pembayaran/{id} | 
+*PembayaranApi* | [**apiPembayaranPost**](doc//PembayaranApi.md#apipembayaranpost) | **POST** /api/Pembayaran | 
+*PembayaranApi* | [**apiPembayaranTransaksiIdGet**](doc//PembayaranApi.md#apipembayarantransaksiidget) | **GET** /api/Pembayaran/transaksi/{id} | 
 *PenggunaApi* | [**penggunaCurrentPenggunaGet**](doc//PenggunaApi.md#penggunacurrentpenggunaget) | **GET** /Pengguna/currentPengguna | 
 *SetoranAPINETApi* | [**forgotPasswordPost**](doc//SetoranAPINETApi.md#forgotpasswordpost) | **POST** /forgotPassword | 
 *SetoranAPINETApi* | [**loginPost**](doc//SetoranAPINETApi.md#loginpost) | **POST** /login | 
@@ -88,6 +95,13 @@ Class | Method | HTTP request | Description
 *SetoranAPINETApi* | [**resetPasswordPost**](doc//SetoranAPINETApi.md#resetpasswordpost) | **POST** /resetPassword | 
 *StorageApi* | [**storageFetchFileNameGet**](doc//StorageApi.md#storagefetchfilenameget) | **GET** /Storage/fetch/{fileName} | 
 *StorageApi* | [**storageStorePost**](doc//StorageApi.md#storagestorepost) | **POST** /Storage/store | 
+*TransaksiApi* | [**apiTransaksiGet**](doc//TransaksiApi.md#apitransaksiget) | **GET** /api/Transaksi | 
+*TransaksiApi* | [**apiTransaksiIdGet**](doc//TransaksiApi.md#apitransaksiidget) | **GET** /api/Transaksi/{id} | 
+*TransaksiApi* | [**apiTransaksiIdPut**](doc//TransaksiApi.md#apitransaksiidput) | **PUT** /api/Transaksi/{id} | 
+*TransaksiApi* | [**apiTransaksiPost**](doc//TransaksiApi.md#apitransaksipost) | **POST** /api/Transaksi | 
+*UlasanApi* | [**apiUlasanGet**](doc//UlasanApi.md#apiulasanget) | **GET** /api/Ulasan | 
+*UlasanApi* | [**apiUlasanIdGet**](doc//UlasanApi.md#apiulasanidget) | **GET** /api/Ulasan/{id} | 
+*UlasanApi* | [**apiUlasanPost**](doc//UlasanApi.md#apiulasanpost) | **POST** /api/Ulasan | 
 *VoucherApi* | [**voucherCheckVoucherCodeGet**](doc//VoucherApi.md#vouchercheckvouchercodeget) | **GET** /Voucher/checkVoucher/{code} | 
 *VoucherApi* | [**voucherFilteredGet**](doc//VoucherApi.md#voucherfilteredget) | **GET** /Voucher/filtered | 
 *VoucherApi* | [**voucherGenericIdDelete**](doc//VoucherApi.md#vouchergenericiddelete) | **DELETE** /Voucher/generic/{id} | 
@@ -109,12 +123,20 @@ Class | Method | HTTP request | Description
  - [InfoRequest](doc//InfoRequest.md)
  - [InfoResponse](doc//InfoResponse.md)
  - [LoginRequest](doc//LoginRequest.md)
+ - [Mitra](doc//Mitra.md)
+ - [Motor](doc//Motor.md)
  - [MotorForm](doc//MotorForm.md)
  - [Notifikasi](doc//Notifikasi.md)
  - [Pelanggan](doc//Pelanggan.md)
+ - [Pembayaran](doc//Pembayaran.md)
  - [Pengguna](doc//Pengguna.md)
  - [PostNotifikasDTO](doc//PostNotifikasDTO.md)
+ - [PostPembayaranDTO](doc//PostPembayaranDTO.md)
+ - [PostTransaksiDTO](doc//PostTransaksiDTO.md)
+ - [PostUlasanDTO](doc//PostUlasanDTO.md)
  - [PostVoucherDTO](doc//PostVoucherDTO.md)
+ - [PutMotorDTO](doc//PutMotorDTO.md)
+ - [PutPembayaranDTO](doc//PutPembayaranDTO.md)
  - [RefreshRequest](doc//RefreshRequest.md)
  - [RegisterForm](doc//RegisterForm.md)
  - [RegisterRequest](doc//RegisterRequest.md)
@@ -122,6 +144,7 @@ Class | Method | HTTP request | Description
  - [ResetPasswordRequest](doc//ResetPasswordRequest.md)
  - [StatusVoucher](doc//StatusVoucher.md)
  - [TargetNavigasi](doc//TargetNavigasi.md)
+ - [Transaksi](doc//Transaksi.md)
  - [TwoFactorRequest](doc//TwoFactorRequest.md)
  - [TwoFactorResponse](doc//TwoFactorResponse.md)
  - [Voucher](doc//Voucher.md)

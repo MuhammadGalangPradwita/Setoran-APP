@@ -11,18 +11,18 @@
 part of openapi.api;
 
 
-class MotorApi {
-  MotorApi([ApiClient? apiClient]) : apiClient = apiClient ?? defaultApiClient;
+class TransaksiApi {
+  TransaksiApi([ApiClient? apiClient]) : apiClient = apiClient ?? defaultApiClient;
 
   final ApiClient apiClient;
 
-  /// Performs an HTTP 'GET /api/Motor' operation and returns the [Response].
+  /// Performs an HTTP 'GET /api/Transaksi' operation and returns the [Response].
   /// Parameters:
   ///
   /// * [Object] query:
-  Future<Response> apiMotorGetWithHttpInfo({ Object? query, }) async {
+  Future<Response> apiTransaksiGetWithHttpInfo({ Object? query, }) async {
     // ignore: prefer_const_declarations
-    final path = r'/api/Motor';
+    final path = r'/api/Transaksi';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -52,20 +52,20 @@ class MotorApi {
   /// Parameters:
   ///
   /// * [Object] query:
-  Future<void> apiMotorGet({ Object? query, }) async {
-    final response = await apiMotorGetWithHttpInfo( query: query, );
+  Future<void> apiTransaksiGet({ Object? query, }) async {
+    final response = await apiTransaksiGetWithHttpInfo( query: query, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
   }
 
-  /// Performs an HTTP 'GET /api/Motor/{id}' operation and returns the [Response].
+  /// Performs an HTTP 'GET /api/Transaksi/{id}' operation and returns the [Response].
   /// Parameters:
   ///
   /// * [int] id (required):
-  Future<Response> apiMotorIdGetWithHttpInfo(int id,) async {
+  Future<Response> apiTransaksiIdGetWithHttpInfo(int id,) async {
     // ignore: prefer_const_declarations
-    final path = r'/api/Motor/{id}'
+    final path = r'/api/Transaksi/{id}'
       .replaceAll('{id}', id.toString());
 
     // ignore: prefer_final_locals
@@ -92,32 +92,36 @@ class MotorApi {
   /// Parameters:
   ///
   /// * [int] id (required):
-  Future<void> apiMotorIdGet(int id,) async {
-    final response = await apiMotorIdGetWithHttpInfo(id,);
+  Future<void> apiTransaksiIdGet(int id,) async {
+    final response = await apiTransaksiIdGetWithHttpInfo(id,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
   }
 
-  /// Performs an HTTP 'PUT /api/Motor/{id}' operation and returns the [Response].
+  /// Performs an HTTP 'PUT /api/Transaksi/{id}' operation and returns the [Response].
   /// Parameters:
   ///
   /// * [int] id (required):
   ///
-  /// * [PutMotorDTO] putMotorDTO:
-  Future<Response> apiMotorIdPutWithHttpInfo(int id, { PutMotorDTO? putMotorDTO, }) async {
+  /// * [String] status:
+  Future<Response> apiTransaksiIdPutWithHttpInfo(int id, { String? status, }) async {
     // ignore: prefer_const_declarations
-    final path = r'/api/Motor/{id}'
+    final path = r'/api/Transaksi/{id}'
       .replaceAll('{id}', id.toString());
 
     // ignore: prefer_final_locals
-    Object? postBody = putMotorDTO;
+    Object? postBody;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
     final formParams = <String, String>{};
 
-    const contentTypes = <String>['application/json', 'application/json-patch+json', 'text/json', 'application/*+json'];
+    if (status != null) {
+      queryParams.addAll(_queryParams('', 'status', status));
+    }
+
+    const contentTypes = <String>[];
 
 
     return apiClient.invokeAPI(
@@ -135,64 +139,24 @@ class MotorApi {
   ///
   /// * [int] id (required):
   ///
-  /// * [PutMotorDTO] putMotorDTO:
-  Future<void> apiMotorIdPut(int id, { PutMotorDTO? putMotorDTO, }) async {
-    final response = await apiMotorIdPutWithHttpInfo(id,  putMotorDTO: putMotorDTO, );
+  /// * [String] status:
+  Future<void> apiTransaksiIdPut(int id, { String? status, }) async {
+    final response = await apiTransaksiIdPutWithHttpInfo(id,  status: status, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
   }
 
-  /// Performs an HTTP 'GET /api/Motor/{id}/ulasans' operation and returns the [Response].
+  /// Performs an HTTP 'POST /api/Transaksi' operation and returns the [Response].
   /// Parameters:
   ///
-  /// * [int] id (required):
-  Future<Response> apiMotorIdUlasansGetWithHttpInfo(int id,) async {
+  /// * [PostTransaksiDTO] postTransaksiDTO:
+  Future<Response> apiTransaksiPostWithHttpInfo({ PostTransaksiDTO? postTransaksiDTO, }) async {
     // ignore: prefer_const_declarations
-    final path = r'/api/Motor/{id}/ulasans'
-      .replaceAll('{id}', id.toString());
+    final path = r'/api/Transaksi';
 
     // ignore: prefer_final_locals
-    Object? postBody;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-    const contentTypes = <String>[];
-
-
-    return apiClient.invokeAPI(
-      path,
-      'GET',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  /// Parameters:
-  ///
-  /// * [int] id (required):
-  Future<void> apiMotorIdUlasansGet(int id,) async {
-    final response = await apiMotorIdUlasansGetWithHttpInfo(id,);
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-  }
-
-  /// Performs an HTTP 'POST /api/Motor' operation and returns the [Response].
-  /// Parameters:
-  ///
-  /// * [MotorForm] motorForm:
-  Future<Response> apiMotorPostWithHttpInfo({ MotorForm? motorForm, }) async {
-    // ignore: prefer_const_declarations
-    final path = r'/api/Motor';
-
-    // ignore: prefer_final_locals
-    Object? postBody = motorForm;
+    Object? postBody = postTransaksiDTO;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
@@ -214,9 +178,9 @@ class MotorApi {
 
   /// Parameters:
   ///
-  /// * [MotorForm] motorForm:
-  Future<void> apiMotorPost({ MotorForm? motorForm, }) async {
-    final response = await apiMotorPostWithHttpInfo( motorForm: motorForm, );
+  /// * [PostTransaksiDTO] postTransaksiDTO:
+  Future<void> apiTransaksiPost({ PostTransaksiDTO? postTransaksiDTO, }) async {
+    final response = await apiTransaksiPostWithHttpInfo( postTransaksiDTO: postTransaksiDTO, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

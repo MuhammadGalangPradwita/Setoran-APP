@@ -1,4 +1,4 @@
-# openapi.api.MotorApi
+# openapi.api.PembayaranApi
 
 ## Load the API package
 ```dart
@@ -9,15 +9,15 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**apiMotorGet**](MotorApi.md#apimotorget) | **GET** /api/Motor | 
-[**apiMotorIdGet**](MotorApi.md#apimotoridget) | **GET** /api/Motor/{id} | 
-[**apiMotorIdPut**](MotorApi.md#apimotoridput) | **PUT** /api/Motor/{id} | 
-[**apiMotorIdUlasansGet**](MotorApi.md#apimotoridulasansget) | **GET** /api/Motor/{id}/ulasans | 
-[**apiMotorPost**](MotorApi.md#apimotorpost) | **POST** /api/Motor | 
+[**apiPembayaranGet**](PembayaranApi.md#apipembayaranget) | **GET** /api/Pembayaran | 
+[**apiPembayaranIdGet**](PembayaranApi.md#apipembayaranidget) | **GET** /api/Pembayaran/{id} | 
+[**apiPembayaranIdPut**](PembayaranApi.md#apipembayaranidput) | **PUT** /api/Pembayaran/{id} | 
+[**apiPembayaranPost**](PembayaranApi.md#apipembayaranpost) | **POST** /api/Pembayaran | 
+[**apiPembayaranTransaksiIdGet**](PembayaranApi.md#apipembayarantransaksiidget) | **GET** /api/Pembayaran/transaksi/{id} | 
 
 
-# **apiMotorGet**
-> apiMotorGet(query)
+# **apiPembayaranGet**
+> List<Pembayaran> apiPembayaranGet()
 
 
 
@@ -31,25 +31,22 @@ import 'package:openapi/api.dart';
 // String yourTokenGeneratorFunction() { ... }
 //defaultApiClient.getAuthentication<HttpBearerAuth>('Bearer').setAccessToken(yourTokenGeneratorFunction);
 
-final api_instance = MotorApi();
-final query = Object; // Object | 
+final api_instance = PembayaranApi();
 
 try {
-    api_instance.apiMotorGet(query);
+    final result = api_instance.apiPembayaranGet();
+    print(result);
 } catch (e) {
-    print('Exception when calling MotorApi->apiMotorGet: $e\n');
+    print('Exception when calling PembayaranApi->apiPembayaranGet: $e\n');
 }
 ```
 
 ### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **query** | [**Object**](.md)|  | [optional] 
+This endpoint does not need any parameter.
 
 ### Return type
 
-void (empty response body)
+[**List<Pembayaran>**](Pembayaran.md)
 
 ### Authorization
 
@@ -58,12 +55,12 @@ void (empty response body)
 ### HTTP request headers
 
  - **Content-Type**: Not defined
- - **Accept**: Not defined
+ - **Accept**: text/plain, application/json, text/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **apiMotorIdGet**
-> apiMotorIdGet(id)
+# **apiPembayaranIdGet**
+> apiPembayaranIdGet(id)
 
 
 
@@ -77,13 +74,13 @@ import 'package:openapi/api.dart';
 // String yourTokenGeneratorFunction() { ... }
 //defaultApiClient.getAuthentication<HttpBearerAuth>('Bearer').setAccessToken(yourTokenGeneratorFunction);
 
-final api_instance = MotorApi();
+final api_instance = PembayaranApi();
 final id = 56; // int | 
 
 try {
-    api_instance.apiMotorIdGet(id);
+    api_instance.apiPembayaranIdGet(id);
 } catch (e) {
-    print('Exception when calling MotorApi->apiMotorIdGet: $e\n');
+    print('Exception when calling PembayaranApi->apiPembayaranIdGet: $e\n');
 }
 ```
 
@@ -108,8 +105,8 @@ void (empty response body)
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **apiMotorIdPut**
-> apiMotorIdPut(id, putMotorDTO)
+# **apiPembayaranIdPut**
+> apiPembayaranIdPut(id, putPembayaranDTO)
 
 
 
@@ -123,14 +120,14 @@ import 'package:openapi/api.dart';
 // String yourTokenGeneratorFunction() { ... }
 //defaultApiClient.getAuthentication<HttpBearerAuth>('Bearer').setAccessToken(yourTokenGeneratorFunction);
 
-final api_instance = MotorApi();
+final api_instance = PembayaranApi();
 final id = 56; // int | 
-final putMotorDTO = PutMotorDTO(); // PutMotorDTO | 
+final putPembayaranDTO = PutPembayaranDTO(); // PutPembayaranDTO | 
 
 try {
-    api_instance.apiMotorIdPut(id, putMotorDTO);
+    api_instance.apiPembayaranIdPut(id, putPembayaranDTO);
 } catch (e) {
-    print('Exception when calling MotorApi->apiMotorIdPut: $e\n');
+    print('Exception when calling PembayaranApi->apiPembayaranIdPut: $e\n');
 }
 ```
 
@@ -139,7 +136,7 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **int**|  | 
- **putMotorDTO** | [**PutMotorDTO**](PutMotorDTO.md)|  | [optional] 
+ **putPembayaranDTO** | [**PutPembayaranDTO**](PutPembayaranDTO.md)|  | [optional] 
 
 ### Return type
 
@@ -156,8 +153,8 @@ void (empty response body)
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **apiMotorIdUlasansGet**
-> apiMotorIdUlasansGet(id)
+# **apiPembayaranPost**
+> apiPembayaranPost(postPembayaranDTO)
 
 
 
@@ -171,13 +168,13 @@ import 'package:openapi/api.dart';
 // String yourTokenGeneratorFunction() { ... }
 //defaultApiClient.getAuthentication<HttpBearerAuth>('Bearer').setAccessToken(yourTokenGeneratorFunction);
 
-final api_instance = MotorApi();
-final id = 56; // int | 
+final api_instance = PembayaranApi();
+final postPembayaranDTO = PostPembayaranDTO(); // PostPembayaranDTO | 
 
 try {
-    api_instance.apiMotorIdUlasansGet(id);
+    api_instance.apiPembayaranPost(postPembayaranDTO);
 } catch (e) {
-    print('Exception when calling MotorApi->apiMotorIdUlasansGet: $e\n');
+    print('Exception when calling PembayaranApi->apiPembayaranPost: $e\n');
 }
 ```
 
@@ -185,53 +182,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **int**|  | 
-
-### Return type
-
-void (empty response body)
-
-### Authorization
-
-[Bearer](../README.md#Bearer)
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: Not defined
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **apiMotorPost**
-> apiMotorPost(motorForm)
-
-
-
-### Example
-```dart
-import 'package:openapi/api.dart';
-// TODO Configure HTTP Bearer authorization: Bearer
-// Case 1. Use String Token
-//defaultApiClient.getAuthentication<HttpBearerAuth>('Bearer').setAccessToken('YOUR_ACCESS_TOKEN');
-// Case 2. Use Function which generate token.
-// String yourTokenGeneratorFunction() { ... }
-//defaultApiClient.getAuthentication<HttpBearerAuth>('Bearer').setAccessToken(yourTokenGeneratorFunction);
-
-final api_instance = MotorApi();
-final motorForm = MotorForm(); // MotorForm | 
-
-try {
-    api_instance.apiMotorPost(motorForm);
-} catch (e) {
-    print('Exception when calling MotorApi->apiMotorPost: $e\n');
-}
-```
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **motorForm** | [**MotorForm**](MotorForm.md)|  | [optional] 
+ **postPembayaranDTO** | [**PostPembayaranDTO**](PostPembayaranDTO.md)|  | [optional] 
 
 ### Return type
 
@@ -245,6 +196,53 @@ void (empty response body)
 
  - **Content-Type**: application/json-patch+json, application/json, text/json, application/*+json
  - **Accept**: Not defined
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **apiPembayaranTransaksiIdGet**
+> Pembayaran apiPembayaranTransaksiIdGet(id)
+
+
+
+### Example
+```dart
+import 'package:openapi/api.dart';
+// TODO Configure HTTP Bearer authorization: Bearer
+// Case 1. Use String Token
+//defaultApiClient.getAuthentication<HttpBearerAuth>('Bearer').setAccessToken('YOUR_ACCESS_TOKEN');
+// Case 2. Use Function which generate token.
+// String yourTokenGeneratorFunction() { ... }
+//defaultApiClient.getAuthentication<HttpBearerAuth>('Bearer').setAccessToken(yourTokenGeneratorFunction);
+
+final api_instance = PembayaranApi();
+final id = 56; // int | 
+
+try {
+    final result = api_instance.apiPembayaranTransaksiIdGet(id);
+    print(result);
+} catch (e) {
+    print('Exception when calling PembayaranApi->apiPembayaranTransaksiIdGet: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **int**|  | 
+
+### Return type
+
+[**Pembayaran**](Pembayaran.md)
+
+### Authorization
+
+[Bearer](../README.md#Bearer)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

@@ -200,18 +200,34 @@ class ApiClient {
           return InfoResponse.fromJson(value);
         case 'LoginRequest':
           return LoginRequest.fromJson(value);
+        case 'Mitra':
+          return Mitra.fromJson(value);
+        case 'Motor':
+          return Motor.fromJson(value);
         case 'MotorForm':
           return MotorForm.fromJson(value);
         case 'Notifikasi':
           return Notifikasi.fromJson(value);
         case 'Pelanggan':
           return Pelanggan.fromJson(value);
+        case 'Pembayaran':
+          return Pembayaran.fromJson(value);
         case 'Pengguna':
           return Pengguna.fromJson(value);
         case 'PostNotifikasDTO':
           return PostNotifikasDTO.fromJson(value);
+        case 'PostPembayaranDTO':
+          return PostPembayaranDTO.fromJson(value);
+        case 'PostTransaksiDTO':
+          return PostTransaksiDTO.fromJson(value);
+        case 'PostUlasanDTO':
+          return PostUlasanDTO.fromJson(value);
         case 'PostVoucherDTO':
           return PostVoucherDTO.fromJson(value);
+        case 'PutMotorDTO':
+          return PutMotorDTO.fromJson(value);
+        case 'PutPembayaranDTO':
+          return PutPembayaranDTO.fromJson(value);
         case 'RefreshRequest':
           return RefreshRequest.fromJson(value);
         case 'RegisterForm':
@@ -226,6 +242,8 @@ class ApiClient {
           return StatusVoucherTypeTransformer().decode(value);
         case 'TargetNavigasi':
           return TargetNavigasiTypeTransformer().decode(value);
+        case 'Transaksi':
+          return Transaksi.fromJson(value);
         case 'TwoFactorRequest':
           return TwoFactorRequest.fromJson(value);
         case 'TwoFactorResponse':

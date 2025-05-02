@@ -1,4 +1,4 @@
-# openapi.api.MotorApi
+# openapi.api.TransaksiApi
 
 ## Load the API package
 ```dart
@@ -9,15 +9,14 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**apiMotorGet**](MotorApi.md#apimotorget) | **GET** /api/Motor | 
-[**apiMotorIdGet**](MotorApi.md#apimotoridget) | **GET** /api/Motor/{id} | 
-[**apiMotorIdPut**](MotorApi.md#apimotoridput) | **PUT** /api/Motor/{id} | 
-[**apiMotorIdUlasansGet**](MotorApi.md#apimotoridulasansget) | **GET** /api/Motor/{id}/ulasans | 
-[**apiMotorPost**](MotorApi.md#apimotorpost) | **POST** /api/Motor | 
+[**apiTransaksiGet**](TransaksiApi.md#apitransaksiget) | **GET** /api/Transaksi | 
+[**apiTransaksiIdGet**](TransaksiApi.md#apitransaksiidget) | **GET** /api/Transaksi/{id} | 
+[**apiTransaksiIdPut**](TransaksiApi.md#apitransaksiidput) | **PUT** /api/Transaksi/{id} | 
+[**apiTransaksiPost**](TransaksiApi.md#apitransaksipost) | **POST** /api/Transaksi | 
 
 
-# **apiMotorGet**
-> apiMotorGet(query)
+# **apiTransaksiGet**
+> apiTransaksiGet(query)
 
 
 
@@ -31,13 +30,13 @@ import 'package:openapi/api.dart';
 // String yourTokenGeneratorFunction() { ... }
 //defaultApiClient.getAuthentication<HttpBearerAuth>('Bearer').setAccessToken(yourTokenGeneratorFunction);
 
-final api_instance = MotorApi();
+final api_instance = TransaksiApi();
 final query = Object; // Object | 
 
 try {
-    api_instance.apiMotorGet(query);
+    api_instance.apiTransaksiGet(query);
 } catch (e) {
-    print('Exception when calling MotorApi->apiMotorGet: $e\n');
+    print('Exception when calling TransaksiApi->apiTransaksiGet: $e\n');
 }
 ```
 
@@ -62,8 +61,8 @@ void (empty response body)
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **apiMotorIdGet**
-> apiMotorIdGet(id)
+# **apiTransaksiIdGet**
+> apiTransaksiIdGet(id)
 
 
 
@@ -77,13 +76,13 @@ import 'package:openapi/api.dart';
 // String yourTokenGeneratorFunction() { ... }
 //defaultApiClient.getAuthentication<HttpBearerAuth>('Bearer').setAccessToken(yourTokenGeneratorFunction);
 
-final api_instance = MotorApi();
+final api_instance = TransaksiApi();
 final id = 56; // int | 
 
 try {
-    api_instance.apiMotorIdGet(id);
+    api_instance.apiTransaksiIdGet(id);
 } catch (e) {
-    print('Exception when calling MotorApi->apiMotorIdGet: $e\n');
+    print('Exception when calling TransaksiApi->apiTransaksiIdGet: $e\n');
 }
 ```
 
@@ -108,8 +107,8 @@ void (empty response body)
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **apiMotorIdPut**
-> apiMotorIdPut(id, putMotorDTO)
+# **apiTransaksiIdPut**
+> apiTransaksiIdPut(id, status)
 
 
 
@@ -123,14 +122,14 @@ import 'package:openapi/api.dart';
 // String yourTokenGeneratorFunction() { ... }
 //defaultApiClient.getAuthentication<HttpBearerAuth>('Bearer').setAccessToken(yourTokenGeneratorFunction);
 
-final api_instance = MotorApi();
+final api_instance = TransaksiApi();
 final id = 56; // int | 
-final putMotorDTO = PutMotorDTO(); // PutMotorDTO | 
+final status = status_example; // String | 
 
 try {
-    api_instance.apiMotorIdPut(id, putMotorDTO);
+    api_instance.apiTransaksiIdPut(id, status);
 } catch (e) {
-    print('Exception when calling MotorApi->apiMotorIdPut: $e\n');
+    print('Exception when calling TransaksiApi->apiTransaksiIdPut: $e\n');
 }
 ```
 
@@ -139,53 +138,7 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **int**|  | 
- **putMotorDTO** | [**PutMotorDTO**](PutMotorDTO.md)|  | [optional] 
-
-### Return type
-
-void (empty response body)
-
-### Authorization
-
-[Bearer](../README.md#Bearer)
-
-### HTTP request headers
-
- - **Content-Type**: application/json-patch+json, application/json, text/json, application/*+json
- - **Accept**: Not defined
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **apiMotorIdUlasansGet**
-> apiMotorIdUlasansGet(id)
-
-
-
-### Example
-```dart
-import 'package:openapi/api.dart';
-// TODO Configure HTTP Bearer authorization: Bearer
-// Case 1. Use String Token
-//defaultApiClient.getAuthentication<HttpBearerAuth>('Bearer').setAccessToken('YOUR_ACCESS_TOKEN');
-// Case 2. Use Function which generate token.
-// String yourTokenGeneratorFunction() { ... }
-//defaultApiClient.getAuthentication<HttpBearerAuth>('Bearer').setAccessToken(yourTokenGeneratorFunction);
-
-final api_instance = MotorApi();
-final id = 56; // int | 
-
-try {
-    api_instance.apiMotorIdUlasansGet(id);
-} catch (e) {
-    print('Exception when calling MotorApi->apiMotorIdUlasansGet: $e\n');
-}
-```
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **id** | **int**|  | 
+ **status** | **String**|  | [optional] 
 
 ### Return type
 
@@ -202,8 +155,8 @@ void (empty response body)
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **apiMotorPost**
-> apiMotorPost(motorForm)
+# **apiTransaksiPost**
+> apiTransaksiPost(postTransaksiDTO)
 
 
 
@@ -217,13 +170,13 @@ import 'package:openapi/api.dart';
 // String yourTokenGeneratorFunction() { ... }
 //defaultApiClient.getAuthentication<HttpBearerAuth>('Bearer').setAccessToken(yourTokenGeneratorFunction);
 
-final api_instance = MotorApi();
-final motorForm = MotorForm(); // MotorForm | 
+final api_instance = TransaksiApi();
+final postTransaksiDTO = PostTransaksiDTO(); // PostTransaksiDTO | 
 
 try {
-    api_instance.apiMotorPost(motorForm);
+    api_instance.apiTransaksiPost(postTransaksiDTO);
 } catch (e) {
-    print('Exception when calling MotorApi->apiMotorPost: $e\n');
+    print('Exception when calling TransaksiApi->apiTransaksiPost: $e\n');
 }
 ```
 
@@ -231,7 +184,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **motorForm** | [**MotorForm**](MotorForm.md)|  | [optional] 
+ **postTransaksiDTO** | [**PostTransaksiDTO**](PostTransaksiDTO.md)|  | [optional] 
 
 ### Return type
 

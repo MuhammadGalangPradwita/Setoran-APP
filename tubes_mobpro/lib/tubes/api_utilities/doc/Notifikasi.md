@@ -13,7 +13,7 @@ Name | Type | Description | Notes
 **judul** | **String** |  | [optional] 
 **deskripsi** | **String** |  | [optional] 
 **navigasi** | [**TargetNavigasi**](TargetNavigasi.md) |  | [optional] 
-**dataNavigasi** | **String** |  | [optional] 
+**dataNavigasi** | **Map<String, String>** |  | [optional] [default to const {}]
 **isRead** | **bool** |  | [optional] [default to false]
 **pengguna** | [**Pengguna**](Pengguna.md) |  | [optional] 
 

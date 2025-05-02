@@ -11,18 +11,15 @@
 part of openapi.api;
 
 
-class MotorApi {
-  MotorApi([ApiClient? apiClient]) : apiClient = apiClient ?? defaultApiClient;
+class PembayaranApi {
+  PembayaranApi([ApiClient? apiClient]) : apiClient = apiClient ?? defaultApiClient;
 
   final ApiClient apiClient;
 
-  /// Performs an HTTP 'GET /api/Motor' operation and returns the [Response].
-  /// Parameters:
-  ///
-  /// * [Object] query:
-  Future<Response> apiMotorGetWithHttpInfo({ Object? query, }) async {
+  /// Performs an HTTP 'GET /api/Pembayaran' operation and returns the [Response].
+  Future<Response> apiPembayaranGetWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/api/Motor';
+    final path = r'/api/Pembayaran';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -30,10 +27,6 @@ class MotorApi {
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
     final formParams = <String, String>{};
-
-    if (query != null) {
-      queryParams.addAll(_queryParams('', 'query', query));
-    }
 
     const contentTypes = <String>[];
 
@@ -49,23 +42,31 @@ class MotorApi {
     );
   }
 
-  /// Parameters:
-  ///
-  /// * [Object] query:
-  Future<void> apiMotorGet({ Object? query, }) async {
-    final response = await apiMotorGetWithHttpInfo( query: query, );
+  Future<List<Pembayaran>?> apiPembayaranGet() async {
+    final response = await apiPembayaranGetWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      final responseBody = await _decodeBodyBytes(response);
+      return (await apiClient.deserializeAsync(responseBody, 'List<Pembayaran>') as List)
+        .cast<Pembayaran>()
+        .toList(growable: false);
+
+    }
+    return null;
   }
 
-  /// Performs an HTTP 'GET /api/Motor/{id}' operation and returns the [Response].
+  /// Performs an HTTP 'GET /api/Pembayaran/{id}' operation and returns the [Response].
   /// Parameters:
   ///
   /// * [int] id (required):
-  Future<Response> apiMotorIdGetWithHttpInfo(int id,) async {
+  Future<Response> apiPembayaranIdGetWithHttpInfo(int id,) async {
     // ignore: prefer_const_declarations
-    final path = r'/api/Motor/{id}'
+    final path = r'/api/Pembayaran/{id}'
       .replaceAll('{id}', id.toString());
 
     // ignore: prefer_final_locals
@@ -92,26 +93,26 @@ class MotorApi {
   /// Parameters:
   ///
   /// * [int] id (required):
-  Future<void> apiMotorIdGet(int id,) async {
-    final response = await apiMotorIdGetWithHttpInfo(id,);
+  Future<void> apiPembayaranIdGet(int id,) async {
+    final response = await apiPembayaranIdGetWithHttpInfo(id,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
   }
 
-  /// Performs an HTTP 'PUT /api/Motor/{id}' operation and returns the [Response].
+  /// Performs an HTTP 'PUT /api/Pembayaran/{id}' operation and returns the [Response].
   /// Parameters:
   ///
   /// * [int] id (required):
   ///
-  /// * [PutMotorDTO] putMotorDTO:
-  Future<Response> apiMotorIdPutWithHttpInfo(int id, { PutMotorDTO? putMotorDTO, }) async {
+  /// * [PutPembayaranDTO] putPembayaranDTO:
+  Future<Response> apiPembayaranIdPutWithHttpInfo(int id, { PutPembayaranDTO? putPembayaranDTO, }) async {
     // ignore: prefer_const_declarations
-    final path = r'/api/Motor/{id}'
+    final path = r'/api/Pembayaran/{id}'
       .replaceAll('{id}', id.toString());
 
     // ignore: prefer_final_locals
-    Object? postBody = putMotorDTO;
+    Object? postBody = putPembayaranDTO;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
@@ -135,21 +136,60 @@ class MotorApi {
   ///
   /// * [int] id (required):
   ///
-  /// * [PutMotorDTO] putMotorDTO:
-  Future<void> apiMotorIdPut(int id, { PutMotorDTO? putMotorDTO, }) async {
-    final response = await apiMotorIdPutWithHttpInfo(id,  putMotorDTO: putMotorDTO, );
+  /// * [PutPembayaranDTO] putPembayaranDTO:
+  Future<void> apiPembayaranIdPut(int id, { PutPembayaranDTO? putPembayaranDTO, }) async {
+    final response = await apiPembayaranIdPutWithHttpInfo(id,  putPembayaranDTO: putPembayaranDTO, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
   }
 
-  /// Performs an HTTP 'GET /api/Motor/{id}/ulasans' operation and returns the [Response].
+  /// Performs an HTTP 'POST /api/Pembayaran' operation and returns the [Response].
+  /// Parameters:
+  ///
+  /// * [PostPembayaranDTO] postPembayaranDTO:
+  Future<Response> apiPembayaranPostWithHttpInfo({ PostPembayaranDTO? postPembayaranDTO, }) async {
+    // ignore: prefer_const_declarations
+    final path = r'/api/Pembayaran';
+
+    // ignore: prefer_final_locals
+    Object? postBody = postPembayaranDTO;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json', 'application/json-patch+json', 'text/json', 'application/*+json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Parameters:
+  ///
+  /// * [PostPembayaranDTO] postPembayaranDTO:
+  Future<void> apiPembayaranPost({ PostPembayaranDTO? postPembayaranDTO, }) async {
+    final response = await apiPembayaranPostWithHttpInfo( postPembayaranDTO: postPembayaranDTO, );
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
+  /// Performs an HTTP 'GET /api/Pembayaran/transaksi/{id}' operation and returns the [Response].
   /// Parameters:
   ///
   /// * [int] id (required):
-  Future<Response> apiMotorIdUlasansGetWithHttpInfo(int id,) async {
+  Future<Response> apiPembayaranTransaksiIdGetWithHttpInfo(int id,) async {
     // ignore: prefer_const_declarations
-    final path = r'/api/Motor/{id}/ulasans'
+    final path = r'/api/Pembayaran/transaksi/{id}'
       .replaceAll('{id}', id.toString());
 
     // ignore: prefer_final_locals
@@ -176,49 +216,18 @@ class MotorApi {
   /// Parameters:
   ///
   /// * [int] id (required):
-  Future<void> apiMotorIdUlasansGet(int id,) async {
-    final response = await apiMotorIdUlasansGetWithHttpInfo(id,);
+  Future<Pembayaran?> apiPembayaranTransaksiIdGet(int id,) async {
+    final response = await apiPembayaranTransaksiIdGetWithHttpInfo(id,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
-  }
-
-  /// Performs an HTTP 'POST /api/Motor' operation and returns the [Response].
-  /// Parameters:
-  ///
-  /// * [MotorForm] motorForm:
-  Future<Response> apiMotorPostWithHttpInfo({ MotorForm? motorForm, }) async {
-    // ignore: prefer_const_declarations
-    final path = r'/api/Motor';
-
-    // ignore: prefer_final_locals
-    Object? postBody = motorForm;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-    const contentTypes = <String>['application/json', 'application/json-patch+json', 'text/json', 'application/*+json'];
-
-
-    return apiClient.invokeAPI(
-      path,
-      'POST',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  /// Parameters:
-  ///
-  /// * [MotorForm] motorForm:
-  Future<void> apiMotorPost({ MotorForm? motorForm, }) async {
-    final response = await apiMotorPostWithHttpInfo( motorForm: motorForm, );
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'Pembayaran',) as Pembayaran;
+    
     }
+    return null;
   }
 }

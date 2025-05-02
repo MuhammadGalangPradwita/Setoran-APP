@@ -18,7 +18,7 @@ class Notifikasi {
     this.judul,
     this.deskripsi,
     this.navigasi,
-    this.dataNavigasi,
+    this.dataNavigasi = const {},
     this.isRead = false,
     this.pengguna,
   });
@@ -45,7 +45,7 @@ class Notifikasi {
   ///
   TargetNavigasi? navigasi;
 
-  String? dataNavigasi;
+  Map<String, String>? dataNavigasi;
 
   bool isRead;
 
@@ -64,7 +64,7 @@ class Notifikasi {
     other.judul == judul &&
     other.deskripsi == deskripsi &&
     other.navigasi == navigasi &&
-    other.dataNavigasi == dataNavigasi &&
+    _deepEquality.equals(other.dataNavigasi, dataNavigasi) &&
     other.isRead == isRead &&
     other.pengguna == pengguna;
 
@@ -148,7 +148,7 @@ class Notifikasi {
         judul: mapValueOfType<String>(json, r'judul'),
         deskripsi: mapValueOfType<String>(json, r'deskripsi'),
         navigasi: TargetNavigasi.fromJson(json[r'navigasi']),
-        dataNavigasi: mapValueOfType<String>(json, r'dataNavigasi'),
+        dataNavigasi: mapCastOfType<String, String>(json, r'dataNavigasi') ?? const {},
         isRead: mapValueOfType<bool>(json, r'isRead') ?? false,
         pengguna: Pengguna.fromJson(json[r'pengguna']),
       );
