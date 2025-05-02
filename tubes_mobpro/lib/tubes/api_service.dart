@@ -12,7 +12,11 @@ class ApiService {
   late MotorApi motorApi;
   late VoucherApi voucherApi;
   late PenggunaApi penggunaApi;
+  late PelangganApi pelangganApi;
   late NotifikasiApi notifikasiApi;
+  late TransaksiApi transaksiApi;
+  late PembayaranApi pembayaranApi;
+  late StorageApi storageApi;
 
   factory ApiService() {
     return _instance;
@@ -34,7 +38,11 @@ class ApiService {
     motorApi = MotorApi(_apiClient);
     voucherApi = VoucherApi(_apiClient);
     penggunaApi = PenggunaApi(_apiClient);
+    pelangganApi = PelangganApi(_apiClient);
     notifikasiApi = NotifikasiApi(_apiClient);
+    transaksiApi = TransaksiApi(_apiClient);
+    pembayaranApi = PembayaranApi(_apiClient);
+    storageApi = StorageApi(_apiClient);
   }
 
   void setToken(String token) {
