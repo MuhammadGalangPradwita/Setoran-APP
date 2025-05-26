@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:tubes_mobpro/tubes/api_utilities/motor.dart';
-import 'package:tubes_mobpro/tubes/models/motor.dart';
+import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
+import 'package:tubes_mobpro/tubes/pages/auth_check.dart';
 import 'package:tubes_mobpro/tubes/pages/motor_book_page.dart';
 import 'package:tubes_mobpro/tubes/services/firebase_notification_service.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
@@ -29,9 +29,15 @@ class SearchResultDetail extends StatefulWidget {
 }
 
 class _SearchResultDetailState extends State<SearchResultDetail> {
-   bool _isLoved = false;
+  bool _isLoved = false;
 
   final formatter = NumberFormat("#,###");
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +64,9 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
           IconButton(
             icon: Icon(
               _isLoved ? Icons.favorite : Icons.favorite_border,
-              color: _isLoved ? Colors.red : Colors.black, // Warna merah saat loved
+              color: _isLoved
+                  ? Colors.red
+                  : Colors.black, // Warna merah saat loved
             ),
             onPressed: () {
               setState(() {
@@ -72,9 +80,14 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
       ),
       body: SafeArea(
         child: FutureBuilder<Motor>(
-            future: MotorAPi.getMotor(widget.index),
-            builder:
-                (BuildContext context, AsyncSnapshot<Motor> snapshot) {
+            // future: MotorAPi.getMotor(widget.index),
+            future: MotorApi().apiMotorIdGet(widget.index).then((motor) {
+              if (motor == null) {
+                throw Exception('Motor not found');
+              }
+              return motor;
+            }),
+            builder: (BuildContext context, AsyncSnapshot<Motor> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
               } else if (snapshot.hasError) {
@@ -82,7 +95,6 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
               } else if (!snapshot.hasData) {
                 return const Center(child: Text('No motors available'));
               } else {
-
                 Motor motor = snapshot.data!;
 
                 return Stack(
@@ -191,7 +203,7 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
                                       ),
 
                                       // Brand motor
-                                      Text(motor.brand,
+                                      Text(motor.brand!,
                                           style: AppTextStyle.smallReguler),
                                     ],
                                   ),
@@ -209,7 +221,7 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
                                       ),
 
                                       // Tipe motor
-                                      Text(motor.tipe,
+                                      Text(motor.tipe!,
                                           style: AppTextStyle.smallReguler),
                                     ],
                                   ),
@@ -245,7 +257,7 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
                                       ),
 
                                       // Transmisi motor
-                                      Text(motor.transmisi,
+                                      Text(motor.transmisi!,
                                           style: AppTextStyle.smallReguler),
                                     ],
                                   ),
@@ -263,7 +275,7 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
                                       ),
 
                                       // Nomor polisi motor
-                                      Text(motor.platNomor,
+                                      Text(motor.platNomor!,
                                           style: AppTextStyle.smallReguler),
                                     ],
                                   ),
@@ -340,7 +352,13 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
                               // Booking Motor
                               ElevatedButton(
                                 onPressed: () {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => BookMotorcyclePage(motor: motor,)));
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              BookMotorcyclePage(
+                                                motor: motor,
+                                              )));
                                 },
                                 style: ElevatedButton.styleFrom(
                                     padding: const EdgeInsets.symmetric(
@@ -365,5 +383,23 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
             }),
       ),
     );
+  }
+
+  Future<bool> isRented() async {
+    // int userId = (await PenggunaApi.getCurrentUser())!.id;
+    int userId = AuthState().currentUser!.id! as int;
+
+    List<Transaksi>? transaksiList =
+        await TransaksiApi().apiTransaksiGet(query: {
+      'pelanggan': userId.toString(),
+    });
+
+    if (transaksiList != null) {
+      bool exists = transaksiList.any((v) => v.idMotor == widget.index);
+
+      return exists;
+    }
+
+    return false;
   }
 }

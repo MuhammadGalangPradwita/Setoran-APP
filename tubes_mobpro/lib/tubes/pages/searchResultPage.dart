@@ -1,20 +1,23 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tubes_mobpro/tubes/api_utilities/motor.dart';
-import 'package:tubes_mobpro/tubes/models/motor.dart';
+import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
 import 'package:tubes_mobpro/tubes/pages/search_result_detail.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 import 'package:tubes_mobpro/tubes/widgets/cardHomePage_widgets.dart';
 
 class SearchResult extends StatelessWidget {
-  const SearchResult({super.key, required this.date, required this.transimission, required this.model});
+  const SearchResult(
+      {super.key,
+      required this.date,
+      required this.transimission,
+      required this.model});
 
   final String date; // tolong test lagi nanti
   final String transimission;
   final String model;
 
-   Widget buildVehicleRow(List<Motor> motors) {
+  Widget buildVehicleRow(List<Motor> motors) {
     List<Widget> vehicleCards = [];
     for (var motor in motors) {
       vehicleCards.add(
@@ -34,7 +37,8 @@ class SearchResult extends StatelessWidget {
         Row(
           children: [
             vehicleCards[i],
-            if (i + 1 < vehicleCards.length) vehicleCards[i + 1], // Menambahkan card ke-2 jika ada
+            if (i + 1 < vehicleCards.length)
+              vehicleCards[i + 1], // Menambahkan card ke-2 jika ada
           ],
         ),
       );
@@ -58,40 +62,39 @@ class SearchResult extends StatelessWidget {
           },
           icon: const Icon(Icons.arrow_back),
         ),
-        title:Column(
+        title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                model == "" ? "-" : model,
-                style: AppTextStyle.body1SemiBold,
-              ),
-              Text(
-                date == "" ? "-" : date,
-                style: AppTextStyle.body3Regular,
-              )
-            ],
+          children: [
+            Text(
+              model == "" ? "-" : model,
+              style: AppTextStyle.body1SemiBold,
+            ),
+            Text(
+              date == "" ? "-" : date,
+              style: AppTextStyle.body3Regular,
+            )
+          ],
         ),
-       
       ),
-      
       body: FutureBuilder(
-        future: MotorAPi.filtered(date, transimission, model),
+        // future: MotorAPi.filtered(date, transimission, model),
+        future: MotorApi().apiMotorGet(transmisi: transimission, model: model),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Center(child: Text('Error: ${snapshot.error}'));
-                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return const Center(child: Text('No motors available'));
-                  } 
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return const Center(child: Text('No motors available'));
+          }
           final motors = snapshot.data!;
           return SingleChildScrollView(
-          child: Container(
-                 margin: const EdgeInsets.only(top: 10, left: 20, right: 10),
-                      padding: const EdgeInsets.only(right: 20),
-                      // height: 300,
-                      width: double.infinity,
-                      child: buildVehicleRow(motors),
+            child: Container(
+              margin: const EdgeInsets.only(top: 10, left: 20, right: 10),
+              padding: const EdgeInsets.only(right: 20),
+              // height: 300,
+              width: double.infinity,
+              child: buildVehicleRow(motors),
             ),
           );
         },

@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:tubes_mobpro/tubes/api_utilities/motor.dart';
-import 'package:tubes_mobpro/tubes/models/motor.dart';
-import 'package:tubes_mobpro/tubes/models/transaksi.dart';
+import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 import 'package:tubes_mobpro/tubes/utilities/app_util.dart';
 
@@ -29,9 +27,9 @@ class _TransactionCardState extends State<TransactionCard> {
   }
 
   Future<void> loadMotor() async {
-    final result = await MotorAPi.getById(widget.transaksi.idMotor);
+    // final result = await MotorAPi.getById(widget.transaksi.idMotor);
     setState(() {
-      motor = result;
+      motor = widget.transaksi.motor;
     });
   }
 
@@ -44,7 +42,7 @@ class _TransactionCardState extends State<TransactionCard> {
     }
     return Card(
       elevation: 0,
-      color: setColor(widget.transaksi.statusTransaksi),
+      color: setColor(widget.transaksi.status!),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
@@ -64,7 +62,7 @@ class _TransactionCardState extends State<TransactionCard> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        motor!.model,
+                        motor!.model!,
                         style: GoogleFonts.poppins(
                             fontSize: 18,
                             color: AppColors.N0,
@@ -79,24 +77,24 @@ class _TransactionCardState extends State<TransactionCard> {
                     ],
                   ),
                   Text(
-                    motor!.transmisi,
+                    motor!.transmisi!,
                     style:
                         GoogleFonts.poppins(fontSize: 10, color: AppColors.N0),
                   ),
                   Text(
                     // widget.transaksi.tanggalMulai.toString(),
-                    AppUtil.formatDate(widget.transaksi.tanggalMulai),
+                    AppUtil.formatDate(widget.transaksi.tanggalMulai!),
                     style:
                         GoogleFonts.poppins(fontSize: 10, color: AppColors.N0),
                   ),
                   Text(
                     // 'Rp${formatter.format(widget.transaksi.nominal)}',
-                    AppUtil.formatPrice(widget.transaksi.nominal),
+                    AppUtil.formatPrice(widget.transaksi.totalHarga! as int),
                     style:
                         GoogleFonts.poppins(fontSize: 10, color: AppColors.N0),
                   ),
                   Text(
-                    widget.transaksi.statusTransaksi,
+                    widget.transaksi.status!,
                     style:
                         GoogleFonts.poppins(fontSize: 10, color: AppColors.N0),
                   ),

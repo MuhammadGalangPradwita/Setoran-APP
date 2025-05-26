@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:provider/provider.dart';
-import 'package:tubes_mobpro/tubes/api_utilities/auth.dart';
+// import 'package:tubes_mobpro/tubes/api_utilities/auth.dart';
 import 'package:tubes_mobpro/tubes/pages/auth_check.dart';
 import 'package:tubes_mobpro/tubes/pages/edit_profile.dart';
 import 'package:tubes_mobpro/tubes/pages/my_motorcycle_page.dart';
@@ -33,12 +34,15 @@ class AccountPage extends StatelessWidget {
                 ),
                 InkWell(
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              const MyMotorcyclePage(isRegistered: false),
-                        ));
+                    PersistentNavBarNavigator.pushNewScreen(context,
+                        screen: const MyMotorcyclePage(isRegistered: false),
+                        withNavBar: false);
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //       builder: (context) =>
+                    //           const MyMotorcyclePage(isRegistered: false),
+                    //     ));
                   },
                   child: _buildOptionList('My Motorcycle', Icons.motorcycle),
                 ),
@@ -89,15 +93,17 @@ class AccountPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      auth.currentUser == null ? "":auth.currentUser!.nama,
+                      // auth.currentUser == null ? "" : auth.currentUser!.nama,
+                      auth.currentUser?.nama ?? "Guest",
                       style: AppTextStyle.body1Bold,
                     ),
                     Text(
-                      auth.currentUser == null ? "":auth.currentUser!.email,
+                      // auth.currentUser == null ? "" : auth.currentUser!.email,
+                      auth.currentUser?.email ?? "",
                       style: AppTextStyle.smallReguler,
                     )
                   ],
-              );
+                );
               }),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
