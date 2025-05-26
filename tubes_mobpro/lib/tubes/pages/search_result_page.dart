@@ -2,10 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
-import 'package:tubes_mobpro/tubes/api_utilities/motor.dart';
 
 import 'package:tubes_mobpro/tubes/pages/search_result_detail.dart';
-import 'package:tubes_mobpro/tubes/models/motor.dart';
 import 'package:tubes_mobpro/tubes/services/firebase_notification_service.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 import 'package:intl/intl.dart';
@@ -42,8 +40,8 @@ class SearchResultPage extends StatelessWidget {
           child: Padding(
               padding:
                   const EdgeInsets.symmetric(vertical: 12, horizontal: 27.5),
-              child: FutureBuilder<List<dynamic>>(
-                future: MotorAPi.getAll(),
+              child: FutureBuilder<List<Motor?>?>(
+                future: MotorApi().apiMotorGet(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
@@ -63,7 +61,7 @@ class SearchResultPage extends StatelessWidget {
                                 crossAxisSpacing: 12),
                         itemCount: motors.length,
                         itemBuilder: (context, index) {
-                          final Motor motor = motors[index];
+                          final Motor motor = motors[index]!;
 
                           return SearchResultCard(
                             index: motor.idMotor!,

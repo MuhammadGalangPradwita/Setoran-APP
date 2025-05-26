@@ -1,10 +1,10 @@
-
 import 'package:flutter/material.dart';
-import 'package:tubes_mobpro/tubes/models/notificationsItem.dart';
+import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
+import 'package:tubes_mobpro/tubes/utilities/app_util.dart';
 
 class NotificationDetailPage extends StatelessWidget {
-  final NotificationItem notification;
+  final Notifikasi notification;
 
   const NotificationDetailPage({
     super.key,
@@ -33,7 +33,7 @@ class NotificationDetailPage extends StatelessWidget {
           children: [
             const SizedBox(height: 20),
             Text(
-              notification.title, // Menampilkan judul notifikasi
+              notification.judul!, // Menampilkan judul notifikasi
               style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -64,17 +64,17 @@ class NotificationDetailPage extends StatelessWidget {
             ),
             _buildDetailRow("Payment Method", "Bank Transfer"),
             _buildDetailRow("Price", "Rp. 50.000,00"),
-            _buildDetailRow("Status", "Success", 
-              valueColor: Colors.green,
-              valueFontWeight: FontWeight.bold
-            ),
+            _buildDetailRow("Status", "Success",
+                valueColor: Colors.green, valueFontWeight: FontWeight.bold),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildDetailRow(String label, String value, {
+  Widget _buildDetailRow(
+    String label,
+    String value, {
     Color? valueColor,
     FontWeight? valueFontWeight,
   }) {
@@ -112,47 +112,48 @@ class NotificationPage extends StatefulWidget {
 }
 
 class _NotificationPageState extends State<NotificationPage> {
-  final List<NotificationItem> notifications = [
-    NotificationItem(
-      title: "Transaction successful",
-      message: "You have successfully made a transaction. Be careful when driving.",
-      date: "26 Oct 2024",
-      isRead: true,
-      transactionId: "1800234356",
-      type: "NMAX",
-      startDate: "26 Oct 2024",
-      endDate: "26 Oct 2024",
-      paymentMethod: "Bank Transfer",
-      price: "Rp. 50.000,00",
-      status: "Success",
-    ),
-    NotificationItem(
-      title: "Transaction failed",
-      message: "Sorry, your transaction failed. Try reordering",
-      date: "26 Oct 2024",
-      isRead: false,
-      transactionId: "1800234357",
-      type: "NMAX",
-      startDate: "26 Oct 2024",
-      endDate: "26 Oct 2024",
-      paymentMethod: "Bank Transfer",
-      price: "Rp. 50.000,00",
-      status: "Failed",
-    ),
-    NotificationItem(
-      title: "Transaction successful",
-      message: "You have successfully made a transaction. Be careful when driving.",
-      date: "25 Oct 2024",
-      isRead: false,
-      transactionId: "1800234358",
-      type: "NMAX",
-      startDate: "25 Oct 2024",
-      endDate: "25 Oct 2024",
-      paymentMethod: "Bank Transfer",
-      price: "Rp. 50.000,00",
-      status: "Success",
-    ),
-   
+  final List<Notifikasi> notifications = [
+    // NotificationItem(
+    //   title: "Transaction successful",
+    //   message:
+    //       "You have successfully made a transaction. Be careful when driving.",
+    //   date: "26 Oct 2024",
+    //   isRead: true,
+    //   transactionId: "1800234356",
+    //   type: "NMAX",
+    //   startDate: "26 Oct 2024",
+    //   endDate: "26 Oct 2024",
+    //   paymentMethod: "Bank Transfer",
+    //   price: "Rp. 50.000,00",
+    //   status: "Success",
+    // ),
+    // NotificationItem(
+    //   title: "Transaction failed",
+    //   message: "Sorry, your transaction failed. Try reordering",
+    //   date: "26 Oct 2024",
+    //   isRead: false,
+    //   transactionId: "1800234357",
+    //   type: "NMAX",
+    //   startDate: "26 Oct 2024",
+    //   endDate: "26 Oct 2024",
+    //   paymentMethod: "Bank Transfer",
+    //   price: "Rp. 50.000,00",
+    //   status: "Failed",
+    // ),
+    // NotificationItem(
+    //   title: "Transaction successful",
+    //   message:
+    //       "You have successfully made a transaction. Be careful when driving.",
+    //   date: "25 Oct 2024",
+    //   isRead: false,
+    //   transactionId: "1800234358",
+    //   type: "NMAX",
+    //   startDate: "25 Oct 2024",
+    //   endDate: "25 Oct 2024",
+    //   paymentMethod: "Bank Transfer",
+    //   price: "Rp. 50.000,00",
+    //   status: "Success",
+    // ),
   ];
 
   @override
@@ -217,7 +218,7 @@ class _NotificationPageState extends State<NotificationPage> {
 }
 
 class NotificationCard extends StatefulWidget {
-  final NotificationItem notification;
+  final Notifikasi notification;
 
   const NotificationCard({
     super.key,
@@ -236,7 +237,7 @@ class _NotificationCardState extends State<NotificationCard> {
       padding: const EdgeInsets.all(16),
       height: 130,
       decoration: BoxDecoration(
-        color: widget.notification.isRead 
+        color: widget.notification.isRead
             ? AppColors.N200 // Gray for read notifications
             : AppColors.B200, // Light blue for unread notifications
         borderRadius: BorderRadius.circular(10),
@@ -248,25 +249,23 @@ class _NotificationCardState extends State<NotificationCard> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                widget.notification.title,
+                widget.notification.judul!,
                 style: AppTextStyle.body2Bold.copyWith(
-                    color: Colors.black,
-                   ),
+                  color: Colors.black,
+                ),
               ),
               Text(
-                widget.notification.date,
+                AppUtil.formatDate(widget.notification.waktuNotifikasi!),
                 style: AppTextStyle.body3Regular.copyWith(
-                    color: Colors.black,
-                   ),
+                  color: Colors.black,
+                ),
               ),
             ],
           ),
           const SizedBox(height: 8),
           Text(
-            widget.notification.message,
-            style: AppTextStyle.body2Regular.copyWith(
-                    color: AppColors.N700
-                   ),
+            widget.notification.deskripsi!,
+            style: AppTextStyle.body2Regular.copyWith(color: AppColors.N700),
           ),
         ],
       ),
