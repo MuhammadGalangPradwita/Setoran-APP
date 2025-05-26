@@ -20,8 +20,7 @@ Name | Type | Description | Notes
 **transmisi** | **String** |  | [optional] 
 **statusMotor** | **String** |  | [optional] 
 **hargaHarian** | **double** |  | [optional] 
-**diskonPercentage** | **int** |  | [optional] 
-**diskonAmount** | **int** |  | [optional] 
+**diskon** | [**List<Diskon>**](Diskon.md) |  | [optional] [default to const []]
 **mitra** | [**Mitra**](Mitra.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

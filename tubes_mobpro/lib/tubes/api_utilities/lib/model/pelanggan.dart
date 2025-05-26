@@ -17,6 +17,7 @@ class Pelanggan {
     this.idPengguna,
     this.pengguna,
     this.nomorSIM,
+    this.usedVouchers = const [],
   });
 
   ///
@@ -39,12 +40,15 @@ class Pelanggan {
 
   String? nomorSIM;
 
+  List<Voucher>? usedVouchers;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is Pelanggan &&
     other.idPelanggan == idPelanggan &&
     other.idPengguna == idPengguna &&
     other.pengguna == pengguna &&
-    other.nomorSIM == nomorSIM;
+    other.nomorSIM == nomorSIM &&
+    _deepEquality.equals(other.usedVouchers, usedVouchers);
 
   @override
   int get hashCode =>
@@ -52,10 +56,11 @@ class Pelanggan {
     (idPelanggan == null ? 0 : idPelanggan!.hashCode) +
     (idPengguna == null ? 0 : idPengguna!.hashCode) +
     (pengguna == null ? 0 : pengguna!.hashCode) +
-    (nomorSIM == null ? 0 : nomorSIM!.hashCode);
+    (nomorSIM == null ? 0 : nomorSIM!.hashCode) +
+    (usedVouchers == null ? 0 : usedVouchers!.hashCode);
 
   @override
-  String toString() => 'Pelanggan[idPelanggan=$idPelanggan, idPengguna=$idPengguna, pengguna=$pengguna, nomorSIM=$nomorSIM]';
+  String toString() => 'Pelanggan[idPelanggan=$idPelanggan, idPengguna=$idPengguna, pengguna=$pengguna, nomorSIM=$nomorSIM, usedVouchers=$usedVouchers]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -78,6 +83,11 @@ class Pelanggan {
       json[r'nomorSIM'] = this.nomorSIM;
     } else {
       json[r'nomorSIM'] = null;
+    }
+    if (this.usedVouchers != null) {
+      json[r'usedVouchers'] = this.usedVouchers;
+    } else {
+      json[r'usedVouchers'] = null;
     }
     return json;
   }
@@ -105,6 +115,7 @@ class Pelanggan {
         idPengguna: mapValueOfType<String>(json, r'idPengguna'),
         pengguna: Pengguna.fromJson(json[r'pengguna']),
         nomorSIM: mapValueOfType<String>(json, r'nomorSIM'),
+        usedVouchers: Voucher.listFromJson(json[r'usedVouchers']),
       );
     }
     return null;

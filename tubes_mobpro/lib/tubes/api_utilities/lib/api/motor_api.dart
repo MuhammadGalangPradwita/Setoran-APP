@@ -19,8 +19,14 @@ class MotorApi {
   /// Performs an HTTP 'GET /api/Motor' operation and returns the [Response].
   /// Parameters:
   ///
-  /// * [Object] query:
-  Future<Response> apiMotorGetWithHttpInfo({ Object? query, }) async {
+  /// * [String] idMitra:
+  ///
+  /// * [String] status:
+  ///
+  /// * [String] model:
+  ///
+  /// * [String] transmisi:
+  Future<Response> apiMotorGetWithHttpInfo({ String? idMitra, String? status, String? model, String? transmisi, }) async {
     // ignore: prefer_const_declarations
     final path = r'/api/Motor';
 
@@ -31,8 +37,17 @@ class MotorApi {
     final headerParams = <String, String>{};
     final formParams = <String, String>{};
 
-    if (query != null) {
-      queryParams.addAll(_queryParams('', 'query', query));
+    if (idMitra != null) {
+      queryParams.addAll(_queryParams('', 'IdMitra', idMitra));
+    }
+    if (status != null) {
+      queryParams.addAll(_queryParams('', 'Status', status));
+    }
+    if (model != null) {
+      queryParams.addAll(_queryParams('', 'Model', model));
+    }
+    if (transmisi != null) {
+      queryParams.addAll(_queryParams('', 'Transmisi', transmisi));
     }
 
     const contentTypes = <String>[];
@@ -51,12 +66,29 @@ class MotorApi {
 
   /// Parameters:
   ///
-  /// * [Object] query:
-  Future<void> apiMotorGet({ Object? query, }) async {
-    final response = await apiMotorGetWithHttpInfo( query: query, );
+  /// * [String] idMitra:
+  ///
+  /// * [String] status:
+  ///
+  /// * [String] model:
+  ///
+  /// * [String] transmisi:
+  Future<List<Motor>?> apiMotorGet({ String? idMitra, String? status, String? model, String? transmisi, }) async {
+    final response = await apiMotorGetWithHttpInfo( idMitra: idMitra, status: status, model: model, transmisi: transmisi, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      final responseBody = await _decodeBodyBytes(response);
+      return (await apiClient.deserializeAsync(responseBody, 'List<Motor>') as List)
+        .cast<Motor>()
+        .toList(growable: false);
+
+    }
+    return null;
   }
 
   /// Performs an HTTP 'GET /api/Motor/{id}' operation and returns the [Response].
@@ -92,11 +124,19 @@ class MotorApi {
   /// Parameters:
   ///
   /// * [int] id (required):
-  Future<void> apiMotorIdGet(int id,) async {
+  Future<Motor?> apiMotorIdGet(int id,) async {
     final response = await apiMotorIdGetWithHttpInfo(id,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'Motor',) as Motor;
+    
+    }
+    return null;
   }
 
   /// Performs an HTTP 'PUT /api/Motor/{id}' operation and returns the [Response].
@@ -176,11 +216,22 @@ class MotorApi {
   /// Parameters:
   ///
   /// * [int] id (required):
-  Future<void> apiMotorIdUlasansGet(int id,) async {
+  Future<List<Ulasan>?> apiMotorIdUlasansGet(int id,) async {
     final response = await apiMotorIdUlasansGetWithHttpInfo(id,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      final responseBody = await _decodeBodyBytes(response);
+      return (await apiClient.deserializeAsync(responseBody, 'List<Ulasan>') as List)
+        .cast<Ulasan>()
+        .toList(growable: false);
+
+    }
+    return null;
   }
 
   /// Performs an HTTP 'POST /api/Motor' operation and returns the [Response].

@@ -17,7 +17,7 @@ Method | HTTP request | Description
 
 
 # **apiMotorGet**
-> apiMotorGet(query)
+> List<Motor> apiMotorGet(idMitra, status, model, transmisi)
 
 
 
@@ -32,10 +32,14 @@ import 'package:openapi/api.dart';
 //defaultApiClient.getAuthentication<HttpBearerAuth>('Bearer').setAccessToken(yourTokenGeneratorFunction);
 
 final api_instance = MotorApi();
-final query = Object; // Object | 
+final idMitra = idMitra_example; // String | 
+final status = status_example; // String | 
+final model = model_example; // String | 
+final transmisi = transmisi_example; // String | 
 
 try {
-    api_instance.apiMotorGet(query);
+    final result = api_instance.apiMotorGet(idMitra, status, model, transmisi);
+    print(result);
 } catch (e) {
     print('Exception when calling MotorApi->apiMotorGet: $e\n');
 }
@@ -45,11 +49,14 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **query** | [**Object**](.md)|  | [optional] 
+ **idMitra** | **String**|  | [optional] 
+ **status** | **String**|  | [optional] 
+ **model** | **String**|  | [optional] 
+ **transmisi** | **String**|  | [optional] 
 
 ### Return type
 
-void (empty response body)
+[**List<Motor>**](Motor.md)
 
 ### Authorization
 
@@ -58,12 +65,12 @@ void (empty response body)
 ### HTTP request headers
 
  - **Content-Type**: Not defined
- - **Accept**: Not defined
+ - **Accept**: text/plain, application/json, text/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **apiMotorIdGet**
-> apiMotorIdGet(id)
+> Motor apiMotorIdGet(id)
 
 
 
@@ -81,7 +88,8 @@ final api_instance = MotorApi();
 final id = 56; // int | 
 
 try {
-    api_instance.apiMotorIdGet(id);
+    final result = api_instance.apiMotorIdGet(id);
+    print(result);
 } catch (e) {
     print('Exception when calling MotorApi->apiMotorIdGet: $e\n');
 }
@@ -95,7 +103,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-void (empty response body)
+[**Motor**](Motor.md)
 
 ### Authorization
 
@@ -104,7 +112,7 @@ void (empty response body)
 ### HTTP request headers
 
  - **Content-Type**: Not defined
- - **Accept**: Not defined
+ - **Accept**: text/plain, application/json, text/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
@@ -157,7 +165,7 @@ void (empty response body)
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **apiMotorIdUlasansGet**
-> apiMotorIdUlasansGet(id)
+> List<Ulasan> apiMotorIdUlasansGet(id)
 
 
 
@@ -175,7 +183,8 @@ final api_instance = MotorApi();
 final id = 56; // int | 
 
 try {
-    api_instance.apiMotorIdUlasansGet(id);
+    final result = api_instance.apiMotorIdUlasansGet(id);
+    print(result);
 } catch (e) {
     print('Exception when calling MotorApi->apiMotorIdUlasansGet: $e\n');
 }
@@ -189,7 +198,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-void (empty response body)
+[**List<Ulasan>**](Ulasan.md)
 
 ### Authorization
 
@@ -198,7 +207,7 @@ void (empty response body)
 ### HTTP request headers
 
  - **Content-Type**: Not defined
- - **Accept**: Not defined
+ - **Accept**: text/plain, application/json, text/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

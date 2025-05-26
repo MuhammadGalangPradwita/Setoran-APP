@@ -21,6 +21,7 @@ class Notifikasi {
     this.dataNavigasi = const {},
     this.isRead = false,
     this.pengguna,
+    this.waktuNotifikasi,
   });
 
   ///
@@ -57,6 +58,14 @@ class Notifikasi {
   ///
   Pengguna? pengguna;
 
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  DateTime? waktuNotifikasi;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is Notifikasi &&
     other.idNotifikasi == idNotifikasi &&
@@ -66,7 +75,8 @@ class Notifikasi {
     other.navigasi == navigasi &&
     _deepEquality.equals(other.dataNavigasi, dataNavigasi) &&
     other.isRead == isRead &&
-    other.pengguna == pengguna;
+    other.pengguna == pengguna &&
+    other.waktuNotifikasi == waktuNotifikasi;
 
   @override
   int get hashCode =>
@@ -78,10 +88,11 @@ class Notifikasi {
     (navigasi == null ? 0 : navigasi!.hashCode) +
     (dataNavigasi == null ? 0 : dataNavigasi!.hashCode) +
     (isRead.hashCode) +
-    (pengguna == null ? 0 : pengguna!.hashCode);
+    (pengguna == null ? 0 : pengguna!.hashCode) +
+    (waktuNotifikasi == null ? 0 : waktuNotifikasi!.hashCode);
 
   @override
-  String toString() => 'Notifikasi[idNotifikasi=$idNotifikasi, idPengguna=$idPengguna, judul=$judul, deskripsi=$deskripsi, navigasi=$navigasi, dataNavigasi=$dataNavigasi, isRead=$isRead, pengguna=$pengguna]';
+  String toString() => 'Notifikasi[idNotifikasi=$idNotifikasi, idPengguna=$idPengguna, judul=$judul, deskripsi=$deskripsi, navigasi=$navigasi, dataNavigasi=$dataNavigasi, isRead=$isRead, pengguna=$pengguna, waktuNotifikasi=$waktuNotifikasi]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -121,6 +132,11 @@ class Notifikasi {
     } else {
       json[r'pengguna'] = null;
     }
+    if (this.waktuNotifikasi != null) {
+      json[r'waktuNotifikasi'] = this.waktuNotifikasi!.toUtc().toIso8601String();
+    } else {
+      json[r'waktuNotifikasi'] = null;
+    }
     return json;
   }
 
@@ -151,6 +167,7 @@ class Notifikasi {
         dataNavigasi: mapCastOfType<String, String>(json, r'dataNavigasi') ?? const {},
         isRead: mapValueOfType<bool>(json, r'isRead') ?? false,
         pengguna: Pengguna.fromJson(json[r'pengguna']),
+        waktuNotifikasi: mapDateTime(json, r'waktuNotifikasi', r''),
       );
     }
     return null;

@@ -16,7 +16,7 @@ Method | HTTP request | Description
 
 
 # **apiTransaksiGet**
-> apiTransaksiGet(query)
+> List<Transaksi> apiTransaksiGet(query)
 
 
 
@@ -34,7 +34,8 @@ final api_instance = TransaksiApi();
 final query = Object; // Object | 
 
 try {
-    api_instance.apiTransaksiGet(query);
+    final result = api_instance.apiTransaksiGet(query);
+    print(result);
 } catch (e) {
     print('Exception when calling TransaksiApi->apiTransaksiGet: $e\n');
 }
@@ -48,7 +49,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-void (empty response body)
+[**List<Transaksi>**](Transaksi.md)
 
 ### Authorization
 
@@ -57,12 +58,12 @@ void (empty response body)
 ### HTTP request headers
 
  - **Content-Type**: Not defined
- - **Accept**: Not defined
+ - **Accept**: text/plain, application/json, text/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **apiTransaksiIdGet**
-> apiTransaksiIdGet(id)
+> Transaksi apiTransaksiIdGet(id)
 
 
 
@@ -80,7 +81,8 @@ final api_instance = TransaksiApi();
 final id = 56; // int | 
 
 try {
-    api_instance.apiTransaksiIdGet(id);
+    final result = api_instance.apiTransaksiIdGet(id);
+    print(result);
 } catch (e) {
     print('Exception when calling TransaksiApi->apiTransaksiIdGet: $e\n');
 }
@@ -94,7 +96,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-void (empty response body)
+[**Transaksi**](Transaksi.md)
 
 ### Authorization
 
@@ -103,7 +105,7 @@ void (empty response body)
 ### HTTP request headers
 
  - **Content-Type**: Not defined
- - **Accept**: Not defined
+ - **Accept**: text/plain, application/json, text/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

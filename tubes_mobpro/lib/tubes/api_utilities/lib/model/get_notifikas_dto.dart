@@ -18,8 +18,9 @@ class GetNotifikasDTO {
     this.judul,
     this.deskripsi,
     this.navigasi,
-    this.dataNavigasi,
+    this.dataNavigasi = const {},
     this.isRead,
+    this.waktuNotifikasi,
   });
 
   ///
@@ -44,7 +45,7 @@ class GetNotifikasDTO {
   ///
   TargetNavigasi? navigasi;
 
-  String? dataNavigasi;
+  Map<String, String>? dataNavigasi;
 
   ///
   /// Please note: This property should have been non-nullable! Since the specification file
@@ -54,6 +55,14 @@ class GetNotifikasDTO {
   ///
   bool? isRead;
 
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  DateTime? waktuNotifikasi;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is GetNotifikasDTO &&
     other.idNotifikasi == idNotifikasi &&
@@ -61,8 +70,9 @@ class GetNotifikasDTO {
     other.judul == judul &&
     other.deskripsi == deskripsi &&
     other.navigasi == navigasi &&
-    other.dataNavigasi == dataNavigasi &&
-    other.isRead == isRead;
+    _deepEquality.equals(other.dataNavigasi, dataNavigasi) &&
+    other.isRead == isRead &&
+    other.waktuNotifikasi == waktuNotifikasi;
 
   @override
   int get hashCode =>
@@ -73,10 +83,11 @@ class GetNotifikasDTO {
     (deskripsi == null ? 0 : deskripsi!.hashCode) +
     (navigasi == null ? 0 : navigasi!.hashCode) +
     (dataNavigasi == null ? 0 : dataNavigasi!.hashCode) +
-    (isRead == null ? 0 : isRead!.hashCode);
+    (isRead == null ? 0 : isRead!.hashCode) +
+    (waktuNotifikasi == null ? 0 : waktuNotifikasi!.hashCode);
 
   @override
-  String toString() => 'GetNotifikasDTO[idNotifikasi=$idNotifikasi, idPengguna=$idPengguna, judul=$judul, deskripsi=$deskripsi, navigasi=$navigasi, dataNavigasi=$dataNavigasi, isRead=$isRead]';
+  String toString() => 'GetNotifikasDTO[idNotifikasi=$idNotifikasi, idPengguna=$idPengguna, judul=$judul, deskripsi=$deskripsi, navigasi=$navigasi, dataNavigasi=$dataNavigasi, isRead=$isRead, waktuNotifikasi=$waktuNotifikasi]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -115,6 +126,11 @@ class GetNotifikasDTO {
     } else {
       json[r'isRead'] = null;
     }
+    if (this.waktuNotifikasi != null) {
+      json[r'waktuNotifikasi'] = this.waktuNotifikasi!.toUtc().toIso8601String();
+    } else {
+      json[r'waktuNotifikasi'] = null;
+    }
     return json;
   }
 
@@ -142,8 +158,9 @@ class GetNotifikasDTO {
         judul: mapValueOfType<String>(json, r'judul'),
         deskripsi: mapValueOfType<String>(json, r'deskripsi'),
         navigasi: TargetNavigasi.fromJson(json[r'navigasi']),
-        dataNavigasi: mapValueOfType<String>(json, r'dataNavigasi'),
+        dataNavigasi: mapCastOfType<String, String>(json, r'dataNavigasi') ?? const {},
         isRead: mapValueOfType<bool>(json, r'isRead'),
+        waktuNotifikasi: mapDateTime(json, r'waktuNotifikasi', r''),
       );
     }
     return null;

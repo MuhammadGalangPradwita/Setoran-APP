@@ -24,15 +24,17 @@ Name | Type | Description | Notes
 **lockoutEnabled** | **bool** |  | [optional] 
 **accessFailedCount** | **int** |  | [optional] 
 **pelanggan** | [**Pelanggan**](Pelanggan.md) |  | [optional] 
+**mitra** | [**Mitra**](Mitra.md) |  | [optional] 
+**isAdmin** | **bool** |  | [optional] [default to false]
 **notifikasis** | [**List<Notifikasi>**](Notifikasi.md) |  | [optional] [default to const []]
 **deviceTokens** | [**List<DeviceToken>**](DeviceToken.md) |  | [optional] [default to const []]
 **nama** | **String** |  | [optional] 
 **tanggalLahir** | [**DateTime**](DateTime.md) |  | [optional] 
 **nomorTelepon** | **String** |  | [optional] 
-**umur** | **int** |  | [optional] 
+**umur** | **int** |  | [optional] [readonly] 
 **nomorKTP** | **String** |  | [optional] 
 **alamat** | **String** |  | [optional] 
-**idGambar** | **int** |  | [optional] 
+**idGambar** | **String** |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

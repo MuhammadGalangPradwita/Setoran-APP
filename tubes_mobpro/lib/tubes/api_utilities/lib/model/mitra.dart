@@ -15,6 +15,7 @@ class Mitra {
   Mitra({
     this.idMitra,
     this.status,
+    this.idPengguna,
     this.pengguna,
   });
 
@@ -26,7 +27,15 @@ class Mitra {
   ///
   int? idMitra;
 
-  String? status;
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  StatusMitra? status;
+
+  String? idPengguna;
 
   ///
   /// Please note: This property should have been non-nullable! Since the specification file
@@ -40,6 +49,7 @@ class Mitra {
   bool operator ==(Object other) => identical(this, other) || other is Mitra &&
     other.idMitra == idMitra &&
     other.status == status &&
+    other.idPengguna == idPengguna &&
     other.pengguna == pengguna;
 
   @override
@@ -47,10 +57,11 @@ class Mitra {
     // ignore: unnecessary_parenthesis
     (idMitra == null ? 0 : idMitra!.hashCode) +
     (status == null ? 0 : status!.hashCode) +
+    (idPengguna == null ? 0 : idPengguna!.hashCode) +
     (pengguna == null ? 0 : pengguna!.hashCode);
 
   @override
-  String toString() => 'Mitra[idMitra=$idMitra, status=$status, pengguna=$pengguna]';
+  String toString() => 'Mitra[idMitra=$idMitra, status=$status, idPengguna=$idPengguna, pengguna=$pengguna]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -63,6 +74,11 @@ class Mitra {
       json[r'status'] = this.status;
     } else {
       json[r'status'] = null;
+    }
+    if (this.idPengguna != null) {
+      json[r'idPengguna'] = this.idPengguna;
+    } else {
+      json[r'idPengguna'] = null;
     }
     if (this.pengguna != null) {
       json[r'pengguna'] = this.pengguna;
@@ -92,7 +108,8 @@ class Mitra {
 
       return Mitra(
         idMitra: mapValueOfType<int>(json, r'idMitra'),
-        status: mapValueOfType<String>(json, r'status'),
+        status: StatusMitra.fromJson(json[r'status']),
+        idPengguna: mapValueOfType<String>(json, r'idPengguna'),
         pengguna: Pengguna.fromJson(json[r'pengguna']),
       );
     }

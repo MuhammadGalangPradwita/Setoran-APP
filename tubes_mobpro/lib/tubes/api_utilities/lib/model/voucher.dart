@@ -20,6 +20,7 @@ class Voucher {
     this.tanggalAkhir,
     this.persenVoucher,
     this.kodeVoucher,
+    this.pelanggans = const [],
   });
 
   ///
@@ -66,6 +67,8 @@ class Voucher {
 
   String? kodeVoucher;
 
+  List<Pelanggan>? pelanggans;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is Voucher &&
     other.idVoucher == idVoucher &&
@@ -74,7 +77,8 @@ class Voucher {
     other.tanggalMulai == tanggalMulai &&
     other.tanggalAkhir == tanggalAkhir &&
     other.persenVoucher == persenVoucher &&
-    other.kodeVoucher == kodeVoucher;
+    other.kodeVoucher == kodeVoucher &&
+    _deepEquality.equals(other.pelanggans, pelanggans);
 
   @override
   int get hashCode =>
@@ -85,10 +89,11 @@ class Voucher {
     (tanggalMulai == null ? 0 : tanggalMulai!.hashCode) +
     (tanggalAkhir == null ? 0 : tanggalAkhir!.hashCode) +
     (persenVoucher == null ? 0 : persenVoucher!.hashCode) +
-    (kodeVoucher == null ? 0 : kodeVoucher!.hashCode);
+    (kodeVoucher == null ? 0 : kodeVoucher!.hashCode) +
+    (pelanggans == null ? 0 : pelanggans!.hashCode);
 
   @override
-  String toString() => 'Voucher[idVoucher=$idVoucher, namaVoucher=$namaVoucher, statusVoucher=$statusVoucher, tanggalMulai=$tanggalMulai, tanggalAkhir=$tanggalAkhir, persenVoucher=$persenVoucher, kodeVoucher=$kodeVoucher]';
+  String toString() => 'Voucher[idVoucher=$idVoucher, namaVoucher=$namaVoucher, statusVoucher=$statusVoucher, tanggalMulai=$tanggalMulai, tanggalAkhir=$tanggalAkhir, persenVoucher=$persenVoucher, kodeVoucher=$kodeVoucher, pelanggans=$pelanggans]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -127,6 +132,11 @@ class Voucher {
     } else {
       json[r'kodeVoucher'] = null;
     }
+    if (this.pelanggans != null) {
+      json[r'pelanggans'] = this.pelanggans;
+    } else {
+      json[r'pelanggans'] = null;
+    }
     return json;
   }
 
@@ -156,6 +166,7 @@ class Voucher {
         tanggalAkhir: mapDateTime(json, r'tanggalAkhir', r''),
         persenVoucher: mapValueOfType<int>(json, r'persenVoucher'),
         kodeVoucher: mapValueOfType<String>(json, r'kodeVoucher'),
+        pelanggans: Pelanggan.listFromJson(json[r'pelanggans']),
       );
     }
     return null;

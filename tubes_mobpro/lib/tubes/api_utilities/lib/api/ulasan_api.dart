@@ -42,11 +42,22 @@ class UlasanApi {
     );
   }
 
-  Future<void> apiUlasanGet() async {
+  Future<List<Ulasan>?> apiUlasanGet() async {
     final response = await apiUlasanGetWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      final responseBody = await _decodeBodyBytes(response);
+      return (await apiClient.deserializeAsync(responseBody, 'List<Ulasan>') as List)
+        .cast<Ulasan>()
+        .toList(growable: false);
+
+    }
+    return null;
   }
 
   /// Performs an HTTP 'GET /api/Ulasan/{id}' operation and returns the [Response].
@@ -82,11 +93,19 @@ class UlasanApi {
   /// Parameters:
   ///
   /// * [int] id (required):
-  Future<void> apiUlasanIdGet(int id,) async {
+  Future<Ulasan?> apiUlasanIdGet(int id,) async {
     final response = await apiUlasanIdGetWithHttpInfo(id,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'Ulasan',) as Ulasan;
+    
+    }
+    return null;
   }
 
   /// Performs an HTTP 'POST /api/Ulasan' operation and returns the [Response].

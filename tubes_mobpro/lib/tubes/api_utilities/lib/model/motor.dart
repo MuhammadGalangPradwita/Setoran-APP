@@ -25,8 +25,7 @@ class Motor {
     this.transmisi,
     this.statusMotor,
     this.hargaHarian,
-    this.diskonPercentage,
-    this.diskonAmount,
+    this.diskon = const [],
     this.mitra,
   });
 
@@ -78,9 +77,7 @@ class Motor {
   ///
   double? hargaHarian;
 
-  int? diskonPercentage;
-
-  int? diskonAmount;
+  List<Diskon>? diskon;
 
   ///
   /// Please note: This property should have been non-nullable! Since the specification file
@@ -104,8 +101,7 @@ class Motor {
     other.transmisi == transmisi &&
     other.statusMotor == statusMotor &&
     other.hargaHarian == hargaHarian &&
-    other.diskonPercentage == diskonPercentage &&
-    other.diskonAmount == diskonAmount &&
+    _deepEquality.equals(other.diskon, diskon) &&
     other.mitra == mitra;
 
   @override
@@ -123,12 +119,11 @@ class Motor {
     (transmisi == null ? 0 : transmisi!.hashCode) +
     (statusMotor == null ? 0 : statusMotor!.hashCode) +
     (hargaHarian == null ? 0 : hargaHarian!.hashCode) +
-    (diskonPercentage == null ? 0 : diskonPercentage!.hashCode) +
-    (diskonAmount == null ? 0 : diskonAmount!.hashCode) +
+    (diskon == null ? 0 : diskon!.hashCode) +
     (mitra == null ? 0 : mitra!.hashCode);
 
   @override
-  String toString() => 'Motor[idMotor=$idMotor, platNomor=$platNomor, idMitra=$idMitra, nomorSTNK=$nomorSTNK, nomorBPKB=$nomorBPKB, model=$model, brand=$brand, tipe=$tipe, tahun=$tahun, transmisi=$transmisi, statusMotor=$statusMotor, hargaHarian=$hargaHarian, diskonPercentage=$diskonPercentage, diskonAmount=$diskonAmount, mitra=$mitra]';
+  String toString() => 'Motor[idMotor=$idMotor, platNomor=$platNomor, idMitra=$idMitra, nomorSTNK=$nomorSTNK, nomorBPKB=$nomorBPKB, model=$model, brand=$brand, tipe=$tipe, tahun=$tahun, transmisi=$transmisi, statusMotor=$statusMotor, hargaHarian=$hargaHarian, diskon=$diskon, mitra=$mitra]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -192,15 +187,10 @@ class Motor {
     } else {
       json[r'hargaHarian'] = null;
     }
-    if (this.diskonPercentage != null) {
-      json[r'diskonPercentage'] = this.diskonPercentage;
+    if (this.diskon != null) {
+      json[r'diskon'] = this.diskon;
     } else {
-      json[r'diskonPercentage'] = null;
-    }
-    if (this.diskonAmount != null) {
-      json[r'diskonAmount'] = this.diskonAmount;
-    } else {
-      json[r'diskonAmount'] = null;
+      json[r'diskon'] = null;
     }
     if (this.mitra != null) {
       json[r'mitra'] = this.mitra;
@@ -241,8 +231,7 @@ class Motor {
         transmisi: mapValueOfType<String>(json, r'transmisi'),
         statusMotor: mapValueOfType<String>(json, r'statusMotor'),
         hargaHarian: mapValueOfType<double>(json, r'hargaHarian'),
-        diskonPercentage: mapValueOfType<int>(json, r'diskonPercentage'),
-        diskonAmount: mapValueOfType<int>(json, r'diskonAmount'),
+        diskon: Diskon.listFromJson(json[r'diskon']),
         mitra: Mitra.fromJson(json[r'mitra']),
       );
     }

@@ -16,6 +16,7 @@ Name | Type | Description | Notes
 **dataNavigasi** | **Map<String, String>** |  | [optional] [default to const {}]
 **isRead** | **bool** |  | [optional] [default to false]
 **pengguna** | [**Pengguna**](Pengguna.md) |  | [optional] 
+**waktuNotifikasi** | [**DateTime**](DateTime.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

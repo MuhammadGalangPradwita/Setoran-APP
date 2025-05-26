@@ -188,6 +188,8 @@ class ApiClient {
           return CheckVoucherDTO.fromJson(value);
         case 'DeviceToken':
           return DeviceToken.fromJson(value);
+        case 'Diskon':
+          return Diskon.fromJson(value);
         case 'ForgotPasswordRequest':
           return ForgotPasswordRequest.fromJson(value);
         case 'GetNotifikasDTO':
@@ -202,6 +204,8 @@ class ApiClient {
           return LoginRequest.fromJson(value);
         case 'Mitra':
           return Mitra.fromJson(value);
+        case 'MitraMotorDTO':
+          return MitraMotorDTO.fromJson(value);
         case 'Motor':
           return Motor.fromJson(value);
         case 'MotorForm':
@@ -214,16 +218,26 @@ class ApiClient {
           return Pembayaran.fromJson(value);
         case 'Pengguna':
           return Pengguna.fromJson(value);
+        case 'PostDiskonDTO':
+          return PostDiskonDTO.fromJson(value);
+        case 'PostMitraDTO':
+          return PostMitraDTO.fromJson(value);
         case 'PostNotifikasDTO':
           return PostNotifikasDTO.fromJson(value);
+        case 'PostPelangganDTO':
+          return PostPelangganDTO.fromJson(value);
         case 'PostPembayaranDTO':
           return PostPembayaranDTO.fromJson(value);
+        case 'PostPenggunaDTO':
+          return PostPenggunaDTO.fromJson(value);
         case 'PostTransaksiDTO':
           return PostTransaksiDTO.fromJson(value);
         case 'PostUlasanDTO':
           return PostUlasanDTO.fromJson(value);
         case 'PostVoucherDTO':
           return PostVoucherDTO.fromJson(value);
+        case 'PutDiskonDTO':
+          return PutDiskonDTO.fromJson(value);
         case 'PutMotorDTO':
           return PutMotorDTO.fromJson(value);
         case 'PutPembayaranDTO':
@@ -238,6 +252,10 @@ class ApiClient {
           return ResendConfirmationEmailRequest.fromJson(value);
         case 'ResetPasswordRequest':
           return ResetPasswordRequest.fromJson(value);
+        case 'StatusDiskon':
+          return StatusDiskonTypeTransformer().decode(value);
+        case 'StatusMitra':
+          return StatusMitraTypeTransformer().decode(value);
         case 'StatusVoucher':
           return StatusVoucherTypeTransformer().decode(value);
         case 'TargetNavigasi':
@@ -248,6 +266,8 @@ class ApiClient {
           return TwoFactorRequest.fromJson(value);
         case 'TwoFactorResponse':
           return TwoFactorResponse.fromJson(value);
+        case 'Ulasan':
+          return Ulasan.fromJson(value);
         case 'Voucher':
           return Voucher.fromJson(value);
         default:

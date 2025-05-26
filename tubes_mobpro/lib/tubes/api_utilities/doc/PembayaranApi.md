@@ -60,7 +60,7 @@ This endpoint does not need any parameter.
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **apiPembayaranIdGet**
-> apiPembayaranIdGet(id)
+> Pembayaran apiPembayaranIdGet(id)
 
 
 
@@ -78,7 +78,8 @@ final api_instance = PembayaranApi();
 final id = 56; // int | 
 
 try {
-    api_instance.apiPembayaranIdGet(id);
+    final result = api_instance.apiPembayaranIdGet(id);
+    print(result);
 } catch (e) {
     print('Exception when calling PembayaranApi->apiPembayaranIdGet: $e\n');
 }
@@ -92,7 +93,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-void (empty response body)
+[**Pembayaran**](Pembayaran.md)
 
 ### Authorization
 
@@ -101,7 +102,7 @@ void (empty response body)
 ### HTTP request headers
 
  - **Content-Type**: Not defined
- - **Accept**: Not defined
+ - **Accept**: text/plain, application/json, text/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

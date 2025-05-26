@@ -29,6 +29,8 @@ class Pengguna {
     this.lockoutEnabled,
     this.accessFailedCount,
     this.pelanggan,
+    this.mitra,
+    this.isAdmin = false,
     this.notifikasis = const [],
     this.deviceTokens = const [],
     this.nama,
@@ -108,6 +110,16 @@ class Pengguna {
   ///
   Pelanggan? pelanggan;
 
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  Mitra? mitra;
+
+  bool isAdmin;
+
   List<Notifikasi>? notifikasis;
 
   List<DeviceToken>? deviceTokens;
@@ -124,7 +136,7 @@ class Pengguna {
 
   String? alamat;
 
-  int? idGambar;
+  String? idGambar;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is Pengguna &&
@@ -144,6 +156,8 @@ class Pengguna {
     other.lockoutEnabled == lockoutEnabled &&
     other.accessFailedCount == accessFailedCount &&
     other.pelanggan == pelanggan &&
+    other.mitra == mitra &&
+    other.isAdmin == isAdmin &&
     _deepEquality.equals(other.notifikasis, notifikasis) &&
     _deepEquality.equals(other.deviceTokens, deviceTokens) &&
     other.nama == nama &&
@@ -173,6 +187,8 @@ class Pengguna {
     (lockoutEnabled == null ? 0 : lockoutEnabled!.hashCode) +
     (accessFailedCount == null ? 0 : accessFailedCount!.hashCode) +
     (pelanggan == null ? 0 : pelanggan!.hashCode) +
+    (mitra == null ? 0 : mitra!.hashCode) +
+    (isAdmin.hashCode) +
     (notifikasis == null ? 0 : notifikasis!.hashCode) +
     (deviceTokens == null ? 0 : deviceTokens!.hashCode) +
     (nama == null ? 0 : nama!.hashCode) +
@@ -184,7 +200,7 @@ class Pengguna {
     (idGambar == null ? 0 : idGambar!.hashCode);
 
   @override
-  String toString() => 'Pengguna[id=$id, userName=$userName, normalizedUserName=$normalizedUserName, email=$email, normalizedEmail=$normalizedEmail, emailConfirmed=$emailConfirmed, passwordHash=$passwordHash, securityStamp=$securityStamp, concurrencyStamp=$concurrencyStamp, phoneNumber=$phoneNumber, phoneNumberConfirmed=$phoneNumberConfirmed, twoFactorEnabled=$twoFactorEnabled, lockoutEnd=$lockoutEnd, lockoutEnabled=$lockoutEnabled, accessFailedCount=$accessFailedCount, pelanggan=$pelanggan, notifikasis=$notifikasis, deviceTokens=$deviceTokens, nama=$nama, tanggalLahir=$tanggalLahir, nomorTelepon=$nomorTelepon, umur=$umur, nomorKTP=$nomorKTP, alamat=$alamat, idGambar=$idGambar]';
+  String toString() => 'Pengguna[id=$id, userName=$userName, normalizedUserName=$normalizedUserName, email=$email, normalizedEmail=$normalizedEmail, emailConfirmed=$emailConfirmed, passwordHash=$passwordHash, securityStamp=$securityStamp, concurrencyStamp=$concurrencyStamp, phoneNumber=$phoneNumber, phoneNumberConfirmed=$phoneNumberConfirmed, twoFactorEnabled=$twoFactorEnabled, lockoutEnd=$lockoutEnd, lockoutEnabled=$lockoutEnabled, accessFailedCount=$accessFailedCount, pelanggan=$pelanggan, mitra=$mitra, isAdmin=$isAdmin, notifikasis=$notifikasis, deviceTokens=$deviceTokens, nama=$nama, tanggalLahir=$tanggalLahir, nomorTelepon=$nomorTelepon, umur=$umur, nomorKTP=$nomorKTP, alamat=$alamat, idGambar=$idGambar]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -268,6 +284,12 @@ class Pengguna {
     } else {
       json[r'pelanggan'] = null;
     }
+    if (this.mitra != null) {
+      json[r'mitra'] = this.mitra;
+    } else {
+      json[r'mitra'] = null;
+    }
+      json[r'isAdmin'] = this.isAdmin;
     if (this.notifikasis != null) {
       json[r'notifikasis'] = this.notifikasis;
     } else {
@@ -351,6 +373,8 @@ class Pengguna {
         lockoutEnabled: mapValueOfType<bool>(json, r'lockoutEnabled'),
         accessFailedCount: mapValueOfType<int>(json, r'accessFailedCount'),
         pelanggan: Pelanggan.fromJson(json[r'pelanggan']),
+        mitra: Mitra.fromJson(json[r'mitra']),
+        isAdmin: mapValueOfType<bool>(json, r'isAdmin') ?? false,
         notifikasis: Notifikasi.listFromJson(json[r'notifikasis']),
         deviceTokens: DeviceToken.listFromJson(json[r'deviceTokens']),
         nama: mapValueOfType<String>(json, r'nama'),
@@ -359,7 +383,7 @@ class Pengguna {
         umur: mapValueOfType<int>(json, r'umur'),
         nomorKTP: mapValueOfType<String>(json, r'nomorKTP'),
         alamat: mapValueOfType<String>(json, r'alamat'),
-        idGambar: mapValueOfType<int>(json, r'idGambar'),
+        idGambar: mapValueOfType<String>(json, r'idGambar'),
       );
     }
     return null;

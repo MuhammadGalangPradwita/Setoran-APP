@@ -12,7 +12,7 @@ Name | Type | Description | Notes
 **judul** | **String** |  | [optional] 
 **deskripsi** | **String** |  | [optional] 
 **navigasi** | [**TargetNavigasi**](TargetNavigasi.md) |  | [optional] 
-**dataNavigasi** | **String** |  | [optional] 
+**dataNavigasi** | **Map<String, String>** |  | [optional] [default to const {}]
 **isRead** | **bool** |  | [optional] [default to false]
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

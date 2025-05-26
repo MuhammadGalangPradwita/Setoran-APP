@@ -15,7 +15,7 @@ Method | HTTP request | Description
 
 
 # **apiUlasanGet**
-> apiUlasanGet()
+> List<Ulasan> apiUlasanGet()
 
 
 
@@ -32,7 +32,8 @@ import 'package:openapi/api.dart';
 final api_instance = UlasanApi();
 
 try {
-    api_instance.apiUlasanGet();
+    final result = api_instance.apiUlasanGet();
+    print(result);
 } catch (e) {
     print('Exception when calling UlasanApi->apiUlasanGet: $e\n');
 }
@@ -43,7 +44,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-void (empty response body)
+[**List<Ulasan>**](Ulasan.md)
 
 ### Authorization
 
@@ -52,12 +53,12 @@ void (empty response body)
 ### HTTP request headers
 
  - **Content-Type**: Not defined
- - **Accept**: Not defined
+ - **Accept**: text/plain, application/json, text/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **apiUlasanIdGet**
-> apiUlasanIdGet(id)
+> Ulasan apiUlasanIdGet(id)
 
 
 
@@ -75,7 +76,8 @@ final api_instance = UlasanApi();
 final id = 56; // int | 
 
 try {
-    api_instance.apiUlasanIdGet(id);
+    final result = api_instance.apiUlasanIdGet(id);
+    print(result);
 } catch (e) {
     print('Exception when calling UlasanApi->apiUlasanIdGet: $e\n');
 }
@@ -89,7 +91,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-void (empty response body)
+[**Ulasan**](Ulasan.md)
 
 ### Authorization
 
@@ -98,7 +100,7 @@ void (empty response body)
 ### HTTP request headers
 
  - **Content-Type**: Not defined
- - **Accept**: Not defined
+ - **Accept**: text/plain, application/json, text/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

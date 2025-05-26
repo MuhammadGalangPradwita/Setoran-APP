@@ -52,11 +52,22 @@ class TransaksiApi {
   /// Parameters:
   ///
   /// * [Object] query:
-  Future<void> apiTransaksiGet({ Object? query, }) async {
+  Future<List<Transaksi>?> apiTransaksiGet({ Object? query, }) async {
     final response = await apiTransaksiGetWithHttpInfo( query: query, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      final responseBody = await _decodeBodyBytes(response);
+      return (await apiClient.deserializeAsync(responseBody, 'List<Transaksi>') as List)
+        .cast<Transaksi>()
+        .toList(growable: false);
+
+    }
+    return null;
   }
 
   /// Performs an HTTP 'GET /api/Transaksi/{id}' operation and returns the [Response].
@@ -92,11 +103,19 @@ class TransaksiApi {
   /// Parameters:
   ///
   /// * [int] id (required):
-  Future<void> apiTransaksiIdGet(int id,) async {
+  Future<Transaksi?> apiTransaksiIdGet(int id,) async {
     final response = await apiTransaksiIdGetWithHttpInfo(id,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'Transaksi',) as Transaksi;
+    
+    }
+    return null;
   }
 
   /// Performs an HTTP 'PUT /api/Transaksi/{id}' operation and returns the [Response].
