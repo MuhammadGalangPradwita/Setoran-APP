@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
 import 'package:tubes_mobpro/tubes/api_utilities/motor.dart';
 import 'package:tubes_mobpro/tubes/api_utilities/transaksi.dart';
 import 'package:tubes_mobpro/tubes/models/motor.dart';
 import 'package:tubes_mobpro/tubes/models/transaksi.dart';
+import 'package:tubes_mobpro/tubes/pages/auth_check.dart';
 import 'package:tubes_mobpro/tubes/pages/motor_book_page.dart';
 import 'package:tubes_mobpro/tubes/services/firebase_notification_service.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
@@ -82,7 +84,8 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
       ),
       body: SafeArea(
         child: FutureBuilder<Motor>(
-            future: MotorAPi.getMotor(widget.index),
+            // future: MotorAPi.getMotor(widget.index),
+            future: MotorApi().,
             builder:
                 (BuildContext context, AsyncSnapshot<Motor> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
@@ -201,7 +204,7 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
                                       ),
 
                                       // Brand motor
-                                      Text(motor.brand,
+                                      Text(motor.brand!,
                                           style: AppTextStyle.smallReguler),
                                     ],
                                   ),
@@ -219,7 +222,7 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
                                       ),
 
                                       // Tipe motor
-                                      Text(motor.tipe,
+                                      Text(motor.tipe!,
                                           style: AppTextStyle.smallReguler),
                                     ],
                                   ),
@@ -255,7 +258,7 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
                                       ),
 
                                       // Transmisi motor
-                                      Text(motor.transmisi,
+                                      Text(motor.transmisi!,
                                           style: AppTextStyle.smallReguler),
                                     ],
                                   ),
@@ -273,7 +276,7 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
                                       ),
 
                                       // Nomor polisi motor
-                                      Text(motor.platNomor,
+                                      Text(motor.platNomor!,
                                           style: AppTextStyle.smallReguler),
                                     ],
                                   ),
@@ -379,9 +382,12 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
 
   Future<bool> isRented() async {
 
-    int userId = (await PenggunaApi.getCurrentUser())!.id;
+    // int userId = (await PenggunaApi.getCurrentUser())!.id;
+    int userId = AuthState().currentUser!.id! as int;
 
-    List<Transaksi>? transaksiList = (await TransaksiApi.getByPelanggan(userId));
+    // TODO: Uncomment this when the API is ready
+    // List<Transaksi>? transaksiList = (await TransaksiApi.getByPelanggan(userId));
+    // List<Transaksi>? transaksiList = await TransaksiApi().ge;
 
     if (transaksiList != null) {
       bool exists = transaksiList.any((v) => v.idMotor == widget.index);

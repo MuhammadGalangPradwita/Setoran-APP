@@ -1,13 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:tubes_mobpro/tubes/api_utilities/mitra.dart';
-import 'package:tubes_mobpro/tubes/api_utilities/motor.dart';
-import 'package:tubes_mobpro/tubes/api_utilities/pengguna.dart';
-import 'package:tubes_mobpro/tubes/api_utilities/transaksi.dart';
-import 'package:tubes_mobpro/tubes/models/mitra.dart';
-import 'package:tubes_mobpro/tubes/models/motor.dart';
-import 'package:tubes_mobpro/tubes/models/pengguna.dart';
-import 'package:tubes_mobpro/tubes/models/transaksi.dart';
+import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
 import 'package:tubes_mobpro/tubes/pages/register_motorcycle_page.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 import 'package:tubes_mobpro/tubes/widgets/button_widgets.dart';
@@ -33,7 +26,9 @@ class _MyMotorcyclePageState extends State<MyMotorcyclePage> {
   }
 
   void loadData() async {
-    final resPengguna = await PenggunaApi.getCurrentUser();
+    // final resPengguna = await PenggunaApi.getCurrentUser();
+    final resPengguna = await PenggunaApi().penggunaCurrentPenggunaGet();
+    // TODO: create get mitra by pengguna id endpoint
     final resMitra = await MitraApi.getMitraByIdPengguna(resPengguna!.id);
     final resMotor = await MotorAPi.getByMitra(resMitra!.idMitra);
     final resTransaksi = await TransaksiApi.getByMitra(resMitra!.idMitra);
@@ -49,7 +44,8 @@ class _MyMotorcyclePageState extends State<MyMotorcyclePage> {
 
   int calculateTotalIncome(List<Transaksi>? transaksis) {
     if (transaksis == null) return 0;
-    return transaksis.fold(0, (total, item) => total + item.nominal);
+    return transaksis.fold(
+        0, (total, item) => total + (item.totalHarga as int));
   }
 
   Widget _buildMotorList() {
@@ -74,7 +70,7 @@ class _MyMotorcyclePageState extends State<MyMotorcyclePage> {
                     '${motor.brand} ${motor.tipe}',
                     style: AppTextStyle.body1SemiBold,
                   ),
-                  subtitle: Text(motor.platNomor),
+                  subtitle: Text(motor.platNomor!),
                   // Add more motor details here if needed
                 ),
               );

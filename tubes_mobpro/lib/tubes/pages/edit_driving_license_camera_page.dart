@@ -1,7 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:tubes_mobpro/tubes/models/pelanggan.dart';
+import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
 import 'package:tubes_mobpro/tubes/pages/image_view_page.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 

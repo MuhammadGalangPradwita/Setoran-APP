@@ -1,10 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:tubes_mobpro/tubes/api_utilities/motor.dart';
-import 'package:tubes_mobpro/tubes/api_utilities/pembayaran.dart';
-import 'package:tubes_mobpro/tubes/models/motor.dart';
-import 'package:tubes_mobpro/tubes/models/pembayaran.dart';
-import 'package:tubes_mobpro/tubes/models/transaksi.dart';
+import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 import 'package:tubes_mobpro/tubes/utilities/app_util.dart';
 
@@ -26,19 +24,23 @@ class _DetailActivityPageState extends State<DetailActivityPage> {
   @override
   void initState() {
     super.initState();
-    _isFailed = widget.transaksi.statusTransaksi == 'batal';
+    _isFailed = widget.transaksi.status == 'batal';
     _paymentColor = _isFailed ? AppColors.R400 : AppColors.G500;
     loadMotor();
     // loadPembayaran();
   }
 
   Future<void> loadMotor() async {
-    final result = await MotorAPi.getById(widget.transaksi.idMotor);
+    // final result = await MotorApi().getById(widget.transaksi.idMotor);
+    final result =
+        await MotorApi().apiMotorIdGetWithHttpInfo(widget.transaksi.idMotor!);
     final resultPembayaran =
-        await PembayaranApi.getByIdTransaksi(widget.transaksi.idTransaksi);
+        // await PembayaranApi.getByIdTransaksi(widget.transaksi.idTransaksi);
+        await PembayaranApi().apiPembayaranTransaksiIdGetWithHttpInfo(
+            widget.transaksi.idTransaksi!);
     setState(() {
-      motor = result;
-      pembayaran = resultPembayaran;
+      motor = Motor.fromJson(jsonDecode(result.body));
+      pembayaran = Pembayaran.fromJson(jsonDecode(resultPembayaran.body));
     });
   }
 
@@ -105,35 +107,37 @@ class _DetailActivityPageState extends State<DetailActivityPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text("Rent Date"),
-                Text(AppUtil.formatDate(widget.transaksi.tanggalMulai))
+                Text(AppUtil.formatDate(widget.transaksi.tanggalMulai!))
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text("Rent Duration"),
-                Text('${widget.transaksi.durasi} Hari')
+                Text(
+                    '${widget.transaksi.tanggalSelesai!.difference(widget.transaksi.tanggalMulai!).inDays + 1} Hari')
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Payment Method"),
-                Text(pembayaran!.metode),
+                const Text("Payment Method"),
+                Text(pembayaran!.metodePembayaran!),
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text("Price"),
-                Text(AppUtil.formatPrice(pembayaran!.nominal))
+                Text(AppUtil.formatPrice(
+                    pembayaran!.transaksi!.totalHarga! as int))
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text("Status"),
-                Text(pembayaran!.statusPembayaran)
+                Text(pembayaran!.statusPembayaran!)
               ],
             ),
           ],
@@ -162,14 +166,14 @@ class _DetailActivityPageState extends State<DetailActivityPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text('Brand'),
-                    Text(motor!.brand),
+                    Text(motor!.brand ?? ""),
                   ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text('Type'),
-                    Text(motor!.tipe),
+                    Text(motor!.tipe ?? ""),
                   ],
                 ),
                 Row(
@@ -183,21 +187,21 @@ class _DetailActivityPageState extends State<DetailActivityPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text('Transmisi'),
-                    Text(motor!.transmisi),
+                    Text(motor!.transmisi ?? ""),
                   ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text('Police Number'),
-                    Text(motor!.platNomor),
+                    Text(motor!.platNomor ?? ""),
                   ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text('STNK Number'),
-                    Text(motor!.nomorSTNK),
+                    Text(motor!.nomorSTNK ?? ""),
                   ],
                 ),
               ],

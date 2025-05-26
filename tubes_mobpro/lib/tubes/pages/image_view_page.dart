@@ -5,10 +5,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
-import 'package:tubes_mobpro/tubes/api_utilities/pelanggan.dart';
-import 'package:tubes_mobpro/tubes/api_utilities/pengguna.dart';
-import 'package:tubes_mobpro/tubes/models/pelanggan.dart';
-import 'package:tubes_mobpro/tubes/models/pengguna.dart';
+import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 import 'package:tubes_mobpro/tubes/widgets/button_widgets.dart';
 import 'package:tubes_mobpro/tubes/widgets/textField_widget.dart';
@@ -129,7 +126,8 @@ class _KTPImageViewPageState extends State<KTPImageViewPage> {
     // save id to database
     if (controller.text.isNotEmpty && controller.text.length == 16) {
       widget.pengguna.nomorKTP = controller.text;
-      await PenggunaApi.updatePengguna(widget.pengguna);
+      // TODO: create API to update pengguna
+      // await PenggunaApi.updatePengguna(widget.pengguna);
       Navigator.of(context)
         ..pop()
         ..pop()
@@ -292,7 +290,8 @@ class _SIMImageViewPageState extends State<SIMImageViewPage> {
     // save id to database
     if (controller.text.isNotEmpty) {
       widget.pelanggan.nomorSIM = controller.text;
-      await PelangganApi.updatePelanggan(widget.pelanggan);
+      // TODO: create API to update pelanggan
+      // await PelangganApi.updatePelanggan(widget.pelanggan);
       Navigator.of(context)
         ..pop()
         ..pop()
