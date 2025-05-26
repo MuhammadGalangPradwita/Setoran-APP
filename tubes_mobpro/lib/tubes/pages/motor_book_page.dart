@@ -1,12 +1,8 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:tubes_mobpro/tubes/api_utilities/pengguna.dart';
-import 'package:tubes_mobpro/tubes/api_utilities/transaksi.dart';
-import 'package:tubes_mobpro/tubes/api_utilities/voucher.dart';
-import 'package:tubes_mobpro/tubes/models/motor.dart';
-import 'package:tubes_mobpro/tubes/models/pengguna.dart';
-import 'package:tubes_mobpro/tubes/models/voucher.dart';
+import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
+import 'package:tubes_mobpro/tubes/pages/auth_check.dart';
 import 'package:tubes_mobpro/tubes/pages/homePage_screen.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 
@@ -274,7 +270,7 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
                 children: [
                   const Text('Original fees', style: TextStyle(fontSize: 14.0)),
                   Text(
-                      'Rp. ${formatter.format(widget.motor.hargaHarian * rentTime!.duration.inHours)}',
+                      'Rp. ${formatter.format(widget.motor.hargaHarian! * rentTime!.duration.inHours)}',
                       style: const TextStyle(fontSize: 14.0)),
                 ],
               ),
@@ -287,7 +283,7 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text('Voucher', style: TextStyle(fontSize: 14.0)),
-                  Text(voucher != null ? '${voucher!.persen}%' : ' - ',
+                  Text(voucher != null ? '${voucher!.persenVoucher}%' : ' - ',
                       style: const TextStyle(fontSize: 14.0)),
                 ],
               ),
@@ -361,7 +357,7 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
       Motor motor, DateTimeRange range, Voucher? voucher) async {
     double finalFees = calculateFees(motor, range, voucher);
 
-    int userId = (await PenggunaApi.getCurrentUser())!.id;
+    int userId = (await PenggunaApi().penggunaCurrentPenggunaGet())!.id as int;
 
     Map<String, dynamic> payload = {
       'id_motor': motor.idMotor,
@@ -378,7 +374,13 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
     }
 
     try {
-      var response = await TransaksiApi.postTransaksi(payload);
+      await TransaksiApi().apiTransaksiPost(
+          postTransaksiDTO: PostTransaksiDTO(
+        idMotor: payload['id_motor'],
+        idPelanggan: payload['id_pelanggan'],
+        tanggalMulai: payload['tanggal_mulai'],
+        tanggalSelesai: payload['tanggal_selesai'],
+      ));
 
       AwesomeDialog(
         context: context,
@@ -394,8 +396,6 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
           Navigator.of(context).popUntil((route) => route.isFirst);
         },
       ).show();
-
-      
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error: $e')),
@@ -404,27 +404,32 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
   }
 
   double calculateFees(Motor motor, DateTimeRange range, Voucher? voucher) {
-    double fees = motor.hargaHarian * range.duration.inHours;
+    double fees = motor.hargaHarian! * range.duration.inHours;
 
     if (voucher != null) {
-      fees *= ((100 - voucher.persen) / 100);
+      fees *= ((100 - voucher.persenVoucher!) / 100);
     }
 
     return fees;
   }
 
   void checkVoucher() async {
-    List<Voucher> voucherList = await VoucherAPi.getAll();
+    // List<Voucher> voucherList = await VoucherAPi.getAll();
 
     try {
+      // var voucherFound =
+      //     voucherList.firstWhere((v) => v.kodeVoucher == kodeVoucher);
       var voucherFound =
-          voucherList.firstWhere((v) => v.kodeVoucher == kodeVoucher);
+          await VoucherApi().voucherGetByCodeCodeGet(kodeVoucher!);
 
-      var userId = (await PenggunaApi.getCurrentUser())!.id;
+      // var userId = (await PenggunaApi.getCurrentUser())!.id;
+      var userId = AuthState().currentUser!.id;
 
-      var voucherUsed = await VoucherAPi.isUsed(userId, voucherFound.idVoucher);
+      // var voucherUsed = await VoucherAPi.isUsed(userId, voucherFound.idVoucher);
+      var voucherUsed = await VoucherApi()
+          .voucherCheckVoucherCodeGet(voucherFound!.kodeVoucher!);
 
-      if (!voucherUsed) {
+      if (!voucherUsed!.valid!) {
         setState(() {
           voucher = voucherFound;
 
@@ -454,7 +459,7 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Rentang waktu belum di isi!')),
         );
-      } 
+      }
       if (paymentMethod == null) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Metode pembayaran belum di isi!')),

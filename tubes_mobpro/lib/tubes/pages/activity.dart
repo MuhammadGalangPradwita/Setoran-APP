@@ -4,10 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:tubes_mobpro/tubes/api_utilities/pelanggan.dart';
-import 'package:tubes_mobpro/tubes/api_utilities/transaksi.dart';
-import 'package:tubes_mobpro/tubes/models/pelanggan.dart';
-import 'package:tubes_mobpro/tubes/models/transaksi.dart';
+import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
 import 'package:tubes_mobpro/tubes/pages/auth_check.dart';
 import 'package:tubes_mobpro/tubes/pages/detail_activity_page.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
@@ -103,19 +100,27 @@ class _ActivityPageState extends State<ActivityPage> {
   }
 
   Future<List<Transaksi>?> fetchData() async {
-    Pelanggan? pel = await PelangganApi.getCurrentPelanggan(
-        Provider.of<AuthState>(context, listen: false).currentUser!.id);
-    print(pel!.id);
-    return TransaksiApi.getByPelanggan(pel.id);
+    // Pelanggan? pel = await PelangganApi.getCurrentPelanggan(
+    //     Provider.of<AuthState>(context, listen: false).currentUser!.id);
+    // print(pel!.id);
+    // return TransaksiApi.getByPelanggan(pel.id);
+    final response = await TransaksiApi().apiTransaksiGetWithHttpInfo(query: {
+      "IdPelanggan":
+          Provider.of<AuthState>(context, listen: false).currentUser!.id
+    });
+
+    return jsonDecode(response.body)
+        .map((transaksi) => Transaksi.fromJson(transaksi))
+        .toList();
   }
 
   Widget lastWeekTab(List<Transaksi> data) {
     //filter last week
     DateTime now = DateTime.now();
     DateTime lastWeek = DateTime(now.year, now.month, now.day - 7);
-    List<Transaksi> lastWeekData = data.where((element) {
-      return element.createdAt.isAfter(lastWeek);
-    }).toList();
+    // List<Transaksi> lastWeekData = data.where((element) {
+    //   return element.createdAt.isAfter(lastWeek);
+    // }).toList();
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 28.0, vertical: 12),
@@ -123,7 +128,8 @@ class _ActivityPageState extends State<ActivityPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-            child: _buildTabContent(lastWeekData),
+            // child: _buildTabContent(lastWeekData),
+            child: _buildTabContent(data),
           ),
         ],
       ),
@@ -136,10 +142,10 @@ class _ActivityPageState extends State<ActivityPage> {
     DateTime lastMonth = DateTime(now.year, now.month, now.day - 30);
     DateTime lastWeek = DateTime(now.year, now.month, now.day - 7);
 
-    List<Transaksi> lastMonthData = data.where((element) {
-      return element.createdAt.isAfter(lastMonth) &&
-          element.createdAt.isBefore(lastWeek);
-    }).toList();
+    // List<Transaksi> lastMonthData = data.where((element) {
+    //   return element.createdAt.isAfter(lastMonth) &&
+    //       element.createdAt.isBefore(lastWeek);
+    // }).toList();
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 28.0, vertical: 12),
@@ -147,7 +153,8 @@ class _ActivityPageState extends State<ActivityPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-            child: _buildTabContent(lastMonthData),
+            // child: _buildTabContent(lastMonthData),
+            child: _buildTabContent(data),
           )
         ],
       ),
@@ -158,15 +165,15 @@ class _ActivityPageState extends State<ActivityPage> {
     //filter last week
     DateTime now = DateTime.now();
     DateTime lastMonth = DateTime(now.year, now.month, now.day - 30);
-    List<Transaksi> earlierData = data.where((element) {
-      return element.createdAt.isBefore(lastMonth);
-    }).toList();
+    // List<Transaksi> earlierData = data.where((element) {
+    //   return element.createdAt.isBefore(lastMonth);
+    // }).toList();
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 28.0, vertical: 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [Expanded(child: _buildTabContent(earlierData))],
+        children: [Expanded(child: _buildTabContent(data))],
       ),
     );
   }

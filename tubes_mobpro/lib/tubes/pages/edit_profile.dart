@@ -1,14 +1,9 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:tubes_mobpro/tubes/api_utilities/imageApi.dart';
-import 'package:tubes_mobpro/tubes/api_utilities/image_data.dart';
-import 'package:tubes_mobpro/tubes/api_utilities/pelanggan.dart';
-import 'package:tubes_mobpro/tubes/api_utilities/pengguna.dart';
-import 'package:tubes_mobpro/tubes/models/image_data.dart';
-import 'package:tubes_mobpro/tubes/models/pelanggan.dart';
-import 'package:tubes_mobpro/tubes/models/pengguna.dart';
+import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
 import 'package:tubes_mobpro/tubes/pages/avatar_preview_page.dart';
 import 'package:tubes_mobpro/tubes/pages/edit_driving_license_page.dart';
 import 'package:tubes_mobpro/tubes/pages/edit_id_data_page.dart';
@@ -37,16 +32,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
   }
 
   void loadData() async {
-    final resultPengguna = await PenggunaApi.getCurrentUser();
-    final result = await PelangganApi.getCurrentPelanggan(resultPengguna!.id);
-    final resultImage = ImageApi.getImage(resultPengguna.idGambar!);
-    final resultProfile =
-        await ImageApi.getImageImage(resultPengguna.idGambar!);
+    final resultPengguna = await PenggunaApi().penggunaCurrentPenggunaGet();
+    final result = await PelangganApi().pelangganCurrentPelangganGet();
+    // final resultImage = ImageApi.getImage(resultPengguna.idGambar!);
+    // final resultProfile =
+    //     await ImageApi.getImageImage(resultPengguna.idGambar!);
     // final resultProfile = await ImageDataApi.getImage(resultPengguna.idGambar!);
     setState(() {
       pengguna = resultPengguna;
       pelanggan = result;
-      avatar = resultImage;
+      // avatar = resultImage;
       // profilePicture = resultProfile!;
     });
   }
@@ -191,7 +186,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 'Nama',
                 style: AppTextStyle.smallReguler,
               ),
-              Text(pengguna!.nama, style: AppTextStyle.body2Regular)
+              Text(pengguna!.nama ?? "", style: AppTextStyle.body2Regular)
             ],
           ),
           const Gap(12),
@@ -205,7 +200,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               Text(
                   pengguna!.tanggalLahir == null
                       ? ""
-                      : AppUtil.formatDateFromString(pengguna!.tanggalLahir!),
+                      : AppUtil.formatDate(pengguna!.tanggalLahir!),
                   style: AppTextStyle.body2Regular)
             ],
           ),
@@ -253,7 +248,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 'Email',
                 style: AppTextStyle.smallReguler,
               ),
-              Text(pengguna!.email, style: AppTextStyle.body2Regular)
+              Text(pengguna!.email ?? "", style: AppTextStyle.body2Regular)
             ],
           ),
         ],
@@ -376,7 +371,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     'No.',
                     style: AppTextStyle.smallReguler,
                   ),
-                  Text(pelanggan!.nomorSIM, style: AppTextStyle.body2Regular)
+                  Text(pelanggan!.nomorSIM ?? "",
+                      style: AppTextStyle.body2Regular)
                 ],
               ),
             ]));

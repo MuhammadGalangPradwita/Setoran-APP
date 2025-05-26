@@ -32,7 +32,12 @@ class _BottomNavState extends State<BottomNav> {
   }
 
   List<Widget> _buildScreens() {
-    return [const HomepageScreen(), const ActivityPage(), DiscountPage(), const AccountPage()];
+    return [
+      const HomepageScreen(),
+      const ActivityPage(),
+      DiscountPage(),
+      const AccountPage()
+    ];
   }
 
   List<PersistentBottomNavBarItem> _navBarsItems() {
@@ -57,7 +62,7 @@ class _BottomNavState extends State<BottomNav> {
     return RouteAndNavigatorSettings(
       initialRoute: "/",
       routes: {
-        "/first": (final context) => HomepageScreen(),
+        "/first": (final context) => const HomepageScreen(),
         "/second": (final context) => const ActivityPage(),
         "/third": (final context) => DiscountPage(),
         "/fourth": (final context) => const AccountPage(),
