@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:tubes_mobpro/tubes/api_service.dart';
 import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
 // import 'package:tubes_mobpro/tubes/api_utilities/motor.dart';
 // import 'package:tubes_mobpro/tubes/models/motor.dart';
@@ -274,8 +275,10 @@ class _HomepageScreenState extends State<HomepageScreen> {
                 children: [
                   Text('Recommendation', style: AppTextStyle.body2Bold),
                   FutureBuilder<List<Motor>>(
-                    future:
-                        MotorApi().apiMotorGetWithHttpInfo().then((response) {
+                    future: ApiService()
+                        .motorApi
+                        .apiMotorGetWithHttpInfo()
+                        .then((response) {
                       return jsonDecode(response.body)
                           .map((motor) => Motor.fromJson(motor))
                           .toList();
@@ -323,7 +326,8 @@ class _HomepageScreenState extends State<HomepageScreen> {
                       children: [
                         Text('Most Popular', style: AppTextStyle.body2Bold),
                         FutureBuilder<List<Motor>>(
-                          future: MotorApi()
+                          future: ApiService()
+                              .motorApi
                               .apiMotorGetWithHttpInfo()
                               .then((response) {
                             return jsonDecode(response.body)
@@ -351,7 +355,8 @@ class _HomepageScreenState extends State<HomepageScreen> {
                         const Gap(20),
                         Text('Discount', style: AppTextStyle.body2Bold),
                         FutureBuilder<List<Motor>>(
-                          future: MotorApi()
+                          future: ApiService()
+                              .motorApi
                               .apiMotorGetWithHttpInfo()
                               .then((response) {
                             return jsonDecode(response.body)

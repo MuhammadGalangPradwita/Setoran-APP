@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tubes_mobpro/tubes/api_service.dart';
 import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
 import 'package:tubes_mobpro/tubes/pages/auth_check.dart';
 import 'package:tubes_mobpro/tubes/pages/sign_in_page.dart';
@@ -164,7 +165,8 @@ class _SignUpPageState extends State<SignUpPage> {
                   }
 
                   // AuthApi.register(_username.text, _email.text, _password.text)
-                  AuthApi()
+                  ApiService()
+                      .authApi
                       .authRegisterPostWithHttpInfo(
                           registerForm: RegisterForm(
                               nama: _username.text,

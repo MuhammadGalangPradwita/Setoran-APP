@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:provider/provider.dart';
-// import 'package:tubes_mobpro/tubes/api_utilities/auth.dart';
 import 'package:tubes_mobpro/tubes/pages/auth_check.dart';
 import 'package:tubes_mobpro/tubes/pages/edit_profile.dart';
 import 'package:tubes_mobpro/tubes/pages/my_motorcycle_page.dart';

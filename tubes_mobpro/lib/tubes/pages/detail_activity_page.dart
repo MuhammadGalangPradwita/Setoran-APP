@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:tubes_mobpro/tubes/api_service.dart';
 import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 import 'package:tubes_mobpro/tubes/utilities/app_util.dart';
@@ -32,12 +33,15 @@ class _DetailActivityPageState extends State<DetailActivityPage> {
 
   Future<void> loadMotor() async {
     // final result = await MotorApi().getById(widget.transaksi.idMotor);
-    final result =
-        await MotorApi().apiMotorIdGetWithHttpInfo(widget.transaksi.idMotor!);
+    final result = await ApiService()
+        .motorApi
+        .apiMotorIdGetWithHttpInfo(widget.transaksi.idMotor!);
     final resultPembayaran =
         // await PembayaranApi.getByIdTransaksi(widget.transaksi.idTransaksi);
-        await PembayaranApi().apiPembayaranTransaksiIdGetWithHttpInfo(
-            widget.transaksi.idTransaksi!);
+        await ApiService()
+            .pembayaranApi
+            .apiPembayaranTransaksiIdGetWithHttpInfo(
+                widget.transaksi.idTransaksi!);
     setState(() {
       motor = Motor.fromJson(jsonDecode(result.body));
       pembayaran = Pembayaran.fromJson(jsonDecode(resultPembayaran.body));

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tubes_mobpro/tubes/api_service.dart';
 import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
 import 'package:tubes_mobpro/tubes/pages/get_started_page.dart';
 import 'package:tubes_mobpro/tubes/widgets/bottom_nav.dart';
@@ -15,7 +16,7 @@ class AuthState extends ChangeNotifier {
   }
 
   Future<Pengguna?> refreshCurrentUser() async {
-    _currentUser = await PenggunaApi().penggunaCurrentPenggunaGet();
+    _currentUser = await ApiService().penggunaApi.penggunaCurrentPenggunaGet();
 
     // dummy
     if (_dummy != null && _currentUser == null) _currentUser = _dummy;

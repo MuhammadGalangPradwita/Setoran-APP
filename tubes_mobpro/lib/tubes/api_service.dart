@@ -17,6 +17,9 @@ class ApiService {
   late TransaksiApi transaksiApi;
   late PembayaranApi pembayaranApi;
   late StorageApi storageApi;
+  late DiskonApi diskonApi;
+  late MitraApi mitraApi;
+  late UlasanApi ulasanApi;
 
   factory ApiService() {
     return _instance;
@@ -24,10 +27,11 @@ class ApiService {
 
   ApiService._internal() {
     // final basePath = dotenv.env['BACKEND_HOST'] ?? 'http://160.19.167.222:5104/';
-    final basePath = 'http://160.19.167.222:5104/';
+    const basePath = 'http://160.19.167.222:5104';
     _apiClient = ApiClient(
       basePath: basePath,
-      authentication: HttpBearerAuth()..accessToken = () => localStorage.getItem("access_token") ?? "",
+      authentication: HttpBearerAuth()
+        ..accessToken = () => localStorage.getItem("access_token") ?? "",
     );
     _createApis();
   }
@@ -43,6 +47,9 @@ class ApiService {
     transaksiApi = TransaksiApi(_apiClient);
     pembayaranApi = PembayaranApi(_apiClient);
     storageApi = StorageApi(_apiClient);
+    diskonApi = DiskonApi(_apiClient);
+    mitraApi = MitraApi(_apiClient);
+    ulasanApi = UlasanApi(_apiClient);
   }
 
   void setToken(String token) {

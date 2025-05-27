@@ -1,6 +1,7 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:tubes_mobpro/tubes/api_service.dart';
 import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
 import 'package:tubes_mobpro/tubes/pages/auth_check.dart';
 import 'package:tubes_mobpro/tubes/pages/homePage_screen.dart';
@@ -357,7 +358,7 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
       Motor motor, DateTimeRange range, Voucher? voucher) async {
     double finalFees = calculateFees(motor, range, voucher);
 
-    int userId = (await PenggunaApi().penggunaCurrentPenggunaGet())!.id as int;
+    int userId = AuthState().currentUser!.pelanggan!.idPelanggan!;
 
     Map<String, dynamic> payload = {
       'id_motor': motor.idMotor,
@@ -420,13 +421,14 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
       // var voucherFound =
       //     voucherList.firstWhere((v) => v.kodeVoucher == kodeVoucher);
       var voucherFound =
-          await VoucherApi().voucherGetByCodeCodeGet(kodeVoucher!);
+          await ApiService().voucherApi.voucherGetByCodeCodeGet(kodeVoucher!);
 
       // var userId = (await PenggunaApi.getCurrentUser())!.id;
-      var userId = AuthState().currentUser!.id;
+      // var userId = AuthState().currentUser!.id;
 
       // var voucherUsed = await VoucherAPi.isUsed(userId, voucherFound.idVoucher);
-      var voucherUsed = await VoucherApi()
+      var voucherUsed = await ApiService()
+          .voucherApi
           .voucherCheckVoucherCodeGet(voucherFound!.kodeVoucher!);
 
       if (!voucherUsed!.valid!) {
