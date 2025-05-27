@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:localstorage/localstorage.dart';
 import 'package:provider/provider.dart';
 import 'package:tubes_mobpro/tubes/api_service.dart';
 import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
@@ -30,7 +31,7 @@ class AuthState extends ChangeNotifier {
   }
 
   Future<void> logout() async {
-    // await AuthApi.logout();
+    ApiService().removeToken();
     _dummy = null;
     _currentUser = null;
     notifyListeners();
