@@ -116,7 +116,7 @@ class HttpValidationProblemDetails {
         instance: mapValueOfType<String>(json, r'instance'),
         errors: json[r'errors'] == null
           ? const {}
-            : mapCastOfType<String, List>(json, r'errors'),
+            : mapCastOfType<String, List<String>>(json, r'errors'),
       );
     }
     return null;

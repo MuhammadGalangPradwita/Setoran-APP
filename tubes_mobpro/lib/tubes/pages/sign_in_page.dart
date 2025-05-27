@@ -155,13 +155,14 @@ class _SignInPageState extends State<SignInPage> {
             child: ButtonWidget.primary(
                 label: "Login",
                 press: () {
-                  final api_instance = ApiService().setoranAPi;
+                  final api_instance = ApiService();
 
-                  api_instance
+                  api_instance.setoranAPi
                       .loginPost(new LoginRequest(
                           email: _email.text, password: _password.text))
                       .then((response) async {
                     if (response?.accessToken != null) {
+                      api_instance.setToken(response!.accessToken!);
                       Provider.of<AuthState>(context, listen: false)
                           .refreshCurrentUser(); // refresh currentUser
                       await FirebaseNotificationService()

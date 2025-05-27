@@ -358,7 +358,8 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
       Motor motor, DateTimeRange range, Voucher? voucher) async {
     double finalFees = calculateFees(motor, range, voucher);
 
-    int userId = AuthState().currentUser!.pelanggan!.idPelanggan!;
+    int userId = (await ApiService().penggunaApi.penggunaCurrentPenggunaGet())!
+        .id as int;
 
     Map<String, dynamic> payload = {
       'id_motor': motor.idMotor,

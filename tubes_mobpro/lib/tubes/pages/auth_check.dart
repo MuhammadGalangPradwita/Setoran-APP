@@ -16,7 +16,10 @@ class AuthState extends ChangeNotifier {
   }
 
   Future<Pengguna?> refreshCurrentUser() async {
-    _currentUser = await ApiService().penggunaApi.penggunaCurrentPenggunaGet();
+    try {
+      _currentUser =
+          await ApiService().penggunaApi.penggunaCurrentPenggunaGet();
+    } catch (exp) {}
 
     // dummy
     if (_dummy != null && _currentUser == null) _currentUser = _dummy;
