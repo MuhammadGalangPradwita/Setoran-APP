@@ -27,33 +27,18 @@ class AccountPage extends StatelessWidget {
             const Gap(32),
             Column(
               children: [
-                InkWell(
-                  onTap: () {},
-                  child: _buildOptionList('Payment Method', Icons.credit_card),
-                ),
+                // InkWell(
+                //   onTap: () {},
+                //   child: _buildOptionList('Payment Method', Icons.credit_card),
+                // ),
                 InkWell(
                   onTap: () {
                     PersistentNavBarNavigator.pushNewScreen(context,
-                        screen: const MyMotorcyclePage(isRegistered: false),
-                        withNavBar: false);
-                    // Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //       builder: (context) =>
-                    //           const MyMotorcyclePage(isRegistered: false),
-                    //     ));
+                        screen: const MyMotorcyclePage(), withNavBar: false);
                   },
                   child: _buildOptionList('My Motorcycle', Icons.motorcycle),
                 ),
-                InkWell(
-                  onTap: () {},
-                  child: _buildOptionList('Notification', Icons.notifications),
-                ),
-                const Divider(),
-                InkWell(
-                  onTap: () {},
-                  child: _buildOptionList('Language', Icons.language),
-                ),
+                // const Divider(),
                 InkWell(
                   onTap: () {},
                   child: _buildOptionList('Help & Support', Icons.help_outline),
@@ -73,6 +58,19 @@ class AccountPage extends StatelessWidget {
   }
 
   Card _buildProfileCard(BuildContext context) {
+    String getAbbreviation(String name) {
+      final parts = name.trim().split(RegExp(r'\s+'));
+      if (parts.length == 1) {
+        // Single name
+        return parts[0][0].toUpperCase();
+      } else {
+        // Take first letter of first and last word
+        return (parts[0][0] + parts.last[0]).toUpperCase();
+      }
+    }
+
+    final singkatan = getAbbreviation(AuthState().currentUser?.nama ?? "Guest");
+
     return Card(
         color: AppColors.N100,
         elevation: 2,
@@ -81,10 +79,18 @@ class AccountPage extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const CircleAvatar(
-                radius: 60,
-                backgroundImage: AssetImage('assets/images/avatar.png'),
-              ),
+              CircleAvatar(
+                  radius: 60,
+                  backgroundColor: AppColors.B400,
+                  foregroundColor: AppColors.N0,
+                  child: Text(
+                    singkatan,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 60,
+                    ),
+                    // backgroundImage: AssetImage('assets/images/avatar.png'),
+                  )),
               Builder(builder: (context) {
                 // var auth = context.read(AuthState);
                 var auth = Provider.of<AuthState>(context);
@@ -92,12 +98,10 @@ class AccountPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      // auth.currentUser == null ? "" : auth.currentUser!.nama,
                       auth.currentUser?.nama ?? "Guest",
                       style: AppTextStyle.body1Bold,
                     ),
                     Text(
-                      // auth.currentUser == null ? "" : auth.currentUser!.email,
                       auth.currentUser?.email ?? "",
                       style: AppTextStyle.smallReguler,
                     )
@@ -109,10 +113,8 @@ class AccountPage extends StatelessWidget {
                 children: [
                   IconButton(
                       onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const EditProfilePage()));
+                        PersistentNavBarNavigator.pushNewScreen(context,
+                            screen: const EditProfilePage(), withNavBar: false);
                       },
                       icon: const Icon(Icons.edit))
                 ],
@@ -124,7 +126,7 @@ class AccountPage extends StatelessWidget {
 
   Widget _buildOptionList(String label, IconData iconData) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.symmetric(vertical: 16),
       child: Row(
         children: [
           Icon(

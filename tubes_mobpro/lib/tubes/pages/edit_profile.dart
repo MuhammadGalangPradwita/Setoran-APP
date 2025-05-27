@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:tubes_mobpro/tubes/api_service.dart';
 import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
+import 'package:tubes_mobpro/tubes/pages/auth_check.dart';
 import 'package:tubes_mobpro/tubes/pages/avatar_preview_page.dart';
 import 'package:tubes_mobpro/tubes/pages/edit_driving_license_page.dart';
 import 'package:tubes_mobpro/tubes/pages/edit_id_data_page.dart';
@@ -22,7 +23,7 @@ class EditProfilePage extends StatefulWidget {
 class _EditProfilePageState extends State<EditProfilePage> {
   Pelanggan? pelanggan;
   Pengguna? pengguna;
-  late NetworkImage avatar;
+  // late NetworkImage avatar;
   // late ImageData profilePicture;
   late Image profilePicture;
 
@@ -33,17 +34,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
   }
 
   void loadData() async {
-    final resultPengguna =
-        await ApiService().penggunaApi.penggunaCurrentPenggunaGet();
-    final result =
-        await ApiService().pelangganApi.pelangganCurrentPelangganGet();
-    // final resultImage = ImageApi.getImage(resultPengguna.idGambar!);
-    // final resultProfile =
-    //     await ImageApi.getImageImage(resultPengguna.idGambar!);
-    // final resultProfile = await ImageDataApi.getImage(resultPengguna.idGambar!);
+    await AuthState().refreshCurrentUser();
     setState(() {
-      pengguna = resultPengguna;
-      pelanggan = result;
+      pengguna = AuthState().currentUser;
+      pelanggan = AuthState().currentUser!.pelanggan;
       // avatar = resultImage;
       // profilePicture = resultProfile!;
     });
@@ -115,7 +109,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 radius: 70, // Adjust size as needed
                 backgroundColor: Colors.grey[200],
                 // backgroundImage: const AssetImage('assets/images/avatar.png'),
-                backgroundImage: avatar,
+                // backgroundImage: avatar,
                 // backgroundImage: profilePicture.image,
                 // backgroundImage: profilePicture == null
                 //     ? const AssetImage('assets/images/avatar.png')
@@ -172,7 +166,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     MaterialPageRoute(
                         builder: (context) => EditPersonalDataPage(
                               pengguna: pengguna!,
-                            )));
+                            ))).then((_) {
+                  loadData();
+                });
               },
               child: Text(
                 "Edit",
@@ -284,7 +280,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         MaterialPageRoute(
                             builder: (context) => EditIDDataPage(
                                   pengguna: pengguna!,
-                                )));
+                                ))).then((_) {
+                      loadData();
+                    });
                   },
                   child: Text(
                     "Edit",
@@ -346,7 +344,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             number: pelanggan!.nomorSIM!.toString(),
                             pelanggan: pelanggan!,
                           ),
-                        ));
+                        )).then((_) {
+                      loadData();
+                    });
                   },
                   child: Text(
                     "Edit",
