@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:tubes_mobpro/tubes/api_service.dart';
 import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
 import 'package:tubes_mobpro/tubes/pages/avatar_preview_page.dart';
 import 'package:tubes_mobpro/tubes/pages/edit_driving_license_page.dart';
@@ -32,7 +33,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   }
 
   void loadData() async {
-    final resultPengguna = await PenggunaApi().penggunaCurrentPenggunaGet();
+    final resultPengguna = await ApiService().penggunaApi.penggunaCurrentPenggunaGet();
     final result = await PelangganApi().pelangganCurrentPelangganGet();
     // final resultImage = ImageApi.getImage(resultPengguna.idGambar!);
     // final resultProfile =

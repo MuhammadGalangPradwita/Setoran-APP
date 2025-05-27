@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:tubes_mobpro/tubes/api_service.dart';
 import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
 import 'package:tubes_mobpro/tubes/pages/auth_check.dart';
 import 'package:tubes_mobpro/tubes/pages/register_motorcycle_page.dart';
@@ -28,7 +29,7 @@ class _MyMotorcyclePageState extends State<MyMotorcyclePage> {
 
   void loadData() async {
     // final resPengguna = await PenggunaApi.getCurrentUser();
-    final resPengguna = await PenggunaApi().penggunaCurrentPenggunaGet();
+    final resPengguna = await ApiService().penggunaApi.penggunaCurrentPenggunaGet();
     // TODO: create get mitra by pengguna id endpoint
     // final resMitra = await MitraApi.getMitraByIdPengguna(resPengguna!.id);
     final resMitra = AuthState().currentUser!.mitra;

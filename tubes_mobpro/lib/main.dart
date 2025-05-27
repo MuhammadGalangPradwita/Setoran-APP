@@ -10,10 +10,10 @@ import 'tubes/services/firebase_notification_service.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // await Firebase.initializeApp();
-  await FirebaseNotificationService().initialize();
+  // await FirebaseNotificationService().initialize();
   await initLocalStorage();
-  await CameraService.instance.initializeCameras();
-  await FirebaseNotificationService().getToken();
+  // await CameraService.instance.initializeCameras();
+  // await FirebaseNotificationService().getToken();
   runApp(const MyApp());
 }
 
@@ -28,8 +28,8 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    requestStoragePermission();
-    requestCameraStatus();
+    // requestStoragePermission();
+    // requestCameraStatus();
     FirebaseNotificationService().getToken();
   }
 

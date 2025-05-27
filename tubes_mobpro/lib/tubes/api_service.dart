@@ -1,3 +1,4 @@
+import 'package:http/http.dart' as http;
 import 'api_utilities/lib/api.dart';
 import 'package:localstorage/localstorage.dart';
 // import 'package:flutter_dotenv/flutter_dotenv.dart'; // for dotenv
@@ -24,10 +25,12 @@ class ApiService {
 
   ApiService._internal() {
     // final basePath = dotenv.env['BACKEND_HOST'] ?? 'http://160.19.167.222:5104/';
-    final basePath = 'http://160.19.167.222:5104/';
+    final basePath = 'http://160.19.167.222:5103';
+    // final basePath = "http://localhost:5104";
     _apiClient = ApiClient(
       basePath: basePath,
       authentication: HttpBearerAuth()..accessToken = () => localStorage.getItem("access_token") ?? "",
+      
     );
     _createApis();
   }
@@ -51,5 +54,11 @@ class ApiService {
 
   void removeToken() {
     localStorage.setItem("access_token", "");
+  }
+}
+
+extension IsOk on http.Response {
+  bool get ok {
+    return (statusCode ~/ 100) == 2;
   }
 }

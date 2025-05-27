@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
+import 'package:tubes_mobpro/tubes/api_service.dart';
 import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
 import 'package:tubes_mobpro/tubes/pages/auth_check.dart';
 import 'package:tubes_mobpro/tubes/pages/forgot_password_email.dart';
@@ -154,13 +155,14 @@ class _SignInPageState extends State<SignInPage> {
             child: ButtonWidget.primary(
                 label: "Login",
                 press: () {
-                  final api_instance = SetoranAPINETApi();
+                  final api_instance = ApiService();
 
-                  api_instance
+                  api_instance.setoranAPi
                       .loginPost(new LoginRequest(
                           email: _email.text, password: _password.text))
                       .then((response) async {
                     if (response?.accessToken != null) {
+                      api_instance.setToken(response!.accessToken!);
                       Provider.of<AuthState>(context, listen: false)
                           .refreshCurrentUser(); // refresh currentUser
                       await FirebaseNotificationService()

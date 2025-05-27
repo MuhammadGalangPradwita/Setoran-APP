@@ -1,6 +1,7 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:tubes_mobpro/tubes/api_service.dart';
 import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
 import 'package:tubes_mobpro/tubes/pages/auth_check.dart';
 import 'package:tubes_mobpro/tubes/pages/homePage_screen.dart';
@@ -357,7 +358,7 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
       Motor motor, DateTimeRange range, Voucher? voucher) async {
     double finalFees = calculateFees(motor, range, voucher);
 
-    int userId = (await PenggunaApi().penggunaCurrentPenggunaGet())!.id as int;
+    int userId = (await ApiService().penggunaApi.penggunaCurrentPenggunaGet())!.id as int;
 
     Map<String, dynamic> payload = {
       'id_motor': motor.idMotor,
