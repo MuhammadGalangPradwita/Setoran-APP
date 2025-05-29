@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:tubes_mobpro/tubes/api_service.dart';
 import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
 import 'package:tubes_mobpro/tubes/pages/auth_check.dart';
 import 'package:tubes_mobpro/tubes/pages/register_motorcycle_page.dart';
@@ -28,20 +29,21 @@ class _MyMotorcyclePageState extends State<MyMotorcyclePage> {
 
   void loadData() async {
     // final resPengguna = await PenggunaApi.getCurrentUser();
-    final resPengguna = await PenggunaApi().penggunaCurrentPenggunaGet();
     // TODO: create get mitra by pengguna id endpoint
-    // final resMitra = await MitraApi.getMitraByIdPengguna(resPengguna!.id);
-    final resMitra = AuthState().currentUser!.mitra;
-    final resMotor =
-        await MotorApi().apiMotorGet(idMitra: resMitra!.idMitra! as String);
+    final user = await AuthState().refreshCurrentUser();
+    // final resMotor =
+    //     await MotorApi().apiMotorGet(idMitra: resMitra!.idMitra! as String);
+    final resMotor = await ApiService()
+        .motorApi
+        .apiMotorGet(idMitra: user!.mitra!.idMitra as String);
     final resTransaksi = await TransaksiApi().apiTransaksiGet(query: {
-      "id_mitra": resMitra.idMitra,
+      "id_mitra": user.mitra!.idMitra,
     });
     print("----------List Motor");
     print(resMotor!.length);
     setState(() {
-      pengguna = resPengguna;
-      mitra = resMitra;
+      pengguna = user;
+      mitra = user.mitra;
       motors = resMotor;
       transaksis = resTransaksi;
     });

@@ -17,6 +17,8 @@ import 'package:tubes_mobpro/tubes/widgets/cardHomePage_widgets.dart';
 import 'package:tubes_mobpro/tubes/widgets/textField_widget.dart';
 import 'package:tubes_mobpro/tubes/widgets/button_widgets.dart';
 
+import '../api_service.dart';
+
 class HomepageScreen extends StatefulWidget {
   const HomepageScreen({super.key});
 
@@ -273,13 +275,8 @@ class _HomepageScreenState extends State<HomepageScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('Recommendation', style: AppTextStyle.body2Bold),
-                  FutureBuilder<List<Motor>>(
-                    future:
-                        MotorApi().apiMotorGetWithHttpInfo().then((response) {
-                      return jsonDecode(response.body)
-                          .map((motor) => Motor.fromJson(motor))
-                          .toList();
-                    }),
+                  FutureBuilder<List<Motor>?>(
+                    future: ApiService().motorApi.apiMotorGet(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());
@@ -322,14 +319,8 @@ class _HomepageScreenState extends State<HomepageScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text('Most Popular', style: AppTextStyle.body2Bold),
-                        FutureBuilder<List<Motor>>(
-                          future: MotorApi()
-                              .apiMotorGetWithHttpInfo()
-                              .then((response) {
-                            return jsonDecode(response.body)
-                                .map((motor) => Motor.fromJson(motor))
-                                .toList();
-                          }),
+                        FutureBuilder<List<Motor>?>(
+                          future: ApiService().motorApi.apiMotorGet(),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {

@@ -1,6 +1,7 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:tubes_mobpro/tubes/api_service.dart';
 import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
 import 'package:tubes_mobpro/tubes/pages/auth_check.dart';
 import 'package:tubes_mobpro/tubes/pages/homePage_screen.dart';
@@ -65,16 +66,16 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
                     const SizedBox(width: 16),
 
                     // Card detail
-                    const Column(
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'NMAX',
-                          style: TextStyle(
+                          '${widget.motor.model}',
+                          style: const TextStyle(
                               fontSize: 18, fontWeight: FontWeight.bold),
                         ),
-                        Text('Brand: Yamaha'),
-                        Text('Transmission: Matic'),
+                        Text('Brand: ${widget.motor.brand}'),
+                        Text('Transmission: ${widget.motor.transmisi}'),
                       ],
                     ),
                   ],
@@ -103,7 +104,7 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
                         horizontal: 16, vertical: 12),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
-                      side: BorderSide(color: Colors.grey),
+                      side: const BorderSide(color: Colors.grey),
                     ),
                     backgroundColor: Colors.transparent,
                   ),
@@ -357,30 +358,31 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
       Motor motor, DateTimeRange range, Voucher? voucher) async {
     double finalFees = calculateFees(motor, range, voucher);
 
-    int userId = (await PenggunaApi().penggunaCurrentPenggunaGet())!.id as int;
-
-    Map<String, dynamic> payload = {
-      'id_motor': motor.idMotor,
-      'id_pelanggan': userId,
-      'tanggal_mulai': range.start.toIso8601String(),
-      'tanggal_selesai': range.end.toIso8601String(),
-      'status_transaksi': 'dibuat',
-      'durasi': range.duration.inDays,
-      'nominal': finalFees,
-    };
-
-    if (voucher != null) {
-      payload['id_voucher'] = voucher.idVoucher;
-    }
-
     try {
-      await TransaksiApi().apiTransaksiPost(
-          postTransaksiDTO: PostTransaksiDTO(
-        idMotor: payload['id_motor'],
-        idPelanggan: payload['id_pelanggan'],
-        tanggalMulai: payload['tanggal_mulai'],
-        tanggalSelesai: payload['tanggal_selesai'],
-      ));
+      int? userId =
+          (await ApiService().penggunaApi.penggunaCurrentPenggunaGet())!.pelanggan?.idPelanggan;
+
+      Map<String, dynamic> payload = {
+        'id_motor': motor.idMotor,
+        'id_pelanggan': userId,
+        'tanggal_mulai': range.start,
+        'tanggal_selesai': range.end,
+        'status_transaksi': 'dibuat',
+        'durasi': range.duration.inDays,
+        'nominal': finalFees,
+      };
+
+      if (voucher != null) {
+        payload['id_voucher'] = voucher.idVoucher;
+      }
+
+      await ApiService().transaksiApi.apiTransaksiPost(
+              postTransaksiDTO: PostTransaksiDTO(
+            idMotor: payload['id_motor'],
+            idPelanggan: 12,
+            tanggalMulai: payload['tanggal_mulai'],
+            tanggalSelesai: payload['tanggal_selesai'],
+          ));
 
       AwesomeDialog(
         context: context,
@@ -400,6 +402,16 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error: $e')),
       );
+
+      AwesomeDialog(
+        context: context,
+        dialogType: DialogType.error,
+        headerAnimationLoop: false,
+        animType: AnimType.bottomSlide,
+        title: 'Error!',
+        desc: 'Gagal membuat transaksi:\n$e',
+        btnOkOnPress: () {},
+      ).show();
     }
   }
 
@@ -420,13 +432,14 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
       // var voucherFound =
       //     voucherList.firstWhere((v) => v.kodeVoucher == kodeVoucher);
       var voucherFound =
-          await VoucherApi().voucherGetByCodeCodeGet(kodeVoucher!);
+          await ApiService().voucherApi.voucherGetByCodeCodeGet(kodeVoucher!);
 
       // var userId = (await PenggunaApi.getCurrentUser())!.id;
-      var userId = AuthState().currentUser!.id;
+      // var userId = AuthState().currentUser!.id;
 
       // var voucherUsed = await VoucherAPi.isUsed(userId, voucherFound.idVoucher);
-      var voucherUsed = await VoucherApi()
+      var voucherUsed = await ApiService()
+          .voucherApi
           .voucherCheckVoucherCodeGet(voucherFound!.kodeVoucher!);
 
       if (!voucherUsed!.valid!) {

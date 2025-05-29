@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tubes_mobpro/tubes/api_service.dart';
 import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
 import 'package:tubes_mobpro/tubes/pages/auth_check.dart';
 import 'package:tubes_mobpro/tubes/pages/sign_in_page.dart';
@@ -46,53 +47,6 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
                 const Gap(36),
                 createForm(context),
-                const Gap(36),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                        child: Container(
-                      color: Colors.grey,
-                      height: 2,
-                      margin: const EdgeInsets.only(right: 10),
-                    )),
-                    const Text("Or sign in with"),
-                    Expanded(
-                        child: Container(
-                      color: Colors.grey,
-                      height: 2,
-                      margin: const EdgeInsets.only(left: 10),
-                    )),
-                  ],
-                ),
-                const Gap(36),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SizedBox(
-                      width: 160,
-                      child: ButtonOutlineWidget(
-                        label: "Google",
-                        press: () {
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return const GoogleLoginDialogue();
-                              });
-                        },
-                        icon: const FaIcon(FontAwesomeIcons.google),
-                      ),
-                    ),
-                    // Gap(64),
-                    SizedBox(
-                        width: 160,
-                        child: ButtonOutlineWidget(
-                          label: "Facebook",
-                          press: () {},
-                          icon: const FaIcon(FontAwesomeIcons.facebook),
-                        )),
-                  ],
-                ),
                 const Gap(36),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -164,7 +118,8 @@ class _SignUpPageState extends State<SignUpPage> {
                   }
 
                   // AuthApi.register(_username.text, _email.text, _password.text)
-                  AuthApi()
+                  ApiService()
+                      .authApi
                       .authRegisterPostWithHttpInfo(
                           registerForm: RegisterForm(
                               nama: _username.text,

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
+import 'package:tubes_mobpro/tubes/api_service.dart';
 import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
 import 'package:tubes_mobpro/tubes/pages/auth_check.dart';
 import 'package:tubes_mobpro/tubes/pages/forgot_password_email.dart';
@@ -47,41 +48,6 @@ class _SignInPageState extends State<SignInPage> {
                 ),
                 const Gap(36),
                 createForm(context),
-                const Gap(36),
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("Or sign in with"),
-                  ],
-                ),
-                const Gap(36),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SizedBox(
-                      width: 160,
-                      child: ButtonOutlineWidget(
-                        label: "Google",
-                        press: () {
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return const GoogleLoginDialogue();
-                              });
-                        },
-                        icon: const FaIcon(FontAwesomeIcons.google),
-                      ),
-                    ),
-                    // Gap(64),
-                    SizedBox(
-                        width: 160,
-                        child: ButtonOutlineWidget(
-                          label: "Facebook",
-                          press: () {},
-                          icon: const FaIcon(FontAwesomeIcons.facebook),
-                        )),
-                  ],
-                ),
                 const Gap(36),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -154,13 +120,14 @@ class _SignInPageState extends State<SignInPage> {
             child: ButtonWidget.primary(
                 label: "Login",
                 press: () {
-                  final api_instance = SetoranAPINETApi();
+                  final api_instance = ApiService();
 
-                  api_instance
+                  api_instance.setoranAPi
                       .loginPost(new LoginRequest(
                           email: _email.text, password: _password.text))
                       .then((response) async {
                     if (response?.accessToken != null) {
+                      api_instance.setToken(response!.accessToken!);
                       Provider.of<AuthState>(context, listen: false)
                           .refreshCurrentUser(); // refresh currentUser
                       await FirebaseNotificationService()

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:tubes_mobpro/tubes/api_service.dart';
 import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
 import 'package:tubes_mobpro/tubes/pages/auth_check.dart';
 import 'package:tubes_mobpro/tubes/pages/detail_activity_page.dart';
@@ -104,7 +105,9 @@ class _ActivityPageState extends State<ActivityPage> {
     //     Provider.of<AuthState>(context, listen: false).currentUser!.id);
     // print(pel!.id);
     // return TransaksiApi.getByPelanggan(pel.id);
-    final response = await TransaksiApi().apiTransaksiGetWithHttpInfo(query: {
+    final response = await ApiService()
+        .transaksiApi
+        .apiTransaksiGetWithHttpInfo(query: {
       "IdPelanggan":
           Provider.of<AuthState>(context, listen: false).currentUser!.id
     });

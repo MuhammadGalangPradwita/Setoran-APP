@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
+import 'package:tubes_mobpro/tubes/api_service.dart';
 import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 import 'package:tubes_mobpro/tubes/utilities/app_util.dart';
@@ -196,9 +197,14 @@ class _EditPersonalDataPageState extends State<EditPersonalDataPage> {
       final formatted = outputFormatter.format(date);
       widget.pengguna.tanggalLahir = DateTime.parse(formatted);
 
-      // TODO: call API to update pengguna
       // await PenggunaApi.updatePengguna(widget.pengguna);
-      // await PenggunaApi().
+      await ApiService().penggunaApi.penggunaPut(
+          postPenggunaDTO: PostPenggunaDTO(
+              id: widget.pengguna.id!,
+              nama: widget.pengguna.nama,
+              alamat: widget.pengguna.alamat,
+              nomorTelepon: widget.pengguna.nomorTelepon,
+              tanggalLahir: widget.pengguna.tanggalLahir));
       Navigator.of(context).pop();
     }
   }

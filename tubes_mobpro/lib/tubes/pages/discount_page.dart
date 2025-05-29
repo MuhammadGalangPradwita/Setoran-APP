@@ -1,11 +1,12 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
+// import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:tubes_mobpro/tubes/api_service.dart';
 import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 import 'package:tubes_mobpro/tubes/utilities/app_util.dart';
@@ -43,19 +44,22 @@ class _DiscountPageState extends State<DiscountPage> {
   bool loading = true;
   List<Voucher> vouchers = [];
 
-  void refreshVoucher() {
+  void refreshVoucher() async {
     setState(() {
-      vouchers = [];
+      // vouchers = [];
       loading = true;
     });
-    VoucherApi().voucherGetActiveGetWithHttpInfo().then((res) {
+    final result = await ApiService().voucherApi.voucherGetActiveGet();
+    if (result == null) {
       setState(() {
-        vouchers = jsonDecode(res.body)
-            .map((voucher) => Voucher.fromJson(voucher))
-            .toList();
         loading = false;
       });
-    });
+    } else {
+      setState(() {
+        vouchers = result;
+        loading = false;
+      });
+    }
   }
 
   @override
