@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:tubes_mobpro/tubes/api_service.dart';
 import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
 // import 'package:tubes_mobpro/tubes/api_utilities/motor.dart';
 // import 'package:tubes_mobpro/tubes/models/motor.dart';
@@ -17,6 +16,8 @@ import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 import 'package:tubes_mobpro/tubes/widgets/cardHomePage_widgets.dart';
 import 'package:tubes_mobpro/tubes/widgets/textField_widget.dart';
 import 'package:tubes_mobpro/tubes/widgets/button_widgets.dart';
+
+import '../api_service.dart';
 
 class HomepageScreen extends StatefulWidget {
   const HomepageScreen({super.key});
@@ -274,15 +275,8 @@ class _HomepageScreenState extends State<HomepageScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('Recommendation', style: AppTextStyle.body2Bold),
-                  FutureBuilder<List<Motor>>(
-                    future: ApiService()
-                        .motorApi
-                        .apiMotorGetWithHttpInfo()
-                        .then((response) {
-                      return jsonDecode(response.body)
-                          .map((motor) => Motor.fromJson(motor))
-                          .toList();
-                    }),
+                  FutureBuilder<List<Motor>?>(
+                    future: ApiService().motorApi.apiMotorGet(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());
@@ -325,15 +319,8 @@ class _HomepageScreenState extends State<HomepageScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text('Most Popular', style: AppTextStyle.body2Bold),
-                        FutureBuilder<List<Motor>>(
-                          future: ApiService()
-                              .motorApi
-                              .apiMotorGetWithHttpInfo()
-                              .then((response) {
-                            return jsonDecode(response.body)
-                                .map((motor) => Motor.fromJson(motor))
-                                .toList();
-                          }),
+                        FutureBuilder<List<Motor>?>(
+                          future: ApiService().motorApi.apiMotorGet(),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
@@ -355,8 +342,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                         const Gap(20),
                         Text('Discount', style: AppTextStyle.body2Bold),
                         FutureBuilder<List<Motor>>(
-                          future: ApiService()
-                              .motorApi
+                          future: MotorApi()
                               .apiMotorGetWithHttpInfo()
                               .then((response) {
                             return jsonDecode(response.body)

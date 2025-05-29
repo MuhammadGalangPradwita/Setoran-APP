@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:tubes_mobpro/tubes/api_service.dart';
 import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
 import 'package:tubes_mobpro/tubes/pages/auth_check.dart';
 import 'package:tubes_mobpro/tubes/pages/motor_book_page.dart';
@@ -81,7 +82,7 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
       body: SafeArea(
         child: FutureBuilder<Motor>(
             // future: MotorAPi.getMotor(widget.index),
-            future: MotorApi().apiMotorIdGet(widget.index).then((motor) {
+            future: ApiService().motorApi.apiMotorIdGet(widget.index).then((motor) {
               if (motor == null) {
                 throw Exception('Motor not found');
               }
