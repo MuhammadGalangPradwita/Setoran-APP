@@ -15,8 +15,8 @@ Method | HTTP request | Description
 [**voucherGenericIdGet**](VoucherApi.md#vouchergenericidget) | **GET** /Voucher/generic/{id} | 
 [**voucherGetActiveGet**](VoucherApi.md#vouchergetactiveget) | **GET** /Voucher/getActive | 
 [**voucherGetByCodeCodeGet**](VoucherApi.md#vouchergetbycodecodeget) | **GET** /Voucher/getByCode/{code} | 
+[**voucherIdVoucherPut**](VoucherApi.md#voucheridvoucherput) | **PUT** /Voucher/{idVoucher} | 
 [**voucherPost**](VoucherApi.md#voucherpost) | **POST** /Voucher | 
-[**voucherPut**](VoucherApi.md#voucherput) | **PUT** /Voucher | 
 
 
 # **voucherCheckVoucherCodeGet**
@@ -302,6 +302,54 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **voucherIdVoucherPut**
+> voucherIdVoucherPut(idVoucher, postVoucherDTO)
+
+
+
+### Example
+```dart
+import 'package:openapi/api.dart';
+// TODO Configure HTTP Bearer authorization: Bearer
+// Case 1. Use String Token
+//defaultApiClient.getAuthentication<HttpBearerAuth>('Bearer').setAccessToken('YOUR_ACCESS_TOKEN');
+// Case 2. Use Function which generate token.
+// String yourTokenGeneratorFunction() { ... }
+//defaultApiClient.getAuthentication<HttpBearerAuth>('Bearer').setAccessToken(yourTokenGeneratorFunction);
+
+final api_instance = VoucherApi();
+final idVoucher = 56; // int | 
+final postVoucherDTO = PostVoucherDTO(); // PostVoucherDTO | 
+
+try {
+    api_instance.voucherIdVoucherPut(idVoucher, postVoucherDTO);
+} catch (e) {
+    print('Exception when calling VoucherApi->voucherIdVoucherPut: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **idVoucher** | **int**|  | 
+ **postVoucherDTO** | [**PostVoucherDTO**](PostVoucherDTO.md)|  | [optional] 
+
+### Return type
+
+void (empty response body)
+
+### Authorization
+
+[Bearer](../README.md#Bearer)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json-patch+json, application/json, text/json, application/*+json
+ - **Accept**: Not defined
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **voucherPost**
 > Voucher voucherPost(postVoucherDTO)
 
@@ -346,52 +394,6 @@ Name | Type | Description  | Notes
 
  - **Content-Type**: application/json-patch+json, application/json, text/json, application/*+json
  - **Accept**: text/plain, application/json, text/json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **voucherPut**
-> voucherPut(voucher)
-
-
-
-### Example
-```dart
-import 'package:openapi/api.dart';
-// TODO Configure HTTP Bearer authorization: Bearer
-// Case 1. Use String Token
-//defaultApiClient.getAuthentication<HttpBearerAuth>('Bearer').setAccessToken('YOUR_ACCESS_TOKEN');
-// Case 2. Use Function which generate token.
-// String yourTokenGeneratorFunction() { ... }
-//defaultApiClient.getAuthentication<HttpBearerAuth>('Bearer').setAccessToken(yourTokenGeneratorFunction);
-
-final api_instance = VoucherApi();
-final voucher = Voucher(); // Voucher | 
-
-try {
-    api_instance.voucherPut(voucher);
-} catch (e) {
-    print('Exception when calling VoucherApi->voucherPut: $e\n');
-}
-```
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **voucher** | [**Voucher**](Voucher.md)|  | [optional] 
-
-### Return type
-
-void (empty response body)
-
-### Authorization
-
-[Bearer](../README.md#Bearer)
-
-### HTTP request headers
-
- - **Content-Type**: application/json-patch+json, application/json, text/json, application/*+json
- - **Accept**: Not defined
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

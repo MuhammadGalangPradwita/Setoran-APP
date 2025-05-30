@@ -26,7 +26,9 @@ class Motor {
     this.statusMotor,
     this.hargaHarian,
     this.diskon = const [],
+    this.idMotorImage,
     this.mitra,
+    this.motorImage,
   });
 
   ///
@@ -79,6 +81,8 @@ class Motor {
 
   List<Diskon>? diskon;
 
+  int? idMotorImage;
+
   ///
   /// Please note: This property should have been non-nullable! Since the specification file
   /// does not include a default value (using the "default:" property), however, the generated
@@ -86,6 +90,14 @@ class Motor {
   /// Consider adding a "default:" property in the specification file to hide this note.
   ///
   Mitra? mitra;
+
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  MotorImage? motorImage;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is Motor &&
@@ -102,7 +114,9 @@ class Motor {
     other.statusMotor == statusMotor &&
     other.hargaHarian == hargaHarian &&
     _deepEquality.equals(other.diskon, diskon) &&
-    other.mitra == mitra;
+    other.idMotorImage == idMotorImage &&
+    other.mitra == mitra &&
+    other.motorImage == motorImage;
 
   @override
   int get hashCode =>
@@ -120,10 +134,12 @@ class Motor {
     (statusMotor == null ? 0 : statusMotor!.hashCode) +
     (hargaHarian == null ? 0 : hargaHarian!.hashCode) +
     (diskon == null ? 0 : diskon!.hashCode) +
-    (mitra == null ? 0 : mitra!.hashCode);
+    (idMotorImage == null ? 0 : idMotorImage!.hashCode) +
+    (mitra == null ? 0 : mitra!.hashCode) +
+    (motorImage == null ? 0 : motorImage!.hashCode);
 
   @override
-  String toString() => 'Motor[idMotor=$idMotor, platNomor=$platNomor, idMitra=$idMitra, nomorSTNK=$nomorSTNK, nomorBPKB=$nomorBPKB, model=$model, brand=$brand, tipe=$tipe, tahun=$tahun, transmisi=$transmisi, statusMotor=$statusMotor, hargaHarian=$hargaHarian, diskon=$diskon, mitra=$mitra]';
+  String toString() => 'Motor[idMotor=$idMotor, platNomor=$platNomor, idMitra=$idMitra, nomorSTNK=$nomorSTNK, nomorBPKB=$nomorBPKB, model=$model, brand=$brand, tipe=$tipe, tahun=$tahun, transmisi=$transmisi, statusMotor=$statusMotor, hargaHarian=$hargaHarian, diskon=$diskon, idMotorImage=$idMotorImage, mitra=$mitra, motorImage=$motorImage]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -192,10 +208,20 @@ class Motor {
     } else {
       json[r'diskon'] = null;
     }
+    if (this.idMotorImage != null) {
+      json[r'idMotorImage'] = this.idMotorImage;
+    } else {
+      json[r'idMotorImage'] = null;
+    }
     if (this.mitra != null) {
       json[r'mitra'] = this.mitra;
     } else {
       json[r'mitra'] = null;
+    }
+    if (this.motorImage != null) {
+      json[r'motorImage'] = this.motorImage;
+    } else {
+      json[r'motorImage'] = null;
     }
     return json;
   }
@@ -232,7 +258,9 @@ class Motor {
         statusMotor: mapValueOfType<String>(json, r'statusMotor'),
         hargaHarian: mapValueOfType<double>(json, r'hargaHarian'),
         diskon: Diskon.listFromJson(json[r'diskon']),
+        idMotorImage: mapValueOfType<int>(json, r'idMotorImage'),
         mitra: Mitra.fromJson(json[r'mitra']),
+        motorImage: MotorImage.fromJson(json[r'motorImage']),
       );
     }
     return null;

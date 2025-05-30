@@ -210,6 +210,8 @@ class ApiClient {
           return Motor.fromJson(value);
         case 'MotorForm':
           return MotorForm.fromJson(value);
+        case 'MotorImage':
+          return MotorImage.fromJson(value);
         case 'Notifikasi':
           return Notifikasi.fromJson(value);
         case 'Pelanggan':

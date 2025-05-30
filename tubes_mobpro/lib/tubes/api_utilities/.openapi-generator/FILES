@@ -4,6 +4,7 @@ README.md
 analysis_options.yaml
 doc/AccessTokenResponse.md
 doc/AuthApi.md
+doc/AvatarApi.md
 doc/CheckVoucherDTO.md
 doc/DeviceToken.md
 doc/Diskon.md
@@ -20,6 +21,8 @@ doc/MitraMotorDTO.md
 doc/Motor.md
 doc/MotorApi.md
 doc/MotorForm.md
+doc/MotorImage.md
+doc/MotorImageApi.md
 doc/Notifikasi.md
 doc/NotifikasiApi.md
 doc/Pelanggan.md
@@ -62,9 +65,11 @@ doc/VoucherApi.md
 git_push.sh
 lib/api.dart
 lib/api/auth_api.dart
+lib/api/avatar_api.dart
 lib/api/diskon_api.dart
 lib/api/mitra_api.dart
 lib/api/motor_api.dart
+lib/api/motor_image_api.dart
 lib/api/notifikasi_api.dart
 lib/api/pelanggan_api.dart
 lib/api/pembayaran_api.dart
@@ -96,6 +101,7 @@ lib/model/mitra.dart
 lib/model/mitra_motor_dto.dart
 lib/model/motor.dart
 lib/model/motor_form.dart
+lib/model/motor_image.dart
 lib/model/notifikasi.dart
 lib/model/pelanggan.dart
 lib/model/pembayaran.dart
@@ -127,15 +133,6 @@ lib/model/two_factor_response.dart
 lib/model/ulasan.dart
 lib/model/voucher.dart
 pubspec.yaml
-test/diskon_api_test.dart
-test/diskon_test.dart
-test/mitra_api_test.dart
-test/mitra_motor_dto_test.dart
-test/post_diskon_dto_test.dart
-test/post_mitra_dto_test.dart
-test/post_pelanggan_dto_test.dart
-test/post_pengguna_dto_test.dart
-test/put_diskon_dto_test.dart
-test/status_diskon_test.dart
-test/status_mitra_test.dart
-test/ulasan_test.dart
+test/avatar_api_test.dart
+test/motor_image_api_test.dart
+test/motor_image_test.dart

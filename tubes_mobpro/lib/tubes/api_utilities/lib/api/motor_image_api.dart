@@ -11,19 +11,19 @@
 part of openapi.api;
 
 
-class StorageApi {
-  StorageApi([ApiClient? apiClient]) : apiClient = apiClient ?? defaultApiClient;
+class MotorImageApi {
+  MotorImageApi([ApiClient? apiClient]) : apiClient = apiClient ?? defaultApiClient;
 
   final ApiClient apiClient;
 
-  /// Performs an HTTP 'GET /Storage/fetch/{fileName}' operation and returns the [Response].
+  /// Performs an HTTP 'GET /api/MotorImage/{id}' operation and returns the [Response].
   /// Parameters:
   ///
-  /// * [String] fileName (required):
-  Future<Response> storageFetchFileNameGetWithHttpInfo(String fileName,) async {
+  /// * [int] id (required):
+  Future<Response> apiMotorImageIdGetWithHttpInfo(int id,) async {
     // ignore: prefer_const_declarations
-    final path = r'/Storage/fetch/{fileName}'
-      .replaceAll('{fileName}', fileName);
+    final path = r'/api/MotorImage/{id}'
+      .replaceAll('{id}', id.toString());
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -48,9 +48,9 @@ class StorageApi {
 
   /// Parameters:
   ///
-  /// * [String] fileName (required):
-  Future<String?> storageFetchFileNameGet(String fileName,) async {
-    final response = await storageFetchFileNameGetWithHttpInfo(fileName,);
+  /// * [int] id (required):
+  Future<MotorImage?> apiMotorImageIdGet(int id,) async {
+    final response = await apiMotorImageIdGetWithHttpInfo(id,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -58,39 +58,29 @@ class StorageApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'String',) as String;
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'MotorImage',) as MotorImage;
     
     }
     return null;
   }
 
-  /// Performs an HTTP 'POST /Storage/store' operation and returns the [Response].
+  /// Performs an HTTP 'POST /api/MotorImage' operation and returns the [Response].
   /// Parameters:
   ///
-  /// * [MultipartFile] file:
-  Future<Response> storageStorePostWithHttpInfo({ MultipartFile? file, }) async {
+  /// * [MotorImage] motorImage:
+  Future<Response> apiMotorImagePostWithHttpInfo({ MotorImage? motorImage, }) async {
     // ignore: prefer_const_declarations
-    final path = r'/Storage/store';
+    final path = r'/api/MotorImage';
 
     // ignore: prefer_final_locals
-    Object? postBody;
+    Object? postBody = motorImage;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
     final formParams = <String, String>{};
 
-    const contentTypes = <String>['multipart/form-data'];
+    const contentTypes = <String>['application/json', 'application/json-patch+json', 'text/json', 'application/*+json'];
 
-    bool hasFields = false;
-    final mp = MultipartRequest('POST', Uri.parse(path));
-    if (file != null) {
-      hasFields = true;
-      mp.fields[r'file'] = file.field;
-      mp.files.add(file);
-    }
-    if (hasFields) {
-      postBody = mp;
-    }
 
     return apiClient.invokeAPI(
       path,
@@ -105,9 +95,9 @@ class StorageApi {
 
   /// Parameters:
   ///
-  /// * [MultipartFile] file:
-  Future<String?> storageStorePost({ MultipartFile? file, }) async {
-    final response = await storageStorePostWithHttpInfo( file: file, );
+  /// * [MotorImage] motorImage:
+  Future<MotorImage?> apiMotorImagePost({ MotorImage? motorImage, }) async {
+    final response = await apiMotorImagePostWithHttpInfo( motorImage: motorImage, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -115,7 +105,7 @@ class StorageApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'String',) as String;
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'MotorImage',) as MotorImage;
     
     }
     return null;

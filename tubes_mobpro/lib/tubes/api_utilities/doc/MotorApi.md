@@ -212,7 +212,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **apiMotorPost**
-> apiMotorPost(motorForm)
+> Motor apiMotorPost(motorForm)
 
 
 
@@ -230,7 +230,8 @@ final api_instance = MotorApi();
 final motorForm = MotorForm(); // MotorForm | 
 
 try {
-    api_instance.apiMotorPost(motorForm);
+    final result = api_instance.apiMotorPost(motorForm);
+    print(result);
 } catch (e) {
     print('Exception when calling MotorApi->apiMotorPost: $e\n');
 }
@@ -244,7 +245,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-void (empty response body)
+[**Motor**](Motor.md)
 
 ### Authorization
 
@@ -253,7 +254,7 @@ void (empty response body)
 ### HTTP request headers
 
  - **Content-Type**: application/json-patch+json, application/json, text/json, application/*+json
- - **Accept**: Not defined
+ - **Accept**: text/plain, application/json, text/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
