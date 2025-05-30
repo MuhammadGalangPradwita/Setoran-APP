@@ -6,6 +6,11 @@ class AppUtil {
     return 'Rp${formatter.format(price)}';
   }
 
+  static String formatPriceDouble(double price) {
+    final formatter = NumberFormat('#,###');
+    return 'Rp${formatter.format(price)}';
+  }
+
   static String formatDate(DateTime date) {
     final formatter = DateFormat('dd MMMM yyyy');
     return formatter.format(date);
