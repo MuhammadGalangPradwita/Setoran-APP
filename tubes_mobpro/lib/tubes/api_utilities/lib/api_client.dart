@@ -224,6 +224,8 @@ class ApiClient {
           return PostDiskonDTO.fromJson(value);
         case 'PostMitraDTO':
           return PostMitraDTO.fromJson(value);
+        case 'PostMotorImageDTO':
+          return PostMotorImageDTO.fromJson(value);
         case 'PostNotifikasDTO':
           return PostNotifikasDTO.fromJson(value);
         case 'PostPelangganDTO':

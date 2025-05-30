@@ -157,6 +157,7 @@ Class | Method | HTTP request | Description
  - [Pengguna](doc//Pengguna.md)
  - [PostDiskonDTO](doc//PostDiskonDTO.md)
  - [PostMitraDTO](doc//PostMitraDTO.md)
+ - [PostMotorImageDTO](doc//PostMotorImageDTO.md)
  - [PostNotifikasDTO](doc//PostNotifikasDTO.md)
  - [PostPelangganDTO](doc//PostPelangganDTO.md)
  - [PostPembayaranDTO](doc//PostPembayaranDTO.md)

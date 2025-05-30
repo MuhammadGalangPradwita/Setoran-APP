@@ -61,7 +61,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **apiMotorImagePost**
-> MotorImage apiMotorImagePost(motorImage)
+> MotorImage apiMotorImagePost(postMotorImageDTO)
 
 
 
@@ -76,10 +76,10 @@ import 'package:openapi/api.dart';
 //defaultApiClient.getAuthentication<HttpBearerAuth>('Bearer').setAccessToken(yourTokenGeneratorFunction);
 
 final api_instance = MotorImageApi();
-final motorImage = MotorImage(); // MotorImage | 
+final postMotorImageDTO = PostMotorImageDTO(); // PostMotorImageDTO | 
 
 try {
-    final result = api_instance.apiMotorImagePost(motorImage);
+    final result = api_instance.apiMotorImagePost(postMotorImageDTO);
     print(result);
 } catch (e) {
     print('Exception when calling MotorImageApi->apiMotorImagePost: $e\n');
@@ -90,7 +90,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **motorImage** | [**MotorImage**](MotorImage.md)|  | [optional] 
+ **postMotorImageDTO** | [**PostMotorImageDTO**](PostMotorImageDTO.md)|  | [optional] 
 
 ### Return type
 

@@ -65,6 +65,7 @@ part 'model/pembayaran.dart';
 part 'model/pengguna.dart';
 part 'model/post_diskon_dto.dart';
 part 'model/post_mitra_dto.dart';
+part 'model/post_motor_image_dto.dart';
 part 'model/post_notifikas_dto.dart';
 part 'model/post_pelanggan_dto.dart';
 part 'model/post_pembayaran_dto.dart';

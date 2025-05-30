@@ -67,13 +67,13 @@ class MotorImageApi {
   /// Performs an HTTP 'POST /api/MotorImage' operation and returns the [Response].
   /// Parameters:
   ///
-  /// * [MotorImage] motorImage:
-  Future<Response> apiMotorImagePostWithHttpInfo({ MotorImage? motorImage, }) async {
+  /// * [PostMotorImageDTO] postMotorImageDTO:
+  Future<Response> apiMotorImagePostWithHttpInfo({ PostMotorImageDTO? postMotorImageDTO, }) async {
     // ignore: prefer_const_declarations
     final path = r'/api/MotorImage';
 
     // ignore: prefer_final_locals
-    Object? postBody = motorImage;
+    Object? postBody = postMotorImageDTO;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
@@ -95,9 +95,9 @@ class MotorImageApi {
 
   /// Parameters:
   ///
-  /// * [MotorImage] motorImage:
-  Future<MotorImage?> apiMotorImagePost({ MotorImage? motorImage, }) async {
-    final response = await apiMotorImagePostWithHttpInfo( motorImage: motorImage, );
+  /// * [PostMotorImageDTO] postMotorImageDTO:
+  Future<MotorImage?> apiMotorImagePost({ PostMotorImageDTO? postMotorImageDTO, }) async {
+    final response = await apiMotorImagePostWithHttpInfo( postMotorImageDTO: postMotorImageDTO, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

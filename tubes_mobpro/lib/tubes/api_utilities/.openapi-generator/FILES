@@ -33,6 +33,7 @@ doc/Pengguna.md
 doc/PenggunaApi.md
 doc/PostDiskonDTO.md
 doc/PostMitraDTO.md
+doc/PostMotorImageDTO.md
 doc/PostNotifikasDTO.md
 doc/PostPelangganDTO.md
 doc/PostPembayaranDTO.md
@@ -108,6 +109,7 @@ lib/model/pembayaran.dart
 lib/model/pengguna.dart
 lib/model/post_diskon_dto.dart
 lib/model/post_mitra_dto.dart
+lib/model/post_motor_image_dto.dart
 lib/model/post_notifikas_dto.dart
 lib/model/post_pelanggan_dto.dart
 lib/model/post_pembayaran_dto.dart
@@ -133,6 +135,4 @@ lib/model/two_factor_response.dart
 lib/model/ulasan.dart
 lib/model/voucher.dart
 pubspec.yaml
-test/avatar_api_test.dart
-test/motor_image_api_test.dart
-test/motor_image_test.dart
+test/post_motor_image_dto_test.dart
