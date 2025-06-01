@@ -378,15 +378,38 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
         payload['id_voucher'] = voucher.idVoucher;
       }
 
+      if (motor.diskon != null && motor.diskon!.isNotEmpty) {
+        Diskon diskonTerbaik = motor.diskon!.first;
+
+        print('I GOT IN!!!!!');
+
+        for (Diskon discount in motor.diskon ?? []) {
+          if (discount.tanggalMulai!.isBefore(DateTime.now()) &&
+              discount.tanggalAkhir!.isAfter(DateTime.now())) {
+            if (discount.jumlahDiskon! > diskonTerbaik.jumlahDiskon!) {
+              diskonTerbaik = discount;
+            }
+          }
+        }
+
+        payload['id_diskon'] = diskonTerbaik.idDiskon;
+      }
+
+      print('pelanggan id: $userId');
+      print('id_motor: ${payload['id_motor']}');
+      print('id_voucher: ${payload['id_voucher']}');
+      print('idDIskon: ${payload['id_diskon'] ?? 'Tidak ada'}');
+      print('list diskon: ${motor.diskon}');
+
       await ApiService().transaksiApi.apiTransaksiPost(
               postTransaksiDTO: PostTransaksiDTO(
             idMotor: payload['id_motor'],
             idPelanggan: payload['id_pelanggan'],
             tanggalMulai: payload['tanggal_mulai'],
             tanggalSelesai: payload['tanggal_selesai'],
+            idVoucher: payload['id_voucher'] ?? null,
+            idDiscount: payload['id_diskon'] ?? null,
           ));
-
-      // await ApiService().pelangganApi
 
       await ApiService().motorApi.apiMotorIdPut(payload['id_motor'],
           putMotorDTO: PutMotorDTO(
@@ -408,14 +431,36 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
         headerAnimationLoop: false,
         animType: AnimType.bottomSlide,
         title: 'Sukses',
-        desc: 'Transaksi Berhasil',
+        desc: 'idMotor: ${motor.idMotor}\n'
+            'idPelanggan: ${payload['id_pelanggan']}\n'
+            'Tanggal Mulai: ${range.start}\n'
+            'Tanggal Selesai: ${range.end}\n'
+            'Total Biaya: Rp. ${formatter.format(finalFees)}\n'
+            'namaVoucher: ${voucher != null ? voucher!.namaVoucher : 'Tidak ada'}\n'
+            'voucher: ${voucher != null ? voucher!.namaVoucher : 'Tidak ada'}'
+            'diskon: ${payload['id_diskon'] ?? 'Tidak ada'}',
         buttonsTextStyle: const TextStyle(color: Colors.black),
         showCloseIcon: false,
         // btnCancelOnPress: () {},
-        btnOkOnPress: () {
-          Navigator.of(context).popUntil((route) => route.isFirst);
-        },
+        // btnOkOnPress: () {
+        //   Navigator.of(context).popUntil((route) => route.isFirst);
+        // },
       ).show();
+
+      // AwesomeDialog(
+      //   context: context,
+      //   dialogType: DialogType.success,
+      //   headerAnimationLoop: false,
+      //   animType: AnimType.bottomSlide,
+      //   title: 'Sukses',
+      //   desc: 'Transaksi Berhasil',
+      //   buttonsTextStyle: const TextStyle(color: Colors.black),
+      //   showCloseIcon: false,
+      //   // btnCancelOnPress: () {},
+      //   btnOkOnPress: () {
+      //     Navigator.of(context).popUntil((route) => route.isFirst);
+      //   },
+      // ).show();
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error: $e')),

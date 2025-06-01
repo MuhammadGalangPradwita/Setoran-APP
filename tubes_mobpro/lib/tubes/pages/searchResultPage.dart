@@ -79,7 +79,9 @@ class SearchResult extends StatelessWidget {
       ),
       body: FutureBuilder(
         // future: MotorAPi.filtered(date, transimission, model),
-        future: ApiService().motorApi.apiMotorGet(transmisi: transimission, model: model),
+        future: ApiService()
+            .motorApi
+            .apiMotorGet(transmisi: transimission, model: model),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -95,11 +97,31 @@ class SearchResult extends StatelessWidget {
               padding: const EdgeInsets.only(right: 20),
               // height: 300,
               width: double.infinity,
-              child: buildVehicleRow(motors),
+              child: buildVehicleRow(removeBookedMotors(motors) ?? []),
             ),
           );
         },
       ),
     );
+  }
+
+  List<Motor>? removeBookedMotors(List<Motor>? listMotors) {
+    // Mengambil daftar motor yang sudah dibooking
+
+    List<Motor> filteredList = [];
+
+    if (listMotors == null || listMotors.isEmpty) {
+      return [];
+    }
+
+    // Menghapus motor yang sudah dibooking dari daftar
+    for (var motor in listMotors!) {
+      if (motor.statusMotor == "Tersedia") {
+        filteredList.add(motor);
+      }
+    }
+
+    // Mengembalikan daftar motor yang sudah dibooking
+    return filteredList;
   }
 }

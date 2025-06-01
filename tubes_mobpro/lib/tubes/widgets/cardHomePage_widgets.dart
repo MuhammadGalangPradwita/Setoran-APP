@@ -46,7 +46,8 @@ class vehicleCard extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => SearchResultDetail(index: 1)));
+                        builder: (context) =>
+                            SearchResultDetail(motor: motor)));
               },
               child: SizedBox(
                 width: 180,
@@ -163,6 +164,9 @@ class vehicleCard extends StatelessWidget {
 class vehicleCardDiscount extends StatelessWidget {
   // final double width;
   // final double height;
+
+  final Motor motor;
+
   final EdgeInsetsGeometry margin;
   final String imagePath;
   final String vehicleName;
@@ -182,6 +186,7 @@ class vehicleCardDiscount extends StatelessWidget {
     required this.transmition,
     required this.disPrice,
     required this.norPrice,
+    required this.motor,
   });
 
   @override
@@ -200,7 +205,8 @@ class vehicleCardDiscount extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => SearchResultDetail(index: 1)));
+                        builder: (context) =>
+                            SearchResultDetail(motor: motor)));
               },
               child: SizedBox(
                 width: 175,
