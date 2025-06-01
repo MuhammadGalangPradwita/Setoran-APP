@@ -17,6 +17,8 @@ class PostTransaksiDTO {
     required this.idPelanggan,
     required this.tanggalMulai,
     required this.tanggalSelesai,
+    this.idVoucher,
+    this.idDiscount,
   });
 
   int idMotor;
@@ -27,12 +29,18 @@ class PostTransaksiDTO {
 
   DateTime tanggalSelesai;
 
+  int? idVoucher;
+
+  int? idDiscount;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is PostTransaksiDTO &&
     other.idMotor == idMotor &&
     other.idPelanggan == idPelanggan &&
     other.tanggalMulai == tanggalMulai &&
-    other.tanggalSelesai == tanggalSelesai;
+    other.tanggalSelesai == tanggalSelesai &&
+    other.idVoucher == idVoucher &&
+    other.idDiscount == idDiscount;
 
   @override
   int get hashCode =>
@@ -40,10 +48,12 @@ class PostTransaksiDTO {
     (idMotor.hashCode) +
     (idPelanggan.hashCode) +
     (tanggalMulai.hashCode) +
-    (tanggalSelesai.hashCode);
+    (tanggalSelesai.hashCode) +
+    (idVoucher == null ? 0 : idVoucher!.hashCode) +
+    (idDiscount == null ? 0 : idDiscount!.hashCode);
 
   @override
-  String toString() => 'PostTransaksiDTO[idMotor=$idMotor, idPelanggan=$idPelanggan, tanggalMulai=$tanggalMulai, tanggalSelesai=$tanggalSelesai]';
+  String toString() => 'PostTransaksiDTO[idMotor=$idMotor, idPelanggan=$idPelanggan, tanggalMulai=$tanggalMulai, tanggalSelesai=$tanggalSelesai, idVoucher=$idVoucher, idDiscount=$idDiscount]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -51,6 +61,16 @@ class PostTransaksiDTO {
       json[r'idPelanggan'] = this.idPelanggan;
       json[r'tanggalMulai'] = this.tanggalMulai.toUtc().toIso8601String();
       json[r'tanggalSelesai'] = this.tanggalSelesai.toUtc().toIso8601String();
+    if (this.idVoucher != null) {
+      json[r'idVoucher'] = this.idVoucher;
+    } else {
+      json[r'idVoucher'] = null;
+    }
+    if (this.idDiscount != null) {
+      json[r'idDiscount'] = this.idDiscount;
+    } else {
+      json[r'idDiscount'] = null;
+    }
     return json;
   }
 
@@ -77,6 +97,8 @@ class PostTransaksiDTO {
         idPelanggan: mapValueOfType<int>(json, r'idPelanggan')!,
         tanggalMulai: mapDateTime(json, r'tanggalMulai', r'')!,
         tanggalSelesai: mapDateTime(json, r'tanggalSelesai', r'')!,
+        idVoucher: mapValueOfType<int>(json, r'idVoucher'),
+        idDiscount: mapValueOfType<int>(json, r'idDiscount'),
       );
     }
     return null;
