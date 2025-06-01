@@ -114,13 +114,18 @@ class SearchResultCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return SearchResultDetail(
-            index: index,
-          );
-        }));
-      },
+
+      // Broken due to changes in SearchResultDetail
+      // Also it's old anyway, we are currently using searchResultPage
+ 
+      // onTap: () {
+      //   Navigator.push(context, MaterialPageRoute(builder: (context) {
+      //     return SearchResultDetail(
+      //       index: index,
+      //     );
+      //   }));
+      // },
+
       child: Container(
         width: 144,
         height: 173,

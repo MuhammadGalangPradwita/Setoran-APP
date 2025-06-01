@@ -75,8 +75,8 @@ class _HomepageScreenState extends State<HomepageScreen> {
                   'Transmission: ${motors[i].transmisi}', // Asumsikan ada properti transmisi
               disPrice:
                   'Rp. ${formatter.format(motors[i].hargaHarian)}', // Ganti dengan harga diskon
-              norPrice:
-                  'Rp. ${formatter.format(motors[i].hargaHarian)}', // Ganti dengan harga normal
+              norPrice: 'Rp. ${formatter.format(motors[i].hargaHarian)}',
+              motor: motors[i], // Ganti dengan harga normal
             ),
             if (endIndex <
                 motors.length) // Jika ada motor kedua di baris yang sama
@@ -93,7 +93,8 @@ class _HomepageScreenState extends State<HomepageScreen> {
                 disPrice:
                     'Rp. ${formatter.format(motors[endIndex].hargaHarian)}', // Ganti dengan harga diskon
                 norPrice:
-                    'Rp. ${formatter.format(motors[endIndex].hargaHarian)}', // Ganti dengan harga normal
+                    'Rp. ${formatter.format(motors[endIndex].hargaHarian)}',
+                motor: motors[i], // Ganti dengan harga normal
               ),
           ],
         ),
@@ -278,7 +279,6 @@ class _HomepageScreenState extends State<HomepageScreen> {
                   Text('Recommendation', style: AppTextStyle.body2Bold),
                   FutureBuilder<List<Motor>?>(
                     future: ApiService().motorApi.apiMotorGet(withImage: true),
-
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());
@@ -287,7 +287,8 @@ class _HomepageScreenState extends State<HomepageScreen> {
                       } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                         return const Center(child: Text('No motors available'));
                       } else {
-                        final List<Motor> motors = snapshot.data!;
+                        final List<Motor> motors =
+                            removeBookedMotors(snapshot.data!)!;
                         return SizedBox(
                           height: 300, // Adjust height as needed
                           child: ListView.builder(
@@ -295,9 +296,10 @@ class _HomepageScreenState extends State<HomepageScreen> {
                               itemCount: motors.length,
                               itemBuilder: (context, index) {
                                 return vehicleCard(
-                                    margin: const EdgeInsets.only(
-                                        top: 20, right: 20, left: 20),
-                                    motor: motors[index]);
+                                  margin: const EdgeInsets.only(
+                                      top: 20, right: 20, left: 20),
+                                  motor: motors[index],
+                                );
                               }),
                         );
                       }
@@ -313,7 +315,9 @@ class _HomepageScreenState extends State<HomepageScreen> {
                       children: [
                         Text('Most Popular', style: AppTextStyle.body2Bold),
                         FutureBuilder<List<Motor>?>(
-                          future: ApiService().motorApi.apiMotorGet(),
+                          future: ApiService()
+                              .motorApi
+                              .apiMotorGet(withImage: true),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
@@ -327,7 +331,8 @@ class _HomepageScreenState extends State<HomepageScreen> {
                               return const Center(
                                   child: Text('No motors available'));
                             } else {
-                              final List<Motor> motors = snapshot.data!;
+                              final List<Motor> motors =
+                                  removeBookedMotors(snapshot.data!)!;
                               return buildHorizontalVehicleList(motors);
                             }
                           },
@@ -335,7 +340,9 @@ class _HomepageScreenState extends State<HomepageScreen> {
                         const Gap(20),
                         Text('Discount', style: AppTextStyle.body2Bold),
                         FutureBuilder<List<Motor>?>(
-                          future: ApiService().motorApi.apiMotorGet(),
+                          future: ApiService()
+                              .motorApi
+                              .apiMotorGet(withImage: true),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
@@ -349,7 +356,8 @@ class _HomepageScreenState extends State<HomepageScreen> {
                               return const Center(
                                   child: Text('No motors available'));
                             } else {
-                              final List<Motor> motors = snapshot.data!;
+                              final List<Motor> motors =
+                                  removeBookedMotors(snapshot.data!)!;
                               return buildMotorList(motors);
                             }
                           },
@@ -368,25 +376,24 @@ class _HomepageScreenState extends State<HomepageScreen> {
 
   List<Motor>? removeBookedMotors(List<Motor>? listMotors) {
     // Mengambil daftar motor yang sudah dibooking
+
+    List<Motor> filteredList = [];
+
     if (listMotors == null || listMotors.isEmpty) {
       return [];
     }
 
     // Menghapus motor yang sudah dibooking dari daftar
     for (var motor in listMotors!) {
-      ApiService().transaksiApi.apiTransaksiIdGet(motor.idMotor!).then((value) {
+      // Mendapatkan motor yg mempunyai image
+      if (motor.idMotorImage != null)
+        print(
+            'Motor punya image: idMotor ${motor.idMotor} nama motor: ${motor.model}, imageId: ${motor.idMotorImage} image: ${motor.motorImage?.front}');
 
-        if (value != null && value.status == "Diajukan") {
-          listMotors.removeWhere((m) => m.idMotor == motor.idMotor);
-        }
-
-      }).catchError((error) {
-        debugPrint(
-            "Error fetching transaction for motor ${motor.idMotor}: $error");
-      });
+      if (motor.statusMotor == "Tersedia") {
+        filteredList.add(motor);
+      }
     }
-
-
 
     // Mengembalikan daftar motor yang sudah dibooking
     return listMotors;
