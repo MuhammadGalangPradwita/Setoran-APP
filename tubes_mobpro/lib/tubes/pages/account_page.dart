@@ -7,9 +7,14 @@ import 'package:tubes_mobpro/tubes/pages/edit_profile.dart';
 import 'package:tubes_mobpro/tubes/pages/my_motorcycle_page.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 
-class AccountPage extends StatelessWidget {
+class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
 
+  @override
+  State<AccountPage> createState() => _AccountPageState();
+}
+
+class _AccountPageState extends State<AccountPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,18 +84,20 @@ class AccountPage extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              CircleAvatar(
+              Builder(builder: (context) {
+                final authState = Provider.of<AuthState>(context);
+                final currentUser = authState.currentUser;
+
+                final imageUrl = currentUser?.idGambar != null
+                    ? "http://160.19.167.222:5103/storage/fetch/${currentUser!.idGambar}"
+                    : "http://160.19.167.222:5103/avatar?name=${currentUser?.nama ?? 'Guest'}";
+
+                return CircleAvatar(
+                  backgroundColor: AppColors.N0,
                   radius: 60,
-                  backgroundColor: AppColors.B400,
-                  foregroundColor: AppColors.N0,
-                  child: Text(
-                    singkatan,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 60,
-                    ),
-                    // backgroundImage: AssetImage('assets/images/avatar.png'),
-                  )),
+                  backgroundImage: NetworkImage(imageUrl),
+                );
+              }),
               Builder(builder: (context) {
                 // var auth = context.read(AuthState);
                 var auth = Provider.of<AuthState>(context);
@@ -114,7 +121,11 @@ class AccountPage extends StatelessWidget {
                   IconButton(
                       onPressed: () {
                         PersistentNavBarNavigator.pushNewScreen(context,
-                            screen: const EditProfilePage(), withNavBar: false);
+                                screen: const EditProfilePage(),
+                                withNavBar: false)
+                            .then((_) {
+                          setState(() {});
+                        });
                       },
                       icon: const Icon(Icons.edit))
                 ],
