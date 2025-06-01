@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:tubes_mobpro/tubes/api_service.dart';
 import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 import 'package:tubes_mobpro/tubes/utilities/app_util.dart';
@@ -16,41 +17,58 @@ class TransactionCard extends StatefulWidget {
 }
 
 class _TransactionCardState extends State<TransactionCard> {
-  Motor? motor;
+  // Motor? motor;
   // Image? image;
-  String? imagePath;
+  // String? imagePath;
 
   @override
   void initState() {
     super.initState();
-    loadMotor();
+    // loadMotor();
   }
 
-  Future<void> loadMotor() async {
-    // final result = await MotorAPi.getById(widget.transaksi.idMotor);
-    setState(() {
-      motor = widget.transaksi.motor;
-    });
-  }
+  // Future<void> loadMotor() async {
+  //   // final result = await MotorAPi.getById(widget.transaksi.idMotor);
+  //   setState(() {
+  //     motor = widget.transaksi.motor;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
-    if (motor == null) {
+    if (widget.transaksi.motor == null) {
       return const Center(
         child: CircularProgressIndicator(),
       );
     }
     return Card(
-      elevation: 0,
-      color: setColor(widget.transaksi.status!),
+      color: AppColors.N0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
       ),
-      child: Padding(
+      child: Container(
+        height: 96,
         padding: const EdgeInsets.all(8),
         child: Row(
           children: [
-            _buildImage(),
+            SizedBox(
+              width: 320 / 3,
+              height: 70,
+              child: FutureBuilder(
+                future: _buildImage(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    return const Text('Error loading image');
+                  } else if (snapshot.hasData) {
+                    return snapshot.data!;
+                  } else {
+                    return const Text('No image available');
+                  }
+                },
+              ),
+            ),
             const Gap(12),
             Expanded(
               child: Column(
@@ -62,41 +80,68 @@ class _TransactionCardState extends State<TransactionCard> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        motor!.model!,
-                        style: GoogleFonts.poppins(
-                            fontSize: 18,
-                            color: AppColors.N0,
-                            fontWeight: FontWeight.w600),
+                        widget.transaksi.motor!.model!,
+                        style: AppTextStyle.body1SemiBold,
                       ),
                       const Gap(20),
-                      Text(
-                        widget.transaksi.idTransaksi.toString(),
-                        style: GoogleFonts.poppins(
-                            fontSize: 10, color: AppColors.N0),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: setColor(widget.transaksi.status!),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        // color: setColor(widget.transaksi.status!),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 4),
+                        child: Text(
+                          widget.transaksi.status!,
+                          style: AppTextStyle.smallReguler.copyWith(
+                            color: AppColors.N0,
+                          ),
+                        ),
                       ),
                     ],
                   ),
                   Text(
-                    motor!.transmisi!,
-                    style:
-                        GoogleFonts.poppins(fontSize: 10, color: AppColors.N0),
+                    widget.transaksi.motor!.brand!,
+                    style: AppTextStyle.body3Regular.copyWith(
+                      color: AppColors.N600,
+                    ),
                   ),
-                  Text(
-                    // widget.transaksi.tanggalMulai.toString(),
-                    AppUtil.formatDate(widget.transaksi.tanggalMulai!),
-                    style:
-                        GoogleFonts.poppins(fontSize: 10, color: AppColors.N0),
-                  ),
-                  Text(
-                    // 'Rp${formatter.format(widget.transaksi.nominal)}',
-                    AppUtil.formatPrice(widget.transaksi.totalHarga! as int),
-                    style:
-                        GoogleFonts.poppins(fontSize: 10, color: AppColors.N0),
-                  ),
-                  Text(
-                    widget.transaksi.status!,
-                    style:
-                        GoogleFonts.poppins(fontSize: 10, color: AppColors.N0),
+                  Row(
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const Icon(
+                            Icons.calendar_month,
+                            size: 12,
+                          ),
+                          const Gap(4),
+                          Text(
+                            // widget.transaksi.tanggalMulai.toString(),
+                            AppUtil.formatDate(widget.transaksi.tanggalMulai!),
+                            style: AppTextStyle.body3Regular,
+                          ),
+                        ],
+                      ),
+                      const Gap(20),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const Icon(
+                            Icons.money,
+                            size: 12,
+                          ),
+                          const Gap(4),
+                          Text(
+                            // 'Rp${formatter.format(widget.transaksi.nominal)}',
+                            AppUtil.formatPriceDouble(
+                                widget.transaksi.totalHarga!),
+                            style: AppTextStyle.body3Regular,
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -112,22 +157,28 @@ class _TransactionCardState extends State<TransactionCard> {
       return AppColors.B400;
     } else if (status == "selesai") {
       return AppColors.G500;
-    } else {
+    } else if (status == "batal") {
       return AppColors.R400;
+    } else {
+      return AppColors.N700;
     }
   }
 
-  Widget _buildImage() {
-    if (imagePath != null) {
-      return Image(
-        image: AssetImage(imagePath!),
-        // width: ,
-        height: 100,
+  Future<Widget> _buildImage() async {
+    String url;
+    if (widget.transaksi.motor!.idMotorImage != null) {
+      MotorImage? motorImage = await ApiService()
+          .motorImageApi
+          .apiMotorImageIdGet(widget.transaksi.motor!.idMotorImage!);
+      url = "http://160.19.167.222:5103/storage/fetch/${motorImage!.front}";
+      return Image.network(
+        url,
+        fit: BoxFit.cover,
       );
     } else {
-      return SizedBox(
-        height: 100,
-        width: 100,
+      return Image.asset(
+        "assets/images/general-img-landscape.png",
+        fit: BoxFit.cover,
       );
     }
   }
