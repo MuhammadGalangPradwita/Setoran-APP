@@ -220,6 +220,8 @@ class ApiClient {
           return Pembayaran.fromJson(value);
         case 'Pengguna':
           return Pengguna.fromJson(value);
+        case 'PostCreateMitraDTO':
+          return PostCreateMitraDTO.fromJson(value);
         case 'PostDiskonDTO':
           return PostDiskonDTO.fromJson(value);
         case 'PostMitraDTO':

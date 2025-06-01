@@ -31,6 +31,7 @@ doc/Pembayaran.md
 doc/PembayaranApi.md
 doc/Pengguna.md
 doc/PenggunaApi.md
+doc/PostCreateMitraDTO.md
 doc/PostDiskonDTO.md
 doc/PostMitraDTO.md
 doc/PostMotorImageDTO.md
@@ -107,6 +108,7 @@ lib/model/notifikasi.dart
 lib/model/pelanggan.dart
 lib/model/pembayaran.dart
 lib/model/pengguna.dart
+lib/model/post_create_mitra_dto.dart
 lib/model/post_diskon_dto.dart
 lib/model/post_mitra_dto.dart
 lib/model/post_motor_image_dto.dart
@@ -135,3 +137,4 @@ lib/model/two_factor_response.dart
 lib/model/ulasan.dart
 lib/model/voucher.dart
 pubspec.yaml
+test/post_create_mitra_dto_test.dart

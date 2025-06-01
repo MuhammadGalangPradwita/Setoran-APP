@@ -63,6 +63,7 @@ part 'model/notifikasi.dart';
 part 'model/pelanggan.dart';
 part 'model/pembayaran.dart';
 part 'model/pengguna.dart';
+part 'model/post_create_mitra_dto.dart';
 part 'model/post_diskon_dto.dart';
 part 'model/post_mitra_dto.dart';
 part 'model/post_motor_image_dto.dart';
