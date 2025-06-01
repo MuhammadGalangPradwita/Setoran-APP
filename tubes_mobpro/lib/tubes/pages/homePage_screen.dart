@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
@@ -277,6 +278,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                   Text('Recommendation', style: AppTextStyle.body2Bold),
                   FutureBuilder<List<Motor>?>(
                     future: ApiService().motorApi.apiMotorGet(withImage: true),
+
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());
@@ -332,14 +334,8 @@ class _HomepageScreenState extends State<HomepageScreen> {
                         ),
                         const Gap(20),
                         Text('Discount', style: AppTextStyle.body2Bold),
-                        FutureBuilder<List<Motor>>(
-                          future: MotorApi()
-                              .apiMotorGetWithHttpInfo()
-                              .then((response) {
-                            return jsonDecode(response.body)
-                                .map((motor) => Motor.fromJson(motor))
-                                .toList();
-                          }),
+                        FutureBuilder<List<Motor>?>(
+                          future: ApiService().motorApi.apiMotorGet(),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
@@ -368,5 +364,31 @@ class _HomepageScreenState extends State<HomepageScreen> {
         ),
       ),
     );
+  }
+
+  List<Motor>? removeBookedMotors(List<Motor>? listMotors) {
+    // Mengambil daftar motor yang sudah dibooking
+    if (listMotors == null || listMotors.isEmpty) {
+      return [];
+    }
+
+    // Menghapus motor yang sudah dibooking dari daftar
+    for (var motor in listMotors!) {
+      ApiService().transaksiApi.apiTransaksiIdGet(motor.idMotor!).then((value) {
+
+        if (value != null && value.status == "Diajukan") {
+          listMotors.removeWhere((m) => m.idMotor == motor.idMotor);
+        }
+
+      }).catchError((error) {
+        debugPrint(
+            "Error fetching transaction for motor ${motor.idMotor}: $error");
+      });
+    }
+
+
+
+    // Mengembalikan daftar motor yang sudah dibooking
+    return listMotors;
   }
 }

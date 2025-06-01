@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tubes_mobpro/tubes/api_service.dart';
 import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
 import 'package:tubes_mobpro/tubes/pages/search_result_detail.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
@@ -78,7 +79,7 @@ class SearchResult extends StatelessWidget {
       ),
       body: FutureBuilder(
         // future: MotorAPi.filtered(date, transimission, model),
-        future: MotorApi().apiMotorGet(transmisi: transimission, model: model),
+        future: ApiService().motorApi.apiMotorGet(transmisi: transimission, model: model),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
