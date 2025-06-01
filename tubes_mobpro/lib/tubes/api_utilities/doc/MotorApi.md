@@ -17,7 +17,7 @@ Method | HTTP request | Description
 
 
 # **apiMotorGet**
-> List<Motor> apiMotorGet(idMitra, status, model, transmisi)
+> List<Motor> apiMotorGet(withImage, idMitra, status, model, transmisi)
 
 
 
@@ -32,13 +32,14 @@ import 'package:openapi/api.dart';
 //defaultApiClient.getAuthentication<HttpBearerAuth>('Bearer').setAccessToken(yourTokenGeneratorFunction);
 
 final api_instance = MotorApi();
+final withImage = true; // bool | 
 final idMitra = idMitra_example; // String | 
 final status = status_example; // String | 
 final model = model_example; // String | 
 final transmisi = transmisi_example; // String | 
 
 try {
-    final result = api_instance.apiMotorGet(idMitra, status, model, transmisi);
+    final result = api_instance.apiMotorGet(withImage, idMitra, status, model, transmisi);
     print(result);
 } catch (e) {
     print('Exception when calling MotorApi->apiMotorGet: $e\n');
@@ -49,6 +50,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **withImage** | **bool**|  | [optional] 
  **idMitra** | **String**|  | [optional] 
  **status** | **String**|  | [optional] 
  **model** | **String**|  | [optional] 

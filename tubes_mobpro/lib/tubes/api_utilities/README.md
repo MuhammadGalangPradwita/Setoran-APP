@@ -99,6 +99,7 @@ Class | Method | HTTP request | Description
 *PembayaranApi* | [**apiPembayaranTransaksiIdGet**](doc//PembayaranApi.md#apipembayarantransaksiidget) | **GET** /api/Pembayaran/transaksi/{id} | 
 *PenggunaApi* | [**penggunaCurrentPenggunaGet**](doc//PenggunaApi.md#penggunacurrentpenggunaget) | **GET** /Pengguna/currentPengguna | 
 *PenggunaApi* | [**penggunaFromMitraGet**](doc//PenggunaApi.md#penggunafrommitraget) | **GET** /Pengguna/fromMitra | 
+*PenggunaApi* | [**penggunaFromPelangganGet**](doc//PenggunaApi.md#penggunafrompelangganget) | **GET** /Pengguna/fromPelanggan | 
 *PenggunaApi* | [**penggunaGenericIdDelete**](doc//PenggunaApi.md#penggunagenericiddelete) | **DELETE** /Pengguna/generic/{id} | 
 *PenggunaApi* | [**penggunaGenericIdGet**](doc//PenggunaApi.md#penggunagenericidget) | **GET** /Pengguna/generic/{id} | 
 *PenggunaApi* | [**penggunaGetAllGet**](doc//PenggunaApi.md#penggunagetallget) | **GET** /Pengguna/getAll | 

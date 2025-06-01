@@ -19,6 +19,8 @@ class MotorApi {
   /// Performs an HTTP 'GET /api/Motor' operation and returns the [Response].
   /// Parameters:
   ///
+  /// * [bool] withImage:
+  ///
   /// * [String] idMitra:
   ///
   /// * [String] status:
@@ -26,7 +28,7 @@ class MotorApi {
   /// * [String] model:
   ///
   /// * [String] transmisi:
-  Future<Response> apiMotorGetWithHttpInfo({ String? idMitra, String? status, String? model, String? transmisi, }) async {
+  Future<Response> apiMotorGetWithHttpInfo({ bool? withImage, String? idMitra, String? status, String? model, String? transmisi, }) async {
     // ignore: prefer_const_declarations
     final path = r'/api/Motor';
 
@@ -37,6 +39,9 @@ class MotorApi {
     final headerParams = <String, String>{};
     final formParams = <String, String>{};
 
+    if (withImage != null) {
+      queryParams.addAll(_queryParams('', 'WithImage', withImage));
+    }
     if (idMitra != null) {
       queryParams.addAll(_queryParams('', 'IdMitra', idMitra));
     }
@@ -66,6 +71,8 @@ class MotorApi {
 
   /// Parameters:
   ///
+  /// * [bool] withImage:
+  ///
   /// * [String] idMitra:
   ///
   /// * [String] status:
@@ -73,8 +80,8 @@ class MotorApi {
   /// * [String] model:
   ///
   /// * [String] transmisi:
-  Future<List<Motor>?> apiMotorGet({ String? idMitra, String? status, String? model, String? transmisi, }) async {
-    final response = await apiMotorGetWithHttpInfo( idMitra: idMitra, status: status, model: model, transmisi: transmisi, );
+  Future<List<Motor>?> apiMotorGet({ bool? withImage, String? idMitra, String? status, String? model, String? transmisi, }) async {
+    final response = await apiMotorGetWithHttpInfo( withImage: withImage, idMitra: idMitra, status: status, model: model, transmisi: transmisi, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

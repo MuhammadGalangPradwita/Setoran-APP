@@ -135,4 +135,3 @@ lib/model/two_factor_response.dart
 lib/model/ulasan.dart
 lib/model/voucher.dart
 pubspec.yaml
-test/post_motor_image_dto_test.dart
