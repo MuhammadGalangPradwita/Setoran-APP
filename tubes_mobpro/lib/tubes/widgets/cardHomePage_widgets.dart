@@ -54,9 +54,23 @@ class vehicleCard extends StatelessWidget {
                 child: Column(
                   children: [
                     // TODO: Uncomment this when you have the image asset
-                    // Container(
-                    //     margin: margin,
-                    //     child: Image.asset(motor.getImages()[0])),
+                    Container(
+                        width: double.infinity,
+                        margin: margin,
+                        child: Builder(
+                          builder: (context) {
+                            if (motor.idMotorImage != null) {
+                              return Image.network(
+                                  "http://160.19.167.222:5103/storage/fetch/${motor.motorImage!.front!}",
+                                  fit: BoxFit.cover);
+                            } else {
+                              return Image.asset(
+                                'assets/images/general-img-landscape.png',
+                                fit: BoxFit.cover,
+                              );
+                            }
+                          },
+                        )),
                     const SizedBox(
                       height: 10,
                     ),
