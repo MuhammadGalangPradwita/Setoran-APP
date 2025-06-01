@@ -92,29 +92,34 @@ class _EditProfilePageState extends State<EditProfilePage> {
   }
 
   Row _profilePictureSection() {
+    final imageUrl = pengguna?.idGambar != null
+        ? "http://160.19.167.222:5103/storage/fetch/${pengguna!.idGambar}"
+        : "http://160.19.167.222:5103/avatar?name=${pengguna?.nama ?? 'Guest'}";
+    Image image = Image.network(imageUrl);
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         InkWell(
           onTap: () {
-            Navigator.of(context).push(MaterialPageRoute(
+            Navigator.of(context)
+                .push(MaterialPageRoute(
               builder: (context) => AvatarPreviewPage(
-                image: profilePicture,
+                image: image,
               ),
-            ));
+            ))
+                .then((_) {
+              loadData();
+            });
           },
           child: Stack(
             children: [
-              CircleAvatar(
-                radius: 70, // Adjust size as needed
-                backgroundColor: Colors.grey[200],
-                // backgroundImage: const AssetImage('assets/images/avatar.png'),
-                // backgroundImage: avatar,
-                // backgroundImage: profilePicture.image,
-                // backgroundImage: profilePicture == null
-                //     ? const AssetImage('assets/images/avatar.png')
-                //     : Image.memory(profilePicture!.data!).image,
-              ),
+              Builder(builder: (context) {
+                return CircleAvatar(
+                  backgroundColor: AppColors.N0,
+                  radius: 60,
+                  backgroundImage: image.image,
+                );
+              }),
               Positioned(
                 bottom: 0,
                 right: 10,

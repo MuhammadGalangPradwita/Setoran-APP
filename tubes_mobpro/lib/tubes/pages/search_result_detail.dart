@@ -9,21 +9,10 @@ import 'package:tubes_mobpro/tubes/services/firebase_notification_service.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 
 class SearchResultDetail extends StatefulWidget {
-  final Map<String, dynamic> motorData = {
-    'tipe': 'Yamaha NMAX',
-    'transmisi': 'Matic',
-    'image': 'assets/images/NMAX.png',
-    'harga': 50000,
-    'diskon': {
-      'status': true,
-      'persen': 10,
-    },
-    'rating': 4.8,
-  };
+  final Motor motor;
 
-  final int index;
 
-  SearchResultDetail({super.key, required this.index});
+  SearchResultDetail({super.key, required this.motor});
 
   @override
   State<SearchResultDetail> createState() => _SearchResultDetailState();
@@ -80,25 +69,7 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
         elevation: 0,
       ),
       body: SafeArea(
-        child: FutureBuilder<Motor>(
-            // future: MotorAPi.getMotor(widget.index),
-            future: ApiService().motorApi.apiMotorIdGet(widget.index).then((motor) {
-              if (motor == null) {
-                throw Exception('Motor not found');
-              }
-              return motor;
-            }),
-            builder: (BuildContext context, AsyncSnapshot<Motor> snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (snapshot.hasError) {
-                return Center(child: Text('Error: ${snapshot.error}'));
-              } else if (!snapshot.hasData) {
-                return const Center(child: Text('No motors available'));
-              } else {
-                Motor motor = snapshot.data!;
-
-                return Stack(
+        child: Stack(
                   children: [
                     Column(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -109,12 +80,35 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
                           child: Container(
                             width: 210,
                             height: 184,
-                            child: Image.asset(
-                              'assets/images/NMAX.png',
-                              fit: BoxFit.fitHeight,
+                            child: Builder(
+                              builder: (context) {
+                                print('Motor id: ${widget.motor.idMotor}');
+                                print('Nama motor: ${widget.motor.model}');
+                                print('Transmisi: ${widget.motor.transmisi}');
+                                print('Tahun: ${widget.motor.tahun}');
+                                print('Brand: ${widget.motor.brand}');
+                                print(
+                                    'Motor Image: ${widget.motor.motorImage?.front}');
+                                print(
+                                    'motor image id: ${widget.motor.motorImage?.id}');
+                                final frontImage = widget.motor.motorImage?.front;
+                                if (frontImage != null &&
+                                    frontImage.isNotEmpty) {
+                                  return Image.network(
+                                    "http://160.19.167.222:5103/storage/fetch/$frontImage",
+                                    fit: BoxFit.cover,
+                                  );
+                                } else {
+                                  return Image.asset(
+                                    'assets/images/general-img-landscape.png',
+                                    fit: BoxFit.cover,
+                                  );
+                                }
+                              },
                             ),
                           ),
                         ),
+
                         Expanded(
                           child: Container(
                             decoration: const BoxDecoration(
@@ -134,7 +128,7 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
                                     children: [
                                       // Nama motor
                                       Text(
-                                        '${motor.model}, ${motor.tipe}',
+                                        '${widget.motor.model}, ${widget.motor.tipe}',
                                         style: AppTextStyle.body2SemiBold,
                                       ),
                                       Row(
@@ -160,7 +154,7 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
 
                                   // Transmisi dan tahun
                                   Text(
-                                    '${motor.transmisi}, ${motor.tahun}',
+                                    '${widget.motor.transmisi}, ${widget.motor.tahun}',
                                     style: AppTextStyle.smallReguler,
                                   ),
                                   const SizedBox(
@@ -204,7 +198,7 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
                                       ),
 
                                       // Brand motor
-                                      Text(motor.brand!,
+                                      Text(widget.motor.brand!,
                                           style: AppTextStyle.smallReguler),
                                     ],
                                   ),
@@ -222,7 +216,7 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
                                       ),
 
                                       // Tipe motor
-                                      Text(motor.tipe!,
+                                      Text(widget.motor.tipe!,
                                           style: AppTextStyle.smallReguler),
                                     ],
                                   ),
@@ -240,7 +234,7 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
                                       ),
 
                                       // Tahun motor
-                                      Text("${motor.tahun}",
+                                      Text("${widget.motor.tahun}",
                                           style: AppTextStyle.smallReguler),
                                     ],
                                   ),
@@ -258,7 +252,7 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
                                       ),
 
                                       // Transmisi motor
-                                      Text(motor.transmisi!,
+                                      Text(widget.motor.transmisi!,
                                           style: AppTextStyle.smallReguler),
                                     ],
                                   ),
@@ -276,7 +270,7 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
                                       ),
 
                                       // Nomor polisi motor
-                                      Text(motor.platNomor!,
+                                      Text(widget.motor.platNomor!,
                                           style: AppTextStyle.smallReguler),
                                     ],
                                   ),
@@ -320,7 +314,7 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
                                 Row(
                                   children: [
                                     Text(
-                                      "Rp. ${formatter.format(motor.hargaHarian)}",
+                                      "Rp. ${formatter.format(widget.motor.hargaHarian)}",
                                       style:
                                           AppTextStyle.body3SemiBold.copyWith(
                                         color: AppColors.B400,
@@ -358,7 +352,7 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
                                       MaterialPageRoute(
                                           builder: (context) =>
                                               BookMotorcyclePage(
-                                                motor: motor,
+                                                motor: widget.motor,
                                               )));
                                 },
                                 style: ElevatedButton.styleFrom(
@@ -379,28 +373,26 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
                       ),
                     ),
                   ],
-                );
-              }
-            }),
+                )  
+
       ),
     );
   }
 
-  Future<bool> isRented() async {
-    // int userId = (await PenggunaApi.getCurrentUser())!.id;
-    int userId = AuthState().currentUser!.id! as int;
+  // Future<bool> isRented() async {
+  //   // int userId = (await PenggunaApi.getCurrentUser())!.id;
+  //   int userId = AuthState().currentUser!.id! as int;
 
-    List<Transaksi>? transaksiList =
-        await TransaksiApi().apiTransaksiGet(query: {
-      'pelanggan': userId.toString(),
-    });
+  //   List<Transaksi>? transaksiList = await TransaksiApi().apiTransaksiGet(
+  //     idPelanggan: userId.toString(),
+  //   );
 
-    if (transaksiList != null) {
-      bool exists = transaksiList.any((v) => v.idMotor == widget.index);
+  //   if (transaksiList != null) {
+  //     bool exists = transaksiList.any((v) => v.idMotor == widget.index);
 
-      return exists;
-    }
+  //     return exists;
+  //   }
 
-    return false;
-  }
+  //   return false;
+  // }
 }

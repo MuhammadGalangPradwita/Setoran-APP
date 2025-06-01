@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
+import 'package:tubes_mobpro/tubes/api_service.dart';
 import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
 import 'package:tubes_mobpro/tubes/pages/auth_check.dart';
 import 'package:tubes_mobpro/tubes/pages/register_motorcycle_upload_photos_page.dart';
@@ -10,7 +11,8 @@ import 'package:tubes_mobpro/tubes/widgets/dropdownField_widget.dart';
 import 'package:tubes_mobpro/tubes/widgets/textField_widget.dart';
 
 class RegisterMotorcyclePage extends StatefulWidget {
-  const RegisterMotorcyclePage({super.key});
+  final int? idMitra;
+  const RegisterMotorcyclePage({super.key, this.idMitra});
 
   @override
   State<RegisterMotorcyclePage> createState() => _RegisterMotorcyclePageState();
@@ -131,7 +133,7 @@ class _RegisterMotorcyclePageState extends State<RegisterMotorcyclePage> {
                   width: double.infinity,
                   child: ButtonWidget.primary(
                       label: "Continue",
-                      press: () {
+                      press: () async {
                         if (stnkNumberController.text.isEmpty ||
                             plateNumberController.text.isEmpty ||
                             bpkbNumberController.text.isEmpty ||
@@ -149,12 +151,14 @@ class _RegisterMotorcyclePageState extends State<RegisterMotorcyclePage> {
                           );
                           return;
                         }
+                        // Jika belum terdaftar jadi mitra
                         MotorForm motorcycle = MotorForm(
-                          idMitra:
-                              Provider.of<AuthState>(context, listen: false)
+                          idMitra: Provider.of<AuthState>(context,
+                                      listen: false)
                                   .currentUser!
                                   .mitra!
-                                  .idMitra!,
+                                  .idMitra ??
+                              -1, // set ke -1 kalau null, nanti bakal di handle di next page
                           platNomor: plateNumberController.text,
                           nomorSTNK: stnkNumberController.text,
                           nomorBPKB: bpkbNumberController.text,

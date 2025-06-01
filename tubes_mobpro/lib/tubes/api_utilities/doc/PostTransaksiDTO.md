@@ -12,6 +12,8 @@ Name | Type | Description | Notes
 **idPelanggan** | **int** |  | 
 **tanggalMulai** | [**DateTime**](DateTime.md) |  | 
 **tanggalSelesai** | [**DateTime**](DateTime.md) |  | 
+**idVoucher** | **int** |  | [optional] 
+**idDiscount** | **int** |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
