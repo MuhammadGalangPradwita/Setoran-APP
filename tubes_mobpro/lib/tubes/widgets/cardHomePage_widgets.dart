@@ -11,13 +11,15 @@ class vehicleCard extends StatelessWidget {
   // final double height;
   final EdgeInsetsGeometry margin;
   final Motor motor;
+  final Ulasan ulasan;
 
   const vehicleCard(
       {super.key,
       // required this.width,
       // required this.height,
       required this.margin,
-      required this.motor});
+      required this.motor,
+      required this.ulasan});
 
   // // NMAX normal price:
   // height: 260,
@@ -54,7 +56,6 @@ class vehicleCard extends StatelessWidget {
                 height: 250,
                 child: Column(
                   children: [
-                    // TODO: Uncomment this when you have the image asset
                     Container(
                         width: double.infinity,
                         margin: margin,
@@ -81,45 +82,40 @@ class vehicleCard extends StatelessWidget {
                       child: Row(
                         children: [
                           Text(
-                            "${motor.brand}, ${motor.model}",
+                            "${motor.model}",
                             textAlign: TextAlign.left,
-                            style: AppTextStyle.body2Bold,
+                            style: AppTextStyle.body1Bold,
                           ),
-                          const SizedBox(width: 48),
-                          const Icon(
-                            Icons.star,
-                            color: Colors.amber,
-                            size: 18,
-                          ),
-                          const SizedBox(width: 5),
-                          FutureBuilder<double?>(
-                              // future: UlasanApi.getMotorAvg(motor.idMotor),
-                              // TODO: Replace with actual future call
-                              future: Future<double?>.delayed(
-                                const Duration(seconds: 1),
-                                () => 4.5, // Example rating value
-                              ),
-                              builder: (context, snapshot) {
-                                if (snapshot.hasData) {
-                                  return Text(
-                                    snapshot.data == null
-                                        ? "-"
-                                        : snapshot.data.toString(),
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.black,
-                                    ),
+                          Expanded(
+                            child: Container(
+                              alignment: Alignment.centerRight,
+                              margin: const EdgeInsets.only(right: 0),
+                              child: FutureBuilder<double?>(
+                                // future: UlasanApi.getMotorAvg(motor.idMotor),
+                                future: Future<double?>.delayed(
+                                  const Duration(seconds: 1),
+                                  () => 4.5, // Example rating value
+                                ),
+                                builder: (context, snapshot) {
+                                  return Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      const Icon(
+                                        Icons.star,
+                                        color: Colors.amber,
+                                        size: 18,
+                                      ),
+                                      const SizedBox(width: 5),
+                                      Text(
+                                        "${ulasan.rating != null ? ulasan.rating.toString() : "-"}",       
+                                        style: AppTextStyle.body2Bold,
+                                      ),
+                                    ],
                                   );
-                                }
-
-                                return const Text(
-                                  "-",
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.black,
-                                  ),
-                                );
-                              })
+                                },
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -127,7 +123,7 @@ class vehicleCard extends StatelessWidget {
                         width: double.infinity,
                         margin: const EdgeInsets.only(left: 10),
                         child: Text(
-                          motor.transmisi!,
+                          "${motor.transmisi}",
                           textAlign: TextAlign.left,
                           style: AppTextStyle.body3Regular,
                         )),
@@ -138,9 +134,9 @@ class vehicleCard extends StatelessWidget {
                       child: Row(
                         children: [
                           Text(
-                            motor.hargaHarian.toString(),
+                            'Rp${motor.hargaHarian ?? "-"}',
                             textAlign: TextAlign.left,
-                            style: AppTextStyle.body2Bold,
+                            style: AppTextStyle.body1Bold,
                           ),
                           Text(
                             '/day',

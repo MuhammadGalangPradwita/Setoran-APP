@@ -37,6 +37,12 @@ class _HomepageScreenState extends State<HomepageScreen> {
 
   final _modelController = TextEditingController();
 
+  Future<List<Ulasan>> getUlasanByMotorId(int? idMotor) async {
+    if (idMotor == null) return [];
+    final allUlasan = await ApiService().ulasanApi.apiUlasanGet() ?? [];
+    return allUlasan.where((u) => u.idMotor == idMotor).toList();
+  }
+
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -63,39 +69,49 @@ class _HomepageScreenState extends State<HomepageScreen> {
       rows.add(
         Row(
           children: [
-            vehicleCardDiscount(
-              margin: const EdgeInsets.only(top: 20, left: 10, right: 10),
-              // imagePath: motors[i].imagePath,  // Asumsikan ada properti imagePath di Motor
-              imagePath: "assets/images/NMAX.png",
-              vehicleName:
-                  motors[i].model ?? "", // Ganti dengan data motor yang sesuai
-              // rating: motors[i].brand.toString(),  // Ganti dengan rating motor
-              rating: '4.8',
-              transmition:
-                  'Transmission: ${motors[i].transmisi}', // Asumsikan ada properti transmisi
-              disPrice:
-                  'Rp. ${formatter.format(motors[i].hargaHarian)}', // Ganti dengan harga diskon
-              norPrice: 'Rp. ${formatter.format(motors[i].hargaHarian)}',
-              motor: motors[i], // Ganti dengan harga normal
+            FutureBuilder<List<Ulasan>>(
+              future: getUlasanByMotorId(motors[i].idMotor),
+              builder: (context, snapshot) {
+                String rating = '-';
+                if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                  rating = snapshot.data!.first.rating?.toString() ?? '-';
+                }
+                return vehicleCardDiscount(
+                  margin: const EdgeInsets.only(top: 20, left: 10, right: 10),
+                  imagePath: "assets/images/NMAX.png",
+                  vehicleName: motors[i].model ?? "",
+                  rating: rating,
+                  transmition: 'Transmission: ${motors[i].transmisi}',
+                  disPrice: 'Rp. ${formatter.format(motors[i].hargaHarian)}',
+                  norPrice: 'Rp. ${formatter.format(motors[i].hargaHarian)}',
+                  motor: motors[i],
+                );
+              },
             ),
-            if (endIndex <
-                motors.length) // Jika ada motor kedua di baris yang sama
-              vehicleCardDiscount(
-                margin: const EdgeInsets.only(top: 20, left: 10, right: 10),
-                // imagePath: motors[endIndex].imagePath,  // Asumsikan ada properti imagePath di Motor
-                imagePath: "assets/images/NMAX.png",
-                vehicleName: motors[endIndex].model ??
-                    "", // Ganti dengan data motor yang sesuai
-                rating: '4.8',
-                // rating: motors[endIndex].brand.toString(),  // Ganti dengan rating motor
-                transmition:
-                    'Transmission: ${motors[endIndex].transmisi}', // Asumsikan ada properti transmisi
-                disPrice:
-                    'Rp. ${formatter.format(motors[endIndex].hargaHarian)}', // Ganti dengan harga diskon
-                norPrice:
-                    'Rp. ${formatter.format(motors[endIndex].hargaHarian)}',
-                motor: motors[i], // Ganti dengan harga normal
+            if (endIndex < motors.length) ...[
+              const SizedBox(width: 16),
+              FutureBuilder<List<Ulasan>>(
+                future: getUlasanByMotorId(motors[endIndex].idMotor),
+                builder: (context, snapshot) {
+                  String rating = '-';
+                  if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                    rating = snapshot.data!.first.rating?.toString() ?? '-';
+                  }
+                  return vehicleCardDiscount(
+                    margin: const EdgeInsets.only(top: 20, left: 10, right: 10),
+                    imagePath: "assets/images/NMAX.png",
+                    vehicleName: motors[endIndex].model ?? "",
+                    rating: rating,
+                    transmition: 'Transmission: ${motors[endIndex].transmisi}',
+                    disPrice:
+                        'Rp. ${formatter.format(motors[endIndex].hargaHarian)}',
+                    norPrice:
+                        'Rp. ${formatter.format(motors[endIndex].hargaHarian)}',
+                    motor: motors[endIndex],
+                  );
+                },
               ),
+            ],
           ],
         ),
       );
@@ -108,23 +124,47 @@ class _HomepageScreenState extends State<HomepageScreen> {
   }
 
   Widget buildHorizontalVehicleList(List<Motor> motors) {
-    // Membuat list widget untuk vehicleCard
-    List<Widget> vehicleCards = motors.map((motor) {
-      return Padding(
-        padding: const EdgeInsets.only(top: 20, left: 10, right: 10),
-        child: vehicleCard(
-          margin: const EdgeInsets.only(top: 20, left: 10, right: 10),
-          // imagePath: motor.imagePath ?? "assets/images/default.png", // Pastikan ada 'imagePath' pada model Motor
-          motor: motor,
+    List<Widget> vehicleCards = [];
+    for (int i = 0; i < motors.length; i++) {
+      vehicleCards.add(
+        Padding(
+          padding: const EdgeInsets.only(top: 20, left: 10, right: 10),
+          child: FutureBuilder<List<Ulasan>>(
+            future: getUlasanByMotorId(motors[i].idMotor),
+            builder: (context, snapshot) {
+              Ulasan? ulasan;
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return vehicleCard(
+                  ulasan: Ulasan(rating: null),
+                  margin: const EdgeInsets.only(top: 20, left: 10, right: 10),
+                  motor: motors[i],
+                );
+              } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                ulasan = snapshot.data!.first;
+              } else {
+                ulasan = Ulasan(rating: null);
+              }
+              return vehicleCard(
+                ulasan: ulasan,
+                margin: const EdgeInsets.only(top: 20, left: 10, right: 10),
+                motor: motors[i],
+              );
+            },
+          ),
         ),
       );
-    }).toList();
+      // Tambahkan gap kecuali setelah card terakhir
+      if (i != motors.length - 1) {
+        vehicleCards.add(const SizedBox(width: 0)); // Atur lebar gap di sini
+      }
+    }
 
-    // Menambahkan SizedBox di antara setiap vehicleCard
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
-        children: [...vehicleCards],
+        children: vehicleCards,
       ),
     );
   }
@@ -295,10 +335,24 @@ class _HomepageScreenState extends State<HomepageScreen> {
                               scrollDirection: Axis.horizontal,
                               itemCount: motors.length,
                               itemBuilder: (context, index) {
-                                return vehicleCard(
-                                  margin: const EdgeInsets.only(
-                                      top: 20, right: 20, left: 20),
-                                  motor: motors[index],
+                                return FutureBuilder<List<Ulasan>>(
+                                  future:
+                                      getUlasanByMotorId(motors[index].idMotor),
+                                  builder: (context, snapshot) {
+                                    Ulasan? ulasan;
+                                    if (snapshot.hasData &&
+                                        snapshot.data!.isNotEmpty) {
+                                      ulasan = snapshot.data!.first;
+                                    } else {
+                                      ulasan = Ulasan(rating: null);
+                                    }
+                                    return vehicleCard(
+                                      ulasan: ulasan,
+                                      margin: const EdgeInsets.only(
+                                          top: 10, right: 10, left: 10),
+                                      motor: motors[index],
+                                    );
+                                  },
                                 );
                               }),
                         );
@@ -339,6 +393,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                         ),
                         const Gap(20),
                         Text('Discount', style: AppTextStyle.body2Bold),
+                        const Gap(10),
                         FutureBuilder<List<Motor>?>(
                           future: ApiService()
                               .motorApi

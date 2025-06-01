@@ -23,6 +23,7 @@ class SearchResult extends StatelessWidget {
     for (var motor in motors) {
       vehicleCards.add(
         vehicleCard(
+           ulasan: Ulasan(rating: null),
           // height: 210,
           // width: 160,
           margin: const EdgeInsets.only(top: 20, right: 20, left: 20),
