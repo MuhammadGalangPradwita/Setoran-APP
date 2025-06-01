@@ -24,9 +24,9 @@ class _ActivityPageState extends State<ActivityPage> {
   final List<Map<String, String>> statusOptions = [
     {'value': '', 'label': 'Semua'},
     {'value': 'selesai', 'label': 'Selesai'},
-    {'value': 'pending', 'label': 'Pending'},
-    {'value': 'proses', 'label': 'Proses'},
-    {'value': 'dibatalkan', 'label': 'Dibatalkan'},
+    {'value': 'created', 'label': 'Dibuat'},
+    {'value': 'berlangsung', 'label': 'Berlangsung'},
+    {'value': 'batal', 'label': 'Batal'},
     // Add more status options as needed
   ];
 
