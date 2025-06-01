@@ -107,10 +107,9 @@ class _ActivityPageState extends State<ActivityPage> {
     // return TransaksiApi.getByPelanggan(pel.id);
     final response = await ApiService()
         .transaksiApi
-        .apiTransaksiGetWithHttpInfo(query: {
-      "IdPelanggan":
-          Provider.of<AuthState>(context, listen: false).currentUser!.id
-    });
+        .apiTransaksiGetWithHttpInfo(
+            idPelanggan:
+                Provider.of<AuthState>(context, listen: false).currentUser!.id);
 
     return jsonDecode(response.body)
         .map((transaksi) => Transaksi.fromJson(transaksi))
