@@ -21,7 +21,9 @@ Name | Type | Description | Notes
 **statusMotor** | **String** |  | [optional] 
 **hargaHarian** | **double** |  | [optional] 
 **diskon** | [**List<Diskon>**](Diskon.md) |  | [optional] [default to const []]
+**idMotorImage** | **int** |  | [optional] 
 **mitra** | [**Mitra**](Mitra.md) |  | [optional] 
+**motorImage** | [**MotorImage**](MotorImage.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

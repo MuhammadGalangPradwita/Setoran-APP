@@ -319,6 +319,50 @@ class VoucherApi {
     return null;
   }
 
+  /// Performs an HTTP 'PUT /Voucher/{idVoucher}' operation and returns the [Response].
+  /// Parameters:
+  ///
+  /// * [int] idVoucher (required):
+  ///
+  /// * [PostVoucherDTO] postVoucherDTO:
+  Future<Response> voucherIdVoucherPutWithHttpInfo(int idVoucher, { PostVoucherDTO? postVoucherDTO, }) async {
+    // ignore: prefer_const_declarations
+    final path = r'/Voucher/{idVoucher}'
+      .replaceAll('{idVoucher}', idVoucher.toString());
+
+    // ignore: prefer_final_locals
+    Object? postBody = postVoucherDTO;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json', 'application/json-patch+json', 'text/json', 'application/*+json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'PUT',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Parameters:
+  ///
+  /// * [int] idVoucher (required):
+  ///
+  /// * [PostVoucherDTO] postVoucherDTO:
+  Future<void> voucherIdVoucherPut(int idVoucher, { PostVoucherDTO? postVoucherDTO, }) async {
+    final response = await voucherIdVoucherPutWithHttpInfo(idVoucher,  postVoucherDTO: postVoucherDTO, );
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
   /// Performs an HTTP 'POST /Voucher' operation and returns the [Response].
   /// Parameters:
   ///
@@ -364,44 +408,5 @@ class VoucherApi {
     
     }
     return null;
-  }
-
-  /// Performs an HTTP 'PUT /Voucher' operation and returns the [Response].
-  /// Parameters:
-  ///
-  /// * [Voucher] voucher:
-  Future<Response> voucherPutWithHttpInfo({ Voucher? voucher, }) async {
-    // ignore: prefer_const_declarations
-    final path = r'/Voucher';
-
-    // ignore: prefer_final_locals
-    Object? postBody = voucher;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-    const contentTypes = <String>['application/json', 'application/json-patch+json', 'text/json', 'application/*+json'];
-
-
-    return apiClient.invokeAPI(
-      path,
-      'PUT',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  /// Parameters:
-  ///
-  /// * [Voucher] voucher:
-  Future<void> voucherPut({ Voucher? voucher, }) async {
-    final response = await voucherPutWithHttpInfo( voucher: voucher, );
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
   }
 }

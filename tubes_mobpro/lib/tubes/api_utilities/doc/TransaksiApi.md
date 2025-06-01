@@ -16,7 +16,7 @@ Method | HTTP request | Description
 
 
 # **apiTransaksiGet**
-> List<Transaksi> apiTransaksiGet(query)
+> List<Transaksi> apiTransaksiGet(idMotor, idPelanggan, idMitra, status)
 
 
 
@@ -31,10 +31,13 @@ import 'package:openapi/api.dart';
 //defaultApiClient.getAuthentication<HttpBearerAuth>('Bearer').setAccessToken(yourTokenGeneratorFunction);
 
 final api_instance = TransaksiApi();
-final query = Object; // Object | 
+final idMotor = idMotor_example; // String | 
+final idPelanggan = idPelanggan_example; // String | 
+final idMitra = idMitra_example; // String | 
+final status = status_example; // String | 
 
 try {
-    final result = api_instance.apiTransaksiGet(query);
+    final result = api_instance.apiTransaksiGet(idMotor, idPelanggan, idMitra, status);
     print(result);
 } catch (e) {
     print('Exception when calling TransaksiApi->apiTransaksiGet: $e\n');
@@ -45,7 +48,10 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **query** | [**Object**](.md)|  | [optional] 
+ **idMotor** | **String**|  | [optional] 
+ **idPelanggan** | **String**|  | [optional] 
+ **idMitra** | **String**|  | [optional] 
+ **status** | **String**|  | [optional] 
 
 ### Return type
 

@@ -108,6 +108,57 @@ class PenggunaApi {
     return null;
   }
 
+  /// Performs an HTTP 'GET /Pengguna/fromPelanggan' operation and returns the [Response].
+  /// Parameters:
+  ///
+  /// * [int] idPelanggan:
+  Future<Response> penggunaFromPelangganGetWithHttpInfo({ int? idPelanggan, }) async {
+    // ignore: prefer_const_declarations
+    final path = r'/Pengguna/fromPelanggan';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    if (idPelanggan != null) {
+      queryParams.addAll(_queryParams('', 'IdPelanggan', idPelanggan));
+    }
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Parameters:
+  ///
+  /// * [int] idPelanggan:
+  Future<Pengguna?> penggunaFromPelangganGet({ int? idPelanggan, }) async {
+    final response = await penggunaFromPelangganGetWithHttpInfo( idPelanggan: idPelanggan, );
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'Pengguna',) as Pengguna;
+    
+    }
+    return null;
+  }
+
   /// Performs an HTTP 'DELETE /Pengguna/generic/{id}' operation and returns the [Response].
   /// Parameters:
   ///
@@ -342,5 +393,67 @@ class PenggunaApi {
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+  }
+
+  /// Performs an HTTP 'POST /Pengguna/updateProfileImage/{id}' operation and returns the [Response].
+  /// Parameters:
+  ///
+  /// * [String] id (required):
+  ///
+  /// * [MultipartFile] file:
+  Future<Response> penggunaUpdateProfileImageIdPostWithHttpInfo(String id, { MultipartFile? file, }) async {
+    // ignore: prefer_const_declarations
+    final path = r'/Pengguna/updateProfileImage/{id}'
+      .replaceAll('{id}', id);
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['multipart/form-data'];
+
+    bool hasFields = false;
+    final mp = MultipartRequest('POST', Uri.parse(path));
+    if (file != null) {
+      hasFields = true;
+      mp.fields[r'file'] = file.field;
+      mp.files.add(file);
+    }
+    if (hasFields) {
+      postBody = mp;
+    }
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Parameters:
+  ///
+  /// * [String] id (required):
+  ///
+  /// * [MultipartFile] file:
+  Future<String?> penggunaUpdateProfileImageIdPost(String id, { MultipartFile? file, }) async {
+    final response = await penggunaUpdateProfileImageIdPostWithHttpInfo(id,  file: file, );
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'String',) as String;
+    
+    }
+    return null;
   }
 }

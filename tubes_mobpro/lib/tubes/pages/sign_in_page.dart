@@ -1,6 +1,5 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 import 'package:tubes_mobpro/tubes/api_service.dart';
@@ -12,7 +11,6 @@ import 'package:tubes_mobpro/tubes/widgets/button_widgets.dart';
 import 'package:tubes_mobpro/tubes/widgets/textField_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tubes_mobpro/tubes/pages/sign_up_page.dart';
-import 'package:tubes_mobpro/tubes/widgets/google_login_dialog.dart';
 import 'package:tubes_mobpro/tubes/widgets/bottom_nav.dart';
 
 class SignInPage extends StatefulWidget {
@@ -123,7 +121,7 @@ class _SignInPageState extends State<SignInPage> {
                   final api_instance = ApiService();
 
                   api_instance.setoranAPi
-                      .loginPost(new LoginRequest(
+                      .loginPost(LoginRequest(
                           email: _email.text, password: _password.text))
                       .then((response) async {
                     if (response?.accessToken != null) {

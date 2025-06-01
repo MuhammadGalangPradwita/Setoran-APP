@@ -65,6 +65,7 @@ All URIs are relative to *http://localhost*
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *AuthApi* | [**authRegisterPost**](doc//AuthApi.md#authregisterpost) | **POST** /Auth/register | 
+*AvatarApi* | [**avatarGet**](doc//AvatarApi.md#avatarget) | **GET** /avatar | 
 *DiskonApi* | [**diskonGenericIdDelete**](doc//DiskonApi.md#diskongenericiddelete) | **DELETE** /Diskon/generic/{id} | 
 *DiskonApi* | [**diskonGenericIdGet**](doc//DiskonApi.md#diskongenericidget) | **GET** /Diskon/generic/{id} | 
 *DiskonApi* | [**diskonGetAllGet**](doc//DiskonApi.md#diskongetallget) | **GET** /Diskon/getAll | 
@@ -73,12 +74,15 @@ Class | Method | HTTP request | Description
 *MitraApi* | [**mitraGenericIdDelete**](doc//MitraApi.md#mitragenericiddelete) | **DELETE** /Mitra/generic/{id} | 
 *MitraApi* | [**mitraGenericIdGet**](doc//MitraApi.md#mitragenericidget) | **GET** /Mitra/generic/{id} | 
 *MitraApi* | [**mitraMitraMotorGet**](doc//MitraApi.md#mitramitramotorget) | **GET** /Mitra/mitraMotor | 
+*MitraApi* | [**mitraPost**](doc//MitraApi.md#mitrapost) | **POST** /Mitra | 
 *MitraApi* | [**mitraPut**](doc//MitraApi.md#mitraput) | **PUT** /Mitra | 
 *MotorApi* | [**apiMotorGet**](doc//MotorApi.md#apimotorget) | **GET** /api/Motor | 
 *MotorApi* | [**apiMotorIdGet**](doc//MotorApi.md#apimotoridget) | **GET** /api/Motor/{id} | 
 *MotorApi* | [**apiMotorIdPut**](doc//MotorApi.md#apimotoridput) | **PUT** /api/Motor/{id} | 
 *MotorApi* | [**apiMotorIdUlasansGet**](doc//MotorApi.md#apimotoridulasansget) | **GET** /api/Motor/{id}/ulasans | 
 *MotorApi* | [**apiMotorPost**](doc//MotorApi.md#apimotorpost) | **POST** /api/Motor | 
+*MotorImageApi* | [**apiMotorImageIdGet**](doc//MotorImageApi.md#apimotorimageidget) | **GET** /api/MotorImage/{id} | 
+*MotorImageApi* | [**apiMotorImagePost**](doc//MotorImageApi.md#apimotorimagepost) | **POST** /api/MotorImage | 
 *NotifikasiApi* | [**notifikasiGenericIdDelete**](doc//NotifikasiApi.md#notifikasigenericiddelete) | **DELETE** /Notifikasi/generic/{id} | 
 *NotifikasiApi* | [**notifikasiGenericIdGet**](doc//NotifikasiApi.md#notifikasigenericidget) | **GET** /Notifikasi/generic/{id} | 
 *NotifikasiApi* | [**notifikasiGetPerUserGet**](doc//NotifikasiApi.md#notifikasigetperuserget) | **GET** /Notifikasi/getPerUser | 
@@ -96,11 +100,13 @@ Class | Method | HTTP request | Description
 *PembayaranApi* | [**apiPembayaranTransaksiIdGet**](doc//PembayaranApi.md#apipembayarantransaksiidget) | **GET** /api/Pembayaran/transaksi/{id} | 
 *PenggunaApi* | [**penggunaCurrentPenggunaGet**](doc//PenggunaApi.md#penggunacurrentpenggunaget) | **GET** /Pengguna/currentPengguna | 
 *PenggunaApi* | [**penggunaFromMitraGet**](doc//PenggunaApi.md#penggunafrommitraget) | **GET** /Pengguna/fromMitra | 
+*PenggunaApi* | [**penggunaFromPelangganGet**](doc//PenggunaApi.md#penggunafrompelangganget) | **GET** /Pengguna/fromPelanggan | 
 *PenggunaApi* | [**penggunaGenericIdDelete**](doc//PenggunaApi.md#penggunagenericiddelete) | **DELETE** /Pengguna/generic/{id} | 
 *PenggunaApi* | [**penggunaGenericIdGet**](doc//PenggunaApi.md#penggunagenericidget) | **GET** /Pengguna/generic/{id} | 
 *PenggunaApi* | [**penggunaGetAllGet**](doc//PenggunaApi.md#penggunagetallget) | **GET** /Pengguna/getAll | 
 *PenggunaApi* | [**penggunaIdGet**](doc//PenggunaApi.md#penggunaidget) | **GET** /Pengguna/{id} | 
 *PenggunaApi* | [**penggunaPut**](doc//PenggunaApi.md#penggunaput) | **PUT** /Pengguna | 
+*PenggunaApi* | [**penggunaUpdateProfileImageIdPost**](doc//PenggunaApi.md#penggunaupdateprofileimageidpost) | **POST** /Pengguna/updateProfileImage/{id} | 
 *SetoranAPINETApi* | [**forgotPasswordPost**](doc//SetoranAPINETApi.md#forgotpasswordpost) | **POST** /forgotPassword | 
 *SetoranAPINETApi* | [**loginPost**](doc//SetoranAPINETApi.md#loginpost) | **POST** /login | 
 *SetoranAPINETApi* | [**manage2faPost**](doc//SetoranAPINETApi.md#manage2fapost) | **POST** /manage/2fa | 
@@ -126,8 +132,8 @@ Class | Method | HTTP request | Description
 *VoucherApi* | [**voucherGenericIdGet**](doc//VoucherApi.md#vouchergenericidget) | **GET** /Voucher/generic/{id} | 
 *VoucherApi* | [**voucherGetActiveGet**](doc//VoucherApi.md#vouchergetactiveget) | **GET** /Voucher/getActive | 
 *VoucherApi* | [**voucherGetByCodeCodeGet**](doc//VoucherApi.md#vouchergetbycodecodeget) | **GET** /Voucher/getByCode/{code} | 
+*VoucherApi* | [**voucherIdVoucherPut**](doc//VoucherApi.md#voucheridvoucherput) | **PUT** /Voucher/{idVoucher} | 
 *VoucherApi* | [**voucherPost**](doc//VoucherApi.md#voucherpost) | **POST** /Voucher | 
-*VoucherApi* | [**voucherPut**](doc//VoucherApi.md#voucherput) | **PUT** /Voucher | 
 
 
 ## Documentation For Models
@@ -146,12 +152,15 @@ Class | Method | HTTP request | Description
  - [MitraMotorDTO](doc//MitraMotorDTO.md)
  - [Motor](doc//Motor.md)
  - [MotorForm](doc//MotorForm.md)
+ - [MotorImage](doc//MotorImage.md)
  - [Notifikasi](doc//Notifikasi.md)
  - [Pelanggan](doc//Pelanggan.md)
  - [Pembayaran](doc//Pembayaran.md)
  - [Pengguna](doc//Pengguna.md)
+ - [PostCreateMitraDTO](doc//PostCreateMitraDTO.md)
  - [PostDiskonDTO](doc//PostDiskonDTO.md)
  - [PostMitraDTO](doc//PostMitraDTO.md)
+ - [PostMotorImageDTO](doc//PostMotorImageDTO.md)
  - [PostNotifikasDTO](doc//PostNotifikasDTO.md)
  - [PostPelangganDTO](doc//PostPelangganDTO.md)
  - [PostPembayaranDTO](doc//PostPembayaranDTO.md)

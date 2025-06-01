@@ -210,6 +210,8 @@ class ApiClient {
           return Motor.fromJson(value);
         case 'MotorForm':
           return MotorForm.fromJson(value);
+        case 'MotorImage':
+          return MotorImage.fromJson(value);
         case 'Notifikasi':
           return Notifikasi.fromJson(value);
         case 'Pelanggan':
@@ -218,10 +220,14 @@ class ApiClient {
           return Pembayaran.fromJson(value);
         case 'Pengguna':
           return Pengguna.fromJson(value);
+        case 'PostCreateMitraDTO':
+          return PostCreateMitraDTO.fromJson(value);
         case 'PostDiskonDTO':
           return PostDiskonDTO.fromJson(value);
         case 'PostMitraDTO':
           return PostMitraDTO.fromJson(value);
+        case 'PostMotorImageDTO':
+          return PostMotorImageDTO.fromJson(value);
         case 'PostNotifikasDTO':
           return PostNotifikasDTO.fromJson(value);
         case 'PostPelangganDTO':

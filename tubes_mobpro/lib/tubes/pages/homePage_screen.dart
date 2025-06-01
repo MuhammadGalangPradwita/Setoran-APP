@@ -277,13 +277,8 @@ class _HomepageScreenState extends State<HomepageScreen> {
                 children: [
                   Text('Recommendation', style: AppTextStyle.body2Bold),
                   FutureBuilder<List<Motor>?>(
-                    future: ApiService()
-                        .motorApi
-                        .apiMotorGet()
-                        .then((motors) async {
-                      // Menghapus motor yang sudah dibooking
-                      return await removeBookedMotors(motors);
-                    }),
+                    future: ApiService().motorApi.apiMotorGet(withImage: true),
+
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());
@@ -293,26 +288,17 @@ class _HomepageScreenState extends State<HomepageScreen> {
                         return const Center(child: Text('No motors available'));
                       } else {
                         final List<Motor> motors = snapshot.data!;
-                        return SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: [
-                              vehicleCard(
-                                // height: 260,
-                                // width: 200,
-                                margin: const EdgeInsets.only(
-                                    top: 20, right: 20, left: 20),
-                                motor: motors[0],
-                              ),
-                              vehicleCard(
-                                // height: 260,
-                                // width: 200,
-                                margin: const EdgeInsets.only(
-                                    top: 20, right: 20, left: 20),
-                                motor: motors[1],
-                              )
-                            ],
-                          ),
+                        return SizedBox(
+                          height: 300, // Adjust height as needed
+                          child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: motors.length,
+                              itemBuilder: (context, index) {
+                                return vehicleCard(
+                                    margin: const EdgeInsets.only(
+                                        top: 20, right: 20, left: 20),
+                                    motor: motors[index]);
+                              }),
                         );
                       }
                     },

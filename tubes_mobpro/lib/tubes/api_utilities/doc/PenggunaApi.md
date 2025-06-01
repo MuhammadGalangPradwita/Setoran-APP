@@ -11,11 +11,13 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**penggunaCurrentPenggunaGet**](PenggunaApi.md#penggunacurrentpenggunaget) | **GET** /Pengguna/currentPengguna | 
 [**penggunaFromMitraGet**](PenggunaApi.md#penggunafrommitraget) | **GET** /Pengguna/fromMitra | 
+[**penggunaFromPelangganGet**](PenggunaApi.md#penggunafrompelangganget) | **GET** /Pengguna/fromPelanggan | 
 [**penggunaGenericIdDelete**](PenggunaApi.md#penggunagenericiddelete) | **DELETE** /Pengguna/generic/{id} | 
 [**penggunaGenericIdGet**](PenggunaApi.md#penggunagenericidget) | **GET** /Pengguna/generic/{id} | 
 [**penggunaGetAllGet**](PenggunaApi.md#penggunagetallget) | **GET** /Pengguna/getAll | 
 [**penggunaIdGet**](PenggunaApi.md#penggunaidget) | **GET** /Pengguna/{id} | 
 [**penggunaPut**](PenggunaApi.md#penggunaput) | **PUT** /Pengguna | 
+[**penggunaUpdateProfileImageIdPost**](PenggunaApi.md#penggunaupdateprofileimageidpost) | **POST** /Pengguna/updateProfileImage/{id} | 
 
 
 # **penggunaCurrentPenggunaGet**
@@ -92,6 +94,53 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **idMitra** | **int**|  | [optional] 
+
+### Return type
+
+[**Pengguna**](Pengguna.md)
+
+### Authorization
+
+[Bearer](../README.md#Bearer)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **penggunaFromPelangganGet**
+> Pengguna penggunaFromPelangganGet(idPelanggan)
+
+
+
+### Example
+```dart
+import 'package:openapi/api.dart';
+// TODO Configure HTTP Bearer authorization: Bearer
+// Case 1. Use String Token
+//defaultApiClient.getAuthentication<HttpBearerAuth>('Bearer').setAccessToken('YOUR_ACCESS_TOKEN');
+// Case 2. Use Function which generate token.
+// String yourTokenGeneratorFunction() { ... }
+//defaultApiClient.getAuthentication<HttpBearerAuth>('Bearer').setAccessToken(yourTokenGeneratorFunction);
+
+final api_instance = PenggunaApi();
+final idPelanggan = 56; // int | 
+
+try {
+    final result = api_instance.penggunaFromPelangganGet(idPelanggan);
+    print(result);
+} catch (e) {
+    print('Exception when calling PenggunaApi->penggunaFromPelangganGet: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **idPelanggan** | **int**|  | [optional] 
 
 ### Return type
 
@@ -340,6 +389,55 @@ void (empty response body)
 
  - **Content-Type**: application/json-patch+json, application/json, text/json, application/*+json
  - **Accept**: Not defined
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **penggunaUpdateProfileImageIdPost**
+> String penggunaUpdateProfileImageIdPost(id, file)
+
+
+
+### Example
+```dart
+import 'package:openapi/api.dart';
+// TODO Configure HTTP Bearer authorization: Bearer
+// Case 1. Use String Token
+//defaultApiClient.getAuthentication<HttpBearerAuth>('Bearer').setAccessToken('YOUR_ACCESS_TOKEN');
+// Case 2. Use Function which generate token.
+// String yourTokenGeneratorFunction() { ... }
+//defaultApiClient.getAuthentication<HttpBearerAuth>('Bearer').setAccessToken(yourTokenGeneratorFunction);
+
+final api_instance = PenggunaApi();
+final id = id_example; // String | 
+final file = BINARY_DATA_HERE; // MultipartFile | 
+
+try {
+    final result = api_instance.penggunaUpdateProfileImageIdPost(id, file);
+    print(result);
+} catch (e) {
+    print('Exception when calling PenggunaApi->penggunaUpdateProfileImageIdPost: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **String**|  | 
+ **file** | **MultipartFile**|  | [optional] 
+
+### Return type
+
+**String**
+
+### Authorization
+
+[Bearer](../README.md#Bearer)
+
+### HTTP request headers
+
+ - **Content-Type**: multipart/form-data
+ - **Accept**: text/plain, application/json, text/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

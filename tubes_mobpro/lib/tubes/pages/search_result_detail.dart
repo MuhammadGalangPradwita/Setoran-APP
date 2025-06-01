@@ -82,7 +82,8 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
       body: SafeArea(
         child: FutureBuilder<Motor>(
             // future: MotorAPi.getMotor(widget.index),
-            future: ApiService().motorApi.apiMotorIdGet(widget.index).then((motor) {
+            future:
+                ApiService().motorApi.apiMotorIdGet(widget.index).then((motor) {
               if (motor == null) {
                 throw Exception('Motor not found');
               }
@@ -390,10 +391,9 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
     // int userId = (await PenggunaApi.getCurrentUser())!.id;
     int userId = AuthState().currentUser!.id! as int;
 
-    List<Transaksi>? transaksiList =
-        await TransaksiApi().apiTransaksiGet(query: {
-      'pelanggan': userId.toString(),
-    });
+    List<Transaksi>? transaksiList = await TransaksiApi().apiTransaksiGet(
+      idPelanggan: userId.toString(),
+    );
 
     if (transaksiList != null) {
       bool exists = transaksiList.any((v) => v.idMotor == widget.index);

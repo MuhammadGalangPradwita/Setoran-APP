@@ -1,4 +1,4 @@
-# openapi.api.StorageApi
+# openapi.api.MotorImageApi
 
 ## Load the API package
 ```dart
@@ -9,12 +9,12 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**storageFetchFileNameGet**](StorageApi.md#storagefetchfilenameget) | **GET** /Storage/fetch/{fileName} | 
-[**storageStorePost**](StorageApi.md#storagestorepost) | **POST** /Storage/store | 
+[**apiMotorImageIdGet**](MotorImageApi.md#apimotorimageidget) | **GET** /api/MotorImage/{id} | 
+[**apiMotorImagePost**](MotorImageApi.md#apimotorimagepost) | **POST** /api/MotorImage | 
 
 
-# **storageFetchFileNameGet**
-> String storageFetchFileNameGet(fileName)
+# **apiMotorImageIdGet**
+> MotorImage apiMotorImageIdGet(id)
 
 
 
@@ -28,14 +28,14 @@ import 'package:openapi/api.dart';
 // String yourTokenGeneratorFunction() { ... }
 //defaultApiClient.getAuthentication<HttpBearerAuth>('Bearer').setAccessToken(yourTokenGeneratorFunction);
 
-final api_instance = StorageApi();
-final fileName = fileName_example; // String | 
+final api_instance = MotorImageApi();
+final id = 56; // int | 
 
 try {
-    final result = api_instance.storageFetchFileNameGet(fileName);
+    final result = api_instance.apiMotorImageIdGet(id);
     print(result);
 } catch (e) {
-    print('Exception when calling StorageApi->storageFetchFileNameGet: $e\n');
+    print('Exception when calling MotorImageApi->apiMotorImageIdGet: $e\n');
 }
 ```
 
@@ -43,11 +43,11 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **fileName** | **String**|  | 
+ **id** | **int**|  | 
 
 ### Return type
 
-**String**
+[**MotorImage**](MotorImage.md)
 
 ### Authorization
 
@@ -60,8 +60,8 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-# **storageStorePost**
-> String storageStorePost(file)
+# **apiMotorImagePost**
+> MotorImage apiMotorImagePost(postMotorImageDTO)
 
 
 
@@ -75,14 +75,14 @@ import 'package:openapi/api.dart';
 // String yourTokenGeneratorFunction() { ... }
 //defaultApiClient.getAuthentication<HttpBearerAuth>('Bearer').setAccessToken(yourTokenGeneratorFunction);
 
-final api_instance = StorageApi();
-final file = BINARY_DATA_HERE; // MultipartFile | 
+final api_instance = MotorImageApi();
+final postMotorImageDTO = PostMotorImageDTO(); // PostMotorImageDTO | 
 
 try {
-    final result = api_instance.storageStorePost(file);
+    final result = api_instance.apiMotorImagePost(postMotorImageDTO);
     print(result);
 } catch (e) {
-    print('Exception when calling StorageApi->storageStorePost: $e\n');
+    print('Exception when calling MotorImageApi->apiMotorImagePost: $e\n');
 }
 ```
 
@@ -90,11 +90,11 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **file** | **MultipartFile**|  | [optional] 
+ **postMotorImageDTO** | [**PostMotorImageDTO**](PostMotorImageDTO.md)|  | [optional] 
 
 ### Return type
 
-**String**
+[**MotorImage**](MotorImage.md)
 
 ### Authorization
 
@@ -102,7 +102,7 @@ Name | Type | Description  | Notes
 
 ### HTTP request headers
 
- - **Content-Type**: multipart/form-data
+ - **Content-Type**: application/json-patch+json, application/json, text/json, application/*+json
  - **Accept**: text/plain, application/json, text/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)

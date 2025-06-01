@@ -19,8 +19,14 @@ class TransaksiApi {
   /// Performs an HTTP 'GET /api/Transaksi' operation and returns the [Response].
   /// Parameters:
   ///
-  /// * [Object] query:
-  Future<Response> apiTransaksiGetWithHttpInfo({ Object? query, }) async {
+  /// * [String] idMotor:
+  ///
+  /// * [String] idPelanggan:
+  ///
+  /// * [String] idMitra:
+  ///
+  /// * [String] status:
+  Future<Response> apiTransaksiGetWithHttpInfo({ String? idMotor, String? idPelanggan, String? idMitra, String? status, }) async {
     // ignore: prefer_const_declarations
     final path = r'/api/Transaksi';
 
@@ -31,8 +37,17 @@ class TransaksiApi {
     final headerParams = <String, String>{};
     final formParams = <String, String>{};
 
-    if (query != null) {
-      queryParams.addAll(_queryParams('', 'query', query));
+    if (idMotor != null) {
+      queryParams.addAll(_queryParams('', 'IdMotor', idMotor));
+    }
+    if (idPelanggan != null) {
+      queryParams.addAll(_queryParams('', 'IdPelanggan', idPelanggan));
+    }
+    if (idMitra != null) {
+      queryParams.addAll(_queryParams('', 'IdMitra', idMitra));
+    }
+    if (status != null) {
+      queryParams.addAll(_queryParams('', 'Status', status));
     }
 
     const contentTypes = <String>[];
@@ -51,9 +66,15 @@ class TransaksiApi {
 
   /// Parameters:
   ///
-  /// * [Object] query:
-  Future<List<Transaksi>?> apiTransaksiGet({ Object? query, }) async {
-    final response = await apiTransaksiGetWithHttpInfo( query: query, );
+  /// * [String] idMotor:
+  ///
+  /// * [String] idPelanggan:
+  ///
+  /// * [String] idMitra:
+  ///
+  /// * [String] status:
+  Future<List<Transaksi>?> apiTransaksiGet({ String? idMotor, String? idPelanggan, String? idMitra, String? status, }) async {
+    final response = await apiTransaksiGetWithHttpInfo( idMotor: idMotor, idPelanggan: idPelanggan, idMitra: idMitra, status: status, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

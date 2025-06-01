@@ -21,6 +21,8 @@ class ApiService {
   late DiskonApi diskonApi;
   late MitraApi mitraApi;
   late UlasanApi ulasanApi;
+  late AvatarApi avatarApi;
+  late MotorImageApi motorImageApi;
 
   factory ApiService() {
     return _instance;
@@ -52,6 +54,8 @@ class ApiService {
     diskonApi = DiskonApi(_apiClient);
     mitraApi = MitraApi(_apiClient);
     ulasanApi = UlasanApi(_apiClient);
+    avatarApi = AvatarApi(_apiClient);
+    motorImageApi = MotorImageApi(_apiClient);
   }
 
   void setToken(String token) {

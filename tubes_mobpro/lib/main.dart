@@ -12,7 +12,7 @@ void main() async {
   // await Firebase.initializeApp();
   // await FirebaseNotificationService().initialize();
   await initLocalStorage();
-  // await CameraService.instance.initializeCameras();
+  await CameraService.instance.initializeCameras();
   // await FirebaseNotificationService().getToken();
   runApp(const MyApp());
 }
@@ -28,8 +28,8 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    // requestStoragePermission();
-    // requestCameraStatus();
+    requestStoragePermission();
+    requestCameraStatus();
     FirebaseNotificationService().getToken();
   }
 

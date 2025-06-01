@@ -17,7 +17,7 @@ Method | HTTP request | Description
 
 
 # **apiMotorGet**
-> List<Motor> apiMotorGet(idMitra, status, model, transmisi)
+> List<Motor> apiMotorGet(withImage, idMitra, status, model, transmisi)
 
 
 
@@ -32,13 +32,14 @@ import 'package:openapi/api.dart';
 //defaultApiClient.getAuthentication<HttpBearerAuth>('Bearer').setAccessToken(yourTokenGeneratorFunction);
 
 final api_instance = MotorApi();
+final withImage = true; // bool | 
 final idMitra = idMitra_example; // String | 
 final status = status_example; // String | 
 final model = model_example; // String | 
 final transmisi = transmisi_example; // String | 
 
 try {
-    final result = api_instance.apiMotorGet(idMitra, status, model, transmisi);
+    final result = api_instance.apiMotorGet(withImage, idMitra, status, model, transmisi);
     print(result);
 } catch (e) {
     print('Exception when calling MotorApi->apiMotorGet: $e\n');
@@ -49,6 +50,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
+ **withImage** | **bool**|  | [optional] 
  **idMitra** | **String**|  | [optional] 
  **status** | **String**|  | [optional] 
  **model** | **String**|  | [optional] 
@@ -212,7 +214,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **apiMotorPost**
-> apiMotorPost(motorForm)
+> Motor apiMotorPost(motorForm)
 
 
 
@@ -230,7 +232,8 @@ final api_instance = MotorApi();
 final motorForm = MotorForm(); // MotorForm | 
 
 try {
-    api_instance.apiMotorPost(motorForm);
+    final result = api_instance.apiMotorPost(motorForm);
+    print(result);
 } catch (e) {
     print('Exception when calling MotorApi->apiMotorPost: $e\n');
 }
@@ -244,7 +247,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-void (empty response body)
+[**Motor**](Motor.md)
 
 ### Authorization
 
@@ -253,7 +256,7 @@ void (empty response body)
 ### HTTP request headers
 
  - **Content-Type**: application/json-patch+json, application/json, text/json, application/*+json
- - **Accept**: Not defined
+ - **Accept**: text/plain, application/json, text/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
