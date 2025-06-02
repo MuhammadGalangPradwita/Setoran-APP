@@ -5,7 +5,8 @@ import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
 
 extension MotorHelper on Motor {
 
-  Diskon? GetBestDiscount() {
+  /// pastikan list diskon sudah ter load di objek motor
+  Diskon? getBestDiscount() {
     Diskon? diskonTerbaik = null;
 
     for (Diskon discount in diskon ?? []) {
@@ -22,8 +23,11 @@ extension MotorHelper on Motor {
     return diskonTerbaik;
   }
 
-  Future<double?> GetAvgUlasan() async {
-    // TODO: update
-    return 3.4;
+  /// pastikan list ulasan sudah ter load di objek motor
+  Future<double?> getAvgUlasan() async {
+    if (ulasan == null || ulasan!.isEmpty) return null;
+
+    double total = ulasan!.fold(0.0, (sum, ulasan) => sum + ulasan.rating!.toDouble());
+    return total / ulasan!.length;
   }
 }
