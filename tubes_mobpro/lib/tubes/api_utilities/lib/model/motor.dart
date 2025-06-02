@@ -26,6 +26,7 @@ class Motor {
     this.statusMotor,
     this.hargaHarian,
     this.diskon = const [],
+    this.ulasan = const [],
     this.idMotorImage,
     this.mitra,
     this.motorImage,
@@ -81,6 +82,8 @@ class Motor {
 
   List<Diskon>? diskon;
 
+  List<Ulasan>? ulasan;
+
   int? idMotorImage;
 
   ///
@@ -114,6 +117,7 @@ class Motor {
     other.statusMotor == statusMotor &&
     other.hargaHarian == hargaHarian &&
     _deepEquality.equals(other.diskon, diskon) &&
+    _deepEquality.equals(other.ulasan, ulasan) &&
     other.idMotorImage == idMotorImage &&
     other.mitra == mitra &&
     other.motorImage == motorImage;
@@ -134,12 +138,13 @@ class Motor {
     (statusMotor == null ? 0 : statusMotor!.hashCode) +
     (hargaHarian == null ? 0 : hargaHarian!.hashCode) +
     (diskon == null ? 0 : diskon!.hashCode) +
+    (ulasan == null ? 0 : ulasan!.hashCode) +
     (idMotorImage == null ? 0 : idMotorImage!.hashCode) +
     (mitra == null ? 0 : mitra!.hashCode) +
     (motorImage == null ? 0 : motorImage!.hashCode);
 
   @override
-  String toString() => 'Motor[idMotor=$idMotor, platNomor=$platNomor, idMitra=$idMitra, nomorSTNK=$nomorSTNK, nomorBPKB=$nomorBPKB, model=$model, brand=$brand, tipe=$tipe, tahun=$tahun, transmisi=$transmisi, statusMotor=$statusMotor, hargaHarian=$hargaHarian, diskon=$diskon, idMotorImage=$idMotorImage, mitra=$mitra, motorImage=$motorImage]';
+  String toString() => 'Motor[idMotor=$idMotor, platNomor=$platNomor, idMitra=$idMitra, nomorSTNK=$nomorSTNK, nomorBPKB=$nomorBPKB, model=$model, brand=$brand, tipe=$tipe, tahun=$tahun, transmisi=$transmisi, statusMotor=$statusMotor, hargaHarian=$hargaHarian, diskon=$diskon, ulasan=$ulasan, idMotorImage=$idMotorImage, mitra=$mitra, motorImage=$motorImage]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -208,6 +213,11 @@ class Motor {
     } else {
       json[r'diskon'] = null;
     }
+    if (this.ulasan != null) {
+      json[r'ulasan'] = this.ulasan;
+    } else {
+      json[r'ulasan'] = null;
+    }
     if (this.idMotorImage != null) {
       json[r'idMotorImage'] = this.idMotorImage;
     } else {
@@ -258,6 +268,7 @@ class Motor {
         statusMotor: mapValueOfType<String>(json, r'statusMotor'),
         hargaHarian: mapValueOfType<double>(json, r'hargaHarian'),
         diskon: Diskon.listFromJson(json[r'diskon']),
+        ulasan: Ulasan.listFromJson(json[r'ulasan']),
         idMotorImage: mapValueOfType<int>(json, r'idMotorImage'),
         mitra: Mitra.fromJson(json[r'mitra']),
         motorImage: MotorImage.fromJson(json[r'motorImage']),

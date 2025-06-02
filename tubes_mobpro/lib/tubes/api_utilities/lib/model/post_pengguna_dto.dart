@@ -21,6 +21,7 @@ class PostPenggunaDTO {
     this.nomorKTP,
     this.alamat,
     this.idGambar,
+    this.isAdmin,
   });
 
   String id;
@@ -39,6 +40,8 @@ class PostPenggunaDTO {
 
   String? idGambar;
 
+  bool? isAdmin;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is PostPenggunaDTO &&
     other.id == id &&
@@ -48,7 +51,8 @@ class PostPenggunaDTO {
     other.umur == umur &&
     other.nomorKTP == nomorKTP &&
     other.alamat == alamat &&
-    other.idGambar == idGambar;
+    other.idGambar == idGambar &&
+    other.isAdmin == isAdmin;
 
   @override
   int get hashCode =>
@@ -60,10 +64,11 @@ class PostPenggunaDTO {
     (umur == null ? 0 : umur!.hashCode) +
     (nomorKTP == null ? 0 : nomorKTP!.hashCode) +
     (alamat == null ? 0 : alamat!.hashCode) +
-    (idGambar == null ? 0 : idGambar!.hashCode);
+    (idGambar == null ? 0 : idGambar!.hashCode) +
+    (isAdmin == null ? 0 : isAdmin!.hashCode);
 
   @override
-  String toString() => 'PostPenggunaDTO[id=$id, nama=$nama, tanggalLahir=$tanggalLahir, nomorTelepon=$nomorTelepon, umur=$umur, nomorKTP=$nomorKTP, alamat=$alamat, idGambar=$idGambar]';
+  String toString() => 'PostPenggunaDTO[id=$id, nama=$nama, tanggalLahir=$tanggalLahir, nomorTelepon=$nomorTelepon, umur=$umur, nomorKTP=$nomorKTP, alamat=$alamat, idGambar=$idGambar, isAdmin=$isAdmin]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -103,6 +108,11 @@ class PostPenggunaDTO {
     } else {
       json[r'idGambar'] = null;
     }
+    if (this.isAdmin != null) {
+      json[r'isAdmin'] = this.isAdmin;
+    } else {
+      json[r'isAdmin'] = null;
+    }
     return json;
   }
 
@@ -133,6 +143,7 @@ class PostPenggunaDTO {
         nomorKTP: mapValueOfType<String>(json, r'nomorKTP'),
         alamat: mapValueOfType<String>(json, r'alamat'),
         idGambar: mapValueOfType<String>(json, r'idGambar'),
+        isAdmin: mapValueOfType<bool>(json, r'isAdmin'),
       );
     }
     return null;
