@@ -60,7 +60,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
     }
   }
 
-  Widget buildMotorList(List<Motor> motors) {
+  Widget buildDiscountMotorList(List<Motor> motors) {
     List<Widget> rows = [];
     for (int i = 0; i < motors.length; i += 2) {
       // Ambil dua motor sekaligus untuk setiap baris
@@ -83,7 +83,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                       motors[i].motorImage?.front ?? "assets/images/NMAX.png",
                   vehicleName: motors[i].model ?? "",
                   rating: rating,
-                  transmition: 'Transmission: ${motors[i].transmisi}',
+                  transmition: '${motors[i].transmisi}',
                   disPrice: 'Rp. ${formatter.format(motors[i].hargaHarian)}',
                   norPrice: 'Rp. ${formatter.format(motors[i].hargaHarian)}',
                   motor: motors[i],
@@ -105,7 +105,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                         "assets/images/NMAX.png",
                     vehicleName: motors[endIndex].model ?? "",
                     rating: rating,
-                    transmition: 'Transmission: ${motors[endIndex].transmisi}',
+                    transmition: '${motors[endIndex].transmisi}',
                     disPrice:
                         'Rp. ${formatter.format(motors[endIndex].hargaHarian)}',
                     norPrice:
@@ -321,9 +321,8 @@ class _HomepageScreenState extends State<HomepageScreen> {
                 children: [
                   Text('Recommendation', style: AppTextStyle.body2Bold),
                   FutureBuilder<List<Motor>?>(
-                    future: ApiService()
-                        .motorApi
-                        .apiMotorGet(withImage: true, withDiskon: true),
+                    future: ApiService().motorApi.apiMotorGet(
+                        withImage: true, withDiskon: true, withUlasan: true),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());
@@ -374,9 +373,10 @@ class _HomepageScreenState extends State<HomepageScreen> {
                       children: [
                         Text('Most Popular', style: AppTextStyle.body2Bold),
                         FutureBuilder<List<Motor>?>(
-                          future: ApiService()
-                              .motorApi
-                              .apiMotorGet(withImage: true, withDiskon: true),
+                          future: ApiService().motorApi.apiMotorGet(
+                              withImage: true,
+                              withDiskon: true,
+                              withUlasan: true),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
@@ -400,9 +400,10 @@ class _HomepageScreenState extends State<HomepageScreen> {
                         Text('Discount', style: AppTextStyle.body2Bold),
                         const Gap(10),
                         FutureBuilder<List<Motor>?>(
-                          future: ApiService()
-                              .motorApi
-                              .apiMotorGet(withImage: true, withDiskon: true),
+                          future: ApiService().motorApi.apiMotorGet(
+                              withImage: true,
+                              withDiskon: true,
+                              withUlasan: true),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
@@ -418,7 +419,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                             } else {
                               final List<Motor> motors =
                                   removeBookedMotors(snapshot.data!)!;
-                              return buildMotorList(motors);
+                              return buildDiscountMotorList(motors);
                             }
                           },
                         ),
