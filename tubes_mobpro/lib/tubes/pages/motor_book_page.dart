@@ -1,5 +1,6 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'package:tubes_mobpro/tubes/api_service.dart';
 import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
@@ -7,6 +8,7 @@ import 'package:tubes_mobpro/tubes/extension/motor.dart';
 import 'package:tubes_mobpro/tubes/pages/auth_check.dart';
 import 'package:tubes_mobpro/tubes/pages/homePage_screen.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
+import 'dart:convert';
 
 import '../widgets/button_widgets.dart';
 
@@ -462,21 +464,41 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
         payload['id_diskon'] = motor.getBestDiscount()?.idDiskon;
       }
 
-      await ApiService().transaksiApi.apiTransaksiPost(
-              postTransaksiDTO: PostTransaksiDTO(
-            idMotor: payload['id_motor'],
-            idPelanggan: payload['id_pelanggan'],
-            tanggalMulai: payload['tanggal_mulai'],
-            tanggalSelesai: payload['tanggal_selesai'],
-            idVoucher: payload['id_voucher'] ?? null,
-            idDiscount: payload['id_diskon'] ?? null,
-          ));
+      Response transaksiResponse =
+          await ApiService().transaksiApi.apiTransaksiPostWithHttpInfo(
+                  postTransaksiDTO: PostTransaksiDTO(
+                idMotor: payload['id_motor'],
+                idPelanggan: payload['id_pelanggan'],
+                tanggalMulai: payload['tanggal_mulai'],
+                tanggalSelesai: payload['tanggal_selesai'],
+                idVoucher: payload['id_voucher'] ?? null,
+                idDiscount: payload['id_diskon'] ?? null,
+              ));
+
+      // Mengambil id transaksi dari response
+      final Map<String, dynamic> transaksiBody = transaksiResponse.body != null
+          ? Map<String, dynamic>.from(jsonDecode(transaksiResponse.body))
+          : {};
+
+      int? idTransaksi = transaksiBody['idTransaksi'];
+
+      if (idTransaksi == null) {
+        throw Exception('Failed to create transaction: No ID returned');
+        
+      }
+
 
       // print('motor_book_page.dart');
       // print('id_motor: ${payload['id_motor']}');
       // print('list diskon: ${motor.diskon}');
       // print('nomor STNK: ${motor.nomorSTNK}');
       // print('nomor BPKB: ${motor.nomorBPKB}');
+
+      await ApiService().pembayaranApi.apiPembayaranPost(
+              postPembayaranDTO: PostPembayaranDTO(
+            idTransaksi: idTransaksi, // Make sure to set this value appropriately
+            metodePembayaran: paymentMethod!,
+          ));
 
       await ApiService().motorApi.apiMotorIdPut(payload['id_motor'],
           putMotorDTO: PutMotorDTO(
@@ -575,7 +597,6 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
           .voucherApi
           .voucherCheckVoucherCodeGet(voucherFound!.kodeVoucher!);
       if (!voucherUsed!.valid! == false) {
-
         setState(() {
           voucher = voucherFound;
 
