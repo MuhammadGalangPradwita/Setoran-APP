@@ -107,7 +107,7 @@ class vehicleCard extends StatelessWidget {
                                       ),
                                       const SizedBox(width: 5),
                                       Text(
-                                        "${ulasan.rating != null ? ulasan.rating.toString() : "-"}",       
+                                        "${ulasan.rating != null ? ulasan.rating.toString() : "-"}",
                                         style: AppTextStyle.body2Bold,
                                       ),
                                     ],
@@ -211,7 +211,20 @@ class vehicleCardDiscount extends StatelessWidget {
                   children: [
                     Container(
                       margin: margin,
-                      child: Image.asset(imagePath),
+                      child: Builder(
+                        builder: (context) {
+                          if (motor.idMotorImage != null) {
+                            return Image.network(
+                                "http://160.19.167.222:5103/storage/fetch/${motor.motorImage!.front!}",
+                                fit: BoxFit.cover);
+                          } else {
+                            return Image.asset(
+                              'assets/images/general-img-landscape.png',
+                              fit: BoxFit.cover,
+                            );
+                          }
+                        },
+                      ),
                     ),
                     const SizedBox(
                       height: 10,
