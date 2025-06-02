@@ -10,6 +10,7 @@ All URIs are relative to *http://localhost*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**apiMotorGet**](MotorApi.md#apimotorget) | **GET** /api/Motor | 
+[**apiMotorIdDiskonsGet**](MotorApi.md#apimotoriddiskonsget) | **GET** /api/Motor/{id}/diskons | 
 [**apiMotorIdGet**](MotorApi.md#apimotoridget) | **GET** /api/Motor/{id} | 
 [**apiMotorIdPut**](MotorApi.md#apimotoridput) | **PUT** /api/Motor/{id} | 
 [**apiMotorIdUlasansGet**](MotorApi.md#apimotoridulasansget) | **GET** /api/Motor/{id}/ulasans | 
@@ -17,7 +18,7 @@ Method | HTTP request | Description
 
 
 # **apiMotorGet**
-> List<Motor> apiMotorGet(withImage, idMitra, status, model, transmisi)
+> List<Motor> apiMotorGet(withImage, withDiskon, withUlasan, idMitra, status, model, transmisi)
 
 
 
@@ -33,13 +34,15 @@ import 'package:openapi/api.dart';
 
 final api_instance = MotorApi();
 final withImage = true; // bool | 
+final withDiskon = true; // bool | 
+final withUlasan = true; // bool | 
 final idMitra = idMitra_example; // String | 
 final status = status_example; // String | 
 final model = model_example; // String | 
 final transmisi = transmisi_example; // String | 
 
 try {
-    final result = api_instance.apiMotorGet(withImage, idMitra, status, model, transmisi);
+    final result = api_instance.apiMotorGet(withImage, withDiskon, withUlasan, idMitra, status, model, transmisi);
     print(result);
 } catch (e) {
     print('Exception when calling MotorApi->apiMotorGet: $e\n');
@@ -51,6 +54,8 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **withImage** | **bool**|  | [optional] 
+ **withDiskon** | **bool**|  | [optional] 
+ **withUlasan** | **bool**|  | [optional] 
  **idMitra** | **String**|  | [optional] 
  **status** | **String**|  | [optional] 
  **model** | **String**|  | [optional] 
@@ -59,6 +64,53 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**List<Motor>**](Motor.md)
+
+### Authorization
+
+[Bearer](../README.md#Bearer)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain, application/json, text/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **apiMotorIdDiskonsGet**
+> List<Diskon> apiMotorIdDiskonsGet(id)
+
+
+
+### Example
+```dart
+import 'package:openapi/api.dart';
+// TODO Configure HTTP Bearer authorization: Bearer
+// Case 1. Use String Token
+//defaultApiClient.getAuthentication<HttpBearerAuth>('Bearer').setAccessToken('YOUR_ACCESS_TOKEN');
+// Case 2. Use Function which generate token.
+// String yourTokenGeneratorFunction() { ... }
+//defaultApiClient.getAuthentication<HttpBearerAuth>('Bearer').setAccessToken(yourTokenGeneratorFunction);
+
+final api_instance = MotorApi();
+final id = 56; // int | 
+
+try {
+    final result = api_instance.apiMotorIdDiskonsGet(id);
+    print(result);
+} catch (e) {
+    print('Exception when calling MotorApi->apiMotorIdDiskonsGet: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **id** | **int**|  | 
+
+### Return type
+
+[**List<Diskon>**](Diskon.md)
 
 ### Authorization
 
