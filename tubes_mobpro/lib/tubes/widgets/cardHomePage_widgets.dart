@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
 import 'package:tubes_mobpro/tubes/pages/discount_page.dart';
 import 'package:tubes_mobpro/tubes/pages/search_result_detail.dart';
@@ -13,13 +14,15 @@ class vehicleCard extends StatelessWidget {
   final Motor motor;
   final List<Ulasan>? ulasan;
 
-  const vehicleCard(
+  vehicleCard(
       {super.key,
       // required this.width,
       // required this.height,
       required this.margin,
       required this.motor,
       required this.ulasan});
+
+  final formatter = NumberFormat("#,###");
 
   // // NMAX normal price:
   // height: 260,
@@ -134,7 +137,7 @@ class vehicleCard extends StatelessWidget {
                       child: Row(
                         children: [
                           Text(
-                            'Rp${motor.hargaHarian ?? "-"}',
+                            'Rp${formatter.format(motor.hargaHarian) ?? "-"}',
                             textAlign: TextAlign.left,
                             style: AppTextStyle.body1Bold,
                           ),
@@ -185,8 +188,9 @@ class vehicleCardDiscount extends StatelessWidget {
   final String transmition;
   final String disPrice;
   final String norPrice;
+  final formatter = NumberFormat("#,###");
 
-  const vehicleCardDiscount({
+  vehicleCardDiscount({
     super.key,
     // required this.width,
     // required this.height,

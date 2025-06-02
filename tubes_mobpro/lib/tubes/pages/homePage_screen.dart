@@ -457,6 +457,6 @@ class _HomepageScreenState extends State<HomepageScreen> {
     }
 
     // Mengembalikan daftar motor yang sudah dibooking
-    return listMotors;
+    return filteredList;
   }
 }
