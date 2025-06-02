@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:tubes_mobpro/tubes/api_service.dart';
 import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
@@ -272,11 +273,18 @@ class _ActivityPageState extends State<ActivityPage> {
             padding: const EdgeInsets.only(bottom: 8.0),
             child: InkWell(
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return DetailActivityPage(
+                PersistentNavBarNavigator.pushNewScreen(
+                  context,
+                  screen: DetailActivityPage(
                     transaksi: transaksi,
-                  );
-                }));
+                  ),
+                  withNavBar: false,
+                );
+                // Navigator.push(context, MaterialPageRoute(builder: (context) {
+                //   return DetailActivityPage(
+                //     transaksi: transaksi,
+                //   );
+                // }));
               },
               borderRadius: BorderRadius.circular(8),
               child: TransactionCard(
