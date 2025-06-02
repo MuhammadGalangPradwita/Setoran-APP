@@ -78,7 +78,8 @@ class _HomepageScreenState extends State<HomepageScreen> {
                 }
                 return vehicleCardDiscount(
                   margin: const EdgeInsets.only(top: 20, left: 10, right: 10),
-                  imagePath: "assets/images/NMAX.png",
+                  imagePath:
+                      motors[i].motorImage?.front ?? "assets/images/NMAX.png",
                   vehicleName: motors[i].model ?? "",
                   rating: rating,
                   transmition: 'Transmission: ${motors[i].transmisi}',
@@ -99,7 +100,8 @@ class _HomepageScreenState extends State<HomepageScreen> {
                   }
                   return vehicleCardDiscount(
                     margin: const EdgeInsets.only(top: 20, left: 10, right: 10),
-                    imagePath: "assets/images/NMAX.png",
+                    imagePath: motors[endIndex].motorImage?.front ??
+                        "assets/images/NMAX.png",
                     vehicleName: motors[endIndex].model ?? "",
                     rating: rating,
                     transmition: 'Transmission: ${motors[endIndex].transmisi}',
@@ -451,6 +453,6 @@ class _HomepageScreenState extends State<HomepageScreen> {
     }
 
     // Mengembalikan daftar motor yang sudah dibooking
-    return listMotors;
+    return filteredList;
   }
 }
