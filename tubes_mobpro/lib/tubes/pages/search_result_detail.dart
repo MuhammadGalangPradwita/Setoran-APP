@@ -552,13 +552,16 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
   }
 
   void getRatingFromUlasan() {
-    ApiService().ulasanApi.apiUlasanGet().then((ulasans) {
-      if (ulasans != null) {
+    ApiService()
+        .motorApi
+        .apiMotorIdUlasansGet(widget.motor.idMotor!)
+        .then((value) {
+      if (value != null) {
         double totalRating = 0;
         int count = 0;
 
-        for (var ulasan in ulasans) {
-          if (ulasan.idMotor == widget.motor.idMotor) {
+        for (var ulasan in value) {
+          if (ulasan.rating != null) {
             totalRating += ulasan.rating!;
             count++;
           }

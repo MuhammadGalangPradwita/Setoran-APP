@@ -37,10 +37,11 @@ class _HomepageScreenState extends State<HomepageScreen> {
 
   final _modelController = TextEditingController();
 
-  Future<List<Ulasan>> getUlasanByMotorId(int? idMotor) async {
+  Future<List<Ulasan>?> getUlasanByMotorId(int? idMotor) async {
     if (idMotor == null) return [];
-    final allUlasan = await ApiService().ulasanApi.apiUlasanGet() ?? [];
-    return allUlasan.where((u) => u.idMotor == idMotor).toList();
+    final allUlasan =
+        await ApiService().motorApi.apiMotorIdUlasansGet(idMotor) ?? null;
+    return allUlasan;
   }
 
   Future<void> _selectDate(BuildContext context) async {
@@ -69,7 +70,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
       rows.add(
         Row(
           children: [
-            FutureBuilder<List<Ulasan>>(
+            FutureBuilder<List<Ulasan>?>(
               future: getUlasanByMotorId(motors[i].idMotor),
               builder: (context, snapshot) {
                 String rating = '-';
@@ -91,7 +92,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
             ),
             if (endIndex < motors.length) ...[
               const SizedBox(width: 16),
-              FutureBuilder<List<Ulasan>>(
+              FutureBuilder<List<Ulasan>?>(
                 future: getUlasanByMotorId(motors[endIndex].idMotor),
                 builder: (context, snapshot) {
                   String rating = '-';
@@ -131,22 +132,22 @@ class _HomepageScreenState extends State<HomepageScreen> {
       vehicleCards.add(
         Padding(
           padding: const EdgeInsets.only(top: 20, left: 10, right: 10),
-          child: FutureBuilder<List<Ulasan>>(
+          child: FutureBuilder<List<Ulasan>?>(
             future: getUlasanByMotorId(motors[i].idMotor),
             builder: (context, snapshot) {
-              Ulasan? ulasan;
+              List<Ulasan>? ulasan;
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
               } else if (snapshot.hasError) {
                 return vehicleCard(
-                  ulasan: Ulasan(rating: null),
+                  ulasan: null,
                   margin: const EdgeInsets.only(top: 20, left: 10, right: 10),
                   motor: motors[i],
                 );
               } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                ulasan = snapshot.data!.first;
-              } else {
-                ulasan = Ulasan(rating: null);
+                ulasan = snapshot.data!;
+              } else if (snapshot.hasData && snapshot.data!.isEmpty) {
+                ulasan = null;
               }
               return vehicleCard(
                 ulasan: ulasan,
@@ -337,16 +338,16 @@ class _HomepageScreenState extends State<HomepageScreen> {
                               scrollDirection: Axis.horizontal,
                               itemCount: motors.length,
                               itemBuilder: (context, index) {
-                                return FutureBuilder<List<Ulasan>>(
+                                return FutureBuilder<List<Ulasan>?>(
                                   future:
                                       getUlasanByMotorId(motors[index].idMotor),
                                   builder: (context, snapshot) {
-                                    Ulasan? ulasan;
+                                    List<Ulasan>? ulasan;
                                     if (snapshot.hasData &&
                                         snapshot.data!.isNotEmpty) {
-                                      ulasan = snapshot.data!.first;
+                                      ulasan = snapshot.data!;
                                     } else {
-                                      ulasan = Ulasan(rating: null);
+                                      ulasan = null;
                                     }
                                     return vehicleCard(
                                       ulasan: ulasan,

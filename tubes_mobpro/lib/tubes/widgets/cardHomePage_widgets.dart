@@ -11,7 +11,7 @@ class vehicleCard extends StatelessWidget {
   // final double height;
   final EdgeInsetsGeometry margin;
   final Motor motor;
-  final Ulasan ulasan;
+  final List<Ulasan>? ulasan;
 
   const vehicleCard(
       {super.key,
@@ -107,7 +107,7 @@ class vehicleCard extends StatelessWidget {
                                       ),
                                       const SizedBox(width: 5),
                                       Text(
-                                        "${ulasan.rating != null ? ulasan.rating.toString() : "-"}",
+                                        "${ulasan != null && calculateAverageRating(ulasan!) != null ? calculateAverageRating(ulasan!) : "-"}",
                                         style: AppTextStyle.body2Bold,
                                       ),
                                     ],
@@ -154,6 +154,21 @@ class vehicleCard extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  // Callculate the average rating from the list of ulasan
+  double? calculateAverageRating(List<Ulasan> ulasan) {
+    double totalRating = 0;
+    int count = 0;
+
+    for (var ulasan in ulasan) {
+      if (ulasan.idMotor == motor.idMotor) {
+        totalRating += ulasan.rating!;
+        count++;
+      }
+    }
+
+    return count > 0 ? totalRating / count : null;
   }
 }
 
@@ -211,20 +226,7 @@ class vehicleCardDiscount extends StatelessWidget {
                   children: [
                     Container(
                       margin: margin,
-                      child: Builder(
-                        builder: (context) {
-                          if (motor.idMotorImage != null) {
-                            return Image.network(
-                                "http://160.19.167.222:5103/storage/fetch/${motor.motorImage!.front!}",
-                                fit: BoxFit.cover);
-                          } else {
-                            return Image.asset(
-                              'assets/images/general-img-landscape.png',
-                              fit: BoxFit.cover,
-                            );
-                          }
-                        },
-                      ),
+                      child: Image.asset(imagePath),
                     ),
                     const SizedBox(
                       height: 10,
