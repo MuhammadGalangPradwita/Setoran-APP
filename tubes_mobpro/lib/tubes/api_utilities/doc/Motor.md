@@ -21,6 +21,7 @@ Name | Type | Description | Notes
 **statusMotor** | **String** |  | [optional] 
 **hargaHarian** | **double** |  | [optional] 
 **diskon** | [**List<Diskon>**](Diskon.md) |  | [optional] [default to const []]
+**ulasan** | [**List<Ulasan>**](Ulasan.md) |  | [optional] [default to const []]
 **idMotorImage** | **int** |  | [optional] 
 **mitra** | [**Mitra**](Mitra.md) |  | [optional] 
 **motorImage** | [**MotorImage**](MotorImage.md) |  | [optional] 

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tubes_mobpro/tubes/api_service.dart';
 import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
+import 'package:tubes_mobpro/tubes/extension/motor.dart';
 import 'package:tubes_mobpro/tubes/pages/auth_check.dart';
 import 'package:tubes_mobpro/tubes/pages/homePage_screen.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
@@ -438,18 +439,7 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
       }
 
       if (motor.diskon != null && motor.diskon!.isNotEmpty) {
-        Diskon diskonTerbaik = motor.diskon!.first;
-
-        for (Diskon discount in motor.diskon ?? []) {
-          if (discount.tanggalMulai!.isBefore(DateTime.now()) &&
-              discount.tanggalAkhir!.isAfter(DateTime.now())) {
-            if (discount.jumlahDiskon! > diskonTerbaik.jumlahDiskon!) {
-              diskonTerbaik = discount;
-            }
-          }
-        }
-
-        payload['id_diskon'] = diskonTerbaik.idDiskon;
+        payload['id_diskon'] = motor.GetBestDiscount()?.idDiskon;
       }
 
       // await ApiService().transaksiApi.apiTransaksiPost(
