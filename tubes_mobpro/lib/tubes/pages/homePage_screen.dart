@@ -321,7 +321,9 @@ class _HomepageScreenState extends State<HomepageScreen> {
                 children: [
                   Text('Recommendation', style: AppTextStyle.body2Bold),
                   FutureBuilder<List<Motor>?>(
-                    future: ApiService().motorApi.apiMotorGet(withImage: true),
+                    future: ApiService()
+                        .motorApi
+                        .apiMotorGet(withImage: true, withDiskon: true),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());
@@ -374,7 +376,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                         FutureBuilder<List<Motor>?>(
                           future: ApiService()
                               .motorApi
-                              .apiMotorGet(withImage: true),
+                              .apiMotorGet(withImage: true, withDiskon: true),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
@@ -400,7 +402,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                         FutureBuilder<List<Motor>?>(
                           future: ApiService()
                               .motorApi
-                              .apiMotorGet(withImage: true),
+                              .apiMotorGet(withImage: true, withDiskon: true),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
@@ -454,6 +456,6 @@ class _HomepageScreenState extends State<HomepageScreen> {
     }
 
     // Mengembalikan daftar motor yang sudah dibooking
-    return filteredList;
+    return listMotors;
   }
 }

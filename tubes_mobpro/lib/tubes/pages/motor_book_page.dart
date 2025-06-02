@@ -417,7 +417,7 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
     setState(() {
       isLoading = true;
     });
-  
+
     try {
       int? userId =
           (await ApiService().penggunaApi.penggunaCurrentPenggunaGet())!
@@ -439,7 +439,7 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
       }
 
       if (motor.diskon != null && motor.diskon!.isNotEmpty) {
-        payload['id_diskon'] = motor.GetBestDiscount()?.idDiskon;
+        payload['id_diskon'] = motor.getBestDiscount()?.idDiskon;
       }
 
       // await ApiService().transaksiApi.apiTransaksiPost(
@@ -588,7 +588,6 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
       // ).show();
     }
   }
-  
 
   void validateData() {
     if (rentTime != null && paymentMethod != null) {
