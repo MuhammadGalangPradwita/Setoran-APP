@@ -134,9 +134,48 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
                             ),
 
                             ElevatedButton(
-                              onPressed: () {
-                                // Your action here
-                                showUlasanDialog(context);
+                              onPressed: () async {
+                                int? userId = (await ApiService()
+                                        .penggunaApi
+                                        .penggunaCurrentPenggunaGet())!
+                                    .pelanggan
+                                    ?.idPelanggan;
+
+                                List<Transaksi>? transaksi = (await ApiService()
+                                    .transaksiApi
+                                    .apiTransaksiGet(
+                                      idPelanggan: userId.toString(),
+                                    ));
+
+                                //Filter transaksi untuk motor ini
+                                transaksi = transaksi
+                                    ?.where((t) =>
+                                        t.idMotor == widget.motor.idMotor)
+                                    .toList();
+
+                                //  Check jika pengguna sudah memberikan ulasan
+                                if (transaksi == null || transaksi.isEmpty) {
+                                  // Show error if user has not rented the motor
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                          "Anda harus menyewa motor ini terlebih dahulu sebelum memberikan ulasan."),
+                                    ),
+                                  );
+                                } else if (widget.motor.ulasan != null &&
+                                    widget.motor.ulasan!.any((ulasan) =>
+                                        ulasan.idPelanggan == userId)) {
+                                  // Show error if user has already reviewed
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                          "Anda sudah memberikan ulasan untuk motor ini."),
+                                    ),
+                                  );
+                                } else {
+                                  // Show ulasan dialog
+                                  showUlasanDialog(context);
+                                }
                               },
                               style: ElevatedButton.styleFrom(
                                 shape: const CircleBorder(), // circular button
@@ -147,15 +186,15 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
                                     Colors.white, // fully transparent
                               ),
                               child: Row(children: [
+                                Text(
+                                  '${rating ?? '-'}',
+                                  style: AppTextStyle.body3SemiBold,
+                                ),
                                 const Icon(
                                   CupertinoIcons.star_fill,
                                   color: const Color(0xFFFFE100),
                                   size: 14,
                                 ),
-                                Text(
-                                  '${rating ?? '-'}',
-                                  style: AppTextStyle.body3SemiBold,
-                                )
                               ]),
                             ),
                           ],
@@ -484,12 +523,6 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
                 }
 
                 if (_formKey.currentState!.validate()) {
-                  // Here’s your rating and review
-                  print("Rating: $rating");
-                  print("Review: ${reviewController.text}");
-
-                  Navigator.pop(context);
-
                   try {
                     PostUlasanDTO postUlasanDTO = PostUlasanDTO(
                       idMotor: widget.motor.idMotor!,
@@ -501,6 +534,29 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
                     ApiService()
                         .ulasanApi
                         .apiUlasanPost(postUlasanDTO: postUlasanDTO);
+
+                    AwesomeDialog(
+                      context: context,
+                      dialogType: DialogType.success,
+                      title: 'Terima kasih',
+                      desc: 'Ulasan Anda telah dikirim.',
+                      btnOkOnPress: () {
+                        Navigator.pop(context);
+
+                        // Update rating after sending review
+                        getRatingFromUlasan();
+
+                        setState(() {
+                          // Update motor object with new review
+                          ApiService()
+                              .motorApi
+                              .apiMotorIdUlasansGet(widget.motor.idMotor!)
+                              .then((value) {
+                            widget.motor.ulasan = value;
+                          });
+                        });
+                      },
+                    ).show();
                   } catch (e) {
                     AwesomeDialog(
                       context: context,
@@ -552,13 +608,16 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
   }
 
   void getRatingFromUlasan() {
-    ApiService().ulasanApi.apiUlasanGet().then((ulasans) {
-      if (ulasans != null) {
+    ApiService()
+        .motorApi
+        .apiMotorIdUlasansGet(widget.motor.idMotor!)
+        .then((value) {
+      if (value != null) {
         double totalRating = 0;
         int count = 0;
 
-        for (var ulasan in ulasans) {
-          if (ulasan.idMotor == widget.motor.idMotor) {
+        for (var ulasan in value) {
+          if (ulasan.rating != null) {
             totalRating += ulasan.rating!;
             count++;
           }

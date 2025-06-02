@@ -24,12 +24,21 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
 
   String? kodeVoucher;
   Voucher? voucher;
+  Diskon? diskon;
   String? paymentMethod;
   DateTimeRange? rentTime;
 
   bool isLoading = false;
 
   String VoucherResultMessage = '';
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      diskon = widget.motor.getBestDiscount();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -296,11 +305,9 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text('Total Hours', style: TextStyle(fontSize: 14.0)),
+                    const Text('Total Days', style: TextStyle(fontSize: 14.0)),
                     Text(
-                        rentTime != null
-                            ? '${rentTime!.duration.inHours}'
-                            : '0',
+                        rentTime != null ? '${rentTime!.duration.inDays}' : '0',
                         style: const TextStyle(fontSize: 14.0)),
                   ],
                 ),
@@ -308,14 +315,27 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
                 const SizedBox(height: 8.0),
 
                 // Motor Original Fees
-                if (voucher != null && rentTime != null)
+                // if (voucher != null && rentTime != null)
+                //   Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //     children: [
+                //       const Text('Original fees',
+                //           style: TextStyle(fontSize: 14.0)),
+                //       Text(
+                //           'Rp. ${formatter.format(widget.motor.hargaHarian! * rentTime!.duration.inHours)}',
+                //           style: const TextStyle(fontSize: 14.0)),
+                //     ],
+                //   ),
+
+                if (diskon != null)
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text('Original fees',
-                          style: TextStyle(fontSize: 14.0)),
+                      const Text('Diskon', style: TextStyle(fontSize: 14.0)),
                       Text(
-                          'Rp. ${formatter.format(widget.motor.hargaHarian! * rentTime!.duration.inHours)}',
+                          diskon != null
+                              ? 'Rp. ${formatter.format(diskon!.jumlahDiskon)}'
+                              : ' - ',
                           style: const TextStyle(fontSize: 14.0)),
                     ],
                   ),
@@ -350,7 +370,7 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
                             fontSize: 16.0, fontWeight: FontWeight.bold)),
                     Text(
                         rentTime != null
-                            ? 'Rp. ${formatter.format(calculateFees(widget.motor, rentTime!, voucher))}'
+                            ? 'Rp. ${formatter.format(calculateFees(widget.motor, rentTime!, voucher, diskon))}'
                             : 'Rp. 0,000',
                         style: const TextStyle(
                             fontSize: 16.0, fontWeight: FontWeight.bold)),
@@ -412,12 +432,12 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
 
   void createTransaction(
       Motor motor, DateTimeRange range, Voucher? voucher) async {
-    double finalFees = calculateFees(motor, range, voucher);
+    double finalFees = calculateFees(motor, range, voucher, diskon);
 
     setState(() {
       isLoading = true;
     });
-  
+
     try {
       int? userId =
           (await ApiService().penggunaApi.penggunaCurrentPenggunaGet())!
@@ -439,38 +459,38 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
       }
 
       if (motor.diskon != null && motor.diskon!.isNotEmpty) {
-        payload['id_diskon'] = motor.GetBestDiscount()?.idDiskon;
+        payload['id_diskon'] = motor.getBestDiscount()?.idDiskon;
       }
 
-      // await ApiService().transaksiApi.apiTransaksiPost(
-      //         postTransaksiDTO: PostTransaksiDTO(
-      //       idMotor: payload['id_motor'],
-      //       idPelanggan: payload['id_pelanggan'],
-      //       tanggalMulai: payload['tanggal_mulai'],
-      //       tanggalSelesai: payload['tanggal_selesai'],
-      //       idVoucher: payload['id_voucher'] ?? null,
-      //       idDiscount: payload['id_diskon'] ?? null,
-      //     ));
+      await ApiService().transaksiApi.apiTransaksiPost(
+              postTransaksiDTO: PostTransaksiDTO(
+            idMotor: payload['id_motor'],
+            idPelanggan: payload['id_pelanggan'],
+            tanggalMulai: payload['tanggal_mulai'],
+            tanggalSelesai: payload['tanggal_selesai'],
+            idVoucher: payload['id_voucher'] ?? null,
+            idDiscount: payload['id_diskon'] ?? null,
+          ));
 
-      print('motor_book_page.dart');
-      print('id_motor: ${payload['id_motor']}');
-      print('list diskon: ${motor.diskon}');
-      print('nomor STNK: ${motor.nomorSTNK}');
-      print('nomor BPKB: ${motor.nomorBPKB}');
+      // print('motor_book_page.dart');
+      // print('id_motor: ${payload['id_motor']}');
+      // print('list diskon: ${motor.diskon}');
+      // print('nomor STNK: ${motor.nomorSTNK}');
+      // print('nomor BPKB: ${motor.nomorBPKB}');
 
-      // await ApiService().motorApi.apiMotorIdPut(payload['id_motor'],
-      //     putMotorDTO: PutMotorDTO(
-      //       statusMotor: 'Diajukan',
-      //       platNomor: motor.platNomor!,
-      //       nomorSTNK: motor.nomorSTNK!,
-      //       nomorBPKB: motor.nomorBPKB!,
-      //       model: motor.model!,
-      //       brand: motor.brand!,
-      //       tipe: motor.tipe!,
-      //       tahun: motor.tahun!,
-      //       transmisi: motor.transmisi!,
-      //       hargaHarian: motor.hargaHarian!,
-      //     ));
+      await ApiService().motorApi.apiMotorIdPut(payload['id_motor'],
+          putMotorDTO: PutMotorDTO(
+            statusMotor: 'Diajukan',
+            platNomor: motor.platNomor!,
+            nomorSTNK: motor.nomorSTNK!,
+            nomorBPKB: motor.nomorBPKB!,
+            model: motor.model!,
+            brand: motor.brand!,
+            tipe: motor.tipe!,
+            tahun: motor.tahun!,
+            transmisi: motor.transmisi!,
+            hargaHarian: motor.hargaHarian!,
+          ));
 
       // AwesomeDialog(
       //   context: context,
@@ -531,8 +551,13 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
     }
   }
 
-  double calculateFees(Motor motor, DateTimeRange range, Voucher? voucher) {
-    double fees = motor.hargaHarian! * range.duration.inHours;
+  double calculateFees(
+      Motor motor, DateTimeRange range, Voucher? voucher, Diskon? diskon) {
+    double fees = motor.hargaHarian! * range.duration.inDays;
+
+    if (diskon != null) {
+      fees -= diskon.jumlahDiskon!;
+    }
 
     if (voucher != null) {
       fees *= ((100 - voucher.persenVoucher!) / 100);
@@ -549,10 +574,8 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
       var voucherUsed = await ApiService()
           .voucherApi
           .voucherCheckVoucherCodeGet(voucherFound!.kodeVoucher!);
+      if (!voucherUsed!.valid! == false) {
 
-      // print("Voucher: ${voucherUsed!.voucher?.namaVoucher}\nid: ${voucherUsed.voucher?.idVoucher}user: ${voucherUsed.pelanggan?.idPelanggan}");
-
-      if (!voucherUsed!.valid!) {
         setState(() {
           voucher = voucherFound;
 
@@ -588,7 +611,6 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
       // ).show();
     }
   }
-  
 
   void validateData() {
     if (rentTime != null && paymentMethod != null) {

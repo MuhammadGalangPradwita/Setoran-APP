@@ -37,10 +37,11 @@ class _HomepageScreenState extends State<HomepageScreen> {
 
   final _modelController = TextEditingController();
 
-  Future<List<Ulasan>> getUlasanByMotorId(int? idMotor) async {
+  Future<List<Ulasan>?> getUlasanByMotorId(int? idMotor) async {
     if (idMotor == null) return [];
-    final allUlasan = await ApiService().ulasanApi.apiUlasanGet() ?? [];
-    return allUlasan.where((u) => u.idMotor == idMotor).toList();
+    final allUlasan =
+        await ApiService().motorApi.apiMotorIdUlasansGet(idMotor) ?? null;
+    return allUlasan;
   }
 
   Future<void> _selectDate(BuildContext context) async {
@@ -59,7 +60,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
     }
   }
 
-  Widget buildMotorList(List<Motor> motors) {
+  Widget buildDiscountMotorList(List<Motor> motors) {
     List<Widget> rows = [];
     for (int i = 0; i < motors.length; i += 2) {
       // Ambil dua motor sekaligus untuk setiap baris
@@ -69,7 +70,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
       rows.add(
         Row(
           children: [
-            FutureBuilder<List<Ulasan>>(
+            FutureBuilder<List<Ulasan>?>(
               future: getUlasanByMotorId(motors[i].idMotor),
               builder: (context, snapshot) {
                 String rating = '-';
@@ -82,7 +83,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                       motors[i].motorImage?.front ?? "assets/images/NMAX.png",
                   vehicleName: motors[i].model ?? "",
                   rating: rating,
-                  transmition: 'Transmission: ${motors[i].transmisi}',
+                  transmition: '${motors[i].transmisi}',
                   disPrice: 'Rp. ${formatter.format(motors[i].hargaHarian)}',
                   norPrice: 'Rp. ${formatter.format(motors[i].hargaHarian)}',
                   motor: motors[i],
@@ -91,7 +92,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
             ),
             if (endIndex < motors.length) ...[
               const SizedBox(width: 16),
-              FutureBuilder<List<Ulasan>>(
+              FutureBuilder<List<Ulasan>?>(
                 future: getUlasanByMotorId(motors[endIndex].idMotor),
                 builder: (context, snapshot) {
                   String rating = '-';
@@ -104,7 +105,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                         "assets/images/NMAX.png",
                     vehicleName: motors[endIndex].model ?? "",
                     rating: rating,
-                    transmition: 'Transmission: ${motors[endIndex].transmisi}',
+                    transmition: '${motors[endIndex].transmisi}',
                     disPrice:
                         'Rp. ${formatter.format(motors[endIndex].hargaHarian)}',
                     norPrice:
@@ -131,22 +132,22 @@ class _HomepageScreenState extends State<HomepageScreen> {
       vehicleCards.add(
         Padding(
           padding: const EdgeInsets.only(top: 20, left: 10, right: 10),
-          child: FutureBuilder<List<Ulasan>>(
+          child: FutureBuilder<List<Ulasan>?>(
             future: getUlasanByMotorId(motors[i].idMotor),
             builder: (context, snapshot) {
-              Ulasan? ulasan;
+              List<Ulasan>? ulasan;
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
               } else if (snapshot.hasError) {
                 return vehicleCard(
-                  ulasan: Ulasan(rating: null),
+                  ulasan: null,
                   margin: const EdgeInsets.only(top: 20, left: 10, right: 10),
                   motor: motors[i],
                 );
               } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                ulasan = snapshot.data!.first;
-              } else {
-                ulasan = Ulasan(rating: null);
+                ulasan = snapshot.data!;
+              } else if (snapshot.hasData && snapshot.data!.isEmpty) {
+                ulasan = null;
               }
               return vehicleCard(
                 ulasan: ulasan,
@@ -320,7 +321,8 @@ class _HomepageScreenState extends State<HomepageScreen> {
                 children: [
                   Text('Recommendation', style: AppTextStyle.body2Bold),
                   FutureBuilder<List<Motor>?>(
-                    future: ApiService().motorApi.apiMotorGet(withImage: true),
+                    future: ApiService().motorApi.apiMotorGet(
+                        withImage: true, withDiskon: true, withUlasan: true),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());
@@ -337,16 +339,16 @@ class _HomepageScreenState extends State<HomepageScreen> {
                               scrollDirection: Axis.horizontal,
                               itemCount: motors.length,
                               itemBuilder: (context, index) {
-                                return FutureBuilder<List<Ulasan>>(
+                                return FutureBuilder<List<Ulasan>?>(
                                   future:
                                       getUlasanByMotorId(motors[index].idMotor),
                                   builder: (context, snapshot) {
-                                    Ulasan? ulasan;
+                                    List<Ulasan>? ulasan;
                                     if (snapshot.hasData &&
                                         snapshot.data!.isNotEmpty) {
-                                      ulasan = snapshot.data!.first;
+                                      ulasan = snapshot.data!;
                                     } else {
-                                      ulasan = Ulasan(rating: null);
+                                      ulasan = null;
                                     }
                                     return vehicleCard(
                                       ulasan: ulasan,
@@ -371,9 +373,10 @@ class _HomepageScreenState extends State<HomepageScreen> {
                       children: [
                         Text('Most Popular', style: AppTextStyle.body2Bold),
                         FutureBuilder<List<Motor>?>(
-                          future: ApiService()
-                              .motorApi
-                              .apiMotorGet(withImage: true),
+                          future: ApiService().motorApi.apiMotorGet(
+                              withImage: true,
+                              withDiskon: true,
+                              withUlasan: true),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
@@ -397,9 +400,10 @@ class _HomepageScreenState extends State<HomepageScreen> {
                         Text('Discount', style: AppTextStyle.body2Bold),
                         const Gap(10),
                         FutureBuilder<List<Motor>?>(
-                          future: ApiService()
-                              .motorApi
-                              .apiMotorGet(withImage: true),
+                          future: ApiService().motorApi.apiMotorGet(
+                              withImage: true,
+                              withDiskon: true,
+                              withUlasan: true),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
@@ -415,7 +419,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                             } else {
                               final List<Motor> motors =
                                   removeBookedMotors(snapshot.data!)!;
-                              return buildMotorList(motors);
+                              return buildDiscountMotorList(motors);
                             }
                           },
                         ),

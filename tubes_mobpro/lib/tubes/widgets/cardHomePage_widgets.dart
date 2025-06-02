@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
 import 'package:tubes_mobpro/tubes/pages/discount_page.dart';
 import 'package:tubes_mobpro/tubes/pages/search_result_detail.dart';
@@ -11,15 +12,17 @@ class vehicleCard extends StatelessWidget {
   // final double height;
   final EdgeInsetsGeometry margin;
   final Motor motor;
-  final Ulasan ulasan;
+  final List<Ulasan>? ulasan;
 
-  const vehicleCard(
+  vehicleCard(
       {super.key,
       // required this.width,
       // required this.height,
       required this.margin,
       required this.motor,
       required this.ulasan});
+
+  final formatter = NumberFormat("#,###");
 
   // // NMAX normal price:
   // height: 260,
@@ -107,7 +110,7 @@ class vehicleCard extends StatelessWidget {
                                       ),
                                       const SizedBox(width: 5),
                                       Text(
-                                        "${ulasan.rating != null ? ulasan.rating.toString() : "-"}",
+                                        "${ulasan != null && calculateAverageRating(ulasan!) != null ? calculateAverageRating(ulasan!) : "-"}",
                                         style: AppTextStyle.body2Bold,
                                       ),
                                     ],
@@ -134,7 +137,7 @@ class vehicleCard extends StatelessWidget {
                       child: Row(
                         children: [
                           Text(
-                            'Rp${motor.hargaHarian ?? "-"}',
+                            'Rp${formatter.format(motor.hargaHarian) ?? "-"}',
                             textAlign: TextAlign.left,
                             style: AppTextStyle.body1Bold,
                           ),
@@ -155,6 +158,21 @@ class vehicleCard extends StatelessWidget {
       ),
     );
   }
+
+  // Callculate the average rating from the list of ulasan
+  double? calculateAverageRating(List<Ulasan> ulasan) {
+    double totalRating = 0;
+    int count = 0;
+
+    for (var ulasan in ulasan) {
+      if (ulasan.idMotor == motor.idMotor) {
+        totalRating += ulasan.rating!;
+        count++;
+      }
+    }
+
+    return count > 0 ? totalRating / count : null;
+  }
 }
 
 class vehicleCardDiscount extends StatelessWidget {
@@ -170,8 +188,9 @@ class vehicleCardDiscount extends StatelessWidget {
   final String transmition;
   final String disPrice;
   final String norPrice;
+  final formatter = NumberFormat("#,###");
 
-  const vehicleCardDiscount({
+  vehicleCardDiscount({
     super.key,
     // required this.width,
     // required this.height,
