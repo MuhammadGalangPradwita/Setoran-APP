@@ -3,6 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:tubes_mobpro/tubes/api_service.dart';
 import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
 import 'package:tubes_mobpro/tubes/pages/auth_check.dart';
+import 'package:tubes_mobpro/tubes/pages/detail_activity_page.dart';
 import 'package:tubes_mobpro/tubes/pages/register_motorcycle_page.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 import 'package:tubes_mobpro/tubes/utilities/app_util.dart';
@@ -51,7 +52,10 @@ class _MyMotorcyclePageState extends State<MyMotorcyclePage> {
 
   double _calculateTotalIncome(List<Transaksi>? transaksis) {
     if (transaksis == null) return 0;
-    return transaksis.fold(0, (total, item) => total + (item.totalHarga!));
+    return transaksis.fold(
+        0,
+        (total, item) =>
+            item.status == 'selesai' ? total + (item.totalHarga!) : total);
   }
 
   @override
@@ -352,58 +356,69 @@ class _MyMotorcyclePageState extends State<MyMotorcyclePage> {
         itemCount: transaksis!.length,
         itemBuilder: (context, index) {
           final transaksi = transaksis![index];
-          return Card(
-              color: AppColors.N0,
-              margin: const EdgeInsets.only(bottom: 8),
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Transaction ID: ${transaksi.idTransaksi}",
-                          style: AppTextStyle.body3Regular,
-                        ),
-                        Text(
-                            "Date: ${AppUtil.formatDate(transaksi.tanggalMulai!)}",
-                            style: AppTextStyle.body3Regular),
-                      ],
-                    ),
-                    const Gap(8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                                "${transaksi.motor!.brand!} ${transaksi.motor!.model!}",
-                                style: AppTextStyle.body1SemiBold),
-                            const Gap(8),
-                            Text(
-                                "${AppUtil.formatDate(transaksi.tanggalMulai!)} - ${AppUtil.formatDate(transaksi.tanggalSelesai!)}",
-                                style: AppTextStyle.body3Regular),
-                          ],
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text(
-                                AppUtil.formatPriceDouble(
-                                    transaksi.totalHarga!),
-                                style: AppTextStyle.body1SemiBold),
-                            const Gap(8),
-                            Text(transaksi.status!,
-                                style: AppTextStyle.body3Regular),
-                          ],
-                        )
-                      ],
-                    ),
-                  ],
+          return InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      DetailActivityPage(transaksi: transaksi),
                 ),
-              ));
+              );
+            },
+            child: Card(
+                color: AppColors.N0,
+                margin: const EdgeInsets.only(bottom: 8),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Transaction ID: ${transaksi.idTransaksi}",
+                            style: AppTextStyle.body3Regular,
+                          ),
+                          Text(
+                              "Date: ${AppUtil.formatDate(transaksi.tanggalMulai!)}",
+                              style: AppTextStyle.body3Regular),
+                        ],
+                      ),
+                      const Gap(8),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                  "${transaksi.motor!.brand!} ${transaksi.motor!.model!}",
+                                  style: AppTextStyle.body1SemiBold),
+                              const Gap(8),
+                              Text(
+                                  "${AppUtil.formatDate(transaksi.tanggalMulai!)} - ${AppUtil.formatDate(transaksi.tanggalSelesai!)}",
+                                  style: AppTextStyle.body3Regular),
+                            ],
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(
+                                  AppUtil.formatPriceDouble(
+                                      transaksi.totalHarga!),
+                                  style: AppTextStyle.body1SemiBold),
+                              const Gap(8),
+                              Text(transaksi.status!,
+                                  style: AppTextStyle.body3Regular),
+                            ],
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                )),
+          );
         },
       );
     }
