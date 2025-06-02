@@ -305,11 +305,9 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text('Total Hours', style: TextStyle(fontSize: 14.0)),
+                    const Text('Total Days', style: TextStyle(fontSize: 14.0)),
                     Text(
-                        rentTime != null
-                            ? '${rentTime!.duration.inHours}'
-                            : '0',
+                        rentTime != null ? '${rentTime!.duration.inDays}' : '0',
                         style: const TextStyle(fontSize: 14.0)),
                   ],
                 ),
@@ -555,7 +553,7 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
 
   double calculateFees(
       Motor motor, DateTimeRange range, Voucher? voucher, Diskon? diskon) {
-    double fees = motor.hargaHarian! * range.duration.inHours;
+    double fees = motor.hargaHarian! * range.duration.inDays;
 
     if (diskon != null) {
       fees -= diskon.jumlahDiskon!;
@@ -576,10 +574,8 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
       var voucherUsed = await ApiService()
           .voucherApi
           .voucherCheckVoucherCodeGet(voucherFound!.kodeVoucher!);
+      if (!voucherUsed!.valid! == false) {
 
-      // print("Voucher: ${voucherUsed!.voucher?.namaVoucher}\nid: ${voucherUsed.voucher?.idVoucher}user: ${voucherUsed.pelanggan?.idPelanggan}");
-
-      if (!voucherUsed!.valid!) {
         setState(() {
           voucher = voucherFound;
 
