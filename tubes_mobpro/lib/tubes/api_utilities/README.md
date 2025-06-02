@@ -77,6 +77,7 @@ Class | Method | HTTP request | Description
 *MitraApi* | [**mitraPost**](doc//MitraApi.md#mitrapost) | **POST** /Mitra | 
 *MitraApi* | [**mitraPut**](doc//MitraApi.md#mitraput) | **PUT** /Mitra | 
 *MotorApi* | [**apiMotorGet**](doc//MotorApi.md#apimotorget) | **GET** /api/Motor | 
+*MotorApi* | [**apiMotorIdDiskonsGet**](doc//MotorApi.md#apimotoriddiskonsget) | **GET** /api/Motor/{id}/diskons | 
 *MotorApi* | [**apiMotorIdGet**](doc//MotorApi.md#apimotoridget) | **GET** /api/Motor/{id} | 
 *MotorApi* | [**apiMotorIdPut**](doc//MotorApi.md#apimotoridput) | **PUT** /api/Motor/{id} | 
 *MotorApi* | [**apiMotorIdUlasansGet**](doc//MotorApi.md#apimotoridulasansget) | **GET** /api/Motor/{id}/ulasans | 
