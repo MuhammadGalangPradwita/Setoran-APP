@@ -2,7 +2,7 @@ name: Build
 on:
   push:
     branches:
-      - main
+      - haidar
   pull_request:
     types: [opened, synchronize, reopened]
 
@@ -14,6 +14,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
+          ref: haidar
           fetch-depth: 0  # penting untuk SonarQube
 
       - name: Setup Flutter
