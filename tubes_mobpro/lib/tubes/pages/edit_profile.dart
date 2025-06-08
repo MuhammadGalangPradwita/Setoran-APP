@@ -1,14 +1,11 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:tubes_mobpro/tubes/api_utilities/imageApi.dart';
-import 'package:tubes_mobpro/tubes/api_utilities/image_data.dart';
-import 'package:tubes_mobpro/tubes/api_utilities/pelanggan.dart';
-import 'package:tubes_mobpro/tubes/api_utilities/pengguna.dart';
-import 'package:tubes_mobpro/tubes/models/image_data.dart';
-import 'package:tubes_mobpro/tubes/models/pelanggan.dart';
-import 'package:tubes_mobpro/tubes/models/pengguna.dart';
+import 'package:tubes_mobpro/tubes/api_service.dart';
+import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
+import 'package:tubes_mobpro/tubes/pages/auth_check.dart';
 import 'package:tubes_mobpro/tubes/pages/avatar_preview_page.dart';
 import 'package:tubes_mobpro/tubes/pages/edit_driving_license_page.dart';
 import 'package:tubes_mobpro/tubes/pages/edit_id_data_page.dart';
@@ -26,7 +23,7 @@ class EditProfilePage extends StatefulWidget {
 class _EditProfilePageState extends State<EditProfilePage> {
   Pelanggan? pelanggan;
   Pengguna? pengguna;
-  late NetworkImage avatar;
+  // late NetworkImage avatar;
   // late ImageData profilePicture;
   late Image profilePicture;
 
@@ -37,16 +34,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
   }
 
   void loadData() async {
-    final resultPengguna = await PenggunaApi.getCurrentUser();
-    final result = await PelangganApi.getCurrentPelanggan(resultPengguna!.id);
-    final resultImage = ImageApi.getImage(resultPengguna.idGambar!);
-    final resultProfile =
-        await ImageApi.getImageImage(resultPengguna.idGambar!);
-    // final resultProfile = await ImageDataApi.getImage(resultPengguna.idGambar!);
+    await AuthState().refreshCurrentUser();
     setState(() {
-      pengguna = resultPengguna;
-      pelanggan = result;
-      avatar = resultImage;
+      pengguna = AuthState().currentUser;
+      pelanggan = AuthState().currentUser!.pelanggan;
+      // avatar = resultImage;
       // profilePicture = resultProfile!;
     });
   }
@@ -100,29 +92,34 @@ class _EditProfilePageState extends State<EditProfilePage> {
   }
 
   Row _profilePictureSection() {
+    final imageUrl = pengguna?.idGambar != null
+        ? "http://160.19.167.222:5103/storage/fetch/${pengguna!.idGambar}"
+        : "http://160.19.167.222:5103/avatar?name=${pengguna?.nama ?? 'Guest'}";
+    Image image = Image.network(imageUrl);
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         InkWell(
           onTap: () {
-            Navigator.of(context).push(MaterialPageRoute(
+            Navigator.of(context)
+                .push(MaterialPageRoute(
               builder: (context) => AvatarPreviewPage(
-                image: profilePicture,
+                image: image,
               ),
-            ));
+            ))
+                .then((_) {
+              loadData();
+            });
           },
           child: Stack(
             children: [
-              CircleAvatar(
-                radius: 70, // Adjust size as needed
-                backgroundColor: Colors.grey[200],
-                // backgroundImage: const AssetImage('assets/images/avatar.png'),
-                backgroundImage: avatar,
-                // backgroundImage: profilePicture.image,
-                // backgroundImage: profilePicture == null
-                //     ? const AssetImage('assets/images/avatar.png')
-                //     : Image.memory(profilePicture!.data!).image,
-              ),
+              Builder(builder: (context) {
+                return CircleAvatar(
+                  backgroundColor: AppColors.N0,
+                  radius: 60,
+                  backgroundImage: image.image,
+                );
+              }),
               Positioned(
                 bottom: 0,
                 right: 10,
@@ -174,7 +171,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     MaterialPageRoute(
                         builder: (context) => EditPersonalDataPage(
                               pengguna: pengguna!,
-                            )));
+                            ))).then((_) {
+                  loadData();
+                });
               },
               child: Text(
                 "Edit",
@@ -191,7 +190,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 'Nama',
                 style: AppTextStyle.smallReguler,
               ),
-              Text(pengguna!.nama, style: AppTextStyle.body2Regular)
+              Text(pengguna!.nama ?? "", style: AppTextStyle.body2Regular)
             ],
           ),
           const Gap(12),
@@ -205,7 +204,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               Text(
                   pengguna!.tanggalLahir == null
                       ? ""
-                      : AppUtil.formatDateFromString(pengguna!.tanggalLahir!),
+                      : AppUtil.formatDate(pengguna!.tanggalLahir!),
                   style: AppTextStyle.body2Regular)
             ],
           ),
@@ -253,7 +252,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 'Email',
                 style: AppTextStyle.smallReguler,
               ),
-              Text(pengguna!.email, style: AppTextStyle.body2Regular)
+              Text(pengguna!.email ?? "", style: AppTextStyle.body2Regular)
             ],
           ),
         ],
@@ -286,7 +285,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         MaterialPageRoute(
                             builder: (context) => EditIDDataPage(
                                   pengguna: pengguna!,
-                                )));
+                                ))).then((_) {
+                      loadData();
+                    });
                   },
                   child: Text(
                     "Edit",
@@ -348,7 +349,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             number: pelanggan!.nomorSIM!.toString(),
                             pelanggan: pelanggan!,
                           ),
-                        ));
+                        )).then((_) {
+                      loadData();
+                    });
                   },
                   child: Text(
                     "Edit",
@@ -376,7 +379,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     'No.',
                     style: AppTextStyle.smallReguler,
                   ),
-                  Text(pelanggan!.nomorSIM, style: AppTextStyle.body2Regular)
+                  Text(pelanggan!.nomorSIM ?? "",
+                      style: AppTextStyle.body2Regular)
                 ],
               ),
             ]));

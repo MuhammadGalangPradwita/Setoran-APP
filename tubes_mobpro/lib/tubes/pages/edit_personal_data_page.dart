@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
-import 'package:tubes_mobpro/tubes/api_utilities/pengguna.dart';
-import 'package:tubes_mobpro/tubes/models/pelanggan.dart';
-import 'package:tubes_mobpro/tubes/models/pengguna.dart';
+import 'package:tubes_mobpro/tubes/api_service.dart';
+import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 import 'package:tubes_mobpro/tubes/utilities/app_util.dart';
 import 'package:tubes_mobpro/tubes/widgets/button_widgets.dart';
-import 'package:tubes_mobpro/tubes/widgets/dropdownField_widget.dart';
 import 'package:tubes_mobpro/tubes/widgets/textField_widget.dart';
 
 class EditPersonalDataPage extends StatefulWidget {
@@ -40,7 +38,7 @@ class _EditPersonalDataPageState extends State<EditPersonalDataPage> {
   }
 
   Future<void> loadPengguna() async {
-    final result = await PenggunaApi.getCurrentUser();
+    // final result = await PenggunaApi().penggunaCurrentPenggunaGetWithHttpInfo();
     setState(() {
       // pengguna = result;
       _mapController();
@@ -48,13 +46,12 @@ class _EditPersonalDataPageState extends State<EditPersonalDataPage> {
   }
 
   _mapController() {
-    _nameController.text = widget.pengguna.nama;
+    _nameController.text = widget.pengguna.nama ?? "";
     _addressController.text = widget.pengguna.alamat ?? "";
     _phoneController.text = widget.pengguna.nomorTelepon ?? "";
-    _emailController.text = widget.pengguna.email;
-    _dateController.text =
-        AppUtil.formatDateFromString(widget.pengguna.tanggalLahir!);
-    _selectedDate = DateTime.parse(widget.pengguna.tanggalLahir!);
+    _emailController.text = widget.pengguna.email ?? "";
+    _dateController.text = AppUtil.formatDate(widget.pengguna.tanggalLahir!);
+    _selectedDate = widget.pengguna.tanggalLahir!;
   }
 
   Future<void> _selectDate(BuildContext context) async {
@@ -198,9 +195,16 @@ class _EditPersonalDataPageState extends State<EditPersonalDataPage> {
       final outputFormatter = DateFormat('yyyy-MM-dd');
       final date = inputFormatter.parse(_dateController.text);
       final formatted = outputFormatter.format(date);
-      widget.pengguna.tanggalLahir = formatted;
+      widget.pengguna.tanggalLahir = DateTime.parse(formatted);
 
-      await PenggunaApi.updatePengguna(widget.pengguna);
+      // await PenggunaApi.updatePengguna(widget.pengguna);
+      await ApiService().penggunaApi.penggunaPut(
+          postPenggunaDTO: PostPenggunaDTO(
+              id: widget.pengguna.id!,
+              nama: widget.pengguna.nama,
+              alamat: widget.pengguna.alamat,
+              nomorTelepon: widget.pengguna.nomorTelepon,
+              tanggalLahir: widget.pengguna.tanggalLahir));
       Navigator.of(context).pop();
     }
   }

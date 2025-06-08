@@ -1,13 +1,10 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:provider/provider.dart';
-import 'package:tubes_mobpro/tubes/api_utilities/pelanggan.dart';
-import 'package:tubes_mobpro/tubes/api_utilities/transaksi.dart';
-import 'package:tubes_mobpro/tubes/models/pelanggan.dart';
-import 'package:tubes_mobpro/tubes/models/transaksi.dart';
+import 'package:tubes_mobpro/tubes/api_service.dart';
+import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
 import 'package:tubes_mobpro/tubes/pages/auth_check.dart';
 import 'package:tubes_mobpro/tubes/pages/detail_activity_page.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
@@ -22,177 +19,281 @@ class ActivityPage extends StatefulWidget {
 
 class _ActivityPageState extends State<ActivityPage> {
   late Future<List<Transaksi>?> dataList;
+  String? status = ""; // Default status
+
+  // Define available status options
+  final List<Map<String, String>> statusOptions = [
+    {'value': '', 'label': 'Semua'},
+    {'value': 'selesai', 'label': 'Selesai'},
+    {'value': 'created', 'label': 'Dibuat'},
+    {'value': 'berlangsung', 'label': 'Berlangsung'},
+    {'value': 'batal', 'label': 'Batal'},
+    // Add more status options as needed
+  ];
 
   @override
   void initState() {
     super.initState();
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   // readJSON();
-    //   fetchData();
-    // });
-    dataList = fetchData();
+    _loadData();
   }
 
-  TabBar get _tabBar => TabBar(
-        tabs: const [
-          Tab(
-            text: "Last Week",
-          ),
-          Tab(
-            text: "Last Month",
-          ),
-          Tab(
-            text: "Earlier",
-          ),
-        ],
-        dividerColor: Colors.transparent,
-        indicatorColor: AppColors.G500,
-        labelColor: AppColors.B400,
-        unselectedLabelColor: AppColors.N700,
-        labelStyle: GoogleFonts.poppins(
-          fontSize: 14,
-          fontWeight: FontWeight.bold,
-        ),
-      );
+  void _loadData() {
+    setState(() {
+      dataList = ApiService().transaksiApi.apiTransaksiGet(
+          idPelanggan: Provider.of<AuthState>(context, listen: false)
+              .currentUser!
+              .pelanggan!
+              .idPelanggan!
+              .toString(),
+          status: status);
+    });
+  }
+
+  void _onStatusChanged(String? newStatus) {
+    if (newStatus != null && newStatus != status) {
+      setState(() {
+        status = newStatus;
+      });
+      _loadData();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-        length: 3,
-        child: Scaffold(
-            backgroundColor: AppColors.N0,
-            appBar: AppBar(
-              title: const Text("Activity"),
-              backgroundColor: AppColors.B400,
-              foregroundColor: AppColors.N0,
-              bottom: PreferredSize(
-                  preferredSize: _tabBar.preferredSize,
-                  child: Material(
-                    color: AppColors.N0,
-                    child: _tabBar,
-                  )),
+    return Scaffold(
+      backgroundColor: AppColors.N0,
+      appBar: AppBar(
+        title: const Text("Activity"),
+        backgroundColor: AppColors.B400,
+        foregroundColor: AppColors.N0,
+      ),
+      body: Column(
+        children: [
+          // Status Filter Dropdown
+          Container(
+            padding: const EdgeInsets.all(16.0),
+            decoration: BoxDecoration(
+              color: AppColors.N0,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.1),
+                  spreadRadius: 1,
+                  blurRadius: 3,
+                  offset: const Offset(0, 1),
+                ),
+              ],
             ),
-            body: FutureBuilder(
-              future: dataList,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                if (snapshot.connectionState == ConnectionState.done) {
-                  if (snapshot.hasError) {
-                    return Center(
-                      child: Text("Error: ${snapshot.error}"),
+            child: Row(
+              children: [
+                const Icon(
+                  Icons.filter_list,
+                  color: AppColors.B400,
+                  size: 20,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  "Filter by Status:",
+                  style: GoogleFonts.inter(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.B400,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    decoration: BoxDecoration(
+                      border:
+                          Border.all(color: AppColors.B400.withOpacity(0.3)),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton<String>(
+                        dropdownColor: AppColors.N0,
+                        value: status,
+                        isExpanded: true,
+                        icon: const Icon(
+                          Icons.keyboard_arrow_down,
+                          color: AppColors.B400,
+                        ),
+                        style: GoogleFonts.inter(
+                          fontSize: 14,
+                          color: AppColors.B400,
+                        ),
+                        items: statusOptions.map((Map<String, String> option) {
+                          return DropdownMenuItem<String>(
+                            value: option['value'],
+                            child: Text(option['label']!),
+                          );
+                        }).toList(),
+                        onChanged: _onStatusChanged,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // Content Area
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: FutureBuilder<List<Transaksi>?>(
+                future: dataList,
+                builder: (context, snapshot) {
+                  // Debug prints - remove these in production
+                  print("ConnectionState: ${snapshot.connectionState}");
+                  print("HasData: ${snapshot.hasData}");
+                  print("HasError: ${snapshot.hasError}");
+                  print("Data: ${snapshot.data}");
+
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
                     );
                   }
-                  if (snapshot.hasData) {
-                    return _buildContent(snapshot.data as List<Transaksi>);
+
+                  if (snapshot.hasError) {
+                    print("___Error: ${snapshot.error}");
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(
+                            Icons.error_outline,
+                            size: 48,
+                            color: Colors.red,
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            "Error: ${snapshot.error}",
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.inter(
+                              fontSize: 14,
+                              color: Colors.red,
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          ElevatedButton(
+                            onPressed: _loadData,
+                            child: const Text("Retry"),
+                          ),
+                        ],
+                      ),
+                    );
                   }
-                }
-                return const Center(
-                  child: Text("No Data"),
-                );
-              },
-            )));
+
+                  if (snapshot.hasData) {
+                    return _buildContent(snapshot.data!);
+                  }
+
+                  // This handles the case where there's no data but no error
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.inbox_outlined,
+                          size: 48,
+                          color: Colors.grey,
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          "No Data Available",
+                          style: GoogleFonts.inter(
+                            fontSize: 16,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        ElevatedButton(
+                          onPressed: _loadData,
+                          child: const Text("Refresh"),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _buildContent(List<Transaksi> data) {
-    return TabBarView(
-        children: [lastWeekTab(data), lastMonthTab(data), earlierTab(data)]);
-  }
-
-  Future<List<Transaksi>?> fetchData() async {
-    Pelanggan? pel = await PelangganApi.getCurrentPelanggan(
-        Provider.of<AuthState>(context, listen: false).currentUser!.id);
-    print(pel!.id);
-    return TransaksiApi.getByPelanggan(pel.id);
-  }
-
-  Widget lastWeekTab(List<Transaksi> data) {
-    //filter last week
-    DateTime now = DateTime.now();
-    DateTime lastWeek = DateTime(now.year, now.month, now.day - 7);
-    List<Transaksi> lastWeekData = data.where((element) {
-      return element.createdAt.isAfter(lastWeek);
-    }).toList();
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 28.0, vertical: 12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: _buildTabContent(lastWeekData),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget lastMonthTab(List<Transaksi> data) {
-    //filter between last 30 day and last 7 day
-    DateTime now = DateTime.now();
-    DateTime lastMonth = DateTime(now.year, now.month, now.day - 30);
-    DateTime lastWeek = DateTime(now.year, now.month, now.day - 7);
-
-    List<Transaksi> lastMonthData = data.where((element) {
-      return element.createdAt.isAfter(lastMonth) &&
-          element.createdAt.isBefore(lastWeek);
-    }).toList();
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 28.0, vertical: 12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: _buildTabContent(lastMonthData),
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget earlierTab(List<Transaksi> data) {
-    //filter last week
-    DateTime now = DateTime.now();
-    DateTime lastMonth = DateTime(now.year, now.month, now.day - 30);
-    List<Transaksi> earlierData = data.where((element) {
-      return element.createdAt.isBefore(lastMonth);
-    }).toList();
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 28.0, vertical: 12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [Expanded(child: _buildTabContent(earlierData))],
-      ),
-    );
-  }
-
-  Widget _buildTabContent(List<Transaksi> data) {
     if (data.isEmpty) {
-      return const Center(
-        child: Text("No Data"),
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(
+              Icons.assignment_outlined,
+              size: 48,
+              color: Colors.grey,
+            ),
+            const SizedBox(height: 16),
+            Text(
+              "No transactions found",
+              style: GoogleFonts.inter(
+                fontSize: 16,
+                color: Colors.grey,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              "for status: ${statusOptions.firstWhere((option) => option['value'] == status)['label']}",
+              style: GoogleFonts.inter(
+                fontSize: 14,
+                color: Colors.grey,
+              ),
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: _loadData,
+              child: const Text("Refresh"),
+            ),
+          ],
+        ),
       );
     }
-    return ListView.builder(
-      itemCount: data.length,
-      itemBuilder: (context, index) {
-        return InkWell(
-          onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return DetailActivityPage(
-                transaksi: data[index],
-              );
-            }));
-          },
-          child: TransactionCard(
-            transaksi: data[index],
-          ),
-        );
+    data.sort((a, b) => b.idTransaksi!.compareTo(a.idTransaksi!));
+    return RefreshIndicator(
+      onRefresh: () async {
+        _loadData();
+        await dataList;
       },
+      child: ListView.builder(
+        itemCount: data.length,
+        itemBuilder: (context, index) {
+          final transaksi = data[index];
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: InkWell(
+              onTap: () {
+                PersistentNavBarNavigator.pushNewScreen(
+                  context,
+                  screen: DetailActivityPage(
+                    transaksi: transaksi,
+                  ),
+                  withNavBar: false,
+                );
+                // Navigator.push(context, MaterialPageRoute(builder: (context) {
+                //   return DetailActivityPage(
+                //     transaksi: transaksi,
+                //   );
+                // }));
+              },
+              borderRadius: BorderRadius.circular(8),
+              child: TransactionCard(
+                transaksi: transaksi,
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 }

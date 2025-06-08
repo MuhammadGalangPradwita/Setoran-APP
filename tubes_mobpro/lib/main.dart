@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:tubes_mobpro/tubes/camera_service.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
@@ -11,10 +10,10 @@ import 'tubes/services/firebase_notification_service.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // await Firebase.initializeApp();
-  await FirebaseNotificationService().initialize();
+  // await FirebaseNotificationService().initialize();
   await initLocalStorage();
   await CameraService.instance.initializeCameras();
-  await FirebaseNotificationService().getToken();
+  // await FirebaseNotificationService().getToken();
   runApp(const MyApp());
 }
 
@@ -56,7 +55,7 @@ class _MyAppState extends State<MyApp> {
           value: AuthState(),
         ),
       ],
-      child: MaterialApp(
+      child: const MaterialApp(
         debugShowCheckedModeBanner: false,
         home: AuthCheck(),
       ),
