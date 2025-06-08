@@ -18,7 +18,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.22.0'  # sesuaikan versi Flutter kamu
+          flutter-version: '3.32.1'  # sesuaikan versi Flutter kamu
 
       - name: Install dependencies
         working-directory: ./tubes_mobpro
