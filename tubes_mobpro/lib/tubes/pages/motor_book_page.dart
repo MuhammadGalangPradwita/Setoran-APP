@@ -93,29 +93,31 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
         payload['id_diskon'] = motor.getBestDiscount()?.idDiskon;
       }
 
-
-      Response transaksiResponse =
-          await ApiService().transaksiApi.apiTransaksiPostWithHttpInfo(
-                  postTransaksiDTO: PostTransaksiDTO(
-                idMotor: payload['id_motor'],
-                idPelanggan: payload['id_pelanggan'],
-                tanggalMulai: payload['tanggal_mulai'],
-                tanggalSelesai: payload['tanggal_selesai'],
-                idVoucher: payload['id_voucher'] ?? null,
-                idDiscount: payload['id_diskon'] ?? null,
-              ));
-
+      // Response transaksiResponse =
+      await ApiService().transaksiApi.apiTransaksiPost(
+              postTransaksiDTO: PostTransaksiDTO(
+            idMotor: payload['id_motor'],
+            idPelanggan: payload['id_pelanggan'],
+            tanggalMulai: payload['tanggal_mulai'],
+            tanggalSelesai: payload['tanggal_selesai'],
+            idVoucher: payload['id_voucher'] ?? null,
+            idDiscount: payload['id_diskon'] ?? null,
+            metodePembayaran: paymentMethod ?? 'bank_transfer',
+          ));
 
       // Mengambil id transaksi dari response
-      final Map<String, dynamic> transaksiBody = transaksiResponse.body != null
-          ? Map<String, dynamic>.from(jsonDecode(transaksiResponse.body))
-          : {};
+      // final Map<String, dynamic> transaksiBody = transaksiResponse.body != null
+      //     ? Map<String, dynamic>.from(jsonDecode(transaksiResponse.body))
+      //     : {};
 
-      int? idTransaksi = transaksiBody['idTransaksi'];
+      // print('Transaksi Response: ${transaksiResponse.body}');
 
-      if (idTransaksi == null) {
-        throw Exception('Failed to create transaction: No ID returned');
-      }
+      // int? idTransaksi = transaksiBody['idTransaksi'];
+
+      // if (idTransaksi == null) {
+      //   throw Exception('Failed to create transaction: No ID returned');
+
+      // }
 
       // print('motor_book_page.dart');
       // print('id_motor: ${payload['id_motor']}');
@@ -123,15 +125,11 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
       // print('nomor STNK: ${motor.nomorSTNK}');
       // print('nomor BPKB: ${motor.nomorBPKB}');
 
-      print('Test1');
-
-      await ApiService().pembayaranApi.apiPembayaranPost(
-              postPembayaranDTO: PostPembayaranDTO(
-            idTransaksi: idTransaksi, 
-            metodePembayaran: paymentMethod!,
-          ));
-
-      print('Test2');
+      // await ApiService().pembayaranApi.apiPembayaranPost(
+      //         postPembayaranDTO: PostPembayaranDTO(
+      //       idTransaksi: idTransaksi, // Make sure to set this value appropriately
+      //       metodePembayaran: paymentMethod!,
+      //     ));
 
       await ApiService().motorApi.apiMotorIdPut(payload['id_motor'],
           putMotorDTO: PutMotorDTO(
@@ -282,7 +280,6 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
       }
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -654,5 +651,4 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
       ],
     );
   }
-
 }

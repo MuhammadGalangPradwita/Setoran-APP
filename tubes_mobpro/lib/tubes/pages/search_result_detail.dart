@@ -613,11 +613,11 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
                     ],
                   ),
                   Row(children: [
-                    const Icon(
-                      CupertinoIcons.chat_bubble_text_fill,
-                      size: 30,
-                      color: AppColors.N600,
-                    ),
+                    // const Icon(
+                    //   CupertinoIcons.chat_bubble_text_fill,
+                    //   size: 30,
+                    //   color: AppColors.N600,
+                    // ),
                     const SizedBox(
                       width: 10,
                     ),

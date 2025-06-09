@@ -61,13 +61,14 @@ class vehicleCard extends StatelessWidget {
                   children: [
                     Container(
                         width: double.infinity,
+                        height: 100,
                         margin: margin,
                         child: Builder(
                           builder: (context) {
                             if (motor.idMotorImage != null) {
                               return Image.network(
                                   "http://160.19.167.222:5103/storage/fetch/${motor.motorImage!.front!}",
-                                  fit: BoxFit.cover);
+                                  fit: BoxFit.fitHeight);
                             } else {
                               return Image.asset(
                                 'assets/images/general-img-landscape.png',

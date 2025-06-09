@@ -228,6 +228,9 @@ class _HomepageScreenState extends State<HomepageScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+
+                      // Date Picker
+
                       GestureDetector(
                         onTap: () => _selectDate(context),
                         child: AbsorbPointer(
@@ -239,12 +242,13 @@ class _HomepageScreenState extends State<HomepageScreen> {
                           ),
                         ),
                       ),
+
                       const Gap(24),
                       TextfieldWidget(
-                          label: 'Select Models',
+                          label: 'Search Model',
                           prefixIcon: const Icon(Icons.motorcycle_rounded),
                           controller: _modelController,
-                          hintText: 'Choose the models...'),
+                          hintText: 'Insert a model...'),
                       const Gap(24),
                       const Text('Models'),
                       Row(
@@ -367,7 +371,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                       } else {
                         final List<Motor> motors =
                             Motor().removeBookedMotors(snapshot.data!)!;
-                        return buildDiscountMotorList(motors);
+                        return buildHorizontalVehicleList(motors);
                       }
                     },
                   ),
