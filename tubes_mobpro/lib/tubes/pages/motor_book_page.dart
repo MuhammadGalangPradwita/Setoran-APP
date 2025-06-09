@@ -1,11 +1,14 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'package:tubes_mobpro/tubes/api_service.dart';
 import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
+import 'package:tubes_mobpro/tubes/extension/motor.dart';
 import 'package:tubes_mobpro/tubes/pages/auth_check.dart';
 import 'package:tubes_mobpro/tubes/pages/homePage_screen.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
+import 'dart:convert';
 
 import '../widgets/button_widgets.dart';
 
@@ -23,315 +26,390 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
 
   String? kodeVoucher;
   Voucher? voucher;
+  Diskon? diskon;
   String? paymentMethod;
   DateTimeRange? rentTime;
+
+  bool isLoading = false;
 
   String VoucherResultMessage = '';
 
   @override
+  void initState() {
+    super.initState();
+    setState(() {
+      diskon = widget.motor.getBestDiscount();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Book Motorcycle'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Motorcycle Info \\
-            Card(
-              elevation: 8,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Row(
+    return Stack(
+      children: [
+        Scaffold(
+          appBar: AppBar(
+            title: const Text('Book Motorcycle'),
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ),
+          body: SingleChildScrollView(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Motorcycle Info \\
+                Card(
+                  elevation: 8,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Row(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child:
+                              // Image.asset(
+                              //   'assets/images/NMAX.png',
+                              //   height: 80,
+                              //   width: 120,
+                              //   fit: BoxFit.contain,
+                              // ),
+                              Builder(
+                            builder: (context) {
+                              // print('Motor id: ${widget.motor.idMotor}');
+                              // print('Nama motor: ${widget.motor.model}');
+                              // print('Transmisi: ${widget.motor.transmisi}');
+                              // print('Tahun: ${widget.motor.tahun}');
+                              // print('Brand: ${widget.motor.brand}');
+                              // print(
+                              //     'Motor Image: ${widget.motor.motorImage?.front}');
+                              // print(
+                              //     'motor image id: ${widget.motor.motorImage?.id}');
+                              final frontImage = widget.motor.motorImage?.front;
+                              if (frontImage != null && frontImage.isNotEmpty) {
+                                return Image.network(
+                                  "http://160.19.167.222:5103/storage/fetch/$frontImage",
+                                  height: 80,
+                                  width: 120,
+                                  fit: BoxFit.cover,
+                                );
+                              } else {
+                                return Image.asset(
+                                  'assets/images/general-img-landscape.png',
+                                  height: 80,
+                                  width: 120,
+                                  fit: BoxFit.cover,
+                                );
+                              }
+                            },
+                          ),
+                        ),
+
+                        const SizedBox(width: 16),
+
+                        // Card detail
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '${widget.motor.model}',
+                              style: const TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold),
+                            ),
+                            Text('Brand: ${widget.motor.brand}'),
+                            Text('Transmission: ${widget.motor.transmisi}'),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                // SizedBox(height: 16.0),
+                const Divider(
+                  height: 50,
+                ),
+
+                // Return Time Section \\
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Image.asset(
-                        'assets/images/NMAX.png',
-                        height: 80,
-                        width: 120,
-                        fit: BoxFit.contain,
-                      ),
+                    const Text(
+                      'Rental duration',
+                      style: TextStyle(
+                          fontSize: 16.0, fontWeight: FontWeight.bold),
                     ),
 
-                    const SizedBox(width: 16),
-
-                    // Card detail
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '${widget.motor.model}',
-                          style: const TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold),
+                    // Return time button
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 12),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          side: const BorderSide(color: Colors.grey),
                         ),
-                        Text('Brand: ${widget.motor.brand}'),
-                        Text('Transmission: ${widget.motor.transmisi}'),
-                      ],
+                        backgroundColor: Colors.transparent,
+                      ),
+                      onPressed: () async {
+                        final selectedRange = await showDateRangePicker(
+                          context: context,
+                          firstDate: DateTime.now(),
+                          lastDate:
+                              DateTime.now().add(const Duration(days: 365)),
+                          builder: (BuildContext context, Widget? child) {
+                            return Theme(
+                              data: ThemeData.light().copyWith(
+                                primaryColor: Colors.blue,
+                                colorScheme: const ColorScheme.light(
+                                    primary: Colors.blue),
+                                buttonTheme: const ButtonThemeData(
+                                  textTheme: ButtonTextTheme.primary,
+                                ),
+                              ),
+                              child: child!,
+                            );
+                          },
+                        );
+
+                        if (selectedRange != null) {
+                          setState(() {
+                            rentTime = selectedRange;
+                          });
+                        }
+                      },
+                      child: Text(
+                        rentTime != null
+                            ? getDateRange(rentTime!)
+                            : 'Pick a Date',
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
                     ),
                   ],
                 ),
-              ),
-            ),
 
-            // SizedBox(height: 16.0),
-            const Divider(
-              height: 50,
-            ),
-
-            // Return Time Section \\
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Rental duration',
-                  style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                // SizedBox(height: 16.0),
+                const Divider(
+                  height: 50,
                 ),
 
-                // Return time button
-                TextButton(
-                  style: TextButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 12),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      side: const BorderSide(color: Colors.grey),
-                    ),
-                    backgroundColor: Colors.transparent,
-                  ),
-                  onPressed: () async {
-                    final selectedRange = await showDateRangePicker(
-                      context: context,
-                      firstDate: DateTime.now(),
-                      lastDate: DateTime.now().add(const Duration(days: 365)),
-                      builder: (BuildContext context, Widget? child) {
-                        return Theme(
-                          data: ThemeData.light().copyWith(
-                            primaryColor: Colors.blue,
-                            colorScheme:
-                                const ColorScheme.light(primary: Colors.blue),
-                            buttonTheme: const ButtonThemeData(
-                              textTheme: ButtonTextTheme.primary,
+                // Voucher Code Section \\
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        // Voucher Code Textfield
+                        Expanded(
+                          child: TextFormField(
+                            onChanged: (value) {
+                              setState(() {
+                                kodeVoucher = value;
+                              });
+                            },
+                            decoration: const InputDecoration(
+                              labelText: 'Voucher Code',
+                              border: OutlineInputBorder(),
                             ),
                           ),
-                          child: child!,
-                        );
-                      },
-                    );
-
-                    if (selectedRange != null) {
-                      setState(() {
-                        rentTime = selectedRange;
-                      });
-                    }
-                  },
-                  child: Text(
-                    rentTime != null ? getDateRange(rentTime!) : 'Pick a Date',
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-
-            // SizedBox(height: 16.0),
-            const Divider(
-              height: 50,
-            ),
-
-            // Voucher Code Section \\
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    // Voucher Code Textfield
-                    Expanded(
-                      child: TextFormField(
-                        onChanged: (value) {
-                          setState(() {
-                            kodeVoucher = value;
-                          });
-                        },
-                        decoration: const InputDecoration(
-                          labelText: 'Voucher Code',
-                          border: OutlineInputBorder(),
                         ),
+
+                        const SizedBox(width: 8.0),
+
+                        // Voucher Code Button
+                        ButtonWidget.secondary(
+                            label: "Apply",
+                            press: () async {
+                              checkVoucher();
+                            }),
+                      ],
+                    ),
+
+                    const SizedBox(height: 8.0),
+
+                    // Voucher Code Result Display
+                    Text(
+                      VoucherResultMessage,
+                      style: TextStyle(
+                        color: voucher != null ? Colors.green : Colors.red,
+                        fontSize: 14.0,
                       ),
                     ),
+                  ],
+                ),
 
-                    const SizedBox(width: 8.0),
+                // SizedBox(height: 16.0),
+                const Divider(
+                  height: 50,
+                ),
 
-                    // Voucher Code Button
-                    ButtonWidget.secondary(
-                        label: "Apply",
-                        press: () async {
-                          checkVoucher();
-                        }),
+                // Payment Method Section \\
+
+                // Payment Method Label
+                const Text('Payment Method',
+                    style:
+                        TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
+                const SizedBox(height: 8.0),
+                Column(
+                  children: [
+                    // Payment Method Options
+                    RadioListTile(
+                      title: const Text('Bank Transfer'),
+                      value: 'bank_transfer',
+                      groupValue: paymentMethod,
+                      onChanged: (value) {
+                        setState(() {
+                          paymentMethod = value;
+                        });
+                      },
+                    ),
+                    RadioListTile(
+                      title: const Text('DANA'),
+                      value: 'dana',
+                      groupValue: paymentMethod,
+                      onChanged: (value) {
+                        setState(() {
+                          paymentMethod = value;
+                        });
+                      },
+                    ),
+                  ],
+                ),
+
+                // const SizedBox(height: 16.0),
+                const Divider(
+                  height: 50,
+                ),
+
+                // Amount Details \\
+
+                // Motor Harga Harian
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text('Amount', style: TextStyle(fontSize: 14.0)),
+                    Text('Rp. ${formatter.format(widget.motor.hargaHarian)}',
+                        style: const TextStyle(fontSize: 14.0)),
                   ],
                 ),
 
                 const SizedBox(height: 8.0),
 
-                // Voucher Code Result Display
-                Text(
-                  VoucherResultMessage,
-                  style: TextStyle(
-                    color: voucher != null ? Colors.green : Colors.red,
-                    fontSize: 14.0,
+                // Motor Total Rentime
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text('Total Days', style: TextStyle(fontSize: 14.0)),
+                    Text(
+                        rentTime != null ? '${rentTime!.duration.inDays}' : '0',
+                        style: const TextStyle(fontSize: 14.0)),
+                  ],
+                ),
+
+                const SizedBox(height: 8.0),
+
+                // Motor Original Fees
+                // if (voucher != null && rentTime != null)
+                //   Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //     children: [
+                //       const Text('Original fees',
+                //           style: TextStyle(fontSize: 14.0)),
+                //       Text(
+                //           'Rp. ${formatter.format(widget.motor.hargaHarian! * rentTime!.duration.inHours)}',
+                //           style: const TextStyle(fontSize: 14.0)),
+                //     ],
+                //   ),
+
+                if (diskon != null)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text('Diskon', style: TextStyle(fontSize: 14.0)),
+                      Text(
+                          diskon != null
+                              ? 'Rp. ${formatter.format(diskon!.jumlahDiskon)}'
+                              : ' - ',
+                          style: const TextStyle(fontSize: 14.0)),
+                    ],
+                  ),
+
+                const SizedBox(height: 8.0),
+
+                // Motor Applied Voucher Cut
+                if (voucher != null && rentTime != null)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text('Voucher', style: TextStyle(fontSize: 14.0)),
+                      Text(
+                          voucher != null
+                              ? '${voucher!.persenVoucher}%'
+                              : ' - ',
+                          style: const TextStyle(fontSize: 14.0)),
+                    ],
+                  ),
+
+                // const SizedBox(height: 8.0),
+                const Divider(
+                  height: 50,
+                ),
+
+                // Motor Total Section \\
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text('Total',
+                        style: TextStyle(
+                            fontSize: 16.0, fontWeight: FontWeight.bold)),
+                    Text(
+                        rentTime != null
+                            ? 'Rp. ${formatter.format(calculateFees(widget.motor, rentTime!, voucher, diskon))}'
+                            : 'Rp. 0,000',
+                        style: const TextStyle(
+                            fontSize: 16.0, fontWeight: FontWeight.bold)),
+                  ],
+                ),
+
+                const SizedBox(height: 24.0),
+
+                // Rent Now Button \\
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      validateData();
+                    },
+                    style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 16.0),
+                        backgroundColor: AppColors.B400),
+                    child: const Text('Rent Now',
+                        style: TextStyle(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white)),
                   ),
                 ),
               ],
             ),
-
-            // SizedBox(height: 16.0),
-            const Divider(
-              height: 50,
-            ),
-
-            // Payment Method Section \\
-
-            // Payment Method Label
-            const Text('Payment Method',
-                style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 8.0),
-            Column(
-              children: [
-                // Payment Method Options
-                RadioListTile(
-                  title: const Text('Bank Transfer'),
-                  value: 'bank_transfer',
-                  groupValue: paymentMethod,
-                  onChanged: (value) {
-                    setState(() {
-                      paymentMethod = value;
-                    });
-                  },
-                ),
-                RadioListTile(
-                  title: const Text('DANA'),
-                  value: 'dana',
-                  groupValue: paymentMethod,
-                  onChanged: (value) {
-                    setState(() {
-                      paymentMethod = value;
-                    });
-                  },
-                ),
-              ],
-            ),
-
-            // const SizedBox(height: 16.0),
-            const Divider(
-              height: 50,
-            ),
-
-            // Amount Details \\
-
-            // Motor Harga Harian
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text('Amount', style: TextStyle(fontSize: 14.0)),
-                Text('Rp. ${formatter.format(widget.motor.hargaHarian)}',
-                    style: const TextStyle(fontSize: 14.0)),
-              ],
-            ),
-
-            const SizedBox(height: 8.0),
-
-            // Motor Total Rentime
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text('Total Hours', style: TextStyle(fontSize: 14.0)),
-                Text(rentTime != null ? '${rentTime!.duration.inHours}' : '0',
-                    style: const TextStyle(fontSize: 14.0)),
-              ],
-            ),
-
-            const SizedBox(height: 8.0),
-
-            // Motor Original Fees
-            if (voucher != null && rentTime != null)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text('Original fees', style: TextStyle(fontSize: 14.0)),
-                  Text(
-                      'Rp. ${formatter.format(widget.motor.hargaHarian! * rentTime!.duration.inHours)}',
-                      style: const TextStyle(fontSize: 14.0)),
-                ],
-              ),
-
-            const SizedBox(height: 8.0),
-
-            // Motor Applied Voucher Cut
-            if (voucher != null && rentTime != null)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text('Voucher', style: TextStyle(fontSize: 14.0)),
-                  Text(voucher != null ? '${voucher!.persenVoucher}%' : ' - ',
-                      style: const TextStyle(fontSize: 14.0)),
-                ],
-              ),
-
-            // const SizedBox(height: 8.0),
-            const Divider(
-              height: 50,
-            ),
-
-            // Motor Total Section \\
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text('Total',
-                    style:
-                        TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
-                Text(
-                    rentTime != null
-                        ? 'Rp. ${formatter.format(calculateFees(widget.motor, rentTime!, voucher))}'
-                        : 'Rp. 0,000',
-                    style: const TextStyle(
-                        fontSize: 16.0, fontWeight: FontWeight.bold)),
-              ],
-            ),
-
-            const SizedBox(height: 24.0),
-
-            // Rent Now Button \\
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  validateData();
-                },
-                style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16.0),
-                    backgroundColor: AppColors.B400),
-                child: const Text('Rent Now',
-                    style: TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white)),
-              ),
-            ),
-          ],
+          ),
         ),
-      ),
+        if (isLoading)
+          Container(
+            color: Colors.black.withOpacity(0.1),
+            child: const Center(
+              child: CircularProgressIndicator(),
+            ),
+          ),
+      ],
     );
   }
 
@@ -356,11 +434,17 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
 
   void createTransaction(
       Motor motor, DateTimeRange range, Voucher? voucher) async {
-    double finalFees = calculateFees(motor, range, voucher);
+    double finalFees = calculateFees(motor, range, voucher, diskon);
+
+    setState(() {
+      isLoading = true;
+    });
 
     try {
       int? userId =
-          (await ApiService().penggunaApi.penggunaCurrentPenggunaGet())!.pelanggan?.idPelanggan;
+          (await ApiService().penggunaApi.penggunaCurrentPenggunaGet())!
+              .pelanggan
+              ?.idPelanggan;
 
       Map<String, dynamic> payload = {
         'id_motor': motor.idMotor,
@@ -376,13 +460,81 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
         payload['id_voucher'] = voucher.idVoucher;
       }
 
-      await ApiService().transaksiApi.apiTransaksiPost(
-              postTransaksiDTO: PostTransaksiDTO(
-            idMotor: payload['id_motor'],
-            idPelanggan: 12,
-            tanggalMulai: payload['tanggal_mulai'],
-            tanggalSelesai: payload['tanggal_selesai'],
+      if (motor.diskon != null && motor.diskon!.isNotEmpty) {
+        payload['id_diskon'] = motor.getBestDiscount()?.idDiskon;
+      }
+
+      Response transaksiResponse =
+          await ApiService().transaksiApi.apiTransaksiPostWithHttpInfo(
+                  postTransaksiDTO: PostTransaksiDTO(
+                idMotor: payload['id_motor'],
+                idPelanggan: payload['id_pelanggan'],
+                tanggalMulai: payload['tanggal_mulai'],
+                tanggalSelesai: payload['tanggal_selesai'],
+                idVoucher: payload['id_voucher'] ?? null,
+                idDiscount: payload['id_diskon'] ?? null,
+              ));
+
+      // Mengambil id transaksi dari response
+      final Map<String, dynamic> transaksiBody = transaksiResponse.body != null
+          ? Map<String, dynamic>.from(jsonDecode(transaksiResponse.body))
+          : {};
+
+      int? idTransaksi = transaksiBody['idTransaksi'];
+
+      if (idTransaksi == null) {
+        throw Exception('Failed to create transaction: No ID returned');
+        
+      }
+
+
+      // print('motor_book_page.dart');
+      // print('id_motor: ${payload['id_motor']}');
+      // print('list diskon: ${motor.diskon}');
+      // print('nomor STNK: ${motor.nomorSTNK}');
+      // print('nomor BPKB: ${motor.nomorBPKB}');
+
+      await ApiService().pembayaranApi.apiPembayaranPost(
+              postPembayaranDTO: PostPembayaranDTO(
+            idTransaksi: idTransaksi, // Make sure to set this value appropriately
+            metodePembayaran: paymentMethod!,
           ));
+
+      await ApiService().motorApi.apiMotorIdPut(payload['id_motor'],
+          putMotorDTO: PutMotorDTO(
+            statusMotor: 'Diajukan',
+            platNomor: motor.platNomor!,
+            nomorSTNK: motor.nomorSTNK!,
+            nomorBPKB: motor.nomorBPKB!,
+            model: motor.model!,
+            brand: motor.brand!,
+            tipe: motor.tipe!,
+            tahun: motor.tahun!,
+            transmisi: motor.transmisi!,
+            hargaHarian: motor.hargaHarian!,
+          ));
+
+      // AwesomeDialog(
+      //   context: context,
+      //   dialogType: DialogType.success,
+      //   headerAnimationLoop: false,
+      //   animType: AnimType.bottomSlide,
+      //   title: 'Sukses',
+      //   desc: 'idMotor: ${motor.idMotor}\n'
+      //       'idPelanggan: ${payload['id_pelanggan']}\n'
+      //       'Tanggal Mulai: ${range.start}\n'
+      //       'Tanggal Selesai: ${range.end}\n'
+      //       'Total Biaya: Rp. ${formatter.format(finalFees)}\n'
+      //       'namaVoucher: ${voucher != null ? voucher!.namaVoucher : 'Tidak ada'}\n'
+      //       'voucher: ${voucher != null ? voucher!.namaVoucher : 'Tidak ada'}'
+      //       'diskon: ${payload['id_diskon'] ?? 'Tidak ada'}',
+      //   buttonsTextStyle: const TextStyle(color: Colors.black),
+      //   showCloseIcon: false,
+      //   // btnCancelOnPress: () {},
+      //   // btnOkOnPress: () {
+      //   //   Navigator.of(context).popUntil((route) => route.isFirst);
+      //   // },
+      // ).show();
 
       AwesomeDialog(
         context: context,
@@ -403,6 +555,8 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
         SnackBar(content: Text('Error: $e')),
       );
 
+      print('Error creating transaction: $e');
+
       AwesomeDialog(
         context: context,
         dialogType: DialogType.error,
@@ -412,11 +566,20 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
         desc: 'Gagal membuat transaksi:\n$e',
         btnOkOnPress: () {},
       ).show();
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 
-  double calculateFees(Motor motor, DateTimeRange range, Voucher? voucher) {
-    double fees = motor.hargaHarian! * range.duration.inHours;
+  double calculateFees(
+      Motor motor, DateTimeRange range, Voucher? voucher, Diskon? diskon) {
+    double fees = motor.hargaHarian! * range.duration.inDays;
+
+    if (diskon != null) {
+      fees -= diskon.jumlahDiskon!;
+    }
 
     if (voucher != null) {
       fees *= ((100 - voucher.persenVoucher!) / 100);
@@ -426,23 +589,14 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
   }
 
   void checkVoucher() async {
-    // List<Voucher> voucherList = await VoucherAPi.getAll();
-
     try {
-      // var voucherFound =
-      //     voucherList.firstWhere((v) => v.kodeVoucher == kodeVoucher);
       var voucherFound =
           await ApiService().voucherApi.voucherGetByCodeCodeGet(kodeVoucher!);
 
-      // var userId = (await PenggunaApi.getCurrentUser())!.id;
-      // var userId = AuthState().currentUser!.id;
-
-      // var voucherUsed = await VoucherAPi.isUsed(userId, voucherFound.idVoucher);
       var voucherUsed = await ApiService()
           .voucherApi
           .voucherCheckVoucherCodeGet(voucherFound!.kodeVoucher!);
-
-      if (!voucherUsed!.valid!) {
+      if (!voucherUsed!.valid! == false) {
         setState(() {
           voucher = voucherFound;
 
@@ -461,6 +615,21 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
         voucher = null;
         VoucherResultMessage = 'Please enter a valid voucher code.';
       });
+
+      print('Error checking voucher: ${e.toString()}');
+
+      // AwesomeDialog(
+      //   context: context,
+      //   dialogType: DialogType.error,
+      //   headerAnimationLoop: false,
+      //   animType: AnimType.bottomSlide,
+      //   title: 'Failed',
+      //   desc: e.toString(),
+      //   buttonsTextStyle: const TextStyle(color: Colors.black),
+      //   showCloseIcon: false,
+      //   // btnCancelOnPress: () {},
+      //   btnOkOnPress: () {},
+      // ).show();
     }
   }
 

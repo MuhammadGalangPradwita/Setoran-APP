@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
+import 'package:tubes_mobpro/tubes/api_service.dart';
 import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
 import 'package:tubes_mobpro/tubes/pages/search_result_detail.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
@@ -17,11 +19,15 @@ class SearchResult extends StatelessWidget {
   final String transimission;
   final String model;
 
-  Widget buildVehicleRow(List<Motor> motors) {
+  Future<Widget> buildVehicleRow(List<Motor> motors) async {
     List<Widget> vehicleCards = [];
     for (var motor in motors) {
+      List<Ulasan>? ulasanList =
+          await ApiService().motorApi.apiMotorIdUlasansGet(motor.idMotor!);
+
       vehicleCards.add(
         vehicleCard(
+          ulasan: ulasanList,
           // height: 210,
           // width: 160,
           margin: const EdgeInsets.only(top: 20, right: 20, left: 20),
@@ -78,7 +84,12 @@ class SearchResult extends StatelessWidget {
       ),
       body: FutureBuilder(
         // future: MotorAPi.filtered(date, transimission, model),
-        future: MotorApi().apiMotorGet(transmisi: transimission, model: model),
+        future: ApiService().motorApi.apiMotorGet(
+            transmisi: transimission,
+            model: model,
+            withDiskon: true,
+            withImage: true,
+            withUlasan: true),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -94,11 +105,44 @@ class SearchResult extends StatelessWidget {
               padding: const EdgeInsets.only(right: 20),
               // height: 300,
               width: double.infinity,
-              child: buildVehicleRow(motors),
+              child: FutureBuilder<Widget>(
+                future: buildVehicleRow(removeBookedMotors(motors) ?? []),
+                builder: (context, vehicleRowSnapshot) {
+                  if (vehicleRowSnapshot.connectionState ==
+                      ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (vehicleRowSnapshot.hasError) {
+                    return Center(
+                        child: Text('Error: ${vehicleRowSnapshot.error}'));
+                  } else {
+                    return vehicleRowSnapshot.data ?? const SizedBox();
+                  }
+                },
+              ),
             ),
           );
         },
       ),
     );
+  }
+
+  List<Motor>? removeBookedMotors(List<Motor>? listMotors) {
+    // Mengambil daftar motor yang sudah dibooking
+
+    List<Motor> filteredList = [];
+
+    if (listMotors == null || listMotors.isEmpty) {
+      return [];
+    }
+
+    // Menghapus motor yang sudah dibooking dari daftar
+    for (var motor in listMotors!) {
+      if (motor.statusMotor == "Tersedia") {
+        filteredList.add(motor);
+      }
+    }
+
+    // Mengembalikan daftar motor yang sudah dibooking
+    return filteredList;
   }
 }

@@ -3,10 +3,14 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:tubes_mobpro/tubes/api_service.dart';
 import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
+import 'package:tubes_mobpro/tubes/pages/auth_check.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 import 'package:tubes_mobpro/tubes/widgets/button_widgets.dart';
+import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 
 class RegisterMotorcycleUploadPhotosPage extends StatefulWidget {
   final MotorForm motorForm;
@@ -360,10 +364,87 @@ class _RegisterMotorcycleUploadPhotosPageState
                     child: ButtonWidget.primary(
                         label: "Confirm",
                         press: () async {
-                          final result = await ApiService()
+                          if (frontViewImage == null ||
+                              leftViewImage == null ||
+                              rightViewImage == null ||
+                              rearViewImage == null) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content:
+                                    Text("Please upload all motorcycle photos"),
+                                backgroundColor: AppColors.R400,
+                              ),
+                            );
+                            return;
+                          }
+                          // convert XFile to MultiPartFile
+                          final frontMultiPartFile =
+                              http.MultipartFile.fromBytes(
+                                  'file', await frontViewImage!.readAsBytes(),
+                                  filename: frontViewImage!.name,
+                                  contentType: MediaType('image', 'jpeg'));
+                          final leftMultiPartFile =
+                              http.MultipartFile.fromBytes(
+                                  'file', await leftViewImage!.readAsBytes(),
+                                  filename: leftViewImage!.name,
+                                  contentType: MediaType('image', 'jpeg'));
+                          final rightMultiPartFile =
+                              http.MultipartFile.fromBytes(
+                                  'file', await rightViewImage!.readAsBytes(),
+                                  filename: rightViewImage!.name,
+                                  contentType: MediaType('image', 'jpeg'));
+                          final rearMultiPartFile =
+                              http.MultipartFile.fromBytes(
+                                  'file', await rearViewImage!.readAsBytes(),
+                                  filename: rearViewImage!.name,
+                                  contentType: MediaType('image', 'jpeg'));
+
+                          // check if not a mitra yet
+                          if (widget.motorForm.idMitra == -1) {
+                            // create mitra
+                            final mitra = await ApiService().mitraApi.mitraPost(
+                                postCreateMitraDTO: PostCreateMitraDTO(
+                                    idPengguna: Provider.of<AuthState>(context,
+                                            listen: false)
+                                        .currentUser!
+                                        .id,
+                                    status: StatusMitra.aktif));
+                            // set idMitra to motorForm
+                            widget.motorForm.idMitra = mitra!.idMitra!;
+                          }
+
+                          // create motorcycle
+                          final createdMotor = await ApiService()
                               .motorApi
-                              .apiMotorPostWithHttpInfo(
-                                  motorForm: widget.motorForm);
+                              .apiMotorPost(motorForm: widget.motorForm);
+
+                          // upload photos
+                          final front = await ApiService()
+                              .storageApi
+                              .storageStorePost(file: frontMultiPartFile);
+                          final left = await ApiService()
+                              .storageApi
+                              .storageStorePost(file: leftMultiPartFile);
+                          final right = await ApiService()
+                              .storageApi
+                              .storageStorePost(file: rightMultiPartFile);
+                          final rear = await ApiService()
+                              .storageApi
+                              .storageStorePost(file: rearMultiPartFile);
+
+                          // update motorcycle with photos
+                          await ApiService().motorImageApi.apiMotorImagePost(
+                                  postMotorImageDTO: PostMotorImageDTO(
+                                idMotor: createdMotor?.idMotor,
+                                front: front,
+                                left: left,
+                                right: right,
+                                rear: rear,
+                              ));
+
+                          Navigator.of(context)
+                            ..pop()
+                            ..pop();
                         }))
               ],
             )

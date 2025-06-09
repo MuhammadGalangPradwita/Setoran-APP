@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
 import 'package:tubes_mobpro/tubes/pages/discount_page.dart';
 import 'package:tubes_mobpro/tubes/pages/search_result_detail.dart';
@@ -11,13 +12,17 @@ class vehicleCard extends StatelessWidget {
   // final double height;
   final EdgeInsetsGeometry margin;
   final Motor motor;
+  final List<Ulasan>? ulasan;
 
-  const vehicleCard(
+  vehicleCard(
       {super.key,
       // required this.width,
       // required this.height,
       required this.margin,
-      required this.motor});
+      required this.motor,
+      required this.ulasan});
+
+  final formatter = NumberFormat("#,###");
 
   // // NMAX normal price:
   // height: 260,
@@ -46,17 +51,31 @@ class vehicleCard extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => SearchResultDetail(index: 1)));
+                        builder: (context) =>
+                            SearchResultDetail(motor: motor)));
               },
               child: SizedBox(
                 width: 180,
                 height: 250,
                 child: Column(
                   children: [
-                    // TODO: Uncomment this when you have the image asset
-                    // Container(
-                    //     margin: margin,
-                    //     child: Image.asset(motor.getImages()[0])),
+                    Container(
+                        width: double.infinity,
+                        margin: margin,
+                        child: Builder(
+                          builder: (context) {
+                            if (motor.idMotorImage != null) {
+                              return Image.network(
+                                  "http://160.19.167.222:5103/storage/fetch/${motor.motorImage!.front!}",
+                                  fit: BoxFit.cover);
+                            } else {
+                              return Image.asset(
+                                'assets/images/general-img-landscape.png',
+                                fit: BoxFit.cover,
+                              );
+                            }
+                          },
+                        )),
                     const SizedBox(
                       height: 10,
                     ),
@@ -66,45 +85,40 @@ class vehicleCard extends StatelessWidget {
                       child: Row(
                         children: [
                           Text(
-                            "${motor.brand}, ${motor.model}",
+                            "${motor.model}",
                             textAlign: TextAlign.left,
-                            style: AppTextStyle.body2Bold,
+                            style: AppTextStyle.body1Bold,
                           ),
-                          const SizedBox(width: 48),
-                          const Icon(
-                            Icons.star,
-                            color: Colors.amber,
-                            size: 18,
-                          ),
-                          const SizedBox(width: 5),
-                          FutureBuilder<double?>(
-                              // future: UlasanApi.getMotorAvg(motor.idMotor),
-                              // TODO: Replace with actual future call
-                              future: Future<double?>.delayed(
-                                const Duration(seconds: 1),
-                                () => 4.5, // Example rating value
-                              ),
-                              builder: (context, snapshot) {
-                                if (snapshot.hasData) {
-                                  return Text(
-                                    snapshot.data == null
-                                        ? "-"
-                                        : snapshot.data.toString(),
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.black,
-                                    ),
+                          Expanded(
+                            child: Container(
+                              alignment: Alignment.centerRight,
+                              margin: const EdgeInsets.only(right: 0),
+                              child: FutureBuilder<double?>(
+                                // future: UlasanApi.getMotorAvg(motor.idMotor),
+                                future: Future<double?>.delayed(
+                                  const Duration(seconds: 1),
+                                  () => 4.5, // Example rating value
+                                ),
+                                builder: (context, snapshot) {
+                                  return Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      const Icon(
+                                        Icons.star,
+                                        color: Colors.amber,
+                                        size: 18,
+                                      ),
+                                      const SizedBox(width: 5),
+                                      Text(
+                                        "${ulasan != null && calculateAverageRating(ulasan!) != null ? calculateAverageRating(ulasan!) : "-"}",
+                                        style: AppTextStyle.body2Bold,
+                                      ),
+                                    ],
                                   );
-                                }
-
-                                return const Text(
-                                  "-",
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.black,
-                                  ),
-                                );
-                              })
+                                },
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -112,7 +126,7 @@ class vehicleCard extends StatelessWidget {
                         width: double.infinity,
                         margin: const EdgeInsets.only(left: 10),
                         child: Text(
-                          motor.transmisi!,
+                          "${motor.transmisi}",
                           textAlign: TextAlign.left,
                           style: AppTextStyle.body3Regular,
                         )),
@@ -123,9 +137,9 @@ class vehicleCard extends StatelessWidget {
                       child: Row(
                         children: [
                           Text(
-                            motor.hargaHarian.toString(),
+                            'Rp${formatter.format(motor.hargaHarian) ?? "-"}',
                             textAlign: TextAlign.left,
-                            style: AppTextStyle.body2Bold,
+                            style: AppTextStyle.body1Bold,
                           ),
                           Text(
                             '/day',
@@ -144,11 +158,29 @@ class vehicleCard extends StatelessWidget {
       ),
     );
   }
+
+  // Callculate the average rating from the list of ulasan
+  double? calculateAverageRating(List<Ulasan> ulasan) {
+    double totalRating = 0;
+    int count = 0;
+
+    for (var ulasan in ulasan) {
+      if (ulasan.idMotor == motor.idMotor) {
+        totalRating += ulasan.rating!;
+        count++;
+      }
+    }
+
+    return count > 0 ? totalRating / count : null;
+  }
 }
 
 class vehicleCardDiscount extends StatelessWidget {
   // final double width;
   // final double height;
+
+  final Motor motor;
+
   final EdgeInsetsGeometry margin;
   final String imagePath;
   final String vehicleName;
@@ -156,8 +188,9 @@ class vehicleCardDiscount extends StatelessWidget {
   final String transmition;
   final String disPrice;
   final String norPrice;
+  final formatter = NumberFormat("#,###");
 
-  const vehicleCardDiscount({
+  vehicleCardDiscount({
     super.key,
     // required this.width,
     // required this.height,
@@ -168,6 +201,7 @@ class vehicleCardDiscount extends StatelessWidget {
     required this.transmition,
     required this.disPrice,
     required this.norPrice,
+    required this.motor,
   });
 
   @override
@@ -186,7 +220,8 @@ class vehicleCardDiscount extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => SearchResultDetail(index: 1)));
+                        builder: (context) =>
+                            SearchResultDetail(motor: motor)));
               },
               child: SizedBox(
                 width: 175,
@@ -195,7 +230,20 @@ class vehicleCardDiscount extends StatelessWidget {
                   children: [
                     Container(
                       margin: margin,
-                      child: Image.asset(imagePath),
+                      child: Builder(
+                        builder: (context) {
+                          if (motor.idMotorImage != null) {
+                            return Image.network(
+                                "http://160.19.167.222:5103/storage/fetch/${motor.motorImage!.front!}",
+                                fit: BoxFit.cover);
+                          } else {
+                            return Image.asset(
+                              'assets/images/general-img-landscape.png',
+                              fit: BoxFit.cover,
+                            );
+                          }
+                        },
+                      ),
                     ),
                     const SizedBox(
                       height: 10,

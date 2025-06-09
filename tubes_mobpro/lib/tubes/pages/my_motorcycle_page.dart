@@ -3,6 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:tubes_mobpro/tubes/api_service.dart';
 import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
 import 'package:tubes_mobpro/tubes/pages/auth_check.dart';
+import 'package:tubes_mobpro/tubes/pages/detail_activity_page.dart';
 import 'package:tubes_mobpro/tubes/pages/register_motorcycle_page.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 import 'package:tubes_mobpro/tubes/utilities/app_util.dart';
@@ -33,11 +34,10 @@ class _MyMotorcyclePageState extends State<MyMotorcyclePage> {
     final user = await AuthState().refreshCurrentUser();
     final resMotor = await ApiService()
         .motorApi
-        .apiMotorGet(idMitra: user!.mitra!.idMitra.toString());
-    final resTransaksi =
-        await ApiService().transaksiApi.apiTransaksiGet(query: {
-      'idMitra': user.mitra!.idMitra,
-    });
+        .apiMotorGet(idMitra: user!.mitra!.idMitra.toString(), withImage: true);
+    final resTransaksi = await ApiService()
+        .transaksiApi
+        .apiTransaksiGet(idMitra: user.mitra!.idMitra.toString());
     // final resTransaksi =        <Transaksi>[]; // Sementara sampai API transaksi selesai diperbaiki
     print("----------List Motor");
     print(resMotor!.length);
@@ -52,7 +52,10 @@ class _MyMotorcyclePageState extends State<MyMotorcyclePage> {
 
   double _calculateTotalIncome(List<Transaksi>? transaksis) {
     if (transaksis == null) return 0;
-    return transaksis.fold(0, (total, item) => total + (item.totalHarga!));
+    return transaksis.fold(
+        0,
+        (total, item) =>
+            item.status == 'selesai' ? total + (item.totalHarga!) : total);
   }
 
   @override
@@ -96,18 +99,18 @@ class _MyMotorcyclePageState extends State<MyMotorcyclePage> {
                   child: ButtonWidget.primary(
                     label: 'Register',
                     press: () {
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //       builder: (context) =>
-                      //           const RegisterMotorcyclePage(),
-                      //     ));
-                      Navigator.pushReplacement(
+                      Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) =>
                                 const RegisterMotorcyclePage(),
                           ));
+                      // Navigator.pushReplacement(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //       builder: (context) =>
+                      //           const RegisterMotorcyclePage(),
+                      //     ));
                     },
                   ),
                 )
@@ -145,43 +148,65 @@ class _MyMotorcyclePageState extends State<MyMotorcyclePage> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Text("Summary", style: AppTextStyle.h3Regular),
                   const Gap(32),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Icon(
-                            Icons.directions_bike,
-                            size: 30,
+                      Card(
+                        color: AppColors.G500,
+                        child: Container(
+                          padding: const EdgeInsets.all(16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Icon(
+                                Icons.directions_bike,
+                                size: 30,
+                                color: AppColors.N0,
+                              ),
+                              const Gap(8),
+                              Text("${motors!.length}",
+                                  style: AppTextStyle.h2Regular
+                                      .copyWith(color: AppColors.N0)),
+                              const Gap(8),
+                              Text("Motorcycles Owned",
+                                  style: AppTextStyle.body3Regular.copyWith(
+                                    color: AppColors.N0,
+                                  )),
+                            ],
                           ),
-                          const Gap(8),
-                          Text("${motors!.length}",
-                              style: AppTextStyle.h2Regular),
-                          const Gap(8),
-                          Text("Motorcycles Owned",
-                              style: AppTextStyle.body3Regular),
-                        ],
+                        ),
                       ),
-                      const Gap(40),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Icon(
-                            Icons.money,
-                            size: 30,
+                      // const Gap(40),
+                      Expanded(
+                        child: Card(
+                          color: Colors.orange[800],
+                          child: Container(
+                            padding: const EdgeInsets.all(16),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Icon(
+                                  Icons.money,
+                                  size: 30,
+                                  color: AppColors.N0,
+                                ),
+                                const Gap(8),
+                                Text(
+                                    AppUtil.formatPriceDouble(
+                                        _calculateTotalIncome(transaksis)),
+                                    style: AppTextStyle.h2Regular.copyWith(
+                                      color: AppColors.N0,
+                                    )),
+                                const Gap(8),
+                                Text("Total Income",
+                                    style: AppTextStyle.body3Regular.copyWith(
+                                      color: AppColors.N0,
+                                    )),
+                              ],
+                            ),
                           ),
-                          const Gap(8),
-                          Text(
-                              AppUtil.formatPriceDouble(
-                                  _calculateTotalIncome(transaksis)),
-                              style: AppTextStyle.h2Regular),
-                          const Gap(8),
-                          Text("Total Income",
-                              style: AppTextStyle.body3Regular),
-                        ],
+                        ),
                       ),
                     ],
                   )
@@ -194,9 +219,24 @@ class _MyMotorcyclePageState extends State<MyMotorcyclePage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text("Motorcycle", style: AppTextStyle.h3Regular),
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        RegisterMotorcyclePage(
+                                      // idMitra: mitra?.idMitra!,
+                                    ),
+                                  ));
+                            },
+                            child: Text("Add",
+                                style: AppTextStyle.body3Regular
+                                    .copyWith(color: AppColors.B400)),
+                          ),
                         ],
                       ),
                       const Gap(32),
@@ -218,8 +258,8 @@ class _MyMotorcyclePageState extends State<MyMotorcyclePage> {
                               style: AppTextStyle.h3Regular),
                         ],
                       ),
-                      const Gap(8),
-                      // _buildMotorList()
+                      const Gap(32),
+                      _buildTransactionList()
                     ],
                   ),
                 ),
@@ -238,19 +278,6 @@ class _MyMotorcyclePageState extends State<MyMotorcyclePage> {
           'No motorcycles registered yet',
           style: AppTextStyle.body3Regular,
         ),
-        InkWell(
-          onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const RegisterMotorcyclePage(),
-                ));
-          },
-          child: Text(
-            'Register now',
-            style: AppTextStyle.body3Regular.copyWith(color: AppColors.B400),
-          ),
-        ),
       ]);
     } else {
       return ListView.builder(
@@ -261,15 +288,136 @@ class _MyMotorcyclePageState extends State<MyMotorcyclePage> {
           final motor = motors![index];
           return Card(
             color: AppColors.N0,
-            margin: const EdgeInsets.only(bottom: 8),
-            child: ListTile(
-              title: Text(
-                '${motor.brand} ${motor.tipe}',
-                style: AppTextStyle.body1SemiBold,
-              ),
-              subtitle: Text(motor.platNomor!),
-              // Add more motor details here if needed
+            child: Row(
+              children: [
+                SizedBox(
+                  height: 100,
+                  width: 400 / 3,
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(8),
+                      bottomLeft: Radius.circular(8),
+                    ),
+                    child: Builder(builder: (context) {
+                      if (motor.motorImage != null) {
+                        return Image.network(
+                          "http://160.19.167.222:5103/storage/fetch/${motor.motorImage!.front!}",
+                          fit: BoxFit.fill,
+                        );
+                      } else {
+                        return Image.asset(
+                          'assets/images/general-img-landscape.png',
+                          fit: BoxFit.fill,
+                        );
+                      }
+                    }),
+                  ),
+                ),
+                const Gap(8),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '${motor.brand} ${motor.model}',
+                          style: AppTextStyle.body1SemiBold,
+                        ),
+                        const Gap(4),
+                        Text(
+                          motor.platNomor!,
+                          style: AppTextStyle.body3Regular,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
+          );
+        },
+      );
+    }
+  }
+
+  Widget _buildTransactionList() {
+    if (transaksis!.isEmpty) {
+      return Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+        Text(
+          'No transactions found',
+          style: AppTextStyle.body3Regular,
+        ),
+      ]);
+    } else {
+      return ListView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: transaksis!.length,
+        itemBuilder: (context, index) {
+          final transaksi = transaksis![index];
+          return InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      DetailActivityPage(transaksi: transaksi),
+                ),
+              );
+            },
+            child: Card(
+                color: AppColors.N0,
+                margin: const EdgeInsets.only(bottom: 8),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Transaction ID: ${transaksi.idTransaksi}",
+                            style: AppTextStyle.body3Regular,
+                          ),
+                          Text(
+                              "Date: ${AppUtil.formatDate(transaksi.tanggalMulai!)}",
+                              style: AppTextStyle.body3Regular),
+                        ],
+                      ),
+                      const Gap(8),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                  "${transaksi.motor!.brand!} ${transaksi.motor!.model!}",
+                                  style: AppTextStyle.body1SemiBold),
+                              const Gap(8),
+                              Text(
+                                  "${AppUtil.formatDate(transaksi.tanggalMulai!)} - ${AppUtil.formatDate(transaksi.tanggalSelesai!)}",
+                                  style: AppTextStyle.body3Regular),
+                            ],
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(
+                                  AppUtil.formatPriceDouble(
+                                      transaksi.totalHarga!),
+                                  style: AppTextStyle.body1SemiBold),
+                              const Gap(8),
+                              Text(transaksi.status!,
+                                  style: AppTextStyle.body3Regular),
+                            ],
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                )),
           );
         },
       );

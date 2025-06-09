@@ -145,8 +145,3 @@ lib/model/two_factor_response.dart
 lib/model/ulasan.dart
 lib/model/voucher.dart
 pubspec.yaml
-test/dashboard_data_dto_test.dart
-test/motor_table_dto_test.dart
-test/post_create_mitra_dto_test.dart
-test/put_motor_image_dto_test.dart
-test/react_api_test.dart
