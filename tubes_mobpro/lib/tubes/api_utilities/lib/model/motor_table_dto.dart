@@ -10,9 +10,9 @@
 
 part of openapi.api;
 
-class Motor {
-  /// Returns a new [Motor] instance.
-  Motor({
+class MotorTableDTO {
+  /// Returns a new [MotorTableDTO] instance.
+  MotorTableDTO({
     this.idMotor,
     this.platNomor,
     this.idMitra,
@@ -30,6 +30,8 @@ class Motor {
     this.idMotorImage,
     this.mitra,
     this.motorImage,
+    this.ownerId,
+    this.ownerName,
   });
 
   ///
@@ -102,8 +104,12 @@ class Motor {
   ///
   MotorImage? motorImage;
 
+  String? ownerId;
+
+  String? ownerName;
+
   @override
-  bool operator ==(Object other) => identical(this, other) || other is Motor &&
+  bool operator ==(Object other) => identical(this, other) || other is MotorTableDTO &&
     other.idMotor == idMotor &&
     other.platNomor == platNomor &&
     other.idMitra == idMitra &&
@@ -120,7 +126,9 @@ class Motor {
     _deepEquality.equals(other.ulasan, ulasan) &&
     other.idMotorImage == idMotorImage &&
     other.mitra == mitra &&
-    other.motorImage == motorImage;
+    other.motorImage == motorImage &&
+    other.ownerId == ownerId &&
+    other.ownerName == ownerName;
 
   @override
   int get hashCode =>
@@ -141,10 +149,12 @@ class Motor {
     (ulasan == null ? 0 : ulasan!.hashCode) +
     (idMotorImage == null ? 0 : idMotorImage!.hashCode) +
     (mitra == null ? 0 : mitra!.hashCode) +
-    (motorImage == null ? 0 : motorImage!.hashCode);
+    (motorImage == null ? 0 : motorImage!.hashCode) +
+    (ownerId == null ? 0 : ownerId!.hashCode) +
+    (ownerName == null ? 0 : ownerName!.hashCode);
 
   @override
-  String toString() => 'Motor[idMotor=$idMotor, platNomor=$platNomor, idMitra=$idMitra, nomorSTNK=$nomorSTNK, nomorBPKB=$nomorBPKB, model=$model, brand=$brand, tipe=$tipe, tahun=$tahun, transmisi=$transmisi, statusMotor=$statusMotor, hargaHarian=$hargaHarian, diskon=$diskon, ulasan=$ulasan, idMotorImage=$idMotorImage, mitra=$mitra, motorImage=$motorImage]';
+  String toString() => 'MotorTableDTO[idMotor=$idMotor, platNomor=$platNomor, idMitra=$idMitra, nomorSTNK=$nomorSTNK, nomorBPKB=$nomorBPKB, model=$model, brand=$brand, tipe=$tipe, tahun=$tahun, transmisi=$transmisi, statusMotor=$statusMotor, hargaHarian=$hargaHarian, diskon=$diskon, ulasan=$ulasan, idMotorImage=$idMotorImage, mitra=$mitra, motorImage=$motorImage, ownerId=$ownerId, ownerName=$ownerName]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -233,13 +243,23 @@ class Motor {
     } else {
       json[r'motorImage'] = null;
     }
+    if (this.ownerId != null) {
+      json[r'ownerId'] = this.ownerId;
+    } else {
+      json[r'ownerId'] = null;
+    }
+    if (this.ownerName != null) {
+      json[r'ownerName'] = this.ownerName;
+    } else {
+      json[r'ownerName'] = null;
+    }
     return json;
   }
 
-  /// Returns a new [Motor] instance and imports its values from
+  /// Returns a new [MotorTableDTO] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static Motor? fromJson(dynamic value) {
+  static MotorTableDTO? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -248,13 +268,13 @@ class Motor {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "Motor[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "Motor[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "MotorTableDTO[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "MotorTableDTO[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return Motor(
+      return MotorTableDTO(
         idMotor: mapValueOfType<int>(json, r'idMotor'),
         platNomor: mapValueOfType<String>(json, r'platNomor'),
         idMitra: mapValueOfType<int>(json, r'idMitra'),
@@ -272,16 +292,18 @@ class Motor {
         idMotorImage: mapValueOfType<int>(json, r'idMotorImage'),
         mitra: Mitra.fromJson(json[r'mitra']),
         motorImage: MotorImage.fromJson(json[r'motorImage']),
+        ownerId: mapValueOfType<String>(json, r'ownerId'),
+        ownerName: mapValueOfType<String>(json, r'ownerName'),
       );
     }
     return null;
   }
 
-  static List<Motor> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <Motor>[];
+  static List<MotorTableDTO> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <MotorTableDTO>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = Motor.fromJson(row);
+        final value = MotorTableDTO.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -290,12 +312,12 @@ class Motor {
     return result.toList(growable: growable);
   }
 
-  static Map<String, Motor> mapFromJson(dynamic json) {
-    final map = <String, Motor>{};
+  static Map<String, MotorTableDTO> mapFromJson(dynamic json) {
+    final map = <String, MotorTableDTO>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = Motor.fromJson(entry.value);
+        final value = MotorTableDTO.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -304,14 +326,14 @@ class Motor {
     return map;
   }
 
-  // maps a json object with a list of Motor-objects as value to a dart map
-  static Map<String, List<Motor>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<Motor>>{};
+  // maps a json object with a list of MotorTableDTO-objects as value to a dart map
+  static Map<String, List<MotorTableDTO>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<MotorTableDTO>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = Motor.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = MotorTableDTO.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

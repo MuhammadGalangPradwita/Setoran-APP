@@ -6,6 +6,7 @@ doc/AccessTokenResponse.md
 doc/AuthApi.md
 doc/AvatarApi.md
 doc/CheckVoucherDTO.md
+doc/DashboardDataDTO.md
 doc/DeviceToken.md
 doc/Diskon.md
 doc/DiskonApi.md
@@ -23,6 +24,7 @@ doc/MotorApi.md
 doc/MotorForm.md
 doc/MotorImage.md
 doc/MotorImageApi.md
+doc/MotorTableDTO.md
 doc/Notifikasi.md
 doc/NotifikasiApi.md
 doc/Pelanggan.md
@@ -31,6 +33,7 @@ doc/Pembayaran.md
 doc/PembayaranApi.md
 doc/Pengguna.md
 doc/PenggunaApi.md
+doc/PostCreateMitraDTO.md
 doc/PostDiskonDTO.md
 doc/PostMitraDTO.md
 doc/PostMotorImageDTO.md
@@ -43,7 +46,9 @@ doc/PostUlasanDTO.md
 doc/PostVoucherDTO.md
 doc/PutDiskonDTO.md
 doc/PutMotorDTO.md
+doc/PutMotorImageDTO.md
 doc/PutPembayaranDTO.md
+doc/ReactApi.md
 doc/RefreshRequest.md
 doc/RegisterForm.md
 doc/RegisterRequest.md
@@ -75,6 +80,7 @@ lib/api/notifikasi_api.dart
 lib/api/pelanggan_api.dart
 lib/api/pembayaran_api.dart
 lib/api/pengguna_api.dart
+lib/api/react_api.dart
 lib/api/setoran_apinet_api.dart
 lib/api/storage_api.dart
 lib/api/transaksi_api.dart
@@ -90,6 +96,7 @@ lib/auth/http_bearer_auth.dart
 lib/auth/oauth.dart
 lib/model/access_token_response.dart
 lib/model/check_voucher_dto.dart
+lib/model/dashboard_data_dto.dart
 lib/model/device_token.dart
 lib/model/diskon.dart
 lib/model/forgot_password_request.dart
@@ -103,10 +110,12 @@ lib/model/mitra_motor_dto.dart
 lib/model/motor.dart
 lib/model/motor_form.dart
 lib/model/motor_image.dart
+lib/model/motor_table_dto.dart
 lib/model/notifikasi.dart
 lib/model/pelanggan.dart
 lib/model/pembayaran.dart
 lib/model/pengguna.dart
+lib/model/post_create_mitra_dto.dart
 lib/model/post_diskon_dto.dart
 lib/model/post_mitra_dto.dart
 lib/model/post_motor_image_dto.dart
@@ -119,6 +128,7 @@ lib/model/post_ulasan_dto.dart
 lib/model/post_voucher_dto.dart
 lib/model/put_diskon_dto.dart
 lib/model/put_motor_dto.dart
+lib/model/put_motor_image_dto.dart
 lib/model/put_pembayaran_dto.dart
 lib/model/refresh_request.dart
 lib/model/register_form.dart
@@ -135,4 +145,8 @@ lib/model/two_factor_response.dart
 lib/model/ulasan.dart
 lib/model/voucher.dart
 pubspec.yaml
-test/post_motor_image_dto_test.dart
+test/dashboard_data_dto_test.dart
+test/motor_table_dto_test.dart
+test/post_create_mitra_dto_test.dart
+test/put_motor_image_dto_test.dart
+test/react_api_test.dart

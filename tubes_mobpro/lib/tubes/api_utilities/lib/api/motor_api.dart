@@ -19,6 +19,12 @@ class MotorApi {
   /// Performs an HTTP 'GET /api/Motor' operation and returns the [Response].
   /// Parameters:
   ///
+  /// * [bool] withImage:
+  ///
+  /// * [bool] withDiskon:
+  ///
+  /// * [bool] withUlasan:
+  ///
   /// * [String] idMitra:
   ///
   /// * [String] status:
@@ -26,7 +32,7 @@ class MotorApi {
   /// * [String] model:
   ///
   /// * [String] transmisi:
-  Future<Response> apiMotorGetWithHttpInfo({ String? idMitra, String? status, String? model, String? transmisi, }) async {
+  Future<Response> apiMotorGetWithHttpInfo({ bool? withImage, bool? withDiskon, bool? withUlasan, String? idMitra, String? status, String? model, String? transmisi, }) async {
     // ignore: prefer_const_declarations
     final path = r'/api/Motor';
 
@@ -37,6 +43,15 @@ class MotorApi {
     final headerParams = <String, String>{};
     final formParams = <String, String>{};
 
+    if (withImage != null) {
+      queryParams.addAll(_queryParams('', 'WithImage', withImage));
+    }
+    if (withDiskon != null) {
+      queryParams.addAll(_queryParams('', 'WithDiskon', withDiskon));
+    }
+    if (withUlasan != null) {
+      queryParams.addAll(_queryParams('', 'WithUlasan', withUlasan));
+    }
     if (idMitra != null) {
       queryParams.addAll(_queryParams('', 'IdMitra', idMitra));
     }
@@ -66,6 +81,12 @@ class MotorApi {
 
   /// Parameters:
   ///
+  /// * [bool] withImage:
+  ///
+  /// * [bool] withDiskon:
+  ///
+  /// * [bool] withUlasan:
+  ///
   /// * [String] idMitra:
   ///
   /// * [String] status:
@@ -73,8 +94,8 @@ class MotorApi {
   /// * [String] model:
   ///
   /// * [String] transmisi:
-  Future<List<Motor>?> apiMotorGet({ String? idMitra, String? status, String? model, String? transmisi, }) async {
-    final response = await apiMotorGetWithHttpInfo( idMitra: idMitra, status: status, model: model, transmisi: transmisi, );
+  Future<List<Motor>?> apiMotorGet({ bool? withImage, bool? withDiskon, bool? withUlasan, String? idMitra, String? status, String? model, String? transmisi, }) async {
+    final response = await apiMotorGetWithHttpInfo( withImage: withImage, withDiskon: withDiskon, withUlasan: withUlasan, idMitra: idMitra, status: status, model: model, transmisi: transmisi, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -85,6 +106,97 @@ class MotorApi {
       final responseBody = await _decodeBodyBytes(response);
       return (await apiClient.deserializeAsync(responseBody, 'List<Motor>') as List)
         .cast<Motor>()
+        .toList(growable: false);
+
+    }
+    return null;
+  }
+
+  /// Performs an HTTP 'DELETE /api/Motor/{id}' operation and returns the [Response].
+  /// Parameters:
+  ///
+  /// * [int] id (required):
+  Future<Response> apiMotorIdDeleteWithHttpInfo(int id,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/api/Motor/{id}'
+      .replaceAll('{id}', id.toString());
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'DELETE',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Parameters:
+  ///
+  /// * [int] id (required):
+  Future<void> apiMotorIdDelete(int id,) async {
+    final response = await apiMotorIdDeleteWithHttpInfo(id,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
+  /// Performs an HTTP 'GET /api/Motor/{id}/diskons' operation and returns the [Response].
+  /// Parameters:
+  ///
+  /// * [int] id (required):
+  Future<Response> apiMotorIdDiskonsGetWithHttpInfo(int id,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/api/Motor/{id}/diskons'
+      .replaceAll('{id}', id.toString());
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Parameters:
+  ///
+  /// * [int] id (required):
+  Future<List<Diskon>?> apiMotorIdDiskonsGet(int id,) async {
+    final response = await apiMotorIdDiskonsGetWithHttpInfo(id,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      final responseBody = await _decodeBodyBytes(response);
+      return (await apiClient.deserializeAsync(responseBody, 'List<Diskon>') as List)
+        .cast<Diskon>()
         .toList(growable: false);
 
     }

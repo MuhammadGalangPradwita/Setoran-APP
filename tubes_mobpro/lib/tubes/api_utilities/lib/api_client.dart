@@ -186,6 +186,8 @@ class ApiClient {
           return AccessTokenResponse.fromJson(value);
         case 'CheckVoucherDTO':
           return CheckVoucherDTO.fromJson(value);
+        case 'DashboardDataDTO':
+          return DashboardDataDTO.fromJson(value);
         case 'DeviceToken':
           return DeviceToken.fromJson(value);
         case 'Diskon':
@@ -212,6 +214,8 @@ class ApiClient {
           return MotorForm.fromJson(value);
         case 'MotorImage':
           return MotorImage.fromJson(value);
+        case 'MotorTableDTO':
+          return MotorTableDTO.fromJson(value);
         case 'Notifikasi':
           return Notifikasi.fromJson(value);
         case 'Pelanggan':
@@ -220,6 +224,8 @@ class ApiClient {
           return Pembayaran.fromJson(value);
         case 'Pengguna':
           return Pengguna.fromJson(value);
+        case 'PostCreateMitraDTO':
+          return PostCreateMitraDTO.fromJson(value);
         case 'PostDiskonDTO':
           return PostDiskonDTO.fromJson(value);
         case 'PostMitraDTO':
@@ -244,6 +250,8 @@ class ApiClient {
           return PutDiskonDTO.fromJson(value);
         case 'PutMotorDTO':
           return PutMotorDTO.fromJson(value);
+        case 'PutMotorImageDTO':
+          return PutMotorImageDTO.fromJson(value);
         case 'PutPembayaranDTO':
           return PutPembayaranDTO.fromJson(value);
         case 'RefreshRequest':

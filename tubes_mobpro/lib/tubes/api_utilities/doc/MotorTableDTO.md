@@ -1,4 +1,4 @@
-# openapi.model.Motor
+# openapi.model.MotorTableDTO
 
 ## Load the model package
 ```dart
@@ -25,6 +25,8 @@ Name | Type | Description | Notes
 **idMotorImage** | **int** |  | [optional] 
 **mitra** | [**Mitra**](Mitra.md) |  | [optional] 
 **motorImage** | [**MotorImage**](MotorImage.md) |  | [optional] 
+**ownerId** | **String** |  | [optional] 
+**ownerName** | **String** |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
