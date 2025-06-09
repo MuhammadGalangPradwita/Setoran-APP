@@ -1,18 +1,12 @@
-import 'dart:convert';
-
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
-// import 'package:tubes_mobpro/tubes/api_utilities/motor.dart';
-// import 'package:tubes_mobpro/tubes/models/motor.dart';
+import 'package:tubes_mobpro/tubes/extension/motor.dart';
 import 'package:tubes_mobpro/tubes/pages/auth_check.dart';
 import 'package:tubes_mobpro/tubes/pages/notification_page.dart';
 import 'package:tubes_mobpro/tubes/pages/searchResultPage.dart';
-import 'package:tubes_mobpro/tubes/pages/search_result_page.dart';
-import 'package:tubes_mobpro/tubes/services/firebase_notification_service.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 import 'package:tubes_mobpro/tubes/widgets/cardHomePage_widgets.dart';
 import 'package:tubes_mobpro/tubes/widgets/textField_widget.dart';
@@ -244,6 +238,9 @@ class _HomepageScreenState extends State<HomepageScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+
+                      // Date Picker
+
                       GestureDetector(
                         onTap: () => _selectDate(context),
                         child: AbsorbPointer(
@@ -255,7 +252,9 @@ class _HomepageScreenState extends State<HomepageScreen> {
                           ),
                         ),
                       ),
+
                       const Gap(24),
+
                       const Text('Models'),
                       Row(
                         children: [
@@ -336,34 +335,8 @@ class _HomepageScreenState extends State<HomepageScreen> {
                         return const Center(child: Text('No motors available'));
                       } else {
                         final List<Motor> motors =
-                            removeBookedMotors(snapshot.data!)!;
-                        return SizedBox(
-                          height: 300, // Adjust height as needed
-                          child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: motors.length,
-                              itemBuilder: (context, index) {
-                                return FutureBuilder<List<Ulasan>?>(
-                                  future:
-                                      getUlasanByMotorId(motors[index].idMotor),
-                                  builder: (context, snapshot) {
-                                    List<Ulasan>? ulasan;
-                                    if (snapshot.hasData &&
-                                        snapshot.data!.isNotEmpty) {
-                                      ulasan = snapshot.data!;
-                                    } else {
-                                      ulasan = null;
-                                    }
-                                    return vehicleCard(
-                                      ulasan: ulasan,
-                                      margin: const EdgeInsets.only(
-                                          top: 10, right: 10, left: 10),
-                                      motor: motors[index],
-                                    );
-                                  },
-                                );
-                              }),
-                        );
+                            Motor().removeBookedMotors(snapshot.data!)!;
+                        return buildHorizontalVehicleList(motors);
                       }
                     },
                   ),
@@ -449,7 +422,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                             } else {
                               final List<Motor> motors =
                                   removeBookedMotors(snapshot.data!)!;
-                              return buildDiscountMotorList(motors);
+                              return buildHorizontalVehicleList(motors);
                             }
                           },
                         ),
@@ -463,30 +436,5 @@ class _HomepageScreenState extends State<HomepageScreen> {
         ),
       ),
     );
-  }
-
-  List<Motor>? removeBookedMotors(List<Motor>? listMotors) {
-    // Mengambil daftar motor yang sudah dibooking
-
-    List<Motor> filteredList = [];
-
-    if (listMotors == null || listMotors.isEmpty) {
-      return [];
-    }
-
-    // Menghapus motor yang sudah dibooking dari daftar
-    for (var motor in listMotors!) {
-      // Mendapatkan motor yg mempunyai image
-      if (motor.idMotorImage != null)
-        print(
-            'Motor punya image: idMotor ${motor.idMotor} nama motor: ${motor.model}, imageId: ${motor.idMotorImage} image: ${motor.motorImage?.front}');
-
-      if (motor.statusMotor == "Tersedia") {
-        filteredList.add(motor);
-      }
-    }
-
-    // Mengembalikan daftar motor yang sudah dibooking
-    return filteredList;
   }
 }
