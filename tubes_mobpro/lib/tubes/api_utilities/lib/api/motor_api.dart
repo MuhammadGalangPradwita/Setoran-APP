@@ -112,6 +112,46 @@ class MotorApi {
     return null;
   }
 
+  /// Performs an HTTP 'DELETE /api/Motor/{id}' operation and returns the [Response].
+  /// Parameters:
+  ///
+  /// * [int] id (required):
+  Future<Response> apiMotorIdDeleteWithHttpInfo(int id,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/api/Motor/{id}'
+      .replaceAll('{id}', id.toString());
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'DELETE',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Parameters:
+  ///
+  /// * [int] id (required):
+  Future<void> apiMotorIdDelete(int id,) async {
+    final response = await apiMotorIdDeleteWithHttpInfo(id,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
   /// Performs an HTTP 'GET /api/Motor/{id}/diskons' operation and returns the [Response].
   /// Parameters:
   ///
