@@ -42,6 +42,248 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
     });
   }
 
+  // Mendapatkan String Rentang Waktu peminjaman motor
+  // Jika tgl awal dan akhir di bulan yg sama, maka hanya akan dikeluarkan bulan awal.
+  String getDateRange(DateTimeRange range) {
+    String startMonth = DateFormat('MMM').format(range.start);
+    String endMonth = DateFormat('MMM').format(range.end);
+
+    String rentRange = "";
+
+    rentRange += "$startMonth ${range.start.day} - ";
+
+    if (range.start.month == range.end.month) {
+      rentRange += "${range.end.day}";
+    } else {
+      rentRange += "$endMonth ${range.end.day}";
+    }
+
+    return rentRange;
+  }
+
+  void createTransaction(
+      Motor motor, DateTimeRange range, Voucher? voucher) async {
+    double finalFees = calculateFees(motor, range, voucher, diskon);
+
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      int? userId =
+          (await ApiService().penggunaApi.penggunaCurrentPenggunaGet())!
+              .pelanggan
+              ?.idPelanggan;
+
+      Map<String, dynamic> payload = {
+        'id_motor': motor.idMotor,
+        'id_pelanggan': userId,
+        'tanggal_mulai': range.start,
+        'tanggal_selesai': range.end,
+        'status_transaksi': 'dibuat',
+        'durasi': range.duration.inDays,
+        'nominal': finalFees,
+      };
+
+      if (voucher != null) {
+        payload['id_voucher'] = voucher.idVoucher;
+      }
+
+      if (motor.diskon != null && motor.diskon!.isNotEmpty) {
+        payload['id_diskon'] = motor.getBestDiscount()?.idDiskon;
+      }
+
+
+      Response transaksiResponse =
+          await ApiService().transaksiApi.apiTransaksiPostWithHttpInfo(
+                  postTransaksiDTO: PostTransaksiDTO(
+                idMotor: payload['id_motor'],
+                idPelanggan: payload['id_pelanggan'],
+                tanggalMulai: payload['tanggal_mulai'],
+                tanggalSelesai: payload['tanggal_selesai'],
+                idVoucher: payload['id_voucher'] ?? null,
+                idDiscount: payload['id_diskon'] ?? null,
+              ));
+
+
+      // Mengambil id transaksi dari response
+      final Map<String, dynamic> transaksiBody = transaksiResponse.body != null
+          ? Map<String, dynamic>.from(jsonDecode(transaksiResponse.body))
+          : {};
+
+      int? idTransaksi = transaksiBody['idTransaksi'];
+
+      if (idTransaksi == null) {
+        throw Exception('Failed to create transaction: No ID returned');
+      }
+
+      // print('motor_book_page.dart');
+      // print('id_motor: ${payload['id_motor']}');
+      // print('list diskon: ${motor.diskon}');
+      // print('nomor STNK: ${motor.nomorSTNK}');
+      // print('nomor BPKB: ${motor.nomorBPKB}');
+
+      print('Test1');
+
+      await ApiService().pembayaranApi.apiPembayaranPost(
+              postPembayaranDTO: PostPembayaranDTO(
+            idTransaksi: idTransaksi, 
+            metodePembayaran: paymentMethod!,
+          ));
+
+      print('Test2');
+
+      await ApiService().motorApi.apiMotorIdPut(payload['id_motor'],
+          putMotorDTO: PutMotorDTO(
+            statusMotor: 'Diajukan',
+            platNomor: motor.platNomor!,
+            nomorSTNK: motor.nomorSTNK!,
+            nomorBPKB: motor.nomorBPKB!,
+            model: motor.model!,
+            brand: motor.brand!,
+            tipe: motor.tipe!,
+            tahun: motor.tahun!,
+            transmisi: motor.transmisi!,
+            hargaHarian: motor.hargaHarian!,
+          ));
+
+      // AwesomeDialog(
+      //   context: context,
+      //   dialogType: DialogType.success,
+      //   headerAnimationLoop: false,
+      //   animType: AnimType.bottomSlide,
+      //   title: 'Sukses',
+      //   desc: 'idMotor: ${motor.idMotor}\n'
+      //       'idPelanggan: ${payload['id_pelanggan']}\n'
+      //       'Tanggal Mulai: ${range.start}\n'
+      //       'Tanggal Selesai: ${range.end}\n'
+      //       'Total Biaya: Rp. ${formatter.format(finalFees)}\n'
+      //       'namaVoucher: ${voucher != null ? voucher!.namaVoucher : 'Tidak ada'}\n'
+      //       'voucher: ${voucher != null ? voucher!.namaVoucher : 'Tidak ada'}'
+      //       'diskon: ${payload['id_diskon'] ?? 'Tidak ada'}',
+      //   buttonsTextStyle: const TextStyle(color: Colors.black),
+      //   showCloseIcon: false,
+      //   // btnCancelOnPress: () {},
+      //   // btnOkOnPress: () {
+      //   //   Navigator.of(context).popUntil((route) => route.isFirst);
+      //   // },
+      // ).show();
+
+      AwesomeDialog(
+        context: context,
+        dialogType: DialogType.success,
+        headerAnimationLoop: false,
+        animType: AnimType.bottomSlide,
+        title: 'Sukses',
+        desc: 'Transaksi Berhasil',
+        buttonsTextStyle: const TextStyle(color: Colors.black),
+        showCloseIcon: false,
+        // btnCancelOnPress: () {},
+        btnOkOnPress: () {
+          Navigator.of(context).popUntil((route) => route.isFirst);
+        },
+      ).show();
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $e')),
+      );
+
+      print('Error creating transaction: $e');
+
+      AwesomeDialog(
+        context: context,
+        dialogType: DialogType.error,
+        headerAnimationLoop: false,
+        animType: AnimType.bottomSlide,
+        title: 'Error!',
+        desc: 'Gagal membuat transaksi:\n$e',
+        btnOkOnPress: () {},
+      ).show();
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  double calculateFees(
+      Motor motor, DateTimeRange range, Voucher? voucher, Diskon? diskon) {
+    double fees = motor.hargaHarian! * range.duration.inDays;
+
+    if (diskon != null) {
+      fees -= diskon.jumlahDiskon!;
+    }
+
+    if (voucher != null) {
+      fees *= ((100 - voucher.persenVoucher!) / 100);
+    }
+
+    return fees;
+  }
+
+  void checkVoucher() async {
+    try {
+      var voucherFound =
+          await ApiService().voucherApi.voucherGetByCodeCodeGet(kodeVoucher!);
+
+      var voucherUsed = await ApiService()
+          .voucherApi
+          .voucherCheckVoucherCodeGet(voucherFound!.kodeVoucher!);
+      if (!voucherUsed!.valid! == false) {
+        setState(() {
+          voucher = voucherFound;
+
+          VoucherResultMessage =
+              'Voucher code "${voucher!.namaVoucher}" applied!';
+        });
+      } else {
+        setState(() {
+          voucher = null;
+
+          VoucherResultMessage = 'Anda sudah menggunakan voucher ini!';
+        });
+      }
+    } catch (e) {
+      setState(() {
+        voucher = null;
+        VoucherResultMessage = 'Please enter a valid voucher code.';
+      });
+
+      print('Error checking voucher: ${e.toString()}');
+
+      // AwesomeDialog(
+      //   context: context,
+      //   dialogType: DialogType.error,
+      //   headerAnimationLoop: false,
+      //   animType: AnimType.bottomSlide,
+      //   title: 'Failed',
+      //   desc: e.toString(),
+      //   buttonsTextStyle: const TextStyle(color: Colors.black),
+      //   showCloseIcon: false,
+      //   // btnCancelOnPress: () {},
+      //   btnOkOnPress: () {},
+      // ).show();
+    }
+  }
+
+  void validateData() {
+    if (rentTime != null && paymentMethod != null) {
+      createTransaction(widget.motor, rentTime!, voucher);
+    } else {
+      if (rentTime == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Rentang waktu belum di isi!')),
+        );
+      }
+      if (paymentMethod == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Metode pembayaran belum di isi!')),
+        );
+      }
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -413,240 +655,4 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
     );
   }
 
-  // Mendapatkan String Rentang Waktu peminjaman motor
-  // Jika tgl awal dan akhir di bulan yg sama, maka hanya akan dikeluarkan bulan awal.
-  String getDateRange(DateTimeRange range) {
-    String startMonth = DateFormat('MMM').format(range.start);
-    String endMonth = DateFormat('MMM').format(range.end);
-
-    String rentRange = "";
-
-    rentRange += "$startMonth ${range.start.day} - ";
-
-    if (range.start.month == range.end.month) {
-      rentRange += "${range.end.day}";
-    } else {
-      rentRange += "$endMonth ${range.end.day}";
-    }
-
-    return rentRange;
-  }
-
-  void createTransaction(
-      Motor motor, DateTimeRange range, Voucher? voucher) async {
-    double finalFees = calculateFees(motor, range, voucher, diskon);
-
-    setState(() {
-      isLoading = true;
-    });
-
-    try {
-      int? userId =
-          (await ApiService().penggunaApi.penggunaCurrentPenggunaGet())!
-              .pelanggan
-              ?.idPelanggan;
-
-      Map<String, dynamic> payload = {
-        'id_motor': motor.idMotor,
-        'id_pelanggan': userId,
-        'tanggal_mulai': range.start,
-        'tanggal_selesai': range.end,
-        'status_transaksi': 'dibuat',
-        'durasi': range.duration.inDays,
-        'nominal': finalFees,
-      };
-
-      if (voucher != null) {
-        payload['id_voucher'] = voucher.idVoucher;
-      }
-
-      if (motor.diskon != null && motor.diskon!.isNotEmpty) {
-        payload['id_diskon'] = motor.getBestDiscount()?.idDiskon;
-      }
-
-      Response transaksiResponse =
-          await ApiService().transaksiApi.apiTransaksiPostWithHttpInfo(
-                  postTransaksiDTO: PostTransaksiDTO(
-                idMotor: payload['id_motor'],
-                idPelanggan: payload['id_pelanggan'],
-                tanggalMulai: payload['tanggal_mulai'],
-                tanggalSelesai: payload['tanggal_selesai'],
-                idVoucher: payload['id_voucher'] ?? null,
-                idDiscount: payload['id_diskon'] ?? null,
-              ));
-
-      // Mengambil id transaksi dari response
-      final Map<String, dynamic> transaksiBody = transaksiResponse.body != null
-          ? Map<String, dynamic>.from(jsonDecode(transaksiResponse.body))
-          : {};
-
-      int? idTransaksi = transaksiBody['idTransaksi'];
-
-      if (idTransaksi == null) {
-        throw Exception('Failed to create transaction: No ID returned');
-        
-      }
-
-
-      // print('motor_book_page.dart');
-      // print('id_motor: ${payload['id_motor']}');
-      // print('list diskon: ${motor.diskon}');
-      // print('nomor STNK: ${motor.nomorSTNK}');
-      // print('nomor BPKB: ${motor.nomorBPKB}');
-
-      await ApiService().pembayaranApi.apiPembayaranPost(
-              postPembayaranDTO: PostPembayaranDTO(
-            idTransaksi: idTransaksi, // Make sure to set this value appropriately
-            metodePembayaran: paymentMethod!,
-          ));
-
-      await ApiService().motorApi.apiMotorIdPut(payload['id_motor'],
-          putMotorDTO: PutMotorDTO(
-            statusMotor: 'Diajukan',
-            platNomor: motor.platNomor!,
-            nomorSTNK: motor.nomorSTNK!,
-            nomorBPKB: motor.nomorBPKB!,
-            model: motor.model!,
-            brand: motor.brand!,
-            tipe: motor.tipe!,
-            tahun: motor.tahun!,
-            transmisi: motor.transmisi!,
-            hargaHarian: motor.hargaHarian!,
-          ));
-
-      // AwesomeDialog(
-      //   context: context,
-      //   dialogType: DialogType.success,
-      //   headerAnimationLoop: false,
-      //   animType: AnimType.bottomSlide,
-      //   title: 'Sukses',
-      //   desc: 'idMotor: ${motor.idMotor}\n'
-      //       'idPelanggan: ${payload['id_pelanggan']}\n'
-      //       'Tanggal Mulai: ${range.start}\n'
-      //       'Tanggal Selesai: ${range.end}\n'
-      //       'Total Biaya: Rp. ${formatter.format(finalFees)}\n'
-      //       'namaVoucher: ${voucher != null ? voucher!.namaVoucher : 'Tidak ada'}\n'
-      //       'voucher: ${voucher != null ? voucher!.namaVoucher : 'Tidak ada'}'
-      //       'diskon: ${payload['id_diskon'] ?? 'Tidak ada'}',
-      //   buttonsTextStyle: const TextStyle(color: Colors.black),
-      //   showCloseIcon: false,
-      //   // btnCancelOnPress: () {},
-      //   // btnOkOnPress: () {
-      //   //   Navigator.of(context).popUntil((route) => route.isFirst);
-      //   // },
-      // ).show();
-
-      AwesomeDialog(
-        context: context,
-        dialogType: DialogType.success,
-        headerAnimationLoop: false,
-        animType: AnimType.bottomSlide,
-        title: 'Sukses',
-        desc: 'Transaksi Berhasil',
-        buttonsTextStyle: const TextStyle(color: Colors.black),
-        showCloseIcon: false,
-        // btnCancelOnPress: () {},
-        btnOkOnPress: () {
-          Navigator.of(context).popUntil((route) => route.isFirst);
-        },
-      ).show();
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $e')),
-      );
-
-      print('Error creating transaction: $e');
-
-      AwesomeDialog(
-        context: context,
-        dialogType: DialogType.error,
-        headerAnimationLoop: false,
-        animType: AnimType.bottomSlide,
-        title: 'Error!',
-        desc: 'Gagal membuat transaksi:\n$e',
-        btnOkOnPress: () {},
-      ).show();
-    } finally {
-      setState(() {
-        isLoading = false;
-      });
-    }
-  }
-
-  double calculateFees(
-      Motor motor, DateTimeRange range, Voucher? voucher, Diskon? diskon) {
-    double fees = motor.hargaHarian! * range.duration.inDays;
-
-    if (diskon != null) {
-      fees -= diskon.jumlahDiskon!;
-    }
-
-    if (voucher != null) {
-      fees *= ((100 - voucher.persenVoucher!) / 100);
-    }
-
-    return fees;
-  }
-
-  void checkVoucher() async {
-    try {
-      var voucherFound =
-          await ApiService().voucherApi.voucherGetByCodeCodeGet(kodeVoucher!);
-
-      var voucherUsed = await ApiService()
-          .voucherApi
-          .voucherCheckVoucherCodeGet(voucherFound!.kodeVoucher!);
-      if (!voucherUsed!.valid! == false) {
-        setState(() {
-          voucher = voucherFound;
-
-          VoucherResultMessage =
-              'Voucher code "${voucher!.namaVoucher}" applied!';
-        });
-      } else {
-        setState(() {
-          voucher = null;
-
-          VoucherResultMessage = 'Anda sudah menggunakan voucher ini!';
-        });
-      }
-    } catch (e) {
-      setState(() {
-        voucher = null;
-        VoucherResultMessage = 'Please enter a valid voucher code.';
-      });
-
-      print('Error checking voucher: ${e.toString()}');
-
-      // AwesomeDialog(
-      //   context: context,
-      //   dialogType: DialogType.error,
-      //   headerAnimationLoop: false,
-      //   animType: AnimType.bottomSlide,
-      //   title: 'Failed',
-      //   desc: e.toString(),
-      //   buttonsTextStyle: const TextStyle(color: Colors.black),
-      //   showCloseIcon: false,
-      //   // btnCancelOnPress: () {},
-      //   btnOkOnPress: () {},
-      // ).show();
-    }
-  }
-
-  void validateData() {
-    if (rentTime != null && paymentMethod != null) {
-      createTransaction(widget.motor, rentTime!, voucher);
-    } else {
-      if (rentTime == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Rentang waktu belum di isi!')),
-        );
-      }
-      if (paymentMethod == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Metode pembayaran belum di isi!')),
-        );
-      }
-    }
-  }
 }

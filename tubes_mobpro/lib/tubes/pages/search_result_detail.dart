@@ -32,6 +32,244 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
     getRatingFromUlasan();
   }
 
+  Future<double?> getRating(List<Ulasan>? value) async {
+    double? totalRating = null;
+
+    List<Ulasan>? ulasans = (await ApiService().ulasanApi.apiUlasanGet());
+
+    if (ulasans != null) {
+      totalRating = 0;
+      totalRating = ulasans
+          .where((ulasan) => ulasan.idMotor == widget.motor.idMotor)
+          .fold(0, (sum, ulasan) => sum + ulasan.rating!);
+    }
+
+    return totalRating;
+  }
+
+  Future<void> showUlasanDialog(BuildContext context) async {
+    int rating = 0;
+    final TextEditingController reviewController = TextEditingController();
+    final _formKey = GlobalKey<FormState>();
+
+    int? userId = (await ApiService().penggunaApi.penggunaCurrentPenggunaGet())!
+        .pelanggan
+        ?.idPelanggan;
+
+    if (userId == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("ID user tidak terdeteksi."),
+        ),
+      );
+      return;
+    }
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          title: const Text("Beri Ulasan"),
+          content: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Star Rating
+                StatefulBuilder(
+                  builder: (context, setState) {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List.generate(5, (index) {
+                        return IconButton(
+                          icon: Icon(
+                            index < rating
+                                ? CupertinoIcons.star_fill
+                                : Icons.star_border,
+                            color: Colors.amber,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              rating = index + 1;
+                            });
+                          },
+                        );
+                      }),
+                    );
+                  },
+                ),
+
+                // Review TextField
+                SizedBox(height: 16),
+                TextFormField(
+                  controller: reviewController,
+                  maxLength: 500,
+                  maxLines: 4,
+                  decoration: const InputDecoration(
+                    labelText: "Tulis ulasan Anda",
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Ulasan tidak boleh kosong";
+                    }
+                    return null;
+                  },
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text("Batal"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                if (rating == 0) {
+                  // Show error if no rating is selected
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text("Silakan pilih rating sebelum mengirim."),
+                    ),
+                  );
+                  return;
+                }
+
+                if (_formKey.currentState!.validate()) {
+                  try {
+                    PostUlasanDTO postUlasanDTO = PostUlasanDTO(
+                      idMotor: widget.motor.idMotor!,
+                      idPelanggan: userId!,
+                      rating: rating,
+                      komentar: reviewController.text,
+                    );
+
+                    ApiService()
+                        .ulasanApi
+                        .apiUlasanPost(postUlasanDTO: postUlasanDTO);
+
+                    // Show success snackbar
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("Ulasan berhasil dikirim!"),
+                      ),
+                    );
+
+                    // AwesomeDialog(
+                    //   context: context,
+                    //   dialogType: DialogType.success,
+                    //   title: 'Terima kasih',
+                    //   desc: 'Ulasan Anda telah dikirim.',
+                    //   btnOkOnPress: () {
+                    //     Navigator.pop(context);
+
+                    //     // Update rating after sending review
+                    //     getRatingFromUlasan();
+
+                    //     setState(() {
+                    //       // Update motor object with new review
+                    //       ApiService()
+                    //           .motorApi
+                    //           .apiMotorIdUlasansGet(widget.motor.idMotor!)
+                    //           .then((value) {
+                    //         widget.motor.ulasan = value;
+                    //       });
+                    //     });
+                    //   },
+                    // ).show();
+                  } catch (e) {
+                    AwesomeDialog(
+                      context: context,
+                      dialogType: DialogType.error,
+                      title: 'Error',
+                      desc: 'Gagal mengirim ulasan. Silakan coba lagi.',
+                      btnOkOnPress: () {
+                        Navigator.pop(context);
+                      },
+                    ).show();
+                    print('Error sending review: $e');
+                  }
+
+                  // Show success confirmation
+                  // AwesomeDialog(
+                  //   context: context,
+                  //   dialogType: DialogType.success,
+                  //   title: 'Terima kasih!',
+                  //   desc: 'Ulasan Anda telah dikirim.',
+                  //   btnOkOnPress: () {
+                  //     Navigator.pop(context);
+                  //   },
+                  // ).show();
+                } else {
+                  // Show error if form is not valid
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text("Silakan isi ulasan dengan benar."),
+                    ),
+                  );
+                }
+              },
+              style: ElevatedButton.styleFrom(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  backgroundColor: AppColors.B400),
+              child: const Text(
+                'Kirim',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void getRatingFromUlasan() {
+    ApiService()
+        .motorApi
+        .apiMotorIdUlasansGet(widget.motor.idMotor!)
+        .then((value) {
+      if (value != null) {
+        double totalRating = 0;
+        int count = 0;
+
+        for (var ulasan in value) {
+          if (ulasan.rating != null) {
+            totalRating += ulasan.rating!;
+            count++;
+          }
+        }
+
+        setState(() {
+          rating = count > 0 ? totalRating / count : null;
+        });
+      }
+    });
+  }
+
+  // Future<bool> isRented() async {
+  //   // int userId = (await PenggunaApi.getCurrentUser())!.id;
+  //   int userId = AuthState().currentUser!.id! as int;
+
+  //   List<Transaksi>? transaksiList = await TransaksiApi().apiTransaksiGet(
+  //     idPelanggan: userId.toString(),
+  //   );
+
+  //   if (transaksiList != null) {
+  //     bool exists = transaksiList.any((v) => v.idMotor == widget.index);
+
+  //     return exists;
+  //   }
+
+  //   return false;
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -415,235 +653,4 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
       )),
     );
   }
-
-  Future<double?> getRating(List<Ulasan>? value) async {
-    double? totalRating = null;
-
-    List<Ulasan>? ulasans = (await ApiService().ulasanApi.apiUlasanGet());
-
-    if (ulasans != null) {
-      totalRating = 0;
-      totalRating = ulasans
-          .where((ulasan) => ulasan.idMotor == widget.motor.idMotor)
-          .fold(0, (sum, ulasan) => sum + ulasan.rating!);
-    }
-
-    return totalRating;
-  }
-
-  Future<void> showUlasanDialog(BuildContext context) async {
-    int rating = 0;
-    final TextEditingController reviewController = TextEditingController();
-    final _formKey = GlobalKey<FormState>();
-
-    int? userId = (await ApiService().penggunaApi.penggunaCurrentPenggunaGet())!
-        .pelanggan
-        ?.idPelanggan;
-
-    if (userId == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("ID user tidak terdeteksi."),
-        ),
-      );
-      return;
-    }
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          title: const Text("Beri Ulasan"),
-          content: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // Star Rating
-                StatefulBuilder(
-                  builder: (context, setState) {
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: List.generate(5, (index) {
-                        return IconButton(
-                          icon: Icon(
-                            index < rating
-                                ? CupertinoIcons.star_fill
-                                : Icons.star_border,
-                            color: Colors.amber,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              rating = index + 1;
-                            });
-                          },
-                        );
-                      }),
-                    );
-                  },
-                ),
-
-                // Review TextField
-                SizedBox(height: 16),
-                TextFormField(
-                  controller: reviewController,
-                  maxLength: 500,
-                  maxLines: 4,
-                  decoration: const InputDecoration(
-                    labelText: "Tulis ulasan Anda",
-                    border: OutlineInputBorder(),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Ulasan tidak boleh kosong";
-                    }
-                    return null;
-                  },
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text("Batal"),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                if (rating == 0) {
-                  // Show error if no rating is selected
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text("Silakan pilih rating sebelum mengirim."),
-                    ),
-                  );
-                  return;
-                }
-
-                if (_formKey.currentState!.validate()) {
-                  try {
-                    PostUlasanDTO postUlasanDTO = PostUlasanDTO(
-                      idMotor: widget.motor.idMotor!,
-                      idPelanggan: userId!,
-                      rating: rating,
-                      komentar: reviewController.text,
-                    );
-
-                    ApiService()
-                        .ulasanApi
-                        .apiUlasanPost(postUlasanDTO: postUlasanDTO);
-
-                    AwesomeDialog(
-                      context: context,
-                      dialogType: DialogType.success,
-                      title: 'Terima kasih',
-                      desc: 'Ulasan Anda telah dikirim.',
-                      btnOkOnPress: () {
-                        Navigator.pop(context);
-
-                        // Update rating after sending review
-                        getRatingFromUlasan();
-
-                        setState(() {
-                          // Update motor object with new review
-                          ApiService()
-                              .motorApi
-                              .apiMotorIdUlasansGet(widget.motor.idMotor!)
-                              .then((value) {
-                            widget.motor.ulasan = value;
-                          });
-                        });
-                      },
-                    ).show();
-                  } catch (e) {
-                    AwesomeDialog(
-                      context: context,
-                      dialogType: DialogType.error,
-                      title: 'Error',
-                      desc: 'Gagal mengirim ulasan. Silakan coba lagi.',
-                      btnOkOnPress: () {
-                        Navigator.pop(context);
-                      },
-                    ).show();
-                    print('Error sending review: $e');
-                  }
-
-                  // Show success confirmation
-                  // AwesomeDialog(
-                  //   context: context,
-                  //   dialogType: DialogType.success,
-                  //   title: 'Terima kasih!',
-                  //   desc: 'Ulasan Anda telah dikirim.',
-                  //   btnOkOnPress: () {
-                  //     Navigator.pop(context);
-                  //   },
-                  // ).show();
-                } else {
-                  // Show error if form is not valid
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text("Silakan isi ulasan dengan benar."),
-                    ),
-                  );
-                }
-              },
-              style: ElevatedButton.styleFrom(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  backgroundColor: AppColors.B400),
-              child: const Text(
-                'Kirim',
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void getRatingFromUlasan() {
-    ApiService()
-        .motorApi
-        .apiMotorIdUlasansGet(widget.motor.idMotor!)
-        .then((value) {
-      if (value != null) {
-        double totalRating = 0;
-        int count = 0;
-
-        for (var ulasan in value) {
-          if (ulasan.rating != null) {
-            totalRating += ulasan.rating!;
-            count++;
-          }
-        }
-
-        setState(() {
-          rating = count > 0 ? totalRating / count : null;
-        });
-      }
-    });
-  }
-
-  // Future<bool> isRented() async {
-  //   // int userId = (await PenggunaApi.getCurrentUser())!.id;
-  //   int userId = AuthState().currentUser!.id! as int;
-
-  //   List<Transaksi>? transaksiList = await TransaksiApi().apiTransaksiGet(
-  //     idPelanggan: userId.toString(),
-  //   );
-
-  //   if (transaksiList != null) {
-  //     bool exists = transaksiList.any((v) => v.idMotor == widget.index);
-
-  //     return exists;
-  //   }
-
-  //   return false;
-  // }
 }
