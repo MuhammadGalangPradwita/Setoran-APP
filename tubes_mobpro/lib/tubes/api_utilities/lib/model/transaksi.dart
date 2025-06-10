@@ -72,7 +72,13 @@ class Transaksi {
   ///
   double? totalHarga;
 
-  String? status;
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  StatusTransaksi? status;
 
   ///
   /// Please note: This property should have been non-nullable! Since the specification file
@@ -193,7 +199,7 @@ class Transaksi {
         tanggalMulai: mapDateTime(json, r'tanggalMulai', r''),
         tanggalSelesai: mapDateTime(json, r'tanggalSelesai', r''),
         totalHarga: mapValueOfType<double>(json, r'totalHarga'),
-        status: mapValueOfType<String>(json, r'status'),
+        status: StatusTransaksi.fromJson(json[r'status']),
         motor: Motor.fromJson(json[r'motor']),
         pelanggan: Pelanggan.fromJson(json[r'pelanggan']),
       );

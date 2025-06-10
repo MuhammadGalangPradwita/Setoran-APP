@@ -18,9 +18,21 @@ class PutPembayaranDTO {
     this.tanggalPembayaran,
   });
 
-  String? metodePembayaran;
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  MetodePembayaran? metodePembayaran;
 
-  String? statusPembayaran;
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  StatusPembayaran? statusPembayaran;
 
   DateTime? tanggalPembayaran;
 
@@ -79,8 +91,8 @@ class PutPembayaranDTO {
       }());
 
       return PutPembayaranDTO(
-        metodePembayaran: mapValueOfType<String>(json, r'metodePembayaran'),
-        statusPembayaran: mapValueOfType<String>(json, r'statusPembayaran'),
+        metodePembayaran: MetodePembayaran.fromJson(json[r'metodePembayaran']),
+        statusPembayaran: StatusPembayaran.fromJson(json[r'statusPembayaran']),
         tanggalPembayaran: mapDateTime(json, r'tanggalPembayaran', r''),
       );
     }

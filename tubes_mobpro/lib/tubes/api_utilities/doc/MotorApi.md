@@ -38,9 +38,9 @@ final withImage = true; // bool |
 final withDiskon = true; // bool | 
 final withUlasan = true; // bool | 
 final idMitra = idMitra_example; // String | 
-final status = status_example; // String | 
+final status = ; // StatusMotor | 
 final model = model_example; // String | 
-final transmisi = transmisi_example; // String | 
+final transmisi = ; // TransmisiMotor | 
 
 try {
     final result = api_instance.apiMotorGet(withImage, withDiskon, withUlasan, idMitra, status, model, transmisi);
@@ -58,9 +58,9 @@ Name | Type | Description  | Notes
  **withDiskon** | **bool**|  | [optional] 
  **withUlasan** | **bool**|  | [optional] 
  **idMitra** | **String**|  | [optional] 
- **status** | **String**|  | [optional] 
+ **status** | [**StatusMotor**](.md)|  | [optional] 
  **model** | **String**|  | [optional] 
- **transmisi** | **String**|  | [optional] 
+ **transmisi** | [**TransmisiMotor**](.md)|  | [optional] 
 
 ### Return type
 

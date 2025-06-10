@@ -204,6 +204,8 @@ class ApiClient {
           return InfoResponse.fromJson(value);
         case 'LoginRequest':
           return LoginRequest.fromJson(value);
+        case 'MetodePembayaran':
+          return MetodePembayaranTypeTransformer().decode(value);
         case 'Mitra':
           return Mitra.fromJson(value);
         case 'MitraMotorDTO':
@@ -268,12 +270,20 @@ class ApiClient {
           return StatusDiskonTypeTransformer().decode(value);
         case 'StatusMitra':
           return StatusMitraTypeTransformer().decode(value);
+        case 'StatusMotor':
+          return StatusMotorTypeTransformer().decode(value);
+        case 'StatusPembayaran':
+          return StatusPembayaranTypeTransformer().decode(value);
+        case 'StatusTransaksi':
+          return StatusTransaksiTypeTransformer().decode(value);
         case 'StatusVoucher':
           return StatusVoucherTypeTransformer().decode(value);
         case 'TargetNavigasi':
           return TargetNavigasiTypeTransformer().decode(value);
         case 'Transaksi':
           return Transaksi.fromJson(value);
+        case 'TransmisiMotor':
+          return TransmisiMotorTypeTransformer().decode(value);
         case 'TwoFactorRequest':
           return TwoFactorRequest.fromJson(value);
         case 'TwoFactorResponse':

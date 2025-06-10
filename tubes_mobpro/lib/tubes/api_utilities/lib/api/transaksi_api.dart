@@ -25,8 +25,8 @@ class TransaksiApi {
   ///
   /// * [String] idMitra:
   ///
-  /// * [String] status:
-  Future<Response> apiTransaksiGetWithHttpInfo({ String? idMotor, String? idPelanggan, String? idMitra, String? status, }) async {
+  /// * [StatusTransaksi] status:
+  Future<Response> apiTransaksiGetWithHttpInfo({ String? idMotor, String? idPelanggan, String? idMitra, StatusTransaksi? status, }) async {
     // ignore: prefer_const_declarations
     final path = r'/api/Transaksi';
 
@@ -72,8 +72,8 @@ class TransaksiApi {
   ///
   /// * [String] idMitra:
   ///
-  /// * [String] status:
-  Future<List<Transaksi>?> apiTransaksiGet({ String? idMotor, String? idPelanggan, String? idMitra, String? status, }) async {
+  /// * [StatusTransaksi] status:
+  Future<List<Transaksi>?> apiTransaksiGet({ String? idMotor, String? idPelanggan, String? idMitra, StatusTransaksi? status, }) async {
     final response = await apiTransaksiGetWithHttpInfo( idMotor: idMotor, idPelanggan: idPelanggan, idMitra: idMitra, status: status, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
@@ -144,8 +144,8 @@ class TransaksiApi {
   ///
   /// * [int] id (required):
   ///
-  /// * [String] status:
-  Future<Response> apiTransaksiIdPutWithHttpInfo(int id, { String? status, }) async {
+  /// * [StatusTransaksi] status:
+  Future<Response> apiTransaksiIdPutWithHttpInfo(int id, { StatusTransaksi? status, }) async {
     // ignore: prefer_const_declarations
     final path = r'/api/Transaksi/{id}'
       .replaceAll('{id}', id.toString());
@@ -179,8 +179,8 @@ class TransaksiApi {
   ///
   /// * [int] id (required):
   ///
-  /// * [String] status:
-  Future<void> apiTransaksiIdPut(int id, { String? status, }) async {
+  /// * [StatusTransaksi] status:
+  Future<void> apiTransaksiIdPut(int id, { StatusTransaksi? status, }) async {
     final response = await apiTransaksiIdPutWithHttpInfo(id,  status: status, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
