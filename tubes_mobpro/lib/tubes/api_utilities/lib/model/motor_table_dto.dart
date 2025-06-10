@@ -70,9 +70,21 @@ class MotorTableDTO {
   ///
   int? tahun;
 
-  String? transmisi;
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  TransmisiMotor? transmisi;
 
-  String? statusMotor;
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  StatusMotor? statusMotor;
 
   ///
   /// Please note: This property should have been non-nullable! Since the specification file
@@ -284,8 +296,8 @@ class MotorTableDTO {
         brand: mapValueOfType<String>(json, r'brand'),
         tipe: mapValueOfType<String>(json, r'tipe'),
         tahun: mapValueOfType<int>(json, r'tahun'),
-        transmisi: mapValueOfType<String>(json, r'transmisi'),
-        statusMotor: mapValueOfType<String>(json, r'statusMotor'),
+        transmisi: TransmisiMotor.fromJson(json[r'transmisi']),
+        statusMotor: StatusMotor.fromJson(json[r'statusMotor']),
         hargaHarian: mapValueOfType<double>(json, r'hargaHarian'),
         diskon: Diskon.listFromJson(json[r'diskon']),
         ulasan: Ulasan.listFromJson(json[r'ulasan']),

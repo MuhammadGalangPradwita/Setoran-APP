@@ -27,12 +27,12 @@ class MotorApi {
   ///
   /// * [String] idMitra:
   ///
-  /// * [String] status:
+  /// * [StatusMotor] status:
   ///
   /// * [String] model:
   ///
-  /// * [String] transmisi:
-  Future<Response> apiMotorGetWithHttpInfo({ bool? withImage, bool? withDiskon, bool? withUlasan, String? idMitra, String? status, String? model, String? transmisi, }) async {
+  /// * [TransmisiMotor] transmisi:
+  Future<Response> apiMotorGetWithHttpInfo({ bool? withImage, bool? withDiskon, bool? withUlasan, String? idMitra, StatusMotor? status, String? model, TransmisiMotor? transmisi, }) async {
     // ignore: prefer_const_declarations
     final path = r'/api/Motor';
 
@@ -89,12 +89,12 @@ class MotorApi {
   ///
   /// * [String] idMitra:
   ///
-  /// * [String] status:
+  /// * [StatusMotor] status:
   ///
   /// * [String] model:
   ///
-  /// * [String] transmisi:
-  Future<List<Motor>?> apiMotorGet({ bool? withImage, bool? withDiskon, bool? withUlasan, String? idMitra, String? status, String? model, String? transmisi, }) async {
+  /// * [TransmisiMotor] transmisi:
+  Future<List<Motor>?> apiMotorGet({ bool? withImage, bool? withDiskon, bool? withUlasan, String? idMitra, StatusMotor? status, String? model, TransmisiMotor? transmisi, }) async {
     final response = await apiMotorGetWithHttpInfo( withImage: withImage, withDiskon: withDiskon, withUlasan: withUlasan, idMitra: idMitra, status: status, model: model, transmisi: transmisi, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));

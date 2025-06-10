@@ -10,8 +10,8 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **idPembayaran** | **int** |  | [optional] 
 **idTransaksi** | **int** |  | [optional] 
-**metodePembayaran** | **String** |  | [optional] 
-**statusPembayaran** | **String** |  | [optional] 
+**metodePembayaran** | [**MetodePembayaran**](MetodePembayaran.md) |  | [optional] 
+**statusPembayaran** | [**StatusPembayaran**](StatusPembayaran.md) |  | [optional] 
 **tanggalPembayaran** | [**DateTime**](DateTime.md) |  | [optional] 
 **transaksi** | [**Transaksi**](Transaksi.md) |  | [optional] 
 

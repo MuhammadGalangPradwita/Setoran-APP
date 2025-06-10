@@ -30,7 +30,7 @@ class PostTransaksiDTO {
 
   DateTime tanggalSelesai;
 
-  String metodePembayaran;
+  MetodePembayaran metodePembayaran;
 
   int? idVoucher;
 
@@ -103,7 +103,7 @@ class PostTransaksiDTO {
         idPelanggan: mapValueOfType<int>(json, r'idPelanggan')!,
         tanggalMulai: mapDateTime(json, r'tanggalMulai', r'')!,
         tanggalSelesai: mapDateTime(json, r'tanggalSelesai', r'')!,
-        metodePembayaran: mapValueOfType<String>(json, r'metodePembayaran')!,
+        metodePembayaran: MetodePembayaran.fromJson(json[r'metodePembayaran'])!,
         idVoucher: mapValueOfType<int>(json, r'idVoucher'),
         idDiscount: mapValueOfType<int>(json, r'idDiscount'),
       );
