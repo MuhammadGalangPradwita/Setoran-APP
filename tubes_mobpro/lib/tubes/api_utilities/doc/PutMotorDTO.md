@@ -15,8 +15,8 @@ Name | Type | Description | Notes
 **brand** | **String** |  | 
 **tipe** | **String** |  | 
 **tahun** | **int** |  | 
-**transmisi** | **String** |  | 
-**statusMotor** | **String** |  | 
+**transmisi** | [**TransmisiMotor**](TransmisiMotor.md) |  | 
+**statusMotor** | [**StatusMotor**](StatusMotor.md) |  | 
 **hargaHarian** | **double** |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

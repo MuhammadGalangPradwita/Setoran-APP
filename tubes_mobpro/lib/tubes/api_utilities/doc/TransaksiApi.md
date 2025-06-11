@@ -34,7 +34,7 @@ final api_instance = TransaksiApi();
 final idMotor = idMotor_example; // String | 
 final idPelanggan = idPelanggan_example; // String | 
 final idMitra = idMitra_example; // String | 
-final status = status_example; // String | 
+final status = ; // StatusTransaksi | 
 
 try {
     final result = api_instance.apiTransaksiGet(idMotor, idPelanggan, idMitra, status);
@@ -51,7 +51,7 @@ Name | Type | Description  | Notes
  **idMotor** | **String**|  | [optional] 
  **idPelanggan** | **String**|  | [optional] 
  **idMitra** | **String**|  | [optional] 
- **status** | **String**|  | [optional] 
+ **status** | [**StatusTransaksi**](.md)|  | [optional] 
 
 ### Return type
 
@@ -132,7 +132,7 @@ import 'package:openapi/api.dart';
 
 final api_instance = TransaksiApi();
 final id = 56; // int | 
-final status = status_example; // String | 
+final status = ; // StatusTransaksi | 
 
 try {
     api_instance.apiTransaksiIdPut(id, status);
@@ -146,7 +146,7 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **int**|  | 
- **status** | **String**|  | [optional] 
+ **status** | [**StatusTransaksi**](.md)|  | [optional] 
 
 ### Return type
 

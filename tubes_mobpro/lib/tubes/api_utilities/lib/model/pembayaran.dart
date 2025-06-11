@@ -37,9 +37,21 @@ class Pembayaran {
   ///
   int? idTransaksi;
 
-  String? metodePembayaran;
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  MetodePembayaran? metodePembayaran;
 
-  String? statusPembayaran;
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  StatusPembayaran? statusPembayaran;
 
   DateTime? tanggalPembayaran;
 
@@ -129,8 +141,8 @@ class Pembayaran {
       return Pembayaran(
         idPembayaran: mapValueOfType<int>(json, r'idPembayaran'),
         idTransaksi: mapValueOfType<int>(json, r'idTransaksi'),
-        metodePembayaran: mapValueOfType<String>(json, r'metodePembayaran'),
-        statusPembayaran: mapValueOfType<String>(json, r'statusPembayaran'),
+        metodePembayaran: MetodePembayaran.fromJson(json[r'metodePembayaran']),
+        statusPembayaran: StatusPembayaran.fromJson(json[r'statusPembayaran']),
         tanggalPembayaran: mapDateTime(json, r'tanggalPembayaran', r''),
         transaksi: Transaksi.fromJson(json[r'transaksi']),
       );

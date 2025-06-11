@@ -30,4 +30,30 @@ extension MotorHelper on Motor {
     double total = ulasan!.fold(0.0, (sum, ulasan) => sum + ulasan.rating!.toDouble());
     return total / ulasan!.length;
   }
+
+  // Mengambil daftar motor yang sudah dibooking
+  List<Motor>? removeBookedMotors(List<Motor>? listMotors) {
+
+    List<Motor> filteredList = [];
+
+    if (listMotors == null || listMotors.isEmpty) {
+      return [];
+    }
+
+    // Menghapus motor yang sudah dibooking dari daftar
+    for (var motor in listMotors!) {
+      // Mendapatkan motor yg mempunyai image
+      if (motor.idMotorImage != null)
+        print(
+            'Motor punya image: idMotor ${motor.idMotor} nama motor: ${motor.model}, imageId: ${motor.idMotorImage} image: ${motor.motorImage?.front}');
+
+      if (motor.statusMotor == "Tersedia") {
+        filteredList.add(motor);
+      }
+    }
+
+    // Mengembalikan daftar motor yang sudah dibooking
+    return listMotors;
+  }
+
 }

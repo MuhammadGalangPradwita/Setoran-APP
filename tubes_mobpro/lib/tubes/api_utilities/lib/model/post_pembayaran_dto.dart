@@ -19,7 +19,7 @@ class PostPembayaranDTO {
 
   int idTransaksi;
 
-  String metodePembayaran;
+  MetodePembayaran metodePembayaran;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is PostPembayaranDTO &&
@@ -62,7 +62,7 @@ class PostPembayaranDTO {
 
       return PostPembayaranDTO(
         idTransaksi: mapValueOfType<int>(json, r'idTransaksi')!,
-        metodePembayaran: mapValueOfType<String>(json, r'metodePembayaran')!,
+        metodePembayaran: MetodePembayaran.fromJson(json[r'metodePembayaran'])!,
       );
     }
     return null;
