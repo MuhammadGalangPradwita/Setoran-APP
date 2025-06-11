@@ -66,7 +66,9 @@ class SearchResultPage extends StatelessWidget {
                           return SearchResultCard(
                             index: motor.idMotor!,
                             nama: motor.model!,
-                            transmission: motor.transmisi!,
+
+                            // Penggantian setelah perubahan enum
+                            transmission: motor.transmisi!.value.toString(),
                             image: 'assets/images/NMAX.png',
                             harga: motor.hargaHarian!,
                             statusDiskon: false,

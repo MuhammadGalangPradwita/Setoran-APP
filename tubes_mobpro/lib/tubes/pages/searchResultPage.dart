@@ -80,7 +80,12 @@ class SearchResult extends StatelessWidget {
       ),
       body: FutureBuilder(
         future: ApiService().motorApi.apiMotorGet(
-            transmisi: transimission,
+
+            // Penggantian setelah perubahan enum
+            // Mengubah string ke enum
+            transmisi: transimission == "Manual"
+                ? TransmisiMotor.manual : TransmisiMotor.matic,
+
             model: model,
             withDiskon: true,
             withImage: true,

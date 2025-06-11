@@ -166,8 +166,16 @@ class _RegisterMotorcyclePageState extends State<RegisterMotorcyclePage> {
                           brand: brandController.text,
                           tipe: typeController.text,
                           tahun: int.parse(yearController.text),
-                          transmisi: selectedTransmission!,
-                          statusMotor: "Diajukan",
+
+                          // Penggantian setelah perubahan enum
+                          // Mengubah dari String ke enum
+                          transmisi: selectedTransmission ==
+                                  "matic"
+                              ? TransmisiMotor.matic
+                              : TransmisiMotor.manual,
+
+                          // Penggantian setelah perubahan enum
+                          statusMotor: StatusMotor.diajukan,
                           hargaHarian: double.parse(hargaController.text),
                         );
                         Navigator.push(

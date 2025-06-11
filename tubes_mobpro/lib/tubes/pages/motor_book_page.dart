@@ -102,7 +102,11 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
             tanggalSelesai: payload['tanggal_selesai'],
             idVoucher: payload['id_voucher'] ?? null,
             idDiscount: payload['id_diskon'] ?? null,
-            metodePembayaran: paymentMethod ?? 'bank_transfer',
+            // Mengubah metode pembayaran menjadi MetodePembayaran
+            // sesuai dengan enum yang ada di API
+            metodePembayaran: paymentMethod == 'bank_transfer'
+                ? MetodePembayaran.transferBank
+                : MetodePembayaran.dompetDigital,
           ));
 
       // Mengambil id transaksi dari response
@@ -133,7 +137,7 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
 
       await ApiService().motorApi.apiMotorIdPut(payload['id_motor'],
           putMotorDTO: PutMotorDTO(
-            statusMotor: 'Diajukan',
+            statusMotor: StatusMotor.diajukan,
             platNomor: motor.platNomor!,
             nomorSTNK: motor.nomorSTNK!,
             nomorBPKB: motor.nomorBPKB!,

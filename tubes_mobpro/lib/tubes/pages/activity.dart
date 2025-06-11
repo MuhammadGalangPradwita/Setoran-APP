@@ -19,7 +19,9 @@ class ActivityPage extends StatefulWidget {
 
 class _ActivityPageState extends State<ActivityPage> {
   late Future<List<Transaksi>?> dataList;
-  String? status = ""; // Default status
+
+  // Penggantian setelah perubahan enum
+  StatusTransaksi? status; // Default status
 
   // Define available status options
   final List<Map<String, String>> statusOptions = [
@@ -52,7 +54,14 @@ class _ActivityPageState extends State<ActivityPage> {
   void _onStatusChanged(String? newStatus) {
     if (newStatus != null && newStatus != status) {
       setState(() {
-        status = newStatus;
+
+        // Penggantian setelah perubahan enum
+        status = newStatus.isEmpty
+            ? null // If 'Semua' is selected, set status to null
+            : StatusTransaksi.values.firstWhere(
+                (e) => e.toString().split('.').last == newStatus,
+                orElse: () => StatusTransaksi.dibuat,
+              );
       });
       _loadData();
     }
@@ -111,7 +120,10 @@ class _ActivityPageState extends State<ActivityPage> {
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton<String>(
                         dropdownColor: AppColors.N0,
-                        value: status,
+
+                        // Penggantian setelah perubahan enum
+                        value: status?.value.toString(),
+                        
                         isExpanded: true,
                         icon: const Icon(
                           Icons.keyboard_arrow_down,

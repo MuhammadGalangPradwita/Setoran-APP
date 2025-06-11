@@ -534,7 +534,8 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
                             ),
 
                             // Transmisi motor
-                            Text(widget.motor.transmisi!,
+                            // Penggantian setelah perubahan enum
+                            Text(widget.motor.transmisi!.value.toString(),
                                 style: AppTextStyle.smallReguler),
                           ],
                         ),

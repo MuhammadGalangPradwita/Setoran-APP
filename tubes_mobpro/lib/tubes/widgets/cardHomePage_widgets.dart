@@ -24,17 +24,6 @@ class vehicleCard extends StatelessWidget {
 
   final formatter = NumberFormat("#,###");
 
-  // // NMAX normal price:
-  // height: 260,
-  // width: 200,
-  // margin: const EdgeInsets.only(top: 20,right: 20,left: 20),
-  // beat margin: top: 20,right: 5,left: 5
-  // imagePath: "assets/images/NMAX_highRes.png",
-  // vehicleName: 'NMAX',
-  // rating: '4.8',
-  // transmition: 'Transmision: Matic',
-  // price: 'Rp. 30.000,00',
-
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -172,300 +161,300 @@ class vehicleCard extends StatelessWidget {
   }
 }
 
-class vehicleCardDiscount extends StatelessWidget {
-  // final double width;
-  // final double height;
+// class vehicleCardDiscount extends StatelessWidget {
+//   // final double width;
+//   // final double height;
 
-  final Motor motor;
-  // final EdgeInsetsGeometry margin;
-  // final String imagePath;
+//   final Motor motor;
+//   // final EdgeInsetsGeometry margin;
+//   // final String imagePath;
 
-  final List<Ulasan>? ulasan;
-  // final String transmition;
-  final String disPrice;
-  // final String norPrice;
-  final formatter = NumberFormat("#,###");
+//   final List<Ulasan>? ulasan;
+//   // final String transmition;
+//   final String disPrice;
+//   // final String norPrice;
+//   final formatter = NumberFormat("#,###");
 
-  vehicleCardDiscount({
-    super.key,
-    // required this.width,
-    // required this.height,
-    // required this.margin,
-    // required this.imagePath,
-    required this.ulasan,
-    // required this.transmition,
-    required this.disPrice,
-    // required this.norPrice,
-    required this.motor,
-  });
+//   vehicleCardDiscount({
+//     super.key,
+//     // required this.width,
+//     // required this.height,
+//     // required this.margin,
+//     // required this.imagePath,
+//     required this.ulasan,
+//     // required this.transmition,
+//     required this.disPrice,
+//     // required this.norPrice,
+//     required this.motor,
+//   });
 
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Row(
-        children: [
-          Card(
-            color: AppColors.N200,
-            clipBehavior: Clip.hardEdge,
-            child: InkWell(
-              splashColor: Colors.blue.withAlpha(30),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => SearchResultDetail(motor: motor),
-                  ),
-                );
-              },
-              child: SizedBox(
-                width: 175,
-                height: 270,
-                child: Column(
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(left: 10, right: 10),
-                      child: Builder(
-                        builder: (context) {
-                          if (motor.idMotorImage != null) {
-                            return Image.network(
-                              "http://160.19.167.222:5103/storage/fetch/${motor.motorImage!.front!}",
-                              fit: BoxFit.cover,
-                            );
-                          } else {
-                            return Image.asset(
-                              'assets/images/general-img-landscape.png',
-                              fit: BoxFit.cover,
-                            );
-                          }
-                        },
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Container(
-                      width: double.infinity,
-                      margin: const EdgeInsets.only(left: 10, right: 10),
-                      child: Row(
-                        children: [
-                          Text(
-                            "${motor.model}",
-                            textAlign: TextAlign.left,
-                            style: AppTextStyle.body2Bold,
-                          ),
-                          const Spacer(),
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Icon(
-                                Icons.star,
-                                color: Colors.amber,
-                                size: 18,
-                              ),
-                              const SizedBox(width: 5),
-                              Text(
-                                ulasan != null &&
-                                        calculateAverageRating(ulasan!) != null
-                                    ? calculateAverageRating(ulasan!)!
-                                        .toStringAsFixed(1)
-                                    : "-",
-                                style: AppTextStyle.body2Bold,
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      width: double.infinity,
-                      margin: const EdgeInsets.only(left: 10),
-                      child: Text(
-                        "${motor.transmisi}",
-                        textAlign: TextAlign.left,
-                        style: AppTextStyle.body3Regular,
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Container(
-                      width: double.infinity,
-                      margin: const EdgeInsets.only(left: 10, right: 10),
-                      child: Row(
-                        children: [
-                          Text(
-                            disPrice,
-                            textAlign: TextAlign.left,
-                            style: AppTextStyle.body2Bold
-                                .copyWith(color: AppColors.R400),
-                          ),
-                          Text(
-                            '/day',
-                            textAlign: TextAlign.left,
-                            style: AppTextStyle.body3Regular,
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      width: double.infinity,
-                      margin: const EdgeInsets.only(left: 10, right: 10),
-                      child: Text(
-                        'Rp${formatter.format(motor.hargaHarian) ?? "-"}',
-                        textAlign: TextAlign.left,
-                        style: AppTextStyle.body3Regular.copyWith(
-                          decoration: TextDecoration.lineThrough,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+//   @override
+//   Widget build(BuildContext context) {
+//     return Center(
+//       child: Row(
+//         children: [
+//           Card(
+//             color: AppColors.N200,
+//             clipBehavior: Clip.hardEdge,
+//             child: InkWell(
+//               splashColor: Colors.blue.withAlpha(30),
+//               onTap: () {
+//                 Navigator.push(
+//                   context,
+//                   MaterialPageRoute(
+//                     builder: (context) => SearchResultDetail(motor: motor),
+//                   ),
+//                 );
+//               },
+//               child: SizedBox(
+//                 width: 175,
+//                 height: 270,
+//                 child: Column(
+//                   children: [
+//                     Container(
+//                       margin: const EdgeInsets.only(left: 10, right: 10),
+//                       child: Builder(
+//                         builder: (context) {
+//                           if (motor.idMotorImage != null) {
+//                             return Image.network(
+//                               "http://160.19.167.222:5103/storage/fetch/${motor.motorImage!.front!}",
+//                               fit: BoxFit.cover,
+//                             );
+//                           } else {
+//                             return Image.asset(
+//                               'assets/images/general-img-landscape.png',
+//                               fit: BoxFit.cover,
+//                             );
+//                           }
+//                         },
+//                       ),
+//                     ),
+//                     const SizedBox(height: 10),
+//                     Container(
+//                       width: double.infinity,
+//                       margin: const EdgeInsets.only(left: 10, right: 10),
+//                       child: Row(
+//                         children: [
+//                           Text(
+//                             "${motor.model}",
+//                             textAlign: TextAlign.left,
+//                             style: AppTextStyle.body2Bold,
+//                           ),
+//                           const Spacer(),
+//                           Row(
+//                             mainAxisSize: MainAxisSize.min,
+//                             children: [
+//                               const Icon(
+//                                 Icons.star,
+//                                 color: Colors.amber,
+//                                 size: 18,
+//                               ),
+//                               const SizedBox(width: 5),
+//                               Text(
+//                                 ulasan != null &&
+//                                         calculateAverageRating(ulasan!) != null
+//                                     ? calculateAverageRating(ulasan!)!
+//                                         .toStringAsFixed(1)
+//                                     : "-",
+//                                 style: AppTextStyle.body2Bold,
+//                               ),
+//                             ],
+//                           ),
+//                         ],
+//                       ),
+//                     ),
+//                     Container(
+//                       width: double.infinity,
+//                       margin: const EdgeInsets.only(left: 10),
+//                       child: Text(
+//                         "${motor.transmisi}",
+//                         textAlign: TextAlign.left,
+//                         style: AppTextStyle.body3Regular,
+//                       ),
+//                     ),
+//                     const SizedBox(height: 10),
+//                     Container(
+//                       width: double.infinity,
+//                       margin: const EdgeInsets.only(left: 10, right: 10),
+//                       child: Row(
+//                         children: [
+//                           Text(
+//                             disPrice,
+//                             textAlign: TextAlign.left,
+//                             style: AppTextStyle.body2Bold
+//                                 .copyWith(color: AppColors.R400),
+//                           ),
+//                           Text(
+//                             '/day',
+//                             textAlign: TextAlign.left,
+//                             style: AppTextStyle.body3Regular,
+//                           ),
+//                         ],
+//                       ),
+//                     ),
+//                     Container(
+//                       width: double.infinity,
+//                       margin: const EdgeInsets.only(left: 10, right: 10),
+//                       child: Text(
+//                         'Rp${formatter.format(motor.hargaHarian) ?? "-"}',
+//                         textAlign: TextAlign.left,
+//                         style: AppTextStyle.body3Regular.copyWith(
+//                           decoration: TextDecoration.lineThrough,
+//                         ),
+//                       ),
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
 
-  double? calculateAverageRating(List<Ulasan> ulasan) {
-    double totalRating = 0;
-    int count = 0;
+//   double? calculateAverageRating(List<Ulasan> ulasan) {
+//     double totalRating = 0;
+//     int count = 0;
 
-    for (var ulasan in ulasan) {
-      if (ulasan.idMotor == motor.idMotor) {
-        totalRating += ulasan.rating!;
-        count++;
-      }
-    }
+//     for (var ulasan in ulasan) {
+//       if (ulasan.idMotor == motor.idMotor) {
+//         totalRating += ulasan.rating!;
+//         count++;
+//       }
+//     }
 
-    return count > 0 ? totalRating / count : null;
-  }
-}
+//     return count > 0 ? totalRating / count : null;
+//   }
+// }
 
-class VoucherCard extends StatelessWidget {
-  const VoucherCard({super.key});
+// class VoucherCard extends StatelessWidget {
+//   const VoucherCard({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        InkWell(
-          child: Container(
-            child: Row(
-              children: [
-                Container(
-                  margin: const EdgeInsets.only(left: 10),
-                  child: Text(
-                    'Voucher',
-                    style: AppTextStyle.body2Bold,
-                  ),
-                ),
-                Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Container(
-                        child: TextButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => DiscountPage(),
-                                ),
-                              );
-                            },
-                            child: Text(
-                              "More",
-                              style: AppTextStyle.body3Regular,
-                            )),
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ),
-        ),
-        Card(
-          elevation: 0,
-          color: Colors.blue,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: IntrinsicHeight(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: Container(
-                    // color: Colors.white,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          bottomLeft: Radius.circular(10)),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.1), // Shadow color
-                          offset: const Offset(4, 4), // Position of shadow
-                          blurRadius: 10, // Blur effect of shadow
-                          spreadRadius: 2, // Spread effect of shadow
-                        ),
-                      ],
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(7),
-                      child: Column(
-                        children: [
-                          Text(
-                            'New Member',
-                            style: GoogleFonts.poppins(
-                                fontSize: 10,
-                                color: Colors.blue,
-                                fontWeight: FontWeight.w600),
-                          ),
-                          Text(
-                            'SALE',
-                            style: GoogleFonts.poppins(
-                                fontSize: 16,
-                                color: Colors.blue,
-                                fontWeight: FontWeight.w600),
-                          ),
-                          const SizedBox(
-                              height: 57,
-                              width: 75,
-                              child: Image(
-                                  image: AssetImage(
-                                      'assets/images/voucher-discount.png')))
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  flex: 3,
-                  child: Stack(
-                    children: [
-                      SizedBox(
-                        width: 189,
-                        height: 115,
-                      ),
-                      const Positioned(
-                        top: -10,
-                        right: 0,
-                        child: SizedBox(
-                            width: 189,
-                            height: 115,
-                            child: Image(
-                                image:
-                                    AssetImage('assets/images/voucher.png'))),
-                      )
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Column(
+//       children: [
+//         InkWell(
+//           child: Container(
+//             child: Row(
+//               children: [
+//                 Container(
+//                   margin: const EdgeInsets.only(left: 10),
+//                   child: Text(
+//                     'Voucher',
+//                     style: AppTextStyle.body2Bold,
+//                   ),
+//                 ),
+//                 Expanded(
+//                   child: Row(
+//                     mainAxisAlignment: MainAxisAlignment.end,
+//                     children: [
+//                       Container(
+//                         child: TextButton(
+//                             onPressed: () {
+//                               Navigator.push(
+//                                 context,
+//                                 MaterialPageRoute(
+//                                   builder: (context) => DiscountPage(),
+//                                 ),
+//                               );
+//                             },
+//                             child: Text(
+//                               "More",
+//                               style: AppTextStyle.body3Regular,
+//                             )),
+//                       ),
+//                     ],
+//                   ),
+//                 )
+//               ],
+//             ),
+//           ),
+//         ),
+//         Card(
+//           elevation: 0,
+//           color: Colors.blue,
+//           shape: RoundedRectangleBorder(
+//             borderRadius: BorderRadius.circular(10),
+//           ),
+//           child: IntrinsicHeight(
+//             child: Row(
+//               crossAxisAlignment: CrossAxisAlignment.stretch,
+//               children: [
+//                 Expanded(
+//                   flex: 2,
+//                   child: Container(
+//                     // color: Colors.white,
+//                     decoration: BoxDecoration(
+//                       color: Colors.white,
+//                       borderRadius: BorderRadius.only(
+//                           topLeft: Radius.circular(10),
+//                           bottomLeft: Radius.circular(10)),
+//                       boxShadow: [
+//                         BoxShadow(
+//                           color: Colors.black.withOpacity(0.1), // Shadow color
+//                           offset: const Offset(4, 4), // Position of shadow
+//                           blurRadius: 10, // Blur effect of shadow
+//                           spreadRadius: 2, // Spread effect of shadow
+//                         ),
+//                       ],
+//                     ),
+//                     child: Padding(
+//                       padding: const EdgeInsets.all(7),
+//                       child: Column(
+//                         children: [
+//                           Text(
+//                             'New Member',
+//                             style: GoogleFonts.poppins(
+//                                 fontSize: 10,
+//                                 color: Colors.blue,
+//                                 fontWeight: FontWeight.w600),
+//                           ),
+//                           Text(
+//                             'SALE',
+//                             style: GoogleFonts.poppins(
+//                                 fontSize: 16,
+//                                 color: Colors.blue,
+//                                 fontWeight: FontWeight.w600),
+//                           ),
+//                           const SizedBox(
+//                               height: 57,
+//                               width: 75,
+//                               child: Image(
+//                                   image: AssetImage(
+//                                       'assets/images/voucher-discount.png')))
+//                         ],
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//                 Expanded(
+//                   flex: 3,
+//                   child: Stack(
+//                     children: [
+//                       SizedBox(
+//                         width: 189,
+//                         height: 115,
+//                       ),
+//                       const Positioned(
+//                         top: -10,
+//                         right: 0,
+//                         child: SizedBox(
+//                             width: 189,
+//                             height: 115,
+//                             child: Image(
+//                                 image:
+//                                     AssetImage('assets/images/voucher.png'))),
+//                       )
+//                     ],
+//                   ),
+//                 )
+//               ],
+//             ),
+//           ),
+//         ),
+//       ],
+//     );
+//   }
+// }
