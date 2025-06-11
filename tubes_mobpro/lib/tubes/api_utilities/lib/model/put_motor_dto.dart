@@ -39,9 +39,9 @@ class PutMotorDTO {
 
   int tahun;
 
-  String transmisi;
+  TransmisiMotor transmisi;
 
-  String statusMotor;
+  StatusMotor statusMotor;
 
   double hargaHarian;
 
@@ -116,8 +116,8 @@ class PutMotorDTO {
         brand: mapValueOfType<String>(json, r'brand')!,
         tipe: mapValueOfType<String>(json, r'tipe')!,
         tahun: mapValueOfType<int>(json, r'tahun')!,
-        transmisi: mapValueOfType<String>(json, r'transmisi')!,
-        statusMotor: mapValueOfType<String>(json, r'statusMotor')!,
+        transmisi: TransmisiMotor.fromJson(json[r'transmisi'])!,
+        statusMotor: StatusMotor.fromJson(json[r'statusMotor'])!,
         hargaHarian: mapValueOfType<double>(json, r'hargaHarian')!,
       );
     }

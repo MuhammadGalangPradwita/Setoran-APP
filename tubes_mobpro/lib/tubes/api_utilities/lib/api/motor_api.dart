@@ -27,12 +27,12 @@ class MotorApi {
   ///
   /// * [String] idMitra:
   ///
-  /// * [String] status:
+  /// * [StatusMotor] status:
   ///
   /// * [String] model:
   ///
-  /// * [String] transmisi:
-  Future<Response> apiMotorGetWithHttpInfo({ bool? withImage, bool? withDiskon, bool? withUlasan, String? idMitra, String? status, String? model, String? transmisi, }) async {
+  /// * [TransmisiMotor] transmisi:
+  Future<Response> apiMotorGetWithHttpInfo({ bool? withImage, bool? withDiskon, bool? withUlasan, String? idMitra, StatusMotor? status, String? model, TransmisiMotor? transmisi, }) async {
     // ignore: prefer_const_declarations
     final path = r'/api/Motor';
 
@@ -89,12 +89,12 @@ class MotorApi {
   ///
   /// * [String] idMitra:
   ///
-  /// * [String] status:
+  /// * [StatusMotor] status:
   ///
   /// * [String] model:
   ///
-  /// * [String] transmisi:
-  Future<List<Motor>?> apiMotorGet({ bool? withImage, bool? withDiskon, bool? withUlasan, String? idMitra, String? status, String? model, String? transmisi, }) async {
+  /// * [TransmisiMotor] transmisi:
+  Future<List<Motor>?> apiMotorGet({ bool? withImage, bool? withDiskon, bool? withUlasan, String? idMitra, StatusMotor? status, String? model, TransmisiMotor? transmisi, }) async {
     final response = await apiMotorGetWithHttpInfo( withImage: withImage, withDiskon: withDiskon, withUlasan: withUlasan, idMitra: idMitra, status: status, model: model, transmisi: transmisi, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
@@ -110,6 +110,46 @@ class MotorApi {
 
     }
     return null;
+  }
+
+  /// Performs an HTTP 'DELETE /api/Motor/{id}' operation and returns the [Response].
+  /// Parameters:
+  ///
+  /// * [int] id (required):
+  Future<Response> apiMotorIdDeleteWithHttpInfo(int id,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/api/Motor/{id}'
+      .replaceAll('{id}', id.toString());
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'DELETE',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Parameters:
+  ///
+  /// * [int] id (required):
+  Future<void> apiMotorIdDelete(int id,) async {
+    final response = await apiMotorIdDeleteWithHttpInfo(id,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
   }
 
   /// Performs an HTTP 'GET /api/Motor/{id}/diskons' operation and returns the [Response].

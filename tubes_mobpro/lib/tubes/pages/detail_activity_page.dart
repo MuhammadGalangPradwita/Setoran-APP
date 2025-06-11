@@ -129,7 +129,9 @@ class _DetailActivityPageState extends State<DetailActivityPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text("Payment Method", style: AppTextStyle.smallReguler),
-                  Text(pembayaran?.metodePembayaran ?? "Unknown",
+
+                     // Penggantian setelah perubahan enum
+                  Text(pembayaran?.metodePembayaran?.value.toString() ?? "Unknown",
                       style: AppTextStyle.body2Regular),
                 ],
               ),
@@ -148,10 +150,13 @@ class _DetailActivityPageState extends State<DetailActivityPage> {
               const Gap(12),
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text("Status", style: AppTextStyle.smallReguler),
-                Text(pembayaran?.statusPembayaran ?? "Unknown",
+
+                  // Penggantian setelah perubahan enum
+                Text(pembayaran?.metodePembayaran?.value.toString() ?? "Unknown",
                     style: AppTextStyle.body2Regular),
                 const Gap(12),
-                if (pembayaran?.statusPembayaran?.toUpperCase() ==
+                  // Penggantian setelah perubahan enum
+                if (pembayaran?.metodePembayaran?.value.toString().toUpperCase() ==
                     "belum lunas".toUpperCase())
                   ButtonWidget.primary(
                       label: "Pay Now",
@@ -163,7 +168,9 @@ class _DetailActivityPageState extends State<DetailActivityPage> {
                             pembayaran!.idPembayaran!,
                             putPembayaranDTO: PutPembayaranDTO(
                               metodePembayaran: pembayaran!.metodePembayaran,
-                              statusPembayaran: "lunas",
+
+  // Penggantian setelah perubahan enum
+                              statusPembayaran: StatusPembayaran.lunas,
                               tanggalPembayaran: DateTime.now(),
                             ));
                         setState(() {
@@ -253,7 +260,8 @@ class _DetailActivityPageState extends State<DetailActivityPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('Transmisi', style: AppTextStyle.smallReguler),
-                      Text(widget.transaksi.motor!.transmisi!,
+                        // Penggantian setelah perubahan enum
+                      Text(widget.transaksi.motor!.transmisi!.value.toString(),
                           style: AppTextStyle.body2Regular),
                     ],
                   ),

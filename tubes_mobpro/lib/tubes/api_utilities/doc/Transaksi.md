@@ -14,7 +14,7 @@ Name | Type | Description | Notes
 **tanggalMulai** | [**DateTime**](DateTime.md) |  | [optional] 
 **tanggalSelesai** | [**DateTime**](DateTime.md) |  | [optional] 
 **totalHarga** | **double** |  | [optional] 
-**status** | **String** |  | [optional] 
+**status** | [**StatusTransaksi**](StatusTransaksi.md) |  | [optional] 
 **motor** | [**Motor**](Motor.md) |  | [optional] 
 **pelanggan** | [**Pelanggan**](Pelanggan.md) |  | [optional] 
 

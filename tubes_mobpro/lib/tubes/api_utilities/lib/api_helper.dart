@@ -55,17 +55,32 @@ String parameterToString(dynamic value) {
   if (value is DateTime) {
     return value.toUtc().toIso8601String();
   }
+  if (value is MetodePembayaran) {
+    return MetodePembayaranTypeTransformer().encode(value).toString();
+  }
   if (value is StatusDiskon) {
     return StatusDiskonTypeTransformer().encode(value).toString();
   }
   if (value is StatusMitra) {
     return StatusMitraTypeTransformer().encode(value).toString();
   }
+  if (value is StatusMotor) {
+    return StatusMotorTypeTransformer().encode(value).toString();
+  }
+  if (value is StatusPembayaran) {
+    return StatusPembayaranTypeTransformer().encode(value).toString();
+  }
+  if (value is StatusTransaksi) {
+    return StatusTransaksiTypeTransformer().encode(value).toString();
+  }
   if (value is StatusVoucher) {
     return StatusVoucherTypeTransformer().encode(value).toString();
   }
   if (value is TargetNavigasi) {
     return TargetNavigasiTypeTransformer().encode(value).toString();
+  }
+  if (value is TransmisiMotor) {
+    return TransmisiMotorTypeTransformer().encode(value).toString();
   }
   return value.toString();
 }

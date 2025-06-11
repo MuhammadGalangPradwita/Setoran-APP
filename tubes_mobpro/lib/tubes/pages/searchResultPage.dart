@@ -1,10 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 import 'package:tubes_mobpro/tubes/api_service.dart';
 import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
-import 'package:tubes_mobpro/tubes/pages/search_result_detail.dart';
+import 'package:tubes_mobpro/tubes/extension/motor.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 import 'package:tubes_mobpro/tubes/widgets/cardHomePage_widgets.dart';
 
@@ -15,7 +13,7 @@ class SearchResult extends StatelessWidget {
       required this.transimission,
       required this.model});
 
-  final String date; // tolong test lagi nanti
+  final String date; 
   final String transimission;
   final String model;
 
@@ -28,8 +26,6 @@ class SearchResult extends StatelessWidget {
       vehicleCards.add(
         vehicleCard(
           ulasan: ulasanList,
-          // height: 210,
-          // width: 160,
           margin: const EdgeInsets.only(top: 20, right: 20, left: 20),
           motor: motor,
         ),
@@ -83,9 +79,13 @@ class SearchResult extends StatelessWidget {
         ),
       ),
       body: FutureBuilder(
-        // future: MotorAPi.filtered(date, transimission, model),
         future: ApiService().motorApi.apiMotorGet(
-            transmisi: transimission,
+
+            // Penggantian setelah perubahan enum
+            // Mengubah string ke enum
+            transmisi: transimission == "Manual"
+                ? TransmisiMotor.manual : TransmisiMotor.matic,
+
             model: model,
             withDiskon: true,
             withImage: true,
@@ -106,7 +106,7 @@ class SearchResult extends StatelessWidget {
               // height: 300,
               width: double.infinity,
               child: FutureBuilder<Widget>(
-                future: buildVehicleRow(removeBookedMotors(motors) ?? []),
+                future: buildVehicleRow(Motor().removeBookedMotors(snapshot.data!) ?? []),
                 builder: (context, vehicleRowSnapshot) {
                   if (vehicleRowSnapshot.connectionState ==
                       ConnectionState.waiting) {
@@ -126,23 +126,5 @@ class SearchResult extends StatelessWidget {
     );
   }
 
-  List<Motor>? removeBookedMotors(List<Motor>? listMotors) {
-    // Mengambil daftar motor yang sudah dibooking
 
-    List<Motor> filteredList = [];
-
-    if (listMotors == null || listMotors.isEmpty) {
-      return [];
-    }
-
-    // Menghapus motor yang sudah dibooking dari daftar
-    for (var motor in listMotors!) {
-      if (motor.statusMotor == "Tersedia") {
-        filteredList.add(motor);
-      }
-    }
-
-    // Mengembalikan daftar motor yang sudah dibooking
-    return filteredList;
-  }
 }

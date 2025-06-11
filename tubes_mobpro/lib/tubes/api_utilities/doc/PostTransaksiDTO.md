@@ -12,6 +12,7 @@ Name | Type | Description | Notes
 **idPelanggan** | **int** |  | 
 **tanggalMulai** | [**DateTime**](DateTime.md) |  | 
 **tanggalSelesai** | [**DateTime**](DateTime.md) |  | 
+**metodePembayaran** | [**MetodePembayaran**](MetodePembayaran.md) |  | 
 **idVoucher** | **int** |  | [optional] 
 **idDiscount** | **int** |  | [optional] 
 

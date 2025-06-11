@@ -409,7 +409,8 @@ class _MyMotorcyclePageState extends State<MyMotorcyclePage> {
                                       transaksi.totalHarga!),
                                   style: AppTextStyle.body1SemiBold),
                               const Gap(8),
-                              Text(transaksi.status!,
+                                 // Penggantian setelah perubahan enum
+                              Text(transaksi.status!.value.toString()!,
                                   style: AppTextStyle.body3Regular),
                             ],
                           )
