@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
@@ -132,7 +134,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
 //   );
 // }
 
-  Widget buildHorizontalVehicleList(List<Motor> motors) {
+  Widget buildHorizontalVehicleList(List<Motor> motors, bool isDiscount) {
     List<Widget> vehicleCards = [];
     for (int i = 0; i < motors.length; i++) {
       vehicleCards.add(
@@ -155,6 +157,18 @@ class _HomepageScreenState extends State<HomepageScreen> {
               } else if (snapshot.hasData && snapshot.data!.isEmpty) {
                 ulasan = null;
               }
+
+              if (isDiscount && motors[i].diskon!.isNotEmpty) {
+                print('in');
+
+                double disPrice = (motors[i].hargaHarian! - motors[i].getBestDiscount()!.jumlahDiskon!);
+
+                return vehicleCardDiscount(ulasan: ulasan, motor: motors[i], disPrice: disPrice,);
+              } else if (isDiscount && motors[i].diskon!.isNotEmpty == false) {
+                return SizedBox();
+              }
+
+              print('out');
               return vehicleCard(
                 ulasan: ulasan,
                 margin: const EdgeInsets.only(top: 20, left: 10, right: 10),
@@ -341,7 +355,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                       } else {
                         final List<Motor> motors =
                             Motor().removeBookedMotors(snapshot.data!)!;
-                        return buildHorizontalVehicleList(motors);
+                        return buildHorizontalVehicleList(motors, false);
                       }
                     },
                   ),
@@ -363,11 +377,13 @@ class _HomepageScreenState extends State<HomepageScreen> {
                       } else {
                         final List<Motor> motors =
                             Motor().removeBookedMotors(snapshot.data!)!;
-                        return buildHorizontalVehicleList(motors);
+                        return buildHorizontalVehicleList(motors, false);
                       }
                     },
                   ),
 
+                  const Gap(20),
+                  VoucherCard(),
                   const Gap(20),
                   Text('Discount', style: AppTextStyle.body2Bold),
                   const Gap(10),
@@ -391,7 +407,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                       } else {
                         final List<Motor> motors =
                             Motor().removeBookedMotors(snapshot.data!)!;
-                        return buildHorizontalVehicleList(motors);
+                        return buildHorizontalVehicleList(motors, true);
                       }
                     },
                   ),
