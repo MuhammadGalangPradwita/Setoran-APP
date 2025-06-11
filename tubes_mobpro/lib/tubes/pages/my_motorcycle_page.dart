@@ -229,7 +229,7 @@ class _MyMotorcyclePageState extends State<MyMotorcyclePage> {
                                   MaterialPageRoute(
                                     builder: (context) =>
                                         RegisterMotorcyclePage(
-                                      // idMitra: mitra?.idMitra!,
+                                      idMitra: mitra?.idMitra!,
                                     ),
                                   ));
                             },
@@ -409,7 +409,7 @@ class _MyMotorcyclePageState extends State<MyMotorcyclePage> {
                                       transaksi.totalHarga!),
                                   style: AppTextStyle.body1SemiBold),
                               const Gap(8),
-                              Text(transaksi.status!,
+                              Text(transaksi.status?.value ?? 'Unknown',
                                   style: AppTextStyle.body3Regular),
                             ],
                           )

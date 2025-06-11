@@ -129,7 +129,7 @@ class _DetailActivityPageState extends State<DetailActivityPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text("Payment Method", style: AppTextStyle.smallReguler),
-                  Text(pembayaran?.metodePembayaran ?? "Unknown",
+                  Text(pembayaran?.metodePembayaran?.value ?? "Unknown",
                       style: AppTextStyle.body2Regular),
                 ],
               ),
@@ -148,11 +148,10 @@ class _DetailActivityPageState extends State<DetailActivityPage> {
               const Gap(12),
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text("Status", style: AppTextStyle.smallReguler),
-                Text(pembayaran?.statusPembayaran ?? "Unknown",
+                Text(pembayaran?.statusPembayaran?.value ?? "Unknown",
                     style: AppTextStyle.body2Regular),
                 const Gap(12),
-                if (pembayaran?.statusPembayaran?.toUpperCase() ==
-                    "belum lunas".toUpperCase())
+                if (pembayaran?.statusPembayaran == StatusPembayaran.belumLunas)
                   ButtonWidget.primary(
                       label: "Pay Now",
                       press: () async {
@@ -163,7 +162,8 @@ class _DetailActivityPageState extends State<DetailActivityPage> {
                             pembayaran!.idPembayaran!,
                             putPembayaranDTO: PutPembayaranDTO(
                               metodePembayaran: pembayaran!.metodePembayaran,
-                              statusPembayaran: "lunas",
+                              statusPembayaran:
+                                  StatusPembayaran.menungguKonfirmasi,
                               tanggalPembayaran: DateTime.now(),
                             ));
                         setState(() {
@@ -253,7 +253,8 @@ class _DetailActivityPageState extends State<DetailActivityPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('Transmisi', style: AppTextStyle.smallReguler),
-                      Text(widget.transaksi.motor!.transmisi!,
+                      Text(
+                          widget.transaksi.motor!.transmisi?.value ?? "Unknown",
                           style: AppTextStyle.body2Regular),
                     ],
                   ),

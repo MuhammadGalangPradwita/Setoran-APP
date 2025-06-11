@@ -19,15 +19,15 @@ class ActivityPage extends StatefulWidget {
 
 class _ActivityPageState extends State<ActivityPage> {
   late Future<List<Transaksi>?> dataList;
-  String? status = ""; // Default status
+  StatusTransaksi? status; // Default status
 
   // Define available status options
   final List<Map<String, String>> statusOptions = [
     {'value': '', 'label': 'Semua'},
-    {'value': 'selesai', 'label': 'Selesai'},
-    {'value': 'created', 'label': 'Dibuat'},
-    {'value': 'berlangsung', 'label': 'Berlangsung'},
-    {'value': 'batal', 'label': 'Batal'},
+    {'value': 'Selesai', 'label': 'Selesai'},
+    {'value': 'Dibuat', 'label': 'Dibuat'},
+    {'value': 'Berlangsung', 'label': 'Berlangsung'},
+    {'value': 'Bata;', 'label': 'Batal'},
     // Add more status options as needed
   ];
 
@@ -52,7 +52,11 @@ class _ActivityPageState extends State<ActivityPage> {
   void _onStatusChanged(String? newStatus) {
     if (newStatus != null && newStatus != status) {
       setState(() {
-        status = newStatus;
+        if (newStatus.isEmpty) {
+          status = null; // Reset to default (all statuses)
+        } else {
+          status = StatusTransaksi.fromJson(newStatus);
+        }
       });
       _loadData();
     }
@@ -111,7 +115,7 @@ class _ActivityPageState extends State<ActivityPage> {
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton<String>(
                         dropdownColor: AppColors.N0,
-                        value: status,
+                        value: status?.value ?? 'Unknown',
                         isExpanded: true,
                         icon: const Icon(
                           Icons.keyboard_arrow_down,

@@ -48,8 +48,8 @@ class _RegisterMotorcyclePageState extends State<RegisterMotorcyclePage> {
   }
 
   final List<Map<String, String>> transmissionOptions = const [
-    {"id": "manual", "display": "Manual"},
-    {"id": "matic", "display": "Matic"},
+    {"id": "Manual", "display": "Manual"},
+    {"id": "Matic", "display": "Matic"},
   ];
 
   @override
@@ -166,8 +166,9 @@ class _RegisterMotorcyclePageState extends State<RegisterMotorcyclePage> {
                           brand: brandController.text,
                           tipe: typeController.text,
                           tahun: int.parse(yearController.text),
-                          transmisi: selectedTransmission!,
-                          statusMotor: "Diajukan",
+                          transmisi:
+                              TransmisiMotor.fromJson(selectedTransmission)!,
+                          statusMotor: StatusMotor.diajukan,
                           hargaHarian: double.parse(hargaController.text),
                         );
                         Navigator.push(
