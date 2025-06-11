@@ -11,8 +11,9 @@ import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 
 class SearchResultDetail extends StatefulWidget {
   final Motor motor;
+  final DateTimeRange? selectedDateRange;
 
-  SearchResultDetail({super.key, required this.motor});
+  SearchResultDetail({super.key, required this.motor, this.selectedDateRange});
 
   @override
   State<SearchResultDetail> createState() => _SearchResultDetailState();
@@ -631,6 +632,8 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
                             MaterialPageRoute(
                                 builder: (context) => BookMotorcyclePage(
                                       motor: widget.motor,
+                                      selectedDateRange:
+                                          widget.selectedDateRange,
                                     )));
                       },
                       style: ElevatedButton.styleFrom(

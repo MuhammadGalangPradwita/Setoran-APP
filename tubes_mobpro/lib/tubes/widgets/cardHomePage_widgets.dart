@@ -13,6 +13,7 @@ class vehicleCard extends StatelessWidget {
   // final double height;
   final EdgeInsetsGeometry margin;
   final Motor motor;
+  final DateTimeRange? selectedDateRange;
   final List<Ulasan>? ulasan;
 
   vehicleCard(
@@ -21,7 +22,7 @@ class vehicleCard extends StatelessWidget {
       // required this.height,
       required this.margin,
       required this.motor,
-      required this.ulasan});
+      required this.ulasan, this.selectedDateRange});
 
   final formatter = NumberFormat("#,###");
 
@@ -42,7 +43,7 @@ class vehicleCard extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            SearchResultDetail(motor: motor)));
+                            SearchResultDetail(motor: motor, selectedDateRange: selectedDateRange,)));
               },
               child: SizedBox(
                 width: 180,

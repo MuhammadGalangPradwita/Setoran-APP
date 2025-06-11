@@ -14,8 +14,9 @@ import '../widgets/button_widgets.dart';
 
 class BookMotorcyclePage extends StatefulWidget {
   final Motor motor;
+  final DateTimeRange? selectedDateRange;
 
-  const BookMotorcyclePage({super.key, required this.motor});
+  const BookMotorcyclePage({super.key, required this.motor, this.selectedDateRange});
 
   @override
   State<BookMotorcyclePage> createState() => _BookMotorcyclePageState();
@@ -39,6 +40,7 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
     super.initState();
     setState(() {
       diskon = widget.motor.getBestDiscount();
+      rentTime = widget.selectedDateRange;
     });
   }
 
@@ -109,35 +111,9 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
                 : MetodePembayaran.dompetDigital,
           ));
 
-      // Mengambil id transaksi dari response
-      // final Map<String, dynamic> transaksiBody = transaksiResponse.body != null
-      //     ? Map<String, dynamic>.from(jsonDecode(transaksiResponse.body))
-      //     : {};
-
-      // print('Transaksi Response: ${transaksiResponse.body}');
-
-      // int? idTransaksi = transaksiBody['idTransaksi'];
-
-      // if (idTransaksi == null) {
-      //   throw Exception('Failed to create transaction: No ID returned');
-
-      // }
-
-      // print('motor_book_page.dart');
-      // print('id_motor: ${payload['id_motor']}');
-      // print('list diskon: ${motor.diskon}');
-      // print('nomor STNK: ${motor.nomorSTNK}');
-      // print('nomor BPKB: ${motor.nomorBPKB}');
-
-      // await ApiService().pembayaranApi.apiPembayaranPost(
-      //         postPembayaranDTO: PostPembayaranDTO(
-      //       idTransaksi: idTransaksi, // Make sure to set this value appropriately
-      //       metodePembayaran: paymentMethod!,
-      //     ));
-
       await ApiService().motorApi.apiMotorIdPut(payload['id_motor'],
           putMotorDTO: PutMotorDTO(
-            statusMotor: StatusMotor.diajukan,
+            statusMotor: StatusMotor.disewa,
             platNomor: motor.platNomor!,
             nomorSTNK: motor.nomorSTNK!,
             nomorBPKB: motor.nomorBPKB!,

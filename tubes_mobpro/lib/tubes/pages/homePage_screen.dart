@@ -28,7 +28,10 @@ enum MotorType { Matic, Manual }
 class _HomepageScreenState extends State<HomepageScreen> {
   MotorType? _selectedTransmission;
   DateTime? _selectedDate;
-  final TextEditingController _dateController = TextEditingController();
+
+  DateTimeRange? _selectedDateRange;
+
+  // final TextEditingController _dateController = TextEditingController();
   final formatter = NumberFormat("#,###");
 
   final _modelController = TextEditingController();
@@ -40,99 +43,21 @@ class _HomepageScreenState extends State<HomepageScreen> {
     return allUlasan;
   }
 
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: _selectedDate ?? DateTime.now(),
-      firstDate: DateTime.now(),
-      lastDate: DateTime.now().add(const Duration(days: 365)),
-    );
-
-    if (picked != null && picked != _selectedDate) {
-      setState(() {
-        _selectedDate = picked;
-        _dateController.text = "${picked.day}/${picked.month}/${picked.year}";
-      });
-    }
-  }
-
-  // Old function to build the discount motor list
-
-  // Widget buildDiscountMotorList(List<Motor> motors) {
-  // List<Widget> rows = [];
-  // for (int i = 0; i < motors.length; i += 2) {
-  //   int endIndex = i + 1;
-  //   if (endIndex >= motors.length) endIndex = i;
-
-  //   rows.add(
-  //     Row(
-  //       children: [
-  //         Expanded(
-  //           child: FutureBuilder<List<Ulasan>?>(
-  //             future: getUlasanByMotorId(motors[i].idMotor),
-  //             builder: (context, snapshot) {
-  //               String rating = '-';
-  //               if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-  //                 // Ambil rata-rata rating jika ada lebih dari satu ulasan
-  //                 double avg = snapshot.data!
-  //                     .map((u) => u.rating ?? 0)
-  //                     .fold(0.0, (a, b) => a + b) /
-  //                     snapshot.data!.length;
-  //                 rating = avg.toStringAsFixed(1);
-  //               }
-  //               return vehicleCardDiscount(
-  //                 // margin: const EdgeInsets.only(top: 20, left: 10, right: 10),
-  //                 // imagePath: motors[i].motorImage?.front ?? "assets/images/NMAX.png",
-  //                 // vehicleName: motors[i].model ?? "",
-  //                 // rating: rating,
-  //                 // transmition: '${motors[i].transmisi}',
-  //                 ulasan: null,
-  //                 disPrice: 'Rp. ${formatter.format(motors[i].hargaHarian)}',
-  //                 // norPrice: 'Rp. ${formatter.format(motors[i].hargaHarian)}',
-  //                 motor: motors[i],
-  //               );
-  //             },
-  //           ),
-  //         ),
-  //         if (endIndex < motors.length) ...[
-  //           const SizedBox(width: 16),
-  //           Expanded(
-  //             child: FutureBuilder<List<Ulasan>?>(
-  //               future: getUlasanByMotorId(motors[endIndex].idMotor),
-  //               builder: (context, snapshot) {
-  //                 String rating = '-';
-  //                 if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-  //                   double avg = snapshot.data!
-  //                       .map((u) => u.rating ?? 0)
-  //                       .fold(0.0, (a, b) => a + b) /
-  //                       snapshot.data!.length;
-  //                   rating = avg.toStringAsFixed(1);
-  //                 }
-  //                 return vehicleCardDiscount(
-  //                   // margin: const EdgeInsets.only(top: 20, left: 10, right: 10),
-  //                   // imagePath: motors[endIndex].motorImage?.front ?? "assets/images/NMAX.png",
-  //                   // vehicleName: motors[endIndex].model ?? "",
-  //                   // rating: rating,
-  //                   // transmition: '${motors[endIndex].transmisi}',
-  //                   ulasan: null,
-  //                   disPrice: 'Rp. ${formatter.format(motors[endIndex].hargaHarian)}',
-  //                   // norPrice: 'Rp. ${formatter.format(motors[endIndex].hargaHarian)}',
-  //                   motor: motors[i],
-  //                 );
-  //               },
-  //             ),
-  //           ),
-  //         ],
-  //       ],
-  //     ),
+  // Future<void> _selectDate(BuildContext context) async {
+  //   final DateTime? picked = await showDatePicker(
+  //     context: context,
+  //     initialDate: _selectedDate ?? DateTime.now(),
+  //     firstDate: DateTime.now(),
+  //     lastDate: DateTime.now().add(const Duration(days: 365)),
   //   );
-  //   rows.add(const SizedBox(height: 10)); // Jarak antar baris
-  // }
 
-//   return Column(
-//     children: rows,
-//   );
-// }
+  //   if (picked != null && picked != _selectedDate) {
+  //     setState(() {
+  //       _selectedDate = picked;
+  //       // _dateController.text = "${picked.day}/${picked.month}/${picked.year}";
+  //     });
+  //   }
+  // }
 
   Widget buildHorizontalVehicleList(List<Motor> motors, bool isDiscount) {
     List<Widget> vehicleCards = [];
@@ -159,16 +84,20 @@ class _HomepageScreenState extends State<HomepageScreen> {
               }
 
               if (isDiscount && motors[i].diskon!.isNotEmpty) {
-                print('in');
+                double disPrice = (motors[i].hargaHarian! -
+                    motors[i].getBestDiscount()!.jumlahDiskon!);
 
-                double disPrice = (motors[i].hargaHarian! - motors[i].getBestDiscount()!.jumlahDiskon!);
-
-                return vehicleCardDiscount(ulasan: ulasan, motor: motors[i], disPrice: disPrice,);
+                return vehicleCardDiscount(
+                  ulasan: ulasan,
+                  motor: motors[i],
+                  disPrice: disPrice,
+                );
               } else if (isDiscount && motors[i].diskon!.isNotEmpty == false) {
-                return SizedBox();
+                return SizedBox(
+                  width: 0,
+                );
               }
 
-              print('out');
               return vehicleCard(
                 ulasan: ulasan,
                 margin: const EdgeInsets.only(top: 20, left: 10, right: 10),
@@ -190,6 +119,23 @@ class _HomepageScreenState extends State<HomepageScreen> {
         children: vehicleCards,
       ),
     );
+  }
+
+  String getDateRange(DateTimeRange range) {
+    String startMonth = DateFormat('MMM').format(range.start);
+    String endMonth = DateFormat('MMM').format(range.end);
+
+    String rentRange = "";
+
+    rentRange += "$startMonth ${range.start.day} - ";
+
+    if (range.start.month == range.end.month) {
+      rentRange += "${range.end.day}";
+    } else {
+      rentRange += "$endMonth ${range.end.day}";
+    }
+
+    return rentRange;
   }
 
   @override
@@ -254,19 +200,78 @@ class _HomepageScreenState extends State<HomepageScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-
                       // Date Picker
 
-                      GestureDetector(
-                        onTap: () => _selectDate(context),
-                        child: AbsorbPointer(
-                          child: TextfieldWidget(
-                            controller: _dateController,
-                            label: 'Select Date',
-                            prefixIcon: const Icon(Icons.date_range_rounded),
-                            hintText: 'Choose the date...',
+                      // GestureDetector(
+                      //   onTap: () => _selectDate(context),
+                      //   child: AbsorbPointer(
+                      //     child: TextfieldWidget(
+                      //       controller: _dateController,
+                      //       label: 'Select Date',
+                      //       prefixIcon: const Icon(Icons.date_range_rounded),
+                      //       hintText: 'Choose the date...',
+                      //     ),
+                      //   ),
+                      // ),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            'Rental duration',
+                            style: TextStyle(
+                                fontSize: 16.0, fontWeight: FontWeight.bold),
                           ),
-                        ),
+
+                          // Return time button
+                          TextButton(
+                            style: TextButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 12),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                side: const BorderSide(color: Colors.grey),
+                              ),
+                              backgroundColor: Colors.transparent,
+                            ),
+                            onPressed: () async {
+                              final selectedRange = await showDateRangePicker(
+                                context: context,
+                                firstDate: DateTime.now(),
+                                lastDate: DateTime.now()
+                                    .add(const Duration(days: 365)),
+                                builder: (BuildContext context, Widget? child) {
+                                  return Theme(
+                                    data: ThemeData.light().copyWith(
+                                      primaryColor: Colors.blue,
+                                      colorScheme: const ColorScheme.light(
+                                          primary: Colors.blue),
+                                      buttonTheme: const ButtonThemeData(
+                                        textTheme: ButtonTextTheme.primary,
+                                      ),
+                                    ),
+                                    child: child!,
+                                  );
+                                },
+                              );
+
+                              if (selectedRange != null) {
+                                setState(() {
+                                  _selectedDateRange = selectedRange;
+                                });
+                              }
+                            },
+                            child: Text(
+                              _selectedDateRange != null
+                                  ? getDateRange(_selectedDateRange!)
+                                  : 'Pick a Date',
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
 
                       const Gap(24),
@@ -306,34 +311,55 @@ class _HomepageScreenState extends State<HomepageScreen> {
                         ],
                       ),
                       const Gap(30),
+
                       Center(
                         child: SizedBox(
                             width: 150,
                             height: 40,
-                            child: ButtonWidget.primary(
-                                label: "Search",
-                                press: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => SearchResult(
-                                                date: _dateController.text,
-                                                model: _modelController.text,
-                                                transimission:
-                                                    _selectedTransmission !=
-                                                            null
-                                                        ? _selectedTransmission!
-                                                            .name
-                                                        : "",
-                                              )));
-                                })),
+                            child: (_selectedTransmission != null)
+                                ? ButtonWidget.primary(
+                                    label: "Search",
+                                    press: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  SearchResult(
+                                                    selectedDateRange:
+                                                        _selectedDateRange ??
+                                                            DateTimeRange(
+                                                                start: DateTime
+                                                                    .now(),
+                                                                end: DateTime
+                                                                        .now()
+                                                                    .add(const Duration(
+                                                                        days:
+                                                                            1))),
+                                                    model:
+                                                        _modelController.text,
+                                                    transimission:
+                                                        _selectedTransmission !=
+                                                                null
+                                                            ? _selectedTransmission!
+                                                                .name
+                                                            : "",
+                                                  )));
+                                    })
+                                : ButtonWidget.secondary(
+                                    label: "Search",
+                                    press: () {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                            content: Text('Pilih transaksi!')),
+                                      );
+                                    })),
                       ),
                     ],
                   ),
                 ),
               ],
             ),
-
             Padding(
               padding: const EdgeInsets.all(20),
               child: Column(
@@ -341,7 +367,6 @@ class _HomepageScreenState extends State<HomepageScreen> {
                 children: [
                   const Gap(20),
                   Text('Recommendation', style: AppTextStyle.body2Bold),
-                  const Gap(20),
                   FutureBuilder<List<Motor>?>(
                     future: ApiService().motorApi.apiMotorGet(
                         withImage: true, withDiskon: true, withUlasan: true),
@@ -359,11 +384,8 @@ class _HomepageScreenState extends State<HomepageScreen> {
                       }
                     },
                   ),
-
                   const Gap(20),
                   Text('Most Popular', style: AppTextStyle.body2Bold),
-                  const Gap(20),
-
                   FutureBuilder<List<Motor>?>(
                     future: ApiService().motorApi.apiMotorGet(
                         withImage: true, withDiskon: true, withUlasan: true),
@@ -381,29 +403,19 @@ class _HomepageScreenState extends State<HomepageScreen> {
                       }
                     },
                   ),
-
                   const Gap(20),
                   VoucherCard(),
-                  const Gap(20),
                   Text('Discount', style: AppTextStyle.body2Bold),
-                  const Gap(10),
                   FutureBuilder<List<Motor>?>(
                     future: ApiService().motorApi.apiMotorGet(
-                        withImage: true,
-                        withDiskon: true,
-                        withUlasan: true),
+                        withImage: true, withDiskon: true, withUlasan: true),
                     builder: (context, snapshot) {
-                      if (snapshot.connectionState ==
-                          ConnectionState.waiting) {
-                        return const Center(
-                            child: CircularProgressIndicator());
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
                       } else if (snapshot.hasError) {
-                        return Center(
-                            child: Text('Error: ${snapshot.error}'));
-                      } else if (!snapshot.hasData ||
-                          snapshot.data!.isEmpty) {
-                        return const Center(
-                            child: Text('No motors available'));
+                        return Center(child: Text('Error: ${snapshot.error}'));
+                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                        return const Center(child: Text('No motors available'));
                       } else {
                         final List<Motor> motors =
                             Motor().removeBookedMotors(snapshot.data!)!;
