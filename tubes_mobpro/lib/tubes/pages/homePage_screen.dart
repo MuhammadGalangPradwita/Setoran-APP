@@ -54,81 +54,83 @@ class _HomepageScreenState extends State<HomepageScreen> {
     }
   }
 
-  Widget buildDiscountMotorList(List<Motor> motors) {
-  List<Widget> rows = [];
-  for (int i = 0; i < motors.length; i += 2) {
-    int endIndex = i + 1;
-    if (endIndex >= motors.length) endIndex = i;
+  // Old function to build the discount motor list
 
-    rows.add(
-      Row(
-        children: [
-          Expanded(
-            child: FutureBuilder<List<Ulasan>?>(
-              future: getUlasanByMotorId(motors[i].idMotor),
-              builder: (context, snapshot) {
-                String rating = '-';
-                if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                  // Ambil rata-rata rating jika ada lebih dari satu ulasan
-                  double avg = snapshot.data!
-                      .map((u) => u.rating ?? 0)
-                      .fold(0.0, (a, b) => a + b) /
-                      snapshot.data!.length;
-                  rating = avg.toStringAsFixed(1);
-                }
-                return vehicleCardDiscount(
-                  // margin: const EdgeInsets.only(top: 20, left: 10, right: 10),
-                  // imagePath: motors[i].motorImage?.front ?? "assets/images/NMAX.png",
-                  // vehicleName: motors[i].model ?? "",
-                  // rating: rating,
-                  // transmition: '${motors[i].transmisi}',
-                  ulasan: null,
-                  disPrice: 'Rp. ${formatter.format(motors[i].hargaHarian)}',
-                  // norPrice: 'Rp. ${formatter.format(motors[i].hargaHarian)}',
-                  motor: motors[i],
-                );
-              },
-            ),
-          ),
-          if (endIndex < motors.length) ...[
-            const SizedBox(width: 16),
-            Expanded(
-              child: FutureBuilder<List<Ulasan>?>(
-                future: getUlasanByMotorId(motors[endIndex].idMotor),
-                builder: (context, snapshot) {
-                  String rating = '-';
-                  if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                    double avg = snapshot.data!
-                        .map((u) => u.rating ?? 0)
-                        .fold(0.0, (a, b) => a + b) /
-                        snapshot.data!.length;
-                    rating = avg.toStringAsFixed(1);
-                  }
-                  return vehicleCardDiscount(
-                    // margin: const EdgeInsets.only(top: 20, left: 10, right: 10),
-                    // imagePath: motors[endIndex].motorImage?.front ?? "assets/images/NMAX.png",
-                    // vehicleName: motors[endIndex].model ?? "",
-                    // rating: rating,
-                    // transmition: '${motors[endIndex].transmisi}',
-                    ulasan: null,
-                    disPrice: 'Rp. ${formatter.format(motors[endIndex].hargaHarian)}',
-                    // norPrice: 'Rp. ${formatter.format(motors[endIndex].hargaHarian)}',
-                    motor: motors[i],
-                  );
-                },
-              ),
-            ),
-          ],
-        ],
-      ),
-    );
-    rows.add(const SizedBox(height: 10)); // Jarak antar baris
-  }
+  // Widget buildDiscountMotorList(List<Motor> motors) {
+  // List<Widget> rows = [];
+  // for (int i = 0; i < motors.length; i += 2) {
+  //   int endIndex = i + 1;
+  //   if (endIndex >= motors.length) endIndex = i;
 
-  return Column(
-    children: rows,
-  );
-}
+  //   rows.add(
+  //     Row(
+  //       children: [
+  //         Expanded(
+  //           child: FutureBuilder<List<Ulasan>?>(
+  //             future: getUlasanByMotorId(motors[i].idMotor),
+  //             builder: (context, snapshot) {
+  //               String rating = '-';
+  //               if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+  //                 // Ambil rata-rata rating jika ada lebih dari satu ulasan
+  //                 double avg = snapshot.data!
+  //                     .map((u) => u.rating ?? 0)
+  //                     .fold(0.0, (a, b) => a + b) /
+  //                     snapshot.data!.length;
+  //                 rating = avg.toStringAsFixed(1);
+  //               }
+  //               return vehicleCardDiscount(
+  //                 // margin: const EdgeInsets.only(top: 20, left: 10, right: 10),
+  //                 // imagePath: motors[i].motorImage?.front ?? "assets/images/NMAX.png",
+  //                 // vehicleName: motors[i].model ?? "",
+  //                 // rating: rating,
+  //                 // transmition: '${motors[i].transmisi}',
+  //                 ulasan: null,
+  //                 disPrice: 'Rp. ${formatter.format(motors[i].hargaHarian)}',
+  //                 // norPrice: 'Rp. ${formatter.format(motors[i].hargaHarian)}',
+  //                 motor: motors[i],
+  //               );
+  //             },
+  //           ),
+  //         ),
+  //         if (endIndex < motors.length) ...[
+  //           const SizedBox(width: 16),
+  //           Expanded(
+  //             child: FutureBuilder<List<Ulasan>?>(
+  //               future: getUlasanByMotorId(motors[endIndex].idMotor),
+  //               builder: (context, snapshot) {
+  //                 String rating = '-';
+  //                 if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+  //                   double avg = snapshot.data!
+  //                       .map((u) => u.rating ?? 0)
+  //                       .fold(0.0, (a, b) => a + b) /
+  //                       snapshot.data!.length;
+  //                   rating = avg.toStringAsFixed(1);
+  //                 }
+  //                 return vehicleCardDiscount(
+  //                   // margin: const EdgeInsets.only(top: 20, left: 10, right: 10),
+  //                   // imagePath: motors[endIndex].motorImage?.front ?? "assets/images/NMAX.png",
+  //                   // vehicleName: motors[endIndex].model ?? "",
+  //                   // rating: rating,
+  //                   // transmition: '${motors[endIndex].transmisi}',
+  //                   ulasan: null,
+  //                   disPrice: 'Rp. ${formatter.format(motors[endIndex].hargaHarian)}',
+  //                   // norPrice: 'Rp. ${formatter.format(motors[endIndex].hargaHarian)}',
+  //                   motor: motors[i],
+  //                 );
+  //               },
+  //             ),
+  //           ),
+  //         ],
+  //       ],
+  //     ),
+  //   );
+  //   rows.add(const SizedBox(height: 10)); // Jarak antar baris
+  // }
+
+//   return Column(
+//     children: rows,
+//   );
+// }
 
   Widget buildHorizontalVehicleList(List<Motor> motors) {
     List<Widget> vehicleCards = [];
@@ -317,12 +319,15 @@ class _HomepageScreenState extends State<HomepageScreen> {
                 ),
               ],
             ),
+
             Padding(
               padding: const EdgeInsets.all(20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  const Gap(20),
                   Text('Recommendation', style: AppTextStyle.body2Bold),
+                  const Gap(20),
                   FutureBuilder<List<Motor>?>(
                     future: ApiService().motorApi.apiMotorGet(
                         withImage: true, withDiskon: true, withUlasan: true),
@@ -340,94 +345,55 @@ class _HomepageScreenState extends State<HomepageScreen> {
                       }
                     },
                   ),
-                  // const Gap(10),
-                  const VoucherCard(),
+
+                  const Gap(20),
+                  Text('Most Popular', style: AppTextStyle.body2Bold),
+                  const Gap(20),
+
+                  FutureBuilder<List<Motor>?>(
+                    future: ApiService().motorApi.apiMotorGet(
+                        withImage: true, withDiskon: true, withUlasan: true),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Center(child: Text('Error: ${snapshot.error}'));
+                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                        return const Center(child: Text('No motors available'));
+                      } else {
+                        final List<Motor> motors =
+                            Motor().removeBookedMotors(snapshot.data!)!;
+                        return buildHorizontalVehicleList(motors);
+                      }
+                    },
+                  ),
+
+                  const Gap(20),
+                  Text('Discount', style: AppTextStyle.body2Bold),
                   const Gap(10),
-                  Padding(
-                    padding: const EdgeInsets.all(0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Most Popular', style: AppTextStyle.body2Bold),
-                        FutureBuilder<List<Motor>?>(
-                          future: ApiService().motorApi.apiMotorGet(
-                              withImage: true,
-                              withDiskon: true,
-                              withUlasan: true),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return const Center(
-                                  child: CircularProgressIndicator());
-                            } else if (snapshot.hasError) {
-                              return Center(
-                                  child: Text('Error: ${snapshot.error}'));
-                            } else if (!snapshot.hasData ||
-                                snapshot.data!.isEmpty) {
-                              return const Center(
-                                  child: Text('No motors available'));
-                            } else {
-                              final List<Motor> motors =
-                                  removeBookedMotors(snapshot.data!)!;
-                              return SizedBox(
-                                height: 300, // Adjust height as needed
-                                child: ListView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: motors.length,
-                                    itemBuilder: (context, index) {
-                                      return FutureBuilder<List<Ulasan>?>(
-                                        future: getUlasanByMotorId(
-                                            motors[index].idMotor),
-                                        builder: (context, snapshot) {
-                                          List<Ulasan>? ulasan;
-                                          if (snapshot.hasData &&
-                                              snapshot.data!.isNotEmpty) {
-                                            ulasan = snapshot.data!;
-                                          } else {
-                                            ulasan = null;
-                                          }
-                                          return vehicleCard(
-                                            ulasan: ulasan,
-                                            margin: const EdgeInsets.only(
-                                                top: 10, right: 10, left: 10),
-                                            motor: motors[index],
-                                          );
-                                        },
-                                      );
-                                    }),
-                              );
-                            }
-                          },
-                        ),
-                        const Gap(20),
-                        Text('Discount', style: AppTextStyle.body2Bold),
-                        const Gap(10),
-                        FutureBuilder<List<Motor>?>(
-                          future: ApiService().motorApi.apiMotorGet(
-                              withImage: true,
-                              withDiskon: true,
-                              withUlasan: true),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return const Center(
-                                  child: CircularProgressIndicator());
-                            } else if (snapshot.hasError) {
-                              return Center(
-                                  child: Text('Error: ${snapshot.error}'));
-                            } else if (!snapshot.hasData ||
-                                snapshot.data!.isEmpty) {
-                              return const Center(
-                                  child: Text('No motors available'));
-                            } else {
-                              final List<Motor> motors =
-                                  removeBookedMotors(snapshot.data!)!;
-                              return buildHorizontalVehicleList(motors);
-                            }
-                          },
-                        ),
-                      ],
-                    ),
+                  FutureBuilder<List<Motor>?>(
+                    future: ApiService().motorApi.apiMotorGet(
+                        withImage: true,
+                        withDiskon: true,
+                        withUlasan: true),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState ==
+                          ConnectionState.waiting) {
+                        return const Center(
+                            child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Center(
+                            child: Text('Error: ${snapshot.error}'));
+                      } else if (!snapshot.hasData ||
+                          snapshot.data!.isEmpty) {
+                        return const Center(
+                            child: Text('No motors available'));
+                      } else {
+                        final List<Motor> motors =
+                            Motor().removeBookedMotors(snapshot.data!)!;
+                        return buildHorizontalVehicleList(motors);
+                      }
+                    },
                   ),
                 ],
               ),
