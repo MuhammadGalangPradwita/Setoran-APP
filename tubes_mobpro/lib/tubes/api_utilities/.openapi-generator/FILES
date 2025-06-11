@@ -25,6 +25,7 @@ doc/MotorApi.md
 doc/MotorForm.md
 doc/MotorImage.md
 doc/MotorImageApi.md
+doc/MotorSorting.md
 doc/MotorTableDTO.md
 doc/Notifikasi.md
 doc/NotifikasiApi.md
@@ -116,6 +117,7 @@ lib/model/mitra_motor_dto.dart
 lib/model/motor.dart
 lib/model/motor_form.dart
 lib/model/motor_image.dart
+lib/model/motor_sorting.dart
 lib/model/motor_table_dto.dart
 lib/model/notifikasi.dart
 lib/model/pelanggan.dart
@@ -155,8 +157,4 @@ lib/model/two_factor_response.dart
 lib/model/ulasan.dart
 lib/model/voucher.dart
 pubspec.yaml
-test/metode_pembayaran_test.dart
-test/status_motor_test.dart
-test/status_pembayaran_test.dart
-test/status_transaksi_test.dart
-test/transmisi_motor_test.dart
+test/motor_sorting_test.dart

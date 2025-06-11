@@ -76,6 +76,7 @@ Class | Method | HTTP request | Description
 *MitraApi* | [**mitraMitraMotorGet**](doc//MitraApi.md#mitramitramotorget) | **GET** /Mitra/mitraMotor | 
 *MitraApi* | [**mitraPost**](doc//MitraApi.md#mitrapost) | **POST** /Mitra | 
 *MitraApi* | [**mitraPut**](doc//MitraApi.md#mitraput) | **PUT** /Mitra | 
+*MotorApi* | [**apiMotorAcceptMotorIdMotorGet**](doc//MotorApi.md#apimotoracceptmotoridmotorget) | **GET** /api/Motor/acceptMotor/{idMotor} | 
 *MotorApi* | [**apiMotorGet**](doc//MotorApi.md#apimotorget) | **GET** /api/Motor | 
 *MotorApi* | [**apiMotorIdDelete**](doc//MotorApi.md#apimotoriddelete) | **DELETE** /api/Motor/{id} | 
 *MotorApi* | [**apiMotorIdDiskonsGet**](doc//MotorApi.md#apimotoriddiskonsget) | **GET** /api/Motor/{id}/diskons | 
@@ -160,6 +161,7 @@ Class | Method | HTTP request | Description
  - [Motor](doc//Motor.md)
  - [MotorForm](doc//MotorForm.md)
  - [MotorImage](doc//MotorImage.md)
+ - [MotorSorting](doc//MotorSorting.md)
  - [MotorTableDTO](doc//MotorTableDTO.md)
  - [Notifikasi](doc//Notifikasi.md)
  - [Pelanggan](doc//Pelanggan.md)

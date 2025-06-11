@@ -58,6 +58,9 @@ String parameterToString(dynamic value) {
   if (value is MetodePembayaran) {
     return MetodePembayaranTypeTransformer().encode(value).toString();
   }
+  if (value is MotorSorting) {
+    return MotorSortingTypeTransformer().encode(value).toString();
+  }
   if (value is StatusDiskon) {
     return StatusDiskonTypeTransformer().encode(value).toString();
   }
