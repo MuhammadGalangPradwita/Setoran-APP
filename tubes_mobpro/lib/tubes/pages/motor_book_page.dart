@@ -16,7 +16,8 @@ class BookMotorcyclePage extends StatefulWidget {
   final Motor motor;
   final DateTimeRange? selectedDateRange;
 
-  const BookMotorcyclePage({super.key, required this.motor, this.selectedDateRange});
+  const BookMotorcyclePage(
+      {super.key, required this.motor, this.selectedDateRange});
 
   @override
   State<BookMotorcyclePage> createState() => _BookMotorcyclePageState();
@@ -114,7 +115,7 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
       await ApiService().motorApi.apiMotorIdPut(payload['id_motor'],
           putMotorDTO: PutMotorDTO(
             statusMotor: StatusMotor.disewa,
-            platNomor: motor.platNomor!,
+            platNomor: motor.platNomor!.replaceAll(' ', ''),
             nomorSTNK: motor.nomorSTNK!,
             nomorBPKB: motor.nomorBPKB!,
             model: motor.model!,
@@ -125,27 +126,28 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
             hargaHarian: motor.hargaHarian!,
           ));
 
-      // AwesomeDialog(
-      //   context: context,
-      //   dialogType: DialogType.success,
-      //   headerAnimationLoop: false,
-      //   animType: AnimType.bottomSlide,
-      //   title: 'Sukses',
-      //   desc: 'idMotor: ${motor.idMotor}\n'
-      //       'idPelanggan: ${payload['id_pelanggan']}\n'
-      //       'Tanggal Mulai: ${range.start}\n'
-      //       'Tanggal Selesai: ${range.end}\n'
-      //       'Total Biaya: Rp. ${formatter.format(finalFees)}\n'
-      //       'namaVoucher: ${voucher != null ? voucher!.namaVoucher : 'Tidak ada'}\n'
-      //       'voucher: ${voucher != null ? voucher!.namaVoucher : 'Tidak ada'}'
-      //       'diskon: ${payload['id_diskon'] ?? 'Tidak ada'}',
-      //   buttonsTextStyle: const TextStyle(color: Colors.black),
-      //   showCloseIcon: false,
-      //   // btnCancelOnPress: () {},
-      //   // btnOkOnPress: () {
-      //   //   Navigator.of(context).popUntil((route) => route.isFirst);
-      //   // },
-      // ).show();
+      AwesomeDialog(
+        context: context,
+        dialogType: DialogType.success,
+        headerAnimationLoop: false,
+        animType: AnimType.bottomSlide,
+        title: 'Sukses',
+        desc: 'idMotor: ${motor.idMotor}\n'
+            'TipeMotor: ${motor.tipe}\n'
+            'idPelanggan: ${payload['id_pelanggan']}\n'
+            'Tanggal Mulai: ${range.start}\n'
+            'Tanggal Selesai: ${range.end}\n'
+            'Total Biaya: Rp. ${formatter.format(finalFees)}\n'
+            'namaVoucher: ${voucher != null ? voucher!.namaVoucher : 'Tidak ada'}\n'
+            'voucher: ${voucher != null ? voucher!.namaVoucher : 'Tidak ada'}'
+            'diskon: ${payload['id_diskon'] ?? 'Tidak ada'}',
+        buttonsTextStyle: const TextStyle(color: Colors.black),
+        showCloseIcon: false,
+        // btnCancelOnPress: () {},
+        // btnOkOnPress: () {
+        //   Navigator.of(context).popUntil((route) => route.isFirst);
+        // },
+      ).show();
 
       AwesomeDialog(
         context: context,

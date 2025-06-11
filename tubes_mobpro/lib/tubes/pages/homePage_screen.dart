@@ -27,14 +27,22 @@ enum MotorType { Matic, Manual }
 
 class _HomepageScreenState extends State<HomepageScreen> {
   MotorType? _selectedTransmission;
-  DateTime? _selectedDate;
+  // DateTime? _selectedDate;
 
   DateTimeRange? _selectedDateRange;
+
+  late Future<List<Motor>> _motorFuture;
 
   // final TextEditingController _dateController = TextEditingController();
   final formatter = NumberFormat("#,###");
 
   final _modelController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _motorFuture = _fetchMotors();
+  }
 
   Future<List<Ulasan>?> getUlasanByMotorId(int? idMotor) async {
     if (idMotor == null) return [];
@@ -58,6 +66,16 @@ class _HomepageScreenState extends State<HomepageScreen> {
   //     });
   //   }
   // }
+
+  Future<List<Motor>> _fetchMotors() async {
+    final motors = await ApiService().motorApi.apiMotorGet(
+          withImage: true,
+          withDiskon: true,
+          withUlasan: true,
+        );
+
+    return Motor().removeBookedMotors(motors ?? [])!;
+  }
 
   Widget buildHorizontalVehicleList(List<Motor> motors, bool isDiscount) {
     List<Widget> vehicleCards = [];
@@ -323,10 +341,9 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context) =>
-                                                  SearchResult(
-                                                    selectedDateRange:
-                                                        _selectedDateRange ??
+                                              builder:
+                                                  (context) => SearchResult(
+                                                        selectedDateRange: _selectedDateRange ??
                                                             DateTimeRange(
                                                                 start: DateTime
                                                                     .now(),
@@ -335,15 +352,13 @@ class _HomepageScreenState extends State<HomepageScreen> {
                                                                     .add(const Duration(
                                                                         days:
                                                                             1))),
-                                                    model:
-                                                        _modelController.text,
-                                                    transimission:
-                                                        _selectedTransmission !=
-                                                                null
-                                                            ? _selectedTransmission!
-                                                                .name
-                                                            : "",
-                                                  )));
+                                                        transimission:
+                                                            _selectedTransmission !=
+                                                                    null
+                                                                ? _selectedTransmission!
+                                                                    .name
+                                                                : "",
+                                                      )));
                                     })
                                 : ButtonWidget.secondary(
                                     label: "Search",
@@ -368,8 +383,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                   const Gap(20),
                   Text('Recommendation', style: AppTextStyle.body2Bold),
                   FutureBuilder<List<Motor>?>(
-                    future: ApiService().motorApi.apiMotorGet(
-                        withImage: true, withDiskon: true, withUlasan: true),
+                    future: _motorFuture,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());
@@ -380,15 +394,15 @@ class _HomepageScreenState extends State<HomepageScreen> {
                       } else {
                         final List<Motor> motors =
                             Motor().removeBookedMotors(snapshot.data!)!;
-                        return buildHorizontalVehicleList(motors, false);
+                        return buildHorizontalVehicleList(
+                            motors, false);
                       }
                     },
                   ),
                   const Gap(20),
                   Text('Most Popular', style: AppTextStyle.body2Bold),
                   FutureBuilder<List<Motor>?>(
-                    future: ApiService().motorApi.apiMotorGet(
-                        withImage: true, withDiskon: true, withUlasan: true),
+                    future: _motorFuture,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());
@@ -407,8 +421,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                   VoucherCard(),
                   Text('Discount', style: AppTextStyle.body2Bold),
                   FutureBuilder<List<Motor>?>(
-                    future: ApiService().motorApi.apiMotorGet(
-                        withImage: true, withDiskon: true, withUlasan: true),
+                    future: _motorFuture,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());

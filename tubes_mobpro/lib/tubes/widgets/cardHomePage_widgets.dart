@@ -22,7 +22,8 @@ class vehicleCard extends StatelessWidget {
       // required this.height,
       required this.margin,
       required this.motor,
-      required this.ulasan, this.selectedDateRange});
+      required this.ulasan,
+      this.selectedDateRange});
 
   final formatter = NumberFormat("#,###");
 
@@ -42,11 +43,13 @@ class vehicleCard extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>
-                            SearchResultDetail(motor: motor, selectedDateRange: selectedDateRange,)));
+                        builder: (context) => SearchResultDetail(
+                              motor: motor,
+                              selectedDateRange: selectedDateRange,
+                            )));
               },
               child: SizedBox(
-                width: 180,
+                width: 165,
                 height: 250,
                 child: Column(
                   children: [
@@ -216,7 +219,8 @@ class vehicleCardDiscount extends StatelessWidget {
                     Container(
                       width: double.infinity,
                       height: 100,
-                      margin: const EdgeInsets.only(top: 20, left: 10, right: 10),
+                      margin:
+                          const EdgeInsets.only(top: 20, left: 10, right: 10),
                       child: Builder(
                         builder: (context) {
                           if (motor.idMotorImage != null) {
@@ -259,9 +263,11 @@ class vehicleCardDiscount extends StatelessWidget {
                                   const SizedBox(width: 5),
                                   Text(
                                     ulasan != null &&
-                                            calculateAverageRating(ulasan!) !=
+                                            Motor().calculateAverageRating(
+                                                    ulasan!) !=
                                                 null
-                                        ? calculateAverageRating(ulasan!)!
+                                        ? Motor()
+                                            .calculateAverageRating(ulasan!)!
                                             .toStringAsFixed(1)
                                         : "-",
                                     style: AppTextStyle.body2Bold,
@@ -320,20 +326,6 @@ class vehicleCardDiscount extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  double? calculateAverageRating(List<Ulasan> ulasan) {
-    double totalRating = 0;
-    int count = 0;
-
-    for (var ulasan in ulasan) {
-      if (ulasan.idMotor == motor.idMotor) {
-        totalRating += ulasan.rating!;
-        count++;
-      }
-    }
-
-    return count > 0 ? totalRating / count : null;
   }
 }
 

@@ -10,11 +10,9 @@ class SearchResult extends StatelessWidget {
   const SearchResult(
       {super.key,
       required this.transimission,
-      required this.model,
       required this.selectedDateRange});
 
   final String transimission;
-  final String model;
   final DateTimeRange? selectedDateRange;
 
   Future<Widget> buildVehicleRow(List<Motor> motors) async {
@@ -69,7 +67,7 @@ class SearchResult extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              model == "" ? "-" : model,
+              transimission == "" ? "-" : transimission,
               style: AppTextStyle.body1SemiBold,
             ),
             // Text(
@@ -87,7 +85,6 @@ class SearchResult extends StatelessWidget {
             transmisi: transimission == "Manual"
                 ? TransmisiMotor.manual
                 : TransmisiMotor.matic,
-            model: model,
             withDiskon: true,
             withImage: true,
             withUlasan: true),
