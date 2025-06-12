@@ -530,7 +530,7 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
                   children: [
                     const Text('Total Days', style: TextStyle(fontSize: 14.0)),
                     Text(
-                        rentTime != null ? '${rentTime!.duration.inDays}' : '0',
+                        rentTime != null ? '${rentTime!.duration.inDays}' : '-',
                         style: const TextStyle(fontSize: 14.0)),
                   ],
                 ),
@@ -594,7 +594,7 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
                     Text(
                         rentTime != null
                             ? 'Rp. ${formatter.format(calculateFees(widget.motor, rentTime!, voucher, diskon))}'
-                            : 'Rp. 0,000',
+                            : 'Rp. -',
                         style: const TextStyle(
                             fontSize: 16.0, fontWeight: FontWeight.bold)),
                   ],

@@ -159,28 +159,6 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
                       ),
                     );
 
-                    // AwesomeDialog(
-                    //   context: context,
-                    //   dialogType: DialogType.success,
-                    //   title: 'Terima kasih',
-                    //   desc: 'Ulasan Anda telah dikirim.',
-                    //   btnOkOnPress: () {
-                    //     Navigator.pop(context);
-
-                    //     // Update rating after sending review
-                    //     getRatingFromUlasan();
-
-                    //     setState(() {
-                    //       // Update motor object with new review
-                    //       ApiService()
-                    //           .motorApi
-                    //           .apiMotorIdUlasansGet(widget.motor.idMotor!)
-                    //           .then((value) {
-                    //         widget.motor.ulasan = value;
-                    //       });
-                    //     });
-                    //   },
-                    // ).show();
                   } catch (e) {
                     AwesomeDialog(
                       context: context,
@@ -194,16 +172,6 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
                     print('Error sending review: $e');
                   }
 
-                  // Show success confirmation
-                  // AwesomeDialog(
-                  //   context: context,
-                  //   dialogType: DialogType.success,
-                  //   title: 'Terima kasih!',
-                  //   desc: 'Ulasan Anda telah dikirim.',
-                  //   btnOkOnPress: () {
-                  //     Navigator.pop(context);
-                  //   },
-                  // ).show();
                 } else {
                   // Show error if form is not valid
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -254,22 +222,6 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
     });
   }
 
-  // Future<bool> isRented() async {
-  //   // int userId = (await PenggunaApi.getCurrentUser())!.id;
-  //   int userId = AuthState().currentUser!.id! as int;
-
-  //   List<Transaksi>? transaksiList = await TransaksiApi().apiTransaksiGet(
-  //     idPelanggan: userId.toString(),
-  //   );
-
-  //   if (transaksiList != null) {
-  //     bool exists = transaksiList.any((v) => v.idMotor == widget.index);
-
-  //     return exists;
-  //   }
-
-  //   return false;
-  // }
 
   @override
   Widget build(BuildContext context) {

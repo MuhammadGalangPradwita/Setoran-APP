@@ -16,6 +16,46 @@ class MotorApi {
 
   final ApiClient apiClient;
 
+  /// Performs an HTTP 'GET /api/Motor/acceptMotor/{idMotor}' operation and returns the [Response].
+  /// Parameters:
+  ///
+  /// * [int] idMotor (required):
+  Future<Response> apiMotorAcceptMotorIdMotorGetWithHttpInfo(int idMotor,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/api/Motor/acceptMotor/{idMotor}'
+      .replaceAll('{idMotor}', idMotor.toString());
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Parameters:
+  ///
+  /// * [int] idMotor (required):
+  Future<void> apiMotorAcceptMotorIdMotorGet(int idMotor,) async {
+    final response = await apiMotorAcceptMotorIdMotorGetWithHttpInfo(idMotor,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
   /// Performs an HTTP 'GET /api/Motor' operation and returns the [Response].
   /// Parameters:
   ///
@@ -32,7 +72,13 @@ class MotorApi {
   /// * [String] model:
   ///
   /// * [TransmisiMotor] transmisi:
-  Future<Response> apiMotorGetWithHttpInfo({ bool? withImage, bool? withDiskon, bool? withUlasan, String? idMitra, StatusMotor? status, String? model, TransmisiMotor? transmisi, }) async {
+  ///
+  /// * [int] amountPerPage:
+  ///
+  /// * [int] page:
+  ///
+  /// * [MotorSorting] sorting:
+  Future<Response> apiMotorGetWithHttpInfo({ bool? withImage, bool? withDiskon, bool? withUlasan, String? idMitra, StatusMotor? status, String? model, TransmisiMotor? transmisi, int? amountPerPage, int? page, MotorSorting? sorting, }) async {
     // ignore: prefer_const_declarations
     final path = r'/api/Motor';
 
@@ -64,6 +110,15 @@ class MotorApi {
     if (transmisi != null) {
       queryParams.addAll(_queryParams('', 'Transmisi', transmisi));
     }
+    if (amountPerPage != null) {
+      queryParams.addAll(_queryParams('', 'AmountPerPage', amountPerPage));
+    }
+    if (page != null) {
+      queryParams.addAll(_queryParams('', 'Page', page));
+    }
+    if (sorting != null) {
+      queryParams.addAll(_queryParams('', 'Sorting', sorting));
+    }
 
     const contentTypes = <String>[];
 
@@ -94,8 +149,14 @@ class MotorApi {
   /// * [String] model:
   ///
   /// * [TransmisiMotor] transmisi:
-  Future<List<Motor>?> apiMotorGet({ bool? withImage, bool? withDiskon, bool? withUlasan, String? idMitra, StatusMotor? status, String? model, TransmisiMotor? transmisi, }) async {
-    final response = await apiMotorGetWithHttpInfo( withImage: withImage, withDiskon: withDiskon, withUlasan: withUlasan, idMitra: idMitra, status: status, model: model, transmisi: transmisi, );
+  ///
+  /// * [int] amountPerPage:
+  ///
+  /// * [int] page:
+  ///
+  /// * [MotorSorting] sorting:
+  Future<List<Motor>?> apiMotorGet({ bool? withImage, bool? withDiskon, bool? withUlasan, String? idMitra, StatusMotor? status, String? model, TransmisiMotor? transmisi, int? amountPerPage, int? page, MotorSorting? sorting, }) async {
+    final response = await apiMotorGetWithHttpInfo( withImage: withImage, withDiskon: withDiskon, withUlasan: withUlasan, idMitra: idMitra, status: status, model: model, transmisi: transmisi, amountPerPage: amountPerPage, page: page, sorting: sorting, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

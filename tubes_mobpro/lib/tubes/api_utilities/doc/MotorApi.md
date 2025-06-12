@@ -9,6 +9,7 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**apiMotorAcceptMotorIdMotorGet**](MotorApi.md#apimotoracceptmotoridmotorget) | **GET** /api/Motor/acceptMotor/{idMotor} | 
 [**apiMotorGet**](MotorApi.md#apimotorget) | **GET** /api/Motor | 
 [**apiMotorIdDelete**](MotorApi.md#apimotoriddelete) | **DELETE** /api/Motor/{id} | 
 [**apiMotorIdDiskonsGet**](MotorApi.md#apimotoriddiskonsget) | **GET** /api/Motor/{id}/diskons | 
@@ -18,8 +19,54 @@ Method | HTTP request | Description
 [**apiMotorPost**](MotorApi.md#apimotorpost) | **POST** /api/Motor | 
 
 
+# **apiMotorAcceptMotorIdMotorGet**
+> apiMotorAcceptMotorIdMotorGet(idMotor)
+
+
+
+### Example
+```dart
+import 'package:openapi/api.dart';
+// TODO Configure HTTP Bearer authorization: Bearer
+// Case 1. Use String Token
+//defaultApiClient.getAuthentication<HttpBearerAuth>('Bearer').setAccessToken('YOUR_ACCESS_TOKEN');
+// Case 2. Use Function which generate token.
+// String yourTokenGeneratorFunction() { ... }
+//defaultApiClient.getAuthentication<HttpBearerAuth>('Bearer').setAccessToken(yourTokenGeneratorFunction);
+
+final api_instance = MotorApi();
+final idMotor = 56; // int | 
+
+try {
+    api_instance.apiMotorAcceptMotorIdMotorGet(idMotor);
+} catch (e) {
+    print('Exception when calling MotorApi->apiMotorAcceptMotorIdMotorGet: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **idMotor** | **int**|  | 
+
+### Return type
+
+void (empty response body)
+
+### Authorization
+
+[Bearer](../README.md#Bearer)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: Not defined
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **apiMotorGet**
-> List<Motor> apiMotorGet(withImage, withDiskon, withUlasan, idMitra, status, model, transmisi)
+> List<Motor> apiMotorGet(withImage, withDiskon, withUlasan, idMitra, status, model, transmisi, amountPerPage, page, sorting)
 
 
 
@@ -41,9 +88,12 @@ final idMitra = idMitra_example; // String |
 final status = ; // StatusMotor | 
 final model = model_example; // String | 
 final transmisi = ; // TransmisiMotor | 
+final amountPerPage = 56; // int | 
+final page = 56; // int | 
+final sorting = ; // MotorSorting | 
 
 try {
-    final result = api_instance.apiMotorGet(withImage, withDiskon, withUlasan, idMitra, status, model, transmisi);
+    final result = api_instance.apiMotorGet(withImage, withDiskon, withUlasan, idMitra, status, model, transmisi, amountPerPage, page, sorting);
     print(result);
 } catch (e) {
     print('Exception when calling MotorApi->apiMotorGet: $e\n');
@@ -61,6 +111,9 @@ Name | Type | Description  | Notes
  **status** | [**StatusMotor**](.md)|  | [optional] 
  **model** | **String**|  | [optional] 
  **transmisi** | [**TransmisiMotor**](.md)|  | [optional] 
+ **amountPerPage** | **int**|  | [optional] 
+ **page** | **int**|  | [optional] 
+ **sorting** | [**MotorSorting**](.md)|  | [optional] 
 
 ### Return type
 

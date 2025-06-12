@@ -62,6 +62,7 @@ part 'model/mitra_motor_dto.dart';
 part 'model/motor.dart';
 part 'model/motor_form.dart';
 part 'model/motor_image.dart';
+part 'model/motor_sorting.dart';
 part 'model/motor_table_dto.dart';
 part 'model/notifikasi.dart';
 part 'model/pelanggan.dart';

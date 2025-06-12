@@ -216,6 +216,8 @@ class ApiClient {
           return MotorForm.fromJson(value);
         case 'MotorImage':
           return MotorImage.fromJson(value);
+        case 'MotorSorting':
+          return MotorSortingTypeTransformer().decode(value);
         case 'MotorTableDTO':
           return MotorTableDTO.fromJson(value);
         case 'Notifikasi':

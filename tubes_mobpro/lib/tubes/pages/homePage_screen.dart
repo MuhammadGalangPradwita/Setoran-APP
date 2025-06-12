@@ -31,8 +31,6 @@ class _HomepageScreenState extends State<HomepageScreen> {
 
   DateTimeRange? _selectedDateRange;
 
-  late Future<List<Motor>> _motorFuture;
-
   // final TextEditingController _dateController = TextEditingController();
   final formatter = NumberFormat("#,###");
 
@@ -41,7 +39,6 @@ class _HomepageScreenState extends State<HomepageScreen> {
   @override
   void initState() {
     super.initState();
-    _motorFuture = _fetchMotors();
   }
 
   Future<List<Ulasan>?> getUlasanByMotorId(int? idMotor) async {
@@ -66,16 +63,6 @@ class _HomepageScreenState extends State<HomepageScreen> {
   //     });
   //   }
   // }
-
-  Future<List<Motor>> _fetchMotors() async {
-    final motors = await ApiService().motorApi.apiMotorGet(
-          withImage: true,
-          withDiskon: true,
-          withUlasan: true,
-        );
-
-    return Motor().removeBookedMotors(motors ?? [])!;
-  }
 
   Widget buildHorizontalVehicleList(List<Motor> motors, bool isDiscount) {
     List<Widget> vehicleCards = [];
@@ -383,7 +370,13 @@ class _HomepageScreenState extends State<HomepageScreen> {
                   const Gap(20),
                   Text('Recommendation', style: AppTextStyle.body2Bold),
                   FutureBuilder<List<Motor>?>(
-                    future: _motorFuture,
+                    future: ApiService().motorApi.apiMotorGet(
+                        withImage: true,
+                        withDiskon: true,
+                        withUlasan: true,
+                        page: 1,
+                        amountPerPage: 4,
+                        sorting: MotorSorting.bestRating),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());
@@ -394,15 +387,20 @@ class _HomepageScreenState extends State<HomepageScreen> {
                       } else {
                         final List<Motor> motors =
                             Motor().removeBookedMotors(snapshot.data!)!;
-                        return buildHorizontalVehicleList(
-                            motors, false);
+                        return buildHorizontalVehicleList(motors, false);
                       }
                     },
                   ),
                   const Gap(20),
                   Text('Most Popular', style: AppTextStyle.body2Bold),
                   FutureBuilder<List<Motor>?>(
-                    future: _motorFuture,
+                    future: ApiService().motorApi.apiMotorGet(
+                        withImage: true,
+                        withDiskon: true,
+                        withUlasan: true,
+                        page: 1,
+                        amountPerPage: 4,
+                        sorting: MotorSorting.mostPopular),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());
@@ -419,9 +417,14 @@ class _HomepageScreenState extends State<HomepageScreen> {
                   ),
                   const Gap(20),
                   VoucherCard(),
+                  const Gap(20),
                   Text('Discount', style: AppTextStyle.body2Bold),
                   FutureBuilder<List<Motor>?>(
-                    future: _motorFuture,
+                    future: ApiService().motorApi.apiMotorGet(
+                          withImage: true,
+                          withDiskon: true,
+                          withUlasan: true,
+                        ),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());
