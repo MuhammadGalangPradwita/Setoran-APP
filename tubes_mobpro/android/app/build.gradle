@@ -11,7 +11,7 @@ plugins {
 android {
     namespace = "com.example.tubes_mobpro"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = "21.1.6352462"
+    ndkVersion = "26.1.10909125"
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -41,6 +41,7 @@ android {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.debug
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 }
