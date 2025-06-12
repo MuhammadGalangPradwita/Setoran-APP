@@ -5,7 +5,9 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
-
+permissions:
+  contents: write  # This gives write permission to repository contents, including releases
+  
 jobs:
   build:
     runs-on: ubuntu-latest
