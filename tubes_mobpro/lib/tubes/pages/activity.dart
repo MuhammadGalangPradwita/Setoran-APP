@@ -116,7 +116,7 @@ class _ActivityPageState extends State<ActivityPage> {
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton<String>(
                         dropdownColor: AppColors.N0,
-                        value: status?.value ?? 'Unknown',
+                        value: status?.value ?? '',
                         isExpanded: true,
                         icon: const Icon(
                           Icons.keyboard_arrow_down,

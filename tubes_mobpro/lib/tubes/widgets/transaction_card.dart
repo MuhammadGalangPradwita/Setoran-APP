@@ -86,16 +86,15 @@ class _TransactionCardState extends State<TransactionCard> {
                       const Gap(20),
                       Container(
                         decoration: BoxDecoration(
-
                           // Penggantian setelah perubahan enum
-                          color: setColor(widget.transaksi.status!.value.toString()),
+                          color: setColor(
+                              widget.transaksi.status!.value.toString()),
                           borderRadius: BorderRadius.circular(4),
                         ),
                         // color: setColor(widget.transaksi.status!),
                         padding: const EdgeInsets.symmetric(
                             horizontal: 8, vertical: 4),
                         child: Text(
-
                           // Penggantian setelah perubahan enum
                           widget.transaksi.status!.value.toString(),
                           style: AppTextStyle.smallReguler.copyWith(
