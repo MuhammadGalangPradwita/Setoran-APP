@@ -14,8 +14,10 @@ import '../widgets/button_widgets.dart';
 
 class BookMotorcyclePage extends StatefulWidget {
   final Motor motor;
+  final DateTimeRange? selectedDateRange;
 
-  const BookMotorcyclePage({super.key, required this.motor});
+  const BookMotorcyclePage(
+      {super.key, required this.motor, this.selectedDateRange});
 
   @override
   State<BookMotorcyclePage> createState() => _BookMotorcyclePageState();
@@ -39,6 +41,7 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
     super.initState();
     setState(() {
       diskon = widget.motor.getBestDiscount();
+      rentTime = widget.selectedDateRange;
     });
   }
 
@@ -109,36 +112,10 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
                 : MetodePembayaran.dompetDigital,
           ));
 
-      // Mengambil id transaksi dari response
-      // final Map<String, dynamic> transaksiBody = transaksiResponse.body != null
-      //     ? Map<String, dynamic>.from(jsonDecode(transaksiResponse.body))
-      //     : {};
-
-      // print('Transaksi Response: ${transaksiResponse.body}');
-
-      // int? idTransaksi = transaksiBody['idTransaksi'];
-
-      // if (idTransaksi == null) {
-      //   throw Exception('Failed to create transaction: No ID returned');
-
-      // }
-
-      // print('motor_book_page.dart');
-      // print('id_motor: ${payload['id_motor']}');
-      // print('list diskon: ${motor.diskon}');
-      // print('nomor STNK: ${motor.nomorSTNK}');
-      // print('nomor BPKB: ${motor.nomorBPKB}');
-
-      // await ApiService().pembayaranApi.apiPembayaranPost(
-      //         postPembayaranDTO: PostPembayaranDTO(
-      //       idTransaksi: idTransaksi, // Make sure to set this value appropriately
-      //       metodePembayaran: paymentMethod!,
-      //     ));
-
       await ApiService().motorApi.apiMotorIdPut(payload['id_motor'],
           putMotorDTO: PutMotorDTO(
-            statusMotor: StatusMotor.diajukan,
-            platNomor: motor.platNomor!,
+            statusMotor: StatusMotor.disewa,
+            platNomor: motor.platNomor!.replaceAll(' ', ''),
             nomorSTNK: motor.nomorSTNK!,
             nomorBPKB: motor.nomorBPKB!,
             model: motor.model!,
@@ -149,27 +126,28 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
             hargaHarian: motor.hargaHarian!,
           ));
 
-      // AwesomeDialog(
-      //   context: context,
-      //   dialogType: DialogType.success,
-      //   headerAnimationLoop: false,
-      //   animType: AnimType.bottomSlide,
-      //   title: 'Sukses',
-      //   desc: 'idMotor: ${motor.idMotor}\n'
-      //       'idPelanggan: ${payload['id_pelanggan']}\n'
-      //       'Tanggal Mulai: ${range.start}\n'
-      //       'Tanggal Selesai: ${range.end}\n'
-      //       'Total Biaya: Rp. ${formatter.format(finalFees)}\n'
-      //       'namaVoucher: ${voucher != null ? voucher!.namaVoucher : 'Tidak ada'}\n'
-      //       'voucher: ${voucher != null ? voucher!.namaVoucher : 'Tidak ada'}'
-      //       'diskon: ${payload['id_diskon'] ?? 'Tidak ada'}',
-      //   buttonsTextStyle: const TextStyle(color: Colors.black),
-      //   showCloseIcon: false,
-      //   // btnCancelOnPress: () {},
-      //   // btnOkOnPress: () {
-      //   //   Navigator.of(context).popUntil((route) => route.isFirst);
-      //   // },
-      // ).show();
+      AwesomeDialog(
+        context: context,
+        dialogType: DialogType.success,
+        headerAnimationLoop: false,
+        animType: AnimType.bottomSlide,
+        title: 'Sukses',
+        desc: 'idMotor: ${motor.idMotor}\n'
+            'TipeMotor: ${motor.tipe}\n'
+            'idPelanggan: ${payload['id_pelanggan']}\n'
+            'Tanggal Mulai: ${range.start}\n'
+            'Tanggal Selesai: ${range.end}\n'
+            'Total Biaya: Rp. ${formatter.format(finalFees)}\n'
+            'namaVoucher: ${voucher != null ? voucher!.namaVoucher : 'Tidak ada'}\n'
+            'voucher: ${voucher != null ? voucher!.namaVoucher : 'Tidak ada'}'
+            'diskon: ${payload['id_diskon'] ?? 'Tidak ada'}',
+        buttonsTextStyle: const TextStyle(color: Colors.black),
+        showCloseIcon: false,
+        // btnCancelOnPress: () {},
+        // btnOkOnPress: () {
+        //   Navigator.of(context).popUntil((route) => route.isFirst);
+        // },
+      ).show();
 
       AwesomeDialog(
         context: context,
@@ -552,7 +530,7 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
                   children: [
                     const Text('Total Days', style: TextStyle(fontSize: 14.0)),
                     Text(
-                        rentTime != null ? '${rentTime!.duration.inDays}' : '0',
+                        rentTime != null ? '${rentTime!.duration.inDays}' : '-',
                         style: const TextStyle(fontSize: 14.0)),
                   ],
                 ),
@@ -616,7 +594,7 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
                     Text(
                         rentTime != null
                             ? 'Rp. ${formatter.format(calculateFees(widget.motor, rentTime!, voucher, diskon))}'
-                            : 'Rp. 0,000',
+                            : 'Rp. -',
                         style: const TextStyle(
                             fontSize: 16.0, fontWeight: FontWeight.bold)),
                   ],

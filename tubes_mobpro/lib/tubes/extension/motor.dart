@@ -1,10 +1,7 @@
-
-
 import 'package:tubes_mobpro/tubes/api_service.dart';
 import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
 
 extension MotorHelper on Motor {
-
   /// pastikan list diskon sudah ter load di objek motor
   Diskon? getBestDiscount() {
     Diskon? diskonTerbaik = null;
@@ -12,7 +9,8 @@ extension MotorHelper on Motor {
     for (Diskon discount in diskon ?? []) {
       if (discount.tanggalMulai!.isBefore(DateTime.now()) &&
           discount.tanggalAkhir!.isAfter(DateTime.now())) {
-        if (diskonTerbaik !=null && discount.jumlahDiskon! > diskonTerbaik.jumlahDiskon!) {
+        if (diskonTerbaik != null &&
+            discount.jumlahDiskon! > diskonTerbaik.jumlahDiskon!) {
           diskonTerbaik = discount;
         } else if (diskonTerbaik == null) {
           diskonTerbaik = discount;
@@ -27,13 +25,13 @@ extension MotorHelper on Motor {
   Future<double?> getAvgUlasan() async {
     if (ulasan == null || ulasan!.isEmpty) return null;
 
-    double total = ulasan!.fold(0.0, (sum, ulasan) => sum + ulasan.rating!.toDouble());
+    double total =
+        ulasan!.fold(0.0, (sum, ulasan) => sum + ulasan.rating!.toDouble());
     return total / ulasan!.length;
   }
 
   // Mengambil daftar motor yang sudah dibooking
   List<Motor>? removeBookedMotors(List<Motor>? listMotors) {
-
     List<Motor> filteredList = [];
 
     if (listMotors == null || listMotors.isEmpty) {
@@ -54,6 +52,20 @@ extension MotorHelper on Motor {
 
     // Mengembalikan daftar motor yang sudah dibooking
     return listMotors;
+  }
+
+  double? calculateAverageRating(List<Ulasan> ulasan) {
+    double totalRating = 0;
+    int count = 0;
+
+    for (var ulasan in ulasan) {
+      if (ulasan.idMotor == idMotor) {
+        totalRating += ulasan.rating!;
+        count++;
+      }
+    }
+
+    return count > 0 ? totalRating / count : null;
   }
 
 }

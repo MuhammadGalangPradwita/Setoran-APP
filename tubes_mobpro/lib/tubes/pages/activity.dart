@@ -19,7 +19,6 @@ class ActivityPage extends StatefulWidget {
 
 class _ActivityPageState extends State<ActivityPage> {
   late Future<List<Transaksi>?> dataList;
-  // Penggantian setelah perubahan enum
   StatusTransaksi? status; // Default status
 
   // Define available status options
@@ -28,7 +27,7 @@ class _ActivityPageState extends State<ActivityPage> {
     {'value': 'Selesai', 'label': 'Selesai'},
     {'value': 'Dibuat', 'label': 'Dibuat'},
     {'value': 'Berlangsung', 'label': 'Berlangsung'},
-    {'value': 'Bata;', 'label': 'Batal'},
+    {'value': 'Batal', 'label': 'Batal'},
     // Add more status options as needed
   ];
 

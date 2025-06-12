@@ -50,8 +50,12 @@ class _DetailActivityPageState extends State<DetailActivityPage> {
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
-      return const Center(
-        child: CircularProgressIndicator(),
+      return Container(
+        color: Colors.white, // Set background to white
+        child: const Center(
+          child: CircularProgressIndicator(// Progress indicator background
+              ),
+        ),
       );
     }
     return Scaffold(
@@ -129,7 +133,9 @@ class _DetailActivityPageState extends State<DetailActivityPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text("Payment Method", style: AppTextStyle.smallReguler),
-                  Text(pembayaran?.metodePembayaran?.value ?? "Unknown",
+                  Text(
+                      AppUtil.displayEnumValue(
+                          pembayaran?.metodePembayaran?.value),
                       style: AppTextStyle.body2Regular),
                 ],
               ),
@@ -148,7 +154,9 @@ class _DetailActivityPageState extends State<DetailActivityPage> {
               const Gap(12),
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text("Status", style: AppTextStyle.smallReguler),
-                Text(pembayaran?.statusPembayaran?.value ?? "Unknown",
+                Text(
+                    AppUtil.displayEnumValue(
+                        pembayaran?.statusPembayaran?.value),
                     style: AppTextStyle.body2Regular),
                 const Gap(12),
                 if (pembayaran?.statusPembayaran == StatusPembayaran.belumLunas)
@@ -166,6 +174,9 @@ class _DetailActivityPageState extends State<DetailActivityPage> {
                                   StatusPembayaran.menungguKonfirmasi,
                               tanggalPembayaran: DateTime.now(),
                             ));
+                        pembayaran = await ApiService()
+                            .pembayaranApi
+                            .apiPembayaranIdGet(pembayaran!.idPembayaran!);
                         setState(() {
                           _isLoading = false;
                         });
