@@ -49,7 +49,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: flutter-apks-${{ env.APP_VERSION }}
-          path: build/app/outputs/flutter-apk/*.apk
+          path: ./tubes_mobpro/build/app/outputs/flutter-apk/*.apk
           
       - name: Create Release
         if: github.event_name == 'push' && github.ref == 'refs/heads/main' && steps.check_tag.outputs.TAG_EXISTS == 'false'
@@ -57,7 +57,7 @@ jobs:
         with:
           tag_name: v${{ env.APP_VERSION }}
           name: Release v${{ env.APP_VERSION }}
-          files: build/app/outputs/flutter-apk/*.apk
+          files: ./tubes_mobpro/build/app/outputs/flutter-apk/*.apk
           draft: false
           prerelease: false
         env:
