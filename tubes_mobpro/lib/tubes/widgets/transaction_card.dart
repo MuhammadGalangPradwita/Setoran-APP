@@ -93,42 +93,61 @@ class _TransactionCardState extends State<TransactionCard> {
                         widget.transaksi.motor!.model!,
                         style: AppTextStyle.body2SemiBold,
                       ),
-                      // const Gap(20),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Builder(builder: (context) {
-                            if (pembayaran != null) {
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Text(
-                                    AppUtil.displayEnumValue(
-                                        pembayaran!.statusPembayaran!.value),
-                                    style: AppTextStyle.smallReguler.copyWith(
-                                      color: AppColors.N600,
-                                    ),
-                                  ),
-                                  const Gap(4),
-                                ],
-                              );
-                            }
-                            return const SizedBox.shrink();
-                          }),
-                          Container(
-                            decoration: BoxDecoration(
-                              color: setColor(widget.transaksi.status!.value),
-                              borderRadius: BorderRadius.circular(4),
-                            ),
-                            // color: setColor(widget.transaksi.status!),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 4, vertical: 4),
-                            child: Text(
-                              widget.transaksi.status!.value,
-                              style: AppTextStyle.smallReguler.copyWith(
-                                color: AppColors.N0,
-                              ),
-                            ),
+// <<<<<<< main
+                      const Gap(20),
+                      Container(
+                        decoration: BoxDecoration(
+                          // Penggantian setelah perubahan enum
+                          color: setColor(
+                              widget.transaksi.status!.value.toString()),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        // color: setColor(widget.transaksi.status!),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 4),
+                        child: Text(
+                          // Penggantian setelah perubahan enum
+                          widget.transaksi.status!.value.toString(),
+                          style: AppTextStyle.smallReguler.copyWith(
+                            color: AppColors.N0,
+// =======
+//                       // const Gap(20),
+//                       Column(
+//                         crossAxisAlignment: CrossAxisAlignment.end,
+//                         children: [
+//                           Builder(builder: (context) {
+//                             if (pembayaran != null) {
+//                               return Column(
+//                                 crossAxisAlignment: CrossAxisAlignment.end,
+//                                 children: [
+//                                   Text(
+//                                     AppUtil.displayEnumValue(
+//                                         pembayaran!.statusPembayaran!.value),
+//                                     style: AppTextStyle.smallReguler.copyWith(
+//                                       color: AppColors.N600,
+//                                     ),
+//                                   ),
+//                                   const Gap(4),
+//                                 ],
+//                               );
+//                             }
+//                             return const SizedBox.shrink();
+//                           }),
+//                           Container(
+//                             decoration: BoxDecoration(
+//                               color: setColor(widget.transaksi.status!.value),
+//                               borderRadius: BorderRadius.circular(4),
+//                             ),
+//                             // color: setColor(widget.transaksi.status!),
+//                             padding: const EdgeInsets.symmetric(
+//                                 horizontal: 4, vertical: 4),
+//                             child: Text(
+//                               widget.transaksi.status!.value,
+//                               style: AppTextStyle.smallReguler.copyWith(
+//                                 color: AppColors.N0,
+//                               ),
+//                             ),
+// >>>>>>> safwan
                           ),
                         ],
                       ),
