@@ -61,7 +61,7 @@ class vehicleCard extends StatelessWidget {
                           builder: (context) {
                             if (motor.idMotorImage != null) {
                               return Image.network(
-                                  "http://160.19.167.222:5103/storage/fetch/${motor.motorImage!.front!}",
+                                  "http://160.19.167.222:5103/storage/fetch/${motor.motorImage!.left!}",
                                   fit: BoxFit.fitHeight);
                             } else {
                               return Image.asset(

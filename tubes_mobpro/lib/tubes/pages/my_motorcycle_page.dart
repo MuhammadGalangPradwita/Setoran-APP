@@ -54,8 +54,9 @@ class _MyMotorcyclePageState extends State<MyMotorcyclePage> {
     if (transaksis == null) return 0;
     return transaksis.fold(
         0,
-        (total, item) =>
-            item.status == 'selesai' ? total + (item.totalHarga!) : total);
+        (total, item) => item.status == StatusTransaksi.selesai
+            ? total + (item.totalHarga!)
+            : total);
   }
 
   @override
@@ -301,7 +302,7 @@ class _MyMotorcyclePageState extends State<MyMotorcyclePage> {
                     child: Builder(builder: (context) {
                       if (motor.motorImage != null) {
                         return Image.network(
-                          "http://160.19.167.222:5103/storage/fetch/${motor.motorImage!.front!}",
+                          "http://160.19.167.222:5103/storage/fetch/${motor.motorImage!.left!}",
                           fit: BoxFit.fill,
                         );
                       } else {
