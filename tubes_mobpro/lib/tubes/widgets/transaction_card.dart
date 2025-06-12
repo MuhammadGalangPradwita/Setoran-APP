@@ -17,9 +17,6 @@ class TransactionCard extends StatefulWidget {
 }
 
 class _TransactionCardState extends State<TransactionCard> {
-  // Motor? motor;
-  // Image? image;
-  // String? imagePath;
   Pembayaran? pembayaran;
 
   @override

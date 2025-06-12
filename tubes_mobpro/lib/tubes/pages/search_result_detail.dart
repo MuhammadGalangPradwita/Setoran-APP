@@ -20,14 +20,12 @@ class SearchResultDetail extends StatefulWidget {
 }
 
 class _SearchResultDetailState extends State<SearchResultDetail> {
-  bool _isLoved = false;
 
   final formatter = NumberFormat("#,###");
-  double? rating = null;
+  double? rating;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     getRatingFromUlasan();
@@ -69,6 +67,11 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
+        ApiService().ulasanApi.apiUlasanGet().then((value) {
+
+          
+
+        },);
         return AlertDialog(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -78,7 +81,6 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Star Rating
                 StatefulBuilder(
                   builder: (context, setState) {
                     return Row(
@@ -130,7 +132,6 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
             ElevatedButton(
               onPressed: () {
                 if (rating == 0) {
-                  // Show error if no rating is selected
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text("Silakan pilih rating sebelum mengirim."),
@@ -152,13 +153,11 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
                         .ulasanApi
                         .apiUlasanPost(postUlasanDTO: postUlasanDTO);
 
-                    // Show success snackbar
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text("Ulasan berhasil dikirim!"),
                       ),
                     );
-
                   } catch (e) {
                     AwesomeDialog(
                       context: context,
@@ -171,9 +170,7 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
                     ).show();
                     print('Error sending review: $e');
                   }
-
                 } else {
-                  // Show error if form is not valid
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text("Silakan isi ulasan dengan benar."),
@@ -222,11 +219,9 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Appbar
       appBar: AppBar(
         centerTitle: true,
         leading: IconButton(
@@ -244,21 +239,6 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
             ),
           ],
         ),
-        actions: [
-          IconButton(
-            icon: Icon(
-              _isLoved ? Icons.favorite : Icons.favorite_border,
-              color: _isLoved
-                  ? Colors.red
-                  : Colors.black, // Warna merah saat loved
-            ),
-            onPressed: () {
-              setState(() {
-                _isLoved = !_isLoved; // Toggle status loved
-              });
-            },
-          ),
-        ],
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -276,15 +256,6 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
                   height: 184,
                   child: Builder(
                     builder: (context) {
-                      // print('Motor id: ${widget.motor.idMotor}');
-                      // print('Nama motor: ${widget.motor.model}');
-                      // print('Transmisi: ${widget.motor.transmisi}');
-                      // print('Tahun: ${widget.motor.tahun}');
-                      // print('Brand: ${widget.motor.brand}');
-                      // print(
-                      //     'Motor Image: ${widget.motor.motorImage?.front}');
-                      // print(
-                      //     'motor image id: ${widget.motor.motorImage?.id}');
                       final frontImage = widget.motor.motorImage?.front;
                       if (frontImage != null && frontImage.isNotEmpty) {
                         return Image.network(
@@ -346,7 +317,6 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
 
                                 //  Check jika pengguna sudah memberikan ulasan
                                 if (transaksi == null || transaksi.isEmpty) {
-                                  // Show error if user has not rented the motor
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
                                       content: Text(
@@ -356,7 +326,6 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
                                 } else if (widget.motor.ulasan != null &&
                                     widget.motor.ulasan!.any((ulasan) =>
                                         ulasan.idPelanggan == userId)) {
-                                  // Show error if user has already reviewed
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
                                       content: Text(
@@ -364,17 +333,16 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
                                     ),
                                   );
                                 } else {
-                                  // Show ulasan dialog
                                   showUlasanDialog(context);
                                 }
                               },
                               style: ElevatedButton.styleFrom(
-                                shape: const CircleBorder(), // circular button
+                                shape: const CircleBorder(),
                                 elevation: 1.0,
                                 padding: const EdgeInsets.all(
-                                    12), // spacing inside button
+                                    12),
                                 backgroundColor:
-                                    Colors.white, // fully transparent
+                                    Colors.white,
                               ),
                               child: Row(children: [
                                 Text(
@@ -487,7 +455,6 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
                             ),
 
                             // Transmisi motor
-                            // Penggantian setelah perubahan enum
                             Text(widget.motor.transmisi!.value.toString(),
                                 style: AppTextStyle.smallReguler),
                           ],
@@ -567,11 +534,6 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
                     ],
                   ),
                   Row(children: [
-                    // const Icon(
-                    //   CupertinoIcons.chat_bubble_text_fill,
-                    //   size: 30,
-                    //   color: AppColors.N600,
-                    // ),
                     const SizedBox(
                       width: 10,
                     ),

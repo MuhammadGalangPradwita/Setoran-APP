@@ -9,8 +9,6 @@ import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 import 'package:tubes_mobpro/tubes/widgets/textField_widget.dart';
 
 class vehicleCard extends StatelessWidget {
-  // final double width;
-  // final double height;
   final EdgeInsetsGeometry margin;
   final Motor motor;
   final DateTimeRange? selectedDateRange;
@@ -18,8 +16,6 @@ class vehicleCard extends StatelessWidget {
 
   vehicleCard(
       {super.key,
-      // required this.width,
-      // required this.height,
       required this.margin,
       required this.motor,
       required this.ulasan,
@@ -34,7 +30,6 @@ class vehicleCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Card(
-            // margin: const EdgeInsets.only(left: 0,top: 10),
             color: AppColors.N200,
             clipBehavior: Clip.hardEdge,
             child: InkWell(
@@ -99,9 +94,9 @@ class vehicleCard extends StatelessWidget {
                                   const SizedBox(width: 5),
                                   Text(
                                     ulasan != null &&
-                                            calculateAverageRating(ulasan!) !=
+                                            Motor().calculateAverageRating(ulasan!) !=
                                                 null
-                                        ? calculateAverageRating(ulasan!)!
+                                        ? Motor().calculateAverageRating(ulasan!)!
                                             .toStringAsFixed(1)
                                         : "-",
                                     style: AppTextStyle.body2Bold,
@@ -150,46 +145,20 @@ class vehicleCard extends StatelessWidget {
     );
   }
 
-  // Callculate the average rating from the list of ulasan
-  double? calculateAverageRating(List<Ulasan> ulasan) {
-    double totalRating = 0;
-    int count = 0;
-
-    for (var ulasan in ulasan) {
-      if (ulasan.idMotor == motor.idMotor) {
-        totalRating += ulasan.rating!;
-        count++;
-      }
-    }
-
-    return count > 0 ? totalRating / count : null;
-  }
 }
 
 class vehicleCardDiscount extends StatelessWidget {
-  // final double width;
-  // final double height;
 
   final Motor motor;
-  // final EdgeInsetsGeometry margin;
-  // final String imagePath;
 
   final List<Ulasan>? ulasan;
-  // final String transmition;
   final double disPrice;
-  // final String norPrice;
   final formatter = NumberFormat("#,###");
 
   vehicleCardDiscount({
     super.key,
-    // required this.width,
-    // required this.height,
-    // required this.margin,
-    // required this.imagePath,
     required this.ulasan,
-    // required this.transmition,
     required this.disPrice,
-    // required this.norPrice,
     required this.motor,
   });
 
@@ -329,8 +298,6 @@ class vehicleCardDiscount extends StatelessWidget {
   }
 }
 
-// OLD Discount Vehicle card
-
 class VoucherCard extends StatelessWidget {
   const VoucherCard({super.key});
 
@@ -388,7 +355,6 @@ class VoucherCard extends StatelessWidget {
                 Expanded(
                   flex: 2,
                   child: Container(
-                    // color: Colors.white,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.only(
@@ -396,10 +362,10 @@ class VoucherCard extends StatelessWidget {
                           bottomLeft: Radius.circular(10)),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.1), // Shadow color
-                          offset: const Offset(4, 4), // Position of shadow
-                          blurRadius: 10, // Blur effect of shadow
-                          spreadRadius: 2, // Spread effect of shadow
+                          color: Colors.black.withOpacity(0.1), 
+                          offset: const Offset(4, 4), 
+                          blurRadius: 10, 
+                          spreadRadius: 2, 
                         ),
                       ],
                     ),

@@ -248,7 +248,8 @@ class _ActivityPageState extends State<ActivityPage> {
             ),
             const SizedBox(height: 8),
             Text(
-              "for status: ${statusOptions.firstWhere((option) => option['value'] == status)['label']}",
+              "for status: ${status?.value ?? 'Semua'}",
+              // "for status: ${statusOptions.firstWhere((option) => option['value'] == status)['label']}",
               style: GoogleFonts.inter(
                 fontSize: 14,
                 color: Colors.grey,

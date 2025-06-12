@@ -96,7 +96,6 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
         payload['id_diskon'] = motor.getBestDiscount()?.idDiskon;
       }
 
-      // Response transaksiResponse =
       await ApiService().transaksiApi.apiTransaksiPost(
               postTransaksiDTO: PostTransaksiDTO(
             idMotor: payload['id_motor'],
@@ -105,8 +104,6 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
             tanggalSelesai: payload['tanggal_selesai'],
             idVoucher: payload['id_voucher'] ?? null,
             idDiscount: payload['id_diskon'] ?? null,
-            // Mengubah metode pembayaran menjadi MetodePembayaran
-            // sesuai dengan enum yang ada di API
             metodePembayaran: paymentMethod == 'bank_transfer'
                 ? MetodePembayaran.transferBank
                 : MetodePembayaran.dompetDigital,
@@ -126,28 +123,29 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
             hargaHarian: motor.hargaHarian!,
           ));
 
-      AwesomeDialog(
-        context: context,
-        dialogType: DialogType.success,
-        headerAnimationLoop: false,
-        animType: AnimType.bottomSlide,
-        title: 'Sukses',
-        desc: 'idMotor: ${motor.idMotor}\n'
-            'TipeMotor: ${motor.tipe}\n'
-            'idPelanggan: ${payload['id_pelanggan']}\n'
-            'Tanggal Mulai: ${range.start}\n'
-            'Tanggal Selesai: ${range.end}\n'
-            'Total Biaya: Rp. ${formatter.format(finalFees)}\n'
-            'namaVoucher: ${voucher != null ? voucher!.namaVoucher : 'Tidak ada'}\n'
-            'voucher: ${voucher != null ? voucher!.namaVoucher : 'Tidak ada'}'
-            'diskon: ${payload['id_diskon'] ?? 'Tidak ada'}',
-        buttonsTextStyle: const TextStyle(color: Colors.black),
-        showCloseIcon: false,
-        // btnCancelOnPress: () {},
-        // btnOkOnPress: () {
-        //   Navigator.of(context).popUntil((route) => route.isFirst);
-        // },
-      ).show();
+      //  Untuk debugging
+      // AwesomeDialog(
+      //   context: context,
+      //   dialogType: DialogType.success,
+      //   headerAnimationLoop: false,
+      //   animType: AnimType.bottomSlide,
+      //   title: 'Sukses',
+      //   desc: 'idMotor: ${motor.idMotor}\n'
+      //       'TipeMotor: ${motor.tipe}\n'
+      //       'idPelanggan: ${payload['id_pelanggan']}\n'
+      //       'Tanggal Mulai: ${range.start}\n'
+      //       'Tanggal Selesai: ${range.end}\n'
+      //       'Total Biaya: Rp. ${formatter.format(finalFees)}\n'
+      //       'namaVoucher: ${voucher != null ? voucher!.namaVoucher : 'Tidak ada'}\n'
+      //       'voucher: ${voucher != null ? voucher!.namaVoucher : 'Tidak ada'}'
+      //       'diskon: ${payload['id_diskon'] ?? 'Tidak ada'}',
+      //   buttonsTextStyle: const TextStyle(color: Colors.black),
+      //   showCloseIcon: false,
+      //   // btnCancelOnPress: () {},
+      //   // btnOkOnPress: () {
+      //   //   Navigator.of(context).popUntil((route) => route.isFirst);
+      //   // },
+      // ).show();
 
       AwesomeDialog(
         context: context,
@@ -231,18 +229,6 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
 
       print('Error checking voucher: ${e.toString()}');
 
-      // AwesomeDialog(
-      //   context: context,
-      //   dialogType: DialogType.error,
-      //   headerAnimationLoop: false,
-      //   animType: AnimType.bottomSlide,
-      //   title: 'Failed',
-      //   desc: e.toString(),
-      //   buttonsTextStyle: const TextStyle(color: Colors.black),
-      //   showCloseIcon: false,
-      //   // btnCancelOnPress: () {},
-      //   btnOkOnPress: () {},
-      // ).show();
     }
   }
 
@@ -293,23 +279,8 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(8),
                           child:
-                              // Image.asset(
-                              //   'assets/images/NMAX.png',
-                              //   height: 80,
-                              //   width: 120,
-                              //   fit: BoxFit.contain,
-                              // ),
                               Builder(
                             builder: (context) {
-                              // print('Motor id: ${widget.motor.idMotor}');
-                              // print('Nama motor: ${widget.motor.model}');
-                              // print('Transmisi: ${widget.motor.transmisi}');
-                              // print('Tahun: ${widget.motor.tahun}');
-                              // print('Brand: ${widget.motor.brand}');
-                              // print(
-                              //     'Motor Image: ${widget.motor.motorImage?.front}');
-                              // print(
-                              //     'motor image id: ${widget.motor.motorImage?.id}');
                               final frontImage = widget.motor.motorImage?.front;
                               if (frontImage != null && frontImage.isNotEmpty) {
                                 return Image.network(
@@ -416,7 +387,6 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
                   ],
                 ),
 
-                // SizedBox(height: 16.0),
                 const Divider(
                   height: 50,
                 ),
@@ -467,7 +437,6 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
                   ],
                 ),
 
-                // SizedBox(height: 16.0),
                 const Divider(
                   height: 50,
                 ),
