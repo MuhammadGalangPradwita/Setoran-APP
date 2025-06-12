@@ -27,11 +27,9 @@ enum MotorType { Matic, Manual }
 
 class _HomepageScreenState extends State<HomepageScreen> {
   MotorType? _selectedTransmission;
-  // DateTime? _selectedDate;
 
   DateTimeRange? _selectedDateRange;
 
-  // final TextEditingController _dateController = TextEditingController();
   final formatter = NumberFormat("#,###");
 
   final _modelController = TextEditingController();
@@ -47,22 +45,6 @@ class _HomepageScreenState extends State<HomepageScreen> {
         await ApiService().motorApi.apiMotorIdUlasansGet(idMotor) ?? null;
     return allUlasan;
   }
-
-  // Future<void> _selectDate(BuildContext context) async {
-  //   final DateTime? picked = await showDatePicker(
-  //     context: context,
-  //     initialDate: _selectedDate ?? DateTime.now(),
-  //     firstDate: DateTime.now(),
-  //     lastDate: DateTime.now().add(const Duration(days: 365)),
-  //   );
-
-  //   if (picked != null && picked != _selectedDate) {
-  //     setState(() {
-  //       _selectedDate = picked;
-  //       // _dateController.text = "${picked.day}/${picked.month}/${picked.year}";
-  //     });
-  //   }
-  // }
 
   Widget buildHorizontalVehicleList(List<Motor> motors, bool isDiscount) {
     List<Widget> vehicleCards = [];
@@ -88,7 +70,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                 ulasan = null;
               }
 
-              if (isDiscount && motors[i].diskon!.isNotEmpty) {
+              if (isDiscount && motors[i].getBestDiscount() != null) {
                 double disPrice = (motors[i].hargaHarian! -
                     motors[i].getBestDiscount()!.jumlahDiskon!);
 
@@ -97,8 +79,8 @@ class _HomepageScreenState extends State<HomepageScreen> {
                   motor: motors[i],
                   disPrice: disPrice,
                 );
-              } else if (isDiscount && motors[i].diskon!.isNotEmpty == false) {
-                return SizedBox(
+              } else if (isDiscount) {
+                return const SizedBox(
                   width: 0,
                 );
               }
@@ -124,6 +106,14 @@ class _HomepageScreenState extends State<HomepageScreen> {
         children: vehicleCards,
       ),
     );
+  }
+
+  List<Motor>? filterUnDiscounted(List<Motor> motors) {
+    List<Motor>? filtered = motors.where((motor) {
+      return motor.getBestDiscount() != null;
+    }).toList();
+
+    return filtered;
   }
 
   String getDateRange(DateTimeRange range) {
@@ -416,25 +406,31 @@ class _HomepageScreenState extends State<HomepageScreen> {
                     },
                   ),
                   const Gap(20),
-                  VoucherCard(),
+                  const VoucherCard(),
                   const Gap(20),
                   Text('Discount', style: AppTextStyle.body2Bold),
                   FutureBuilder<List<Motor>?>(
                     future: ApiService().motorApi.apiMotorGet(
-                          withImage: true,
-                          withDiskon: true,
-                          withUlasan: true,
-                        ),
+                        withImage: true,
+                        withDiskon: true,
+                        withUlasan: true,
+                        sorting: MotorSorting.bestDiscount),
                     builder: (context, snapshot) {
+                      List<Motor>? motors =
+                          Motor().removeBookedMotors(snapshot.data!)!;
+
+                      motors = filterUnDiscounted(motors);
+
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());
                       } else if (snapshot.hasError) {
                         return Center(child: Text('Error: ${snapshot.error}'));
-                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      } else if (!snapshot.hasData ||
+                          snapshot.data!.isEmpty ||
+                          motors == null ||
+                          motors.isEmpty) {
                         return const Center(child: Text('No motors available'));
                       } else {
-                        final List<Motor> motors =
-                            Motor().removeBookedMotors(snapshot.data!)!;
                         return buildHorizontalVehicleList(motors, true);
                       }
                     },
