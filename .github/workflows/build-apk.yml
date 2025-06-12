@@ -20,12 +20,47 @@ jobs:
 
       - name: Install dependencies
         run: flutter pub get
+        
+      # Get version from pubspec
+      - name: Extract version from pubspec
+        run: |
+          VERSION=$(grep 'version:' pubspec.yaml | sed 's/version: //')
+          echo "APP_VERSION=$VERSION" >> $GITHUB_ENV
+      
+      # Check if tag already exists
+      - name: Check if version tag exists
+        id: check_tag
+        run: |
+          git fetch --tags
+          if git tag -l "v${{ env.APP_VERSION }}" | grep -q .; then
+            echo "TAG_EXISTS=true" >> $GITHUB_OUTPUT
+          else
+            echo "TAG_EXISTS=false" >> $GITHUB_OUTPUT
+          fi
 
+      # Only proceed with release if tag doesn't exist
       - name: Build APKs for all architectures
         run: flutter build apk --release --split-per-abi
 
       - name: Upload APK artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: flutter-apks
+          name: flutter-apks-${{ env.APP_VERSION }}
           path: build/app/outputs/flutter-apk/*.apk
+          
+      - name: Create Release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && steps.check_tag.outputs.TAG_EXISTS == 'false'
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ env.APP_VERSION }}
+          name: Release v${{ env.APP_VERSION }}
+          files: build/app/outputs/flutter-apk/*.apk
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Warning if tag exists
+        if: steps.check_tag.outputs.TAG_EXISTS == 'true'
+        run: |
+          echo "::warning::Version v${{ env.APP_VERSION }} already exists as a tag. Release creation skipped."
