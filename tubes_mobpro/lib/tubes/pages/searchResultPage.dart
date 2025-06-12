@@ -9,13 +9,11 @@ import 'package:tubes_mobpro/tubes/widgets/cardHomePage_widgets.dart';
 class SearchResult extends StatelessWidget {
   const SearchResult(
       {super.key,
-      required this.date,
       required this.transimission,
-      required this.model});
+      required this.selectedDateRange});
 
-  final String date; 
   final String transimission;
-  final String model;
+  final DateTimeRange? selectedDateRange;
 
   Future<Widget> buildVehicleRow(List<Motor> motors) async {
     List<Widget> vehicleCards = [];
@@ -28,6 +26,7 @@ class SearchResult extends StatelessWidget {
           ulasan: ulasanList,
           margin: const EdgeInsets.only(top: 20, right: 20, left: 20),
           motor: motor,
+          selectedDateRange: selectedDateRange,
         ),
       );
     }
@@ -68,13 +67,13 @@ class SearchResult extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              model == "" ? "-" : model,
+              transimission == "" ? "-" : transimission,
               style: AppTextStyle.body1SemiBold,
             ),
-            Text(
-              date == "" ? "-" : date,
-              style: AppTextStyle.body3Regular,
-            )
+            // Text(
+            //   date == "" ? "-" : date,
+            //   style: AppTextStyle.body3Regular,
+            // )
           ],
         ),
       ),
@@ -84,9 +83,8 @@ class SearchResult extends StatelessWidget {
             // Penggantian setelah perubahan enum
             // Mengubah string ke enum
             transmisi: transimission == "Manual"
-                ? TransmisiMotor.manual : TransmisiMotor.matic,
-
-            model: model,
+                ? TransmisiMotor.manual
+                : TransmisiMotor.matic,
             withDiskon: true,
             withImage: true,
             withUlasan: true),
@@ -106,7 +104,8 @@ class SearchResult extends StatelessWidget {
               // height: 300,
               width: double.infinity,
               child: FutureBuilder<Widget>(
-                future: buildVehicleRow(Motor().removeBookedMotors(snapshot.data!) ?? []),
+                future: buildVehicleRow(
+                    Motor().removeBookedMotors(snapshot.data!) ?? []),
                 builder: (context, vehicleRowSnapshot) {
                   if (vehicleRowSnapshot.connectionState ==
                       ConnectionState.waiting) {
@@ -125,6 +124,4 @@ class SearchResult extends StatelessWidget {
       ),
     );
   }
-
-
 }

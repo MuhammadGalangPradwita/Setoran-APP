@@ -34,29 +34,26 @@ class HttpValidationProblemDetails {
   Map<String, List<String>>? errors;
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is HttpValidationProblemDetails &&
-          other.type == type &&
-          other.title == title &&
-          other.status == status &&
-          other.detail == detail &&
-          other.instance == instance &&
-          _deepEquality.equals(other.errors, errors);
+  bool operator ==(Object other) => identical(this, other) || other is HttpValidationProblemDetails &&
+    other.type == type &&
+    other.title == title &&
+    other.status == status &&
+    other.detail == detail &&
+    other.instance == instance &&
+    _deepEquality.equals(other.errors, errors);
 
   @override
   int get hashCode =>
-      // ignore: unnecessary_parenthesis
-      (type == null ? 0 : type!.hashCode) +
-      (title == null ? 0 : title!.hashCode) +
-      (status == null ? 0 : status!.hashCode) +
-      (detail == null ? 0 : detail!.hashCode) +
-      (instance == null ? 0 : instance!.hashCode) +
-      (errors == null ? 0 : errors!.hashCode);
+    // ignore: unnecessary_parenthesis
+    (type == null ? 0 : type!.hashCode) +
+    (title == null ? 0 : title!.hashCode) +
+    (status == null ? 0 : status!.hashCode) +
+    (detail == null ? 0 : detail!.hashCode) +
+    (instance == null ? 0 : instance!.hashCode) +
+    (errors == null ? 0 : errors!.hashCode);
 
   @override
-  String toString() =>
-      'HttpValidationProblemDetails[type=$type, title=$title, status=$status, detail=$detail, instance=$instance, errors=$errors]';
+  String toString() => 'HttpValidationProblemDetails[type=$type, title=$title, status=$status, detail=$detail, instance=$instance, errors=$errors]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -105,10 +102,8 @@ class HttpValidationProblemDetails {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key),
-              'Required key "HttpValidationProblemDetails[$key]" is missing from JSON.');
-          assert(json[key] != null,
-              'Required key "HttpValidationProblemDetails[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "HttpValidationProblemDetails[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "HttpValidationProblemDetails[$key]" has a null value in JSON.');
         });
         return true;
       }());
@@ -120,18 +115,15 @@ class HttpValidationProblemDetails {
         detail: mapValueOfType<String>(json, r'detail'),
         instance: mapValueOfType<String>(json, r'instance'),
         errors: json[r'errors'] == null
-            ? const {}
-            : (json[r'errors'] as Map<String, dynamic>).map((key, value) =>
-                MapEntry(key, List<String>.from(value as List))),
+          ? const {}
+          : (mapCastOfType<String, List>(json, r'errors') as Map<String, List<dynamic>>)
+              .map((k, v) => MapEntry(k, v.map((e) => e.toString()).toList())),
       );
     }
     return null;
   }
 
-  static List<HttpValidationProblemDetails> listFromJson(
-    dynamic json, {
-    bool growable = false,
-  }) {
+  static List<HttpValidationProblemDetails> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <HttpValidationProblemDetails>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
@@ -159,24 +151,20 @@ class HttpValidationProblemDetails {
   }
 
   // maps a json object with a list of HttpValidationProblemDetails-objects as value to a dart map
-  static Map<String, List<HttpValidationProblemDetails>> mapListFromJson(
-    dynamic json, {
-    bool growable = false,
-  }) {
+  static Map<String, List<HttpValidationProblemDetails>> mapListFromJson(dynamic json, {bool growable = false,}) {
     final map = <String, List<HttpValidationProblemDetails>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = HttpValidationProblemDetails.listFromJson(
-          entry.value,
-          growable: growable,
-        );
+        map[entry.key] = HttpValidationProblemDetails.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
   }
 
   /// The list of required keys that must be present in a JSON.
-  static const requiredKeys = <String>{};
+  static const requiredKeys = <String>{
+  };
 }
+
