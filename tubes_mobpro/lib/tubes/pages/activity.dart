@@ -19,17 +19,16 @@ class ActivityPage extends StatefulWidget {
 
 class _ActivityPageState extends State<ActivityPage> {
   late Future<List<Transaksi>?> dataList;
-
   // Penggantian setelah perubahan enum
   StatusTransaksi? status; // Default status
 
   // Define available status options
   final List<Map<String, String>> statusOptions = [
     {'value': '', 'label': 'Semua'},
-    {'value': 'selesai', 'label': 'Selesai'},
-    {'value': 'created', 'label': 'Dibuat'},
-    {'value': 'berlangsung', 'label': 'Berlangsung'},
-    {'value': 'batal', 'label': 'Batal'},
+    {'value': 'Selesai', 'label': 'Selesai'},
+    {'value': 'Dibuat', 'label': 'Dibuat'},
+    {'value': 'Berlangsung', 'label': 'Berlangsung'},
+    {'value': 'Bata;', 'label': 'Batal'},
     // Add more status options as needed
   ];
 
@@ -54,14 +53,11 @@ class _ActivityPageState extends State<ActivityPage> {
   void _onStatusChanged(String? newStatus) {
     if (newStatus != null && newStatus != status) {
       setState(() {
-
-        // Penggantian setelah perubahan enum
-        status = newStatus.isEmpty
-            ? null // If 'Semua' is selected, set status to null
-            : StatusTransaksi.values.firstWhere(
-                (e) => e.toString().split('.').last == newStatus,
-                orElse: () => StatusTransaksi.dibuat,
-              );
+        if (newStatus.isEmpty) {
+          status = null; // Reset to default (all statuses)
+        } else {
+          status = StatusTransaksi.fromJson(newStatus);
+        }
       });
       _loadData();
     }
@@ -120,10 +116,7 @@ class _ActivityPageState extends State<ActivityPage> {
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton<String>(
                         dropdownColor: AppColors.N0,
-
-                        // Penggantian setelah perubahan enum
-                        value: status?.value.toString(),
-                        
+                        value: status?.value ?? 'Unknown',
                         isExpanded: true,
                         icon: const Icon(
                           Icons.keyboard_arrow_down,

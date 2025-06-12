@@ -24,12 +24,14 @@ class StatusPembayaran {
   String toJson() => value;
 
   static const belumLunas = StatusPembayaran._(r'BelumLunas');
+  static const menungguKonfirmasi = StatusPembayaran._(r'MenungguKonfirmasi');
   static const lunas = StatusPembayaran._(r'Lunas');
   static const gagal = StatusPembayaran._(r'Gagal');
 
   /// List of all possible values in this [enum][StatusPembayaran].
   static const values = <StatusPembayaran>[
     belumLunas,
+    menungguKonfirmasi,
     lunas,
     gagal,
   ];
@@ -71,6 +73,7 @@ class StatusPembayaranTypeTransformer {
     if (data != null) {
       switch (data) {
         case r'BelumLunas': return StatusPembayaran.belumLunas;
+        case r'MenungguKonfirmasi': return StatusPembayaran.menungguKonfirmasi;
         case r'Lunas': return StatusPembayaran.lunas;
         case r'Gagal': return StatusPembayaran.gagal;
         default:
