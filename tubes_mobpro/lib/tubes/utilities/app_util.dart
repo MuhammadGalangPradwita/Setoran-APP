@@ -21,4 +21,12 @@ class AppUtil {
     final formatter = DateFormat('dd MMMM yyyy');
     return formatter.format(DateTime.parse(date));
   }
+
+  static String displayEnumValue(String? value) {
+    if (value == null || value.isEmpty) {
+      return '';
+    }
+    return value.replaceAllMapped(
+        RegExp(r'(?<=[a-z])(?=[A-Z])'), (match) => ' ');
+  }
 }

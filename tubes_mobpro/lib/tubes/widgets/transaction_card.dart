@@ -20,11 +20,21 @@ class _TransactionCardState extends State<TransactionCard> {
   // Motor? motor;
   // Image? image;
   // String? imagePath;
+  Pembayaran? pembayaran;
 
   @override
   void initState() {
     super.initState();
-    // loadMotor();
+    if (widget.transaksi.status == StatusTransaksi.dibuat) {
+      ApiService()
+          .pembayaranApi
+          .apiPembayaranTransaksiIdGet(widget.transaksi.idTransaksi!)
+          .then((value) {
+        setState(() {
+          pembayaran = value;
+        });
+      });
+    }
   }
 
   // Future<void> loadMotor() async {
@@ -47,7 +57,7 @@ class _TransactionCardState extends State<TransactionCard> {
         borderRadius: BorderRadius.circular(10),
       ),
       child: Container(
-        height: 96,
+        height: 100,
         padding: const EdgeInsets.all(8),
         child: Row(
           children: [
@@ -81,27 +91,46 @@ class _TransactionCardState extends State<TransactionCard> {
                     children: [
                       Text(
                         widget.transaksi.motor!.model!,
-                        style: AppTextStyle.body1SemiBold,
+                        style: AppTextStyle.body2SemiBold,
                       ),
-                      const Gap(20),
-                      Container(
-                        decoration: BoxDecoration(
-
-                          // Penggantian setelah perubahan enum
-                          color: setColor(widget.transaksi.status!.value.toString()),
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        // color: setColor(widget.transaksi.status!),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 4),
-                        child: Text(
-
-                          // Penggantian setelah perubahan enum
-                          widget.transaksi.status!.value.toString(),
-                          style: AppTextStyle.smallReguler.copyWith(
-                            color: AppColors.N0,
+                      // const Gap(20),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Builder(builder: (context) {
+                            if (pembayaran != null) {
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    AppUtil.displayEnumValue(
+                                        pembayaran!.statusPembayaran!.value),
+                                    style: AppTextStyle.smallReguler.copyWith(
+                                      color: AppColors.N600,
+                                    ),
+                                  ),
+                                  const Gap(4),
+                                ],
+                              );
+                            }
+                            return const SizedBox.shrink();
+                          }),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: setColor(widget.transaksi.status!.value),
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            // color: setColor(widget.transaksi.status!),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 4, vertical: 4),
+                            child: Text(
+                              widget.transaksi.status!.value,
+                              style: AppTextStyle.smallReguler.copyWith(
+                                color: AppColors.N0,
+                              ),
+                            ),
                           ),
-                        ),
+                        ],
                       ),
                     ],
                   ),
@@ -157,11 +186,11 @@ class _TransactionCardState extends State<TransactionCard> {
   }
 
   Color setColor(String status) {
-    if (status == "berlangsung") {
+    if (status == "Berlangsung") {
       return AppColors.B400;
-    } else if (status == "selesai") {
+    } else if (status == "Selesai") {
       return AppColors.G500;
-    } else if (status == "batal") {
+    } else if (status == "Batal") {
       return AppColors.R400;
     } else {
       return AppColors.N700;
@@ -174,7 +203,7 @@ class _TransactionCardState extends State<TransactionCard> {
       MotorImage? motorImage = await ApiService()
           .motorImageApi
           .apiMotorImageIdGet(widget.transaksi.motor!.idMotorImage!);
-      url = "http://160.19.167.222:5103/storage/fetch/${motorImage!.front}";
+      url = "http://160.19.167.222:5103/storage/fetch/${motorImage!.left}";
       return Image.network(
         url,
         fit: BoxFit.cover,
