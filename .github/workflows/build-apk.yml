@@ -1,15 +1,19 @@
 name: Build Flutter APKs (per ABI)
 
 on:
-  push:
+  workflow_run:
+    workflows: ["Flutter Test"]
+    types:
+      - completed
     branches: [main]
-  pull_request:
 
 permissions:
   contents: write  # This gives write permission to repository contents, including releases
   
 jobs:
   build:
+    # Only run if the test workflow was successful
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -56,7 +60,7 @@ jobs:
           path: ./tubes_mobpro/build/app/outputs/flutter-apk/*.apk
           
       - name: Create Release
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && steps.check_tag.outputs.TAG_EXISTS == 'false'
+        if: github.event.workflow_run.event == 'push' && github.event.workflow_run.head_branch == 'main' && steps.check_tag.outputs.TAG_EXISTS == 'false'
         uses: softprops/action-gh-release@v1
         with:
           tag_name: v${{ env.APP_VERSION }}
