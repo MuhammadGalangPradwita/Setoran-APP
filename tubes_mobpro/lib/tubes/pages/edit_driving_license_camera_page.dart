@@ -1,7 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:tubes_mobpro/tubes/models/pelanggan.dart';
+import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
 import 'package:tubes_mobpro/tubes/pages/image_view_page.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 
@@ -24,7 +24,7 @@ class _EditDrivingLicenseCameraPageState
   @override
   void initState() {
     super.initState();
-    controller = CameraController(widget.cameras[1], ResolutionPreset.max,
+    controller = CameraController(widget.cameras[0], ResolutionPreset.max,
         imageFormatGroup: ImageFormatGroup.nv21, enableAudio: false);
     controller.initialize().then((_) {
       if (!mounted) {
@@ -75,34 +75,54 @@ class _EditDrivingLicenseCameraPageState
             ),
             Stack(alignment: Alignment.center, children: [
               CameraPreview(controller),
-              Container(
-                width: 344,
-                height: 216,
-                decoration: BoxDecoration(
-                    border: Border.all(
-                  color: AppColors.B400,
-                  width: 3,
-                )),
+              AspectRatio(
+                aspectRatio: 344 / 216,
+                child: Container(
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                    color: AppColors.B400.withOpacity(0.5),
+                    width: 3,
+                  )),
+                ),
               )
             ]),
             Expanded(
-                child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
+                child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    IconButton(
-                        onPressed: () {
-                          _takePicture();
-                        },
-                        icon: const Icon(
-                          Icons.camera,
-                          size: 80,
-                          color: AppColors.B400,
-                        ))
-                  ],
-                )
+                Expanded(
+                  flex: 3,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            _takePicture();
+                          },
+                          icon: const Icon(
+                            Icons.camera,
+                            size: 80,
+                            color: AppColors.B400,
+                          )),
+                    ],
+                  ),
+                ),
+                Expanded(
+                    flex: 2,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        IconButton(
+                            onPressed: () {
+                              _flipCamera();
+                            },
+                            icon: const Icon(
+                              Icons.flip_camera_android,
+                              size: 50,
+                              color: AppColors.B400,
+                            )),
+                      ],
+                    )),
               ],
             ))
           ],
@@ -127,6 +147,27 @@ class _EditDrivingLicenseCameraPageState
           ));
     } catch (e) {
       print("Error taking picture: $e");
+    }
+  }
+
+  void _flipCamera() async {
+    if (widget.cameras.length > 1) {
+      int newIndex = controller.description == widget.cameras[0] ? 1 : 0;
+      controller.dispose();
+      controller = CameraController(
+        widget.cameras[newIndex],
+        ResolutionPreset.max,
+        imageFormatGroup: ImageFormatGroup.nv21,
+        enableAudio: false,
+      );
+      try {
+        await controller.initialize();
+        setState(() {});
+      } catch (e) {
+        print("Error switching camera: $e");
+      }
+    } else {
+      print("No secondary camera available.");
     }
   }
 }

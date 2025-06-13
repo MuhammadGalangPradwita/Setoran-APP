@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:tubes_mobpro/tubes/models/notificationsItem.dart';
-import 'package:tubes_mobpro/tubes/models/notifikasi.dart';
+import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
 import 'package:tubes_mobpro/tubes/pages/notificationDetailPage.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 import 'package:tubes_mobpro/tubes/utilities/app_util.dart';
-
 
 class NotificationPage extends StatefulWidget {
   const NotificationPage({super.key});
@@ -19,23 +17,25 @@ class _NotificationPageState extends State<NotificationPage> {
   final List<Notifikasi> notifications = [
     Notifikasi(
       idNotifikasi: 0,
-      idPengguna: 0,
+      idPengguna: "0",
       judul: "Lengkapi data",
       deskripsi: "Silahkan lengkapi data data anda di halaman edit profile",
-      navigasi: Navigasi.editProfile,
+      // navigasi: Navigasi.editProfile,
       dataNavigasi: null,
-      isRead: false, isSent: false,
-      createdAt: DateTime.now()
+      isRead: false,
+      // isSent: false,
+      // createdAt: DateTime.now()
     ),
     Notifikasi(
       idNotifikasi: 0,
-      idPengguna: 0,
+      idPengguna: "0",
       judul: "Transaksi di ...",
       deskripsi: "Update mengenai transaksi",
-      navigasi: Navigasi.transaksi,
-      dataNavigasi: {"id_transaksi": 1},
-      isRead: false, isSent: false,
-      createdAt: DateTime.now()
+      // navigasi: Navigasi.transaksi,
+      dataNavigasi: {"id_transaksi": "1"},
+      isRead: false,
+      // isSent: false,
+      // createdAt: DateTime.now()
     ),
     // NotificationItem(
     //   title: "Transaction failed",
@@ -87,9 +87,7 @@ class _NotificationPageState extends State<NotificationPage> {
           children: [
             Text(
               'Today',
-              style: AppTextStyle.body1Bold.copyWith(
-                    color: Colors.black
-                   ),
+              style: AppTextStyle.body1Bold.copyWith(color: Colors.black),
             ),
             const SizedBox(height: 10),
             Expanded(
@@ -101,7 +99,7 @@ class _NotificationPageState extends State<NotificationPage> {
                       setState(() {
                         notifications[index].isRead = true;
                       });
-                      notifications[index].onClick(context);
+                      // notifications[index].onClick(context);
                       // Navigator.push(
                       //     context,
                       //     MaterialPageRoute(
@@ -136,13 +134,11 @@ class NotificationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 10, left: 10,right: 10),
+      margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
       padding: const EdgeInsets.all(16),
       height: 130,
       decoration: BoxDecoration(
-        color: notification.isRead 
-            ? AppColors.N200 
-            : AppColors.B200, 
+        color: notification.isRead ? AppColors.N200 : AppColors.B200,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Column(
@@ -152,25 +148,19 @@ class NotificationCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                notification.judul,
-                style: AppTextStyle.body2Bold.copyWith(
-                    color: Colors.black
-                   ),
+                notification.judul!,
+                style: AppTextStyle.body2Bold.copyWith(color: Colors.black),
               ),
-              Text(
-                AppUtil.formatDate(notification.createdAt),
-                style: AppTextStyle.body3Regular.copyWith(
-                    color: Colors.black
-                   ),
-              ),
+              // Text(
+              //   AppUtil.formatDate(notification.createdAt),
+              //   style: AppTextStyle.body3Regular.copyWith(color: Colors.black),
+              // ),
             ],
           ),
           const SizedBox(height: 8),
           Text(
-            notification.deskripsi,
-            style: AppTextStyle.body2Regular.copyWith(
-                    color: AppColors.N700
-                   ),
+            notification.deskripsi!,
+            style: AppTextStyle.body2Regular.copyWith(color: AppColors.N700),
           ),
         ],
       ),

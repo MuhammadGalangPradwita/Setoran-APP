@@ -1,18 +1,20 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:tubes_mobpro/tubes/api_utilities/motor.dart';
-import 'package:tubes_mobpro/tubes/models/motor.dart';
+import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
+import 'package:tubes_mobpro/tubes/extension/motor.dart';
 import 'package:tubes_mobpro/tubes/pages/auth_check.dart';
 import 'package:tubes_mobpro/tubes/pages/notification_page.dart';
 import 'package:tubes_mobpro/tubes/pages/searchResultPage.dart';
-import 'package:tubes_mobpro/tubes/pages/search_result_page.dart';
-import 'package:tubes_mobpro/tubes/services/firebase_notification_service.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 import 'package:tubes_mobpro/tubes/widgets/cardHomePage_widgets.dart';
 import 'package:tubes_mobpro/tubes/widgets/textField_widget.dart';
 import 'package:tubes_mobpro/tubes/widgets/button_widgets.dart';
+
+import '../api_service.dart';
 
 class HomepageScreen extends StatefulWidget {
   const HomepageScreen({super.key});
@@ -25,95 +27,111 @@ enum MotorType { Matic, Manual }
 
 class _HomepageScreenState extends State<HomepageScreen> {
   MotorType? _selectedTransmission;
-  DateTime? _selectedDate;
-  final TextEditingController _dateController = TextEditingController();
+
+  DateTimeRange? _selectedDateRange;
+
   final formatter = NumberFormat("#,###");
 
   final _modelController = TextEditingController();
 
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: _selectedDate ?? DateTime.now(),
-      firstDate: DateTime.now(),
-      lastDate: DateTime.now().add(const Duration(days: 365)),
-    );
-
-    if (picked != null && picked != _selectedDate) {
-      setState(() {
-        _selectedDate = picked;
-        _dateController.text = "${picked.day}/${picked.month}/${picked.year}";
-      });
-    }
+  @override
+  void initState() {
+    super.initState();
   }
-  Widget buildMotorList(List<Motor> motors) {
-  List<Widget> rows = [];
-    for (int i = 0; i < motors.length; i += 2) {
-      // Ambil dua motor sekaligus untuk setiap baris
-      int endIndex = i + 1;
-      if (endIndex >= motors.length) endIndex = i;
 
-      rows.add(
-        Row(
-          children: [
-            vehicleCardDiscount(
-              margin: const EdgeInsets.only(top: 20, left: 10, right: 10),
-              // imagePath: motors[i].imagePath,  // Asumsikan ada properti imagePath di Motor
-              imagePath: "assets/images/NMAX.png",
-              vehicleName: motors[i].model,  // Ganti dengan data motor yang sesuai
-              // rating: motors[i].brand.toString(),  // Ganti dengan rating motor
-              rating: '4.8',
-              transmition: 'Transmission: ${motors[i].transmisi}',  // Asumsikan ada properti transmisi
-              disPrice: 'Rp. ${formatter.format(motors[i].hargaHarian)}',  // Ganti dengan harga diskon
-              norPrice: 'Rp. ${formatter.format(motors[i].hargaHarian)}',  // Ganti dengan harga normal
-            ),
-            if (endIndex < motors.length)  // Jika ada motor kedua di baris yang sama
-              vehicleCardDiscount(
+  Future<List<Ulasan>?> getUlasanByMotorId(int? idMotor) async {
+    if (idMotor == null) return [];
+    final allUlasan =
+        await ApiService().motorApi.apiMotorIdUlasansGet(idMotor) ?? null;
+    return allUlasan;
+  }
+
+  Widget buildHorizontalVehicleList(List<Motor> motors, bool isDiscount) {
+    List<Widget> vehicleCards = [];
+    for (int i = 0; i < motors.length; i++) {
+      vehicleCards.add(
+        Padding(
+          padding: const EdgeInsets.only(top: 20, left: 10, right: 10),
+          child: FutureBuilder<List<Ulasan>?>(
+            future: getUlasanByMotorId(motors[i].idMotor),
+            builder: (context, snapshot) {
+              List<Ulasan>? ulasan;
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return vehicleCard(
+                  ulasan: null,
+                  margin: const EdgeInsets.only(top: 20, left: 10, right: 10),
+                  motor: motors[i],
+                );
+              } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                ulasan = snapshot.data!;
+              } else if (snapshot.hasData && snapshot.data!.isEmpty) {
+                ulasan = null;
+              }
+
+              if (isDiscount && motors[i].getBestDiscount() != null) {
+                double disPrice = (motors[i].hargaHarian! -
+                    motors[i].getBestDiscount()!.jumlahDiskon!);
+
+                return vehicleCardDiscount(
+                  ulasan: ulasan,
+                  motor: motors[i],
+                  disPrice: disPrice,
+                );
+              } else if (isDiscount) {
+                return const SizedBox(
+                  width: 0,
+                );
+              }
+
+              return vehicleCard(
+                ulasan: ulasan,
                 margin: const EdgeInsets.only(top: 20, left: 10, right: 10),
-                // imagePath: motors[endIndex].imagePath,  // Asumsikan ada properti imagePath di Motor
-                imagePath: "assets/images/NMAX.png",
-                vehicleName: motors[endIndex].model,  // Ganti dengan data motor yang sesuai
-                rating: '4.8',
-                // rating: motors[endIndex].brand.toString(),  // Ganti dengan rating motor
-                transmition: 'Transmission: ${motors[endIndex].transmisi}',  // Asumsikan ada properti transmisi
-                disPrice: 'Rp. ${formatter.format(motors[endIndex].hargaHarian)}',  // Ganti dengan harga diskon
-                norPrice: 'Rp. ${formatter.format(motors[endIndex].hargaHarian)}',  // Ganti dengan harga normal
-              ),
-          ],
+                motor: motors[i],
+              );
+            },
+          ),
         ),
       );
-      rows.add(const SizedBox(height: 10));  // Jarak antar baris
+      // Tambahkan gap kecuali setelah card terakhir
+      if (i != motors.length - 1) {
+        vehicleCards.add(const SizedBox(width: 16)); // Jarak antar card
+      }
     }
 
-    return Column(
-      children: rows,
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: vehicleCards,
+      ),
     );
   }
 
-  Widget buildHorizontalVehicleList(List<Motor> motors) {
-  // Membuat list widget untuk vehicleCard
-  List<Widget> vehicleCards = motors.map((motor) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 20, left: 10, right: 10),
-      child: vehicleCard(
-        margin: const EdgeInsets.only(top: 20, left: 10, right: 10),
-        // imagePath: motor.imagePath ?? "assets/images/default.png", // Pastikan ada 'imagePath' pada model Motor
-        motor: motor,
-      ),
-    );
-  }).toList();
+  List<Motor>? filterUnDiscounted(List<Motor> motors) {
+    List<Motor>? filtered = motors.where((motor) {
+      return motor.getBestDiscount() != null;
+    }).toList();
 
-  // Menambahkan SizedBox di antara setiap vehicleCard
-  return SingleChildScrollView(
-    scrollDirection: Axis.horizontal,
-    child: Row(
-      children: [
-        ...vehicleCards
-      ],
-    ),
-  );
-}
+    return filtered;
+  }
 
+  String getDateRange(DateTimeRange range) {
+    String startMonth = DateFormat('MMM').format(range.start);
+    String endMonth = DateFormat('MMM').format(range.end);
+
+    String rentRange = "";
+
+    rentRange += "$startMonth ${range.start.day} - ";
+
+    if (range.start.month == range.end.month) {
+      rentRange += "${range.end.day}";
+    } else {
+      rentRange += "$endMonth ${range.end.day}";
+    }
+
+    return rentRange;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -134,33 +152,28 @@ class _HomepageScreenState extends State<HomepageScreen> {
                   top: 50,
                   right: 30,
                   child: IconButton(
-                    color: AppColors.N0,
-                    iconSize: 30,
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const NotificationPage()
-                        )
-                      );
-                    },
-                    icon: const Icon(Icons.notifications)
-                  ),
+                      color: AppColors.N0,
+                      iconSize: 30,
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const NotificationPage()));
+                      },
+                      icon: const Icon(Icons.notifications)),
                 ),
                 Positioned(
-                  top: 40,
-                  left: 30,
-                  child: Builder(
-                    
-                    builder: (context) {
+                    top: 40,
+                    left: 30,
+                    child: Builder(builder: (context) {
                       var auth = Provider.of<AuthState>(context);
                       return Text(
                         "Good Morning\n${auth.currentUser == null ? "" : auth.currentUser!.nama}",
-                        style: AppTextStyle.h2Bold.copyWith(color: AppColors.N0),
+                        style:
+                            AppTextStyle.h2Bold.copyWith(color: AppColors.N0),
                       );
-                    }
-                  )
-                ),
+                    })),
                 Container(
                   margin: const EdgeInsets.only(
                     top: 130,
@@ -169,39 +182,95 @@ class _HomepageScreenState extends State<HomepageScreen> {
                   ),
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        offset: const Offset(4, 4),
-                        blurRadius: 10,
-                        spreadRadius: 2,
-                      )
-                    ]
-                  ),
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          offset: const Offset(4, 4),
+                          blurRadius: 10,
+                          spreadRadius: 2,
+                        )
+                      ]),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      GestureDetector(
-                        onTap: () => _selectDate(context),
-                        child: AbsorbPointer(
-                          child: TextfieldWidget(
-                            controller: _dateController,
-                            label: 'Select Date',
-                            prefixIcon: const Icon(Icons.date_range_rounded),
-                            hintText: 'Choose the date...',
+                      // Date Picker
+
+                      // GestureDetector(
+                      //   onTap: () => _selectDate(context),
+                      //   child: AbsorbPointer(
+                      //     child: TextfieldWidget(
+                      //       controller: _dateController,
+                      //       label: 'Select Date',
+                      //       prefixIcon: const Icon(Icons.date_range_rounded),
+                      //       hintText: 'Choose the date...',
+                      //     ),
+                      //   ),
+                      // ),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            'Rental duration',
+                            style: TextStyle(
+                                fontSize: 16.0, fontWeight: FontWeight.bold),
                           ),
-                        ),
+
+                          // Return time button
+                          TextButton(
+                            style: TextButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 12),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                side: const BorderSide(color: Colors.grey),
+                              ),
+                              backgroundColor: Colors.transparent,
+                            ),
+                            onPressed: () async {
+                              final selectedRange = await showDateRangePicker(
+                                context: context,
+                                firstDate: DateTime.now(),
+                                lastDate: DateTime.now()
+                                    .add(const Duration(days: 365)),
+                                builder: (BuildContext context, Widget? child) {
+                                  return Theme(
+                                    data: ThemeData.light().copyWith(
+                                      primaryColor: Colors.blue,
+                                      colorScheme: const ColorScheme.light(
+                                          primary: Colors.blue),
+                                      buttonTheme: const ButtonThemeData(
+                                        textTheme: ButtonTextTheme.primary,
+                                      ),
+                                    ),
+                                    child: child!,
+                                  );
+                                },
+                              );
+
+                              if (selectedRange != null) {
+                                setState(() {
+                                  _selectedDateRange = selectedRange;
+                                });
+                              }
+                            },
+                            child: Text(
+                              _selectedDateRange != null
+                                  ? getDateRange(_selectedDateRange!)
+                                  : 'Pick a Date',
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
+
                       const Gap(24),
-                      TextfieldWidget(
-                        label: 'Select Models',
-                        prefixIcon: Icon(Icons.motorcycle_rounded),
-                        controller: _modelController,
-                        hintText: 'Choose the models...'
-                      ),
-                      const Gap(24),
+
                       const Text('Models'),
                       Row(
                         children: [
@@ -237,25 +306,46 @@ class _HomepageScreenState extends State<HomepageScreen> {
                         ],
                       ),
                       const Gap(30),
+
                       Center(
                         child: SizedBox(
-                          width: 150,
-                          height: 40,
-                          child: ButtonWidget.primary(
-                            label: "Search",
-                            press: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => SearchResult(
-                                    date: _dateController.text, 
-                                    model: _modelController.text, 
-                                    transimission: _selectedTransmission != null ? _selectedTransmission!.name : "",)
-                                )
-                              );
-                            }
-                          )
-                        ),
+                            width: 150,
+                            height: 40,
+                            child: (_selectedTransmission != null)
+                                ? ButtonWidget.primary(
+                                    label: "Search",
+                                    press: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder:
+                                                  (context) => SearchResult(
+                                                        selectedDateRange: _selectedDateRange ??
+                                                            DateTimeRange(
+                                                                start: DateTime
+                                                                    .now(),
+                                                                end: DateTime
+                                                                        .now()
+                                                                    .add(const Duration(
+                                                                        days:
+                                                                            1))),
+                                                        transimission:
+                                                            _selectedTransmission !=
+                                                                    null
+                                                                ? _selectedTransmission!
+                                                                    .name
+                                                                : "",
+                                                      )));
+                                    })
+                                : ButtonWidget.secondary(
+                                    label: "Search",
+                                    press: () {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                            content: Text('Pilih transaksi!')),
+                                      );
+                                    })),
                       ),
                     ],
                   ),
@@ -267,10 +357,14 @@ class _HomepageScreenState extends State<HomepageScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  const Gap(20),
                   Text('Recommendation', style: AppTextStyle.body2Bold),
-
-                   FutureBuilder<List<Motor>>(
-                    future: MotorAPi.getAll(),
+                  FutureBuilder<List<Motor>?>(
+                    future: ApiService().motorApi.apiMotorGet(
+                        withImage: true,
+                        withDiskon: true,
+                        withUlasan: true,
+                        sorting: MotorSorting.bestRating),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());
@@ -279,74 +373,63 @@ class _HomepageScreenState extends State<HomepageScreen> {
                       } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                         return const Center(child: Text('No motors available'));
                       } else {
-                        final List<Motor> motors = snapshot.data!;
-                        return SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: [
-                              vehicleCard(
-                                // height: 260,
-                                // width: 200,
-                                margin: const EdgeInsets.only(
-                                    top: 20, right: 20, left: 20),
-                                motor: motors[0],
-                              ),
-                              vehicleCard(
-                                // height: 260,
-                                // width: 200,
-                                margin: const EdgeInsets.only(
-                                    top: 20, right: 20, left: 20),
-                                motor: motors[1],
-                              )
-                            ],
-                          ),
-                        );
+                        final List<Motor> motors =
+                            Motor().removeBookedMotors(snapshot.data!)!;
+                        return buildHorizontalVehicleList(motors, false);
+                      }
+                    },
+                  ),
+                  const Gap(20),
+                  Text('Most Popular', style: AppTextStyle.body2Bold),
+                  FutureBuilder<List<Motor>?>(
+                    future: ApiService().motorApi.apiMotorGet(
+                        withImage: true,
+                        withDiskon: true,
+                        withUlasan: true,
+                        sorting: MotorSorting.mostPopular),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Center(child: Text('Error: ${snapshot.error}'));
+                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                        return const Center(child: Text('No motors available'));
+                      } else {
+                        final List<Motor> motors =
+                            Motor().removeBookedMotors(snapshot.data!)!;
+                        return buildHorizontalVehicleList(motors, false);
                       }
                     },
                   ),
                   const Gap(20),
                   const VoucherCard(),
                   const Gap(20),
-                  Padding(
-                    padding: const EdgeInsets.all(0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Most Popular', style: AppTextStyle.body2Bold),
-                        FutureBuilder<List<Motor>>(
-                          future: MotorAPi.getAll(),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState == ConnectionState.waiting) {
-                              return const Center(child: CircularProgressIndicator());
-                            } else if (snapshot.hasError) {
-                              return Center(child: Text('Error: ${snapshot.error}'));
-                            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                              return const Center(child: Text('No motors available'));
-                            } else {
-                              final List<Motor> motors = snapshot.data!;
-                              return buildHorizontalVehicleList(motors);
-                            }
-                          },
-                        ),
-                        const Gap(20),
-                        Text('Discount', style: AppTextStyle.body2Bold),
-                        FutureBuilder<List<Motor>>(
-                          future: MotorAPi.getAll(),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState == ConnectionState.waiting) {
-                              return const Center(child: CircularProgressIndicator());
-                            } else if (snapshot.hasError) {
-                              return Center(child: Text('Error: ${snapshot.error}'));
-                            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                              return const Center(child: Text('No motors available'));
-                            } else {
-                              final List<Motor> motors = snapshot.data!;
-                              return buildMotorList(motors);
-                            }
-                          },
-                        ),
-                      ],
-                    ),
+                  Text('Discount', style: AppTextStyle.body2Bold),
+                  FutureBuilder<List<Motor>?>(
+                    future: ApiService().motorApi.apiMotorGet(
+                        withImage: true,
+                        withDiskon: true,
+                        withUlasan: true,
+                        sorting: MotorSorting.bestDiscount),
+                    builder: (context, snapshot) {
+                      List<Motor>? motors =
+                          Motor().removeBookedMotors(snapshot.data!)!;
+
+                      motors = filterUnDiscounted(motors);
+
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Center(child: Text('Error: ${snapshot.error}'));
+                      } else if (!snapshot.hasData ||
+                          snapshot.data!.isEmpty ||
+                          motors == null ||
+                          motors.isEmpty) {
+                        return const Center(child: Text('No motors available'));
+                      } else {
+                        return buildHorizontalVehicleList(motors, true);
+                      }
+                    },
                   ),
                 ],
               ),

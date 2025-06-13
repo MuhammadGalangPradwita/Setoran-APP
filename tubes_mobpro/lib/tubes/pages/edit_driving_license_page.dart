@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
 import 'package:tubes_mobpro/tubes/camera_service.dart';
-import 'package:tubes_mobpro/tubes/models/pelanggan.dart';
 import 'package:tubes_mobpro/tubes/pages/edit_driving_license_camera_page.dart';
-import 'package:tubes_mobpro/tubes/pages/edit_id_camera_page.dart';
+// import 'package:tubes_mobpro/tubes/pages/edit_id_camera_page.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 import 'package:tubes_mobpro/tubes/widgets/button_widgets.dart';
 import 'package:tubes_mobpro/tubes/widgets/textField_widget.dart';

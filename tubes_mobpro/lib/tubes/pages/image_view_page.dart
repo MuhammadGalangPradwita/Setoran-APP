@@ -2,13 +2,12 @@
 
 import 'dart:io';
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
-import 'package:tubes_mobpro/tubes/api_utilities/pelanggan.dart';
-import 'package:tubes_mobpro/tubes/api_utilities/pengguna.dart';
-import 'package:tubes_mobpro/tubes/models/pelanggan.dart';
-import 'package:tubes_mobpro/tubes/models/pengguna.dart';
+import 'package:tubes_mobpro/tubes/api_service.dart';
+import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 import 'package:tubes_mobpro/tubes/widgets/button_widgets.dart';
 import 'package:tubes_mobpro/tubes/widgets/textField_widget.dart';
@@ -26,6 +25,7 @@ class KTPImageViewPage extends StatefulWidget {
 class _KTPImageViewPageState extends State<KTPImageViewPage> {
   late String recognizedText;
   final TextEditingController controller = TextEditingController();
+  String? errorMessage;
 
   @override
   void initState() {
@@ -91,6 +91,12 @@ class _KTPImageViewPageState extends State<KTPImageViewPage> {
                 controller: controller,
               ),
               const Gap(16),
+              if (errorMessage != null)
+                Text(
+                  errorMessage!,
+                  style:
+                      AppTextStyle.body3Regular.copyWith(color: AppColors.R400),
+                ),
               Expanded(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -111,7 +117,15 @@ class _KTPImageViewPageState extends State<KTPImageViewPage> {
                             child: ButtonWidget.primary(
                                 label: "Confirm",
                                 press: () {
-                                  _saveId();
+                                  if (controller.text.isNotEmpty &&
+                                      controller.text.length == 16) {
+                                    _saveId();
+                                  } else {
+                                    setState(() {
+                                      errorMessage =
+                                          "Please enter a valid ID number (16 digits).";
+                                    });
+                                  }
                                 }))
                       ],
                     ),
@@ -126,15 +140,25 @@ class _KTPImageViewPageState extends State<KTPImageViewPage> {
   }
 
   void _saveId() async {
-    // save id to database
     if (controller.text.isNotEmpty && controller.text.length == 16) {
       widget.pengguna.nomorKTP = controller.text;
-      await PenggunaApi.updatePengguna(widget.pengguna);
-      Navigator.of(context)
-        ..pop()
-        ..pop()
-        ..pop()
-        ..pop();
+      await ApiService().penggunaApi.penggunaPut(
+          postPenggunaDTO: PostPenggunaDTO(
+              id: widget.pengguna.id!, nomorKTP: widget.pengguna.nomorKTP));
+      AwesomeDialog(
+        dialogBackgroundColor: AppColors.N0,
+        context: context,
+        dialogType: DialogType.success,
+        title: 'Success',
+        desc: 'ID number has been saved successfully.',
+        btnOkOnPress: () {
+          Navigator.of(context)
+            ..pop()
+            ..pop()
+            ..pop()
+            ..pop();
+        },
+      ).show();
     }
   }
 
@@ -189,6 +213,7 @@ class SIMImageViewPage extends StatefulWidget {
 class _SIMImageViewPageState extends State<SIMImageViewPage> {
   late String recognizedText;
   final TextEditingController controller = TextEditingController();
+  String? errorMessage;
 
   @override
   void initState() {
@@ -254,6 +279,12 @@ class _SIMImageViewPageState extends State<SIMImageViewPage> {
                 controller: controller,
               ),
               const Gap(16),
+              if (errorMessage != null)
+                Text(
+                  errorMessage!,
+                  style:
+                      AppTextStyle.body3Regular.copyWith(color: AppColors.R400),
+                ),
               Expanded(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -274,7 +305,15 @@ class _SIMImageViewPageState extends State<SIMImageViewPage> {
                             child: ButtonWidget.primary(
                                 label: "Confirm",
                                 press: () {
-                                  _saveId(context);
+                                  if (controller.text.isNotEmpty &&
+                                      controller.text.length == 16) {
+                                    _saveId(context);
+                                  } else {
+                                    setState(() {
+                                      errorMessage =
+                                          "Please enter a valid Driver License number (16 digits).";
+                                    });
+                                  }
                                 }))
                       ],
                     ),
@@ -292,12 +331,24 @@ class _SIMImageViewPageState extends State<SIMImageViewPage> {
     // save id to database
     if (controller.text.isNotEmpty) {
       widget.pelanggan.nomorSIM = controller.text;
-      await PelangganApi.updatePelanggan(widget.pelanggan);
-      Navigator.of(context)
-        ..pop()
-        ..pop()
-        ..pop()
-        ..pop();
+      // await PelangganApi.updatePelanggan(widget.pelanggan);
+      await ApiService().pelangganApi.pelangganPut(
+          postPelangganDTO: PostPelangganDTO(
+              idPelanggan: widget.pelanggan.idPelanggan!,
+              nomorSIM: widget.pelanggan.nomorSIM!));
+      AwesomeDialog(
+        dialogBackgroundColor: AppColors.N0,
+        context: context,
+        dialogType: DialogType.success,
+        title: 'Success',
+        desc: 'Driver License number has been saved successfully.',
+        btnOkOnPress: () {
+          Navigator.of(context)
+            ..pop()
+            ..pop()
+            ..pop();
+        },
+      ).show();
     }
   }
 

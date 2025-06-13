@@ -1,10 +1,10 @@
 name: Build
 on:
   push:
-    branches:
-      - haidar
+    branches: [main]
   pull_request:
     types: [opened, synchronize, reopened]
+    branches: [main]
 
 jobs:
   sonarqube:
@@ -14,25 +14,42 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          ref: haidar
+          ref: main
           fetch-depth: 0  # penting untuk SonarQube
+
+      - name: Setup JDK for SonarQube
+        uses: actions/setup-java@v4
+        with:
+          java-version: "17"
+          distribution: "temurin"
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.32.1'  # sesuaikan versi Flutter kamu
+          channel: stable
 
       - name: Install dependencies
-        working-directory: ./tubes_mobpro
+        working-directory: tubes_mobpro
         run: flutter pub get
 
-      - name: Analyze (optional)
-        working-directory: ./tubes_mobpro
-        run: flutter analyze
+      # - name: Run Unit Tests # optional
+      #   working-directory: tubes_mobpro
+      #   run: flutter test \test\
 
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5
         with:
-          projectBaseDir: ./tubes_mobpro
+          projectBaseDir: tubes_mobpro
+          args: >
+            -Dsonar.projectKey=${{ github.repository_owner }}_${{ github.event.repository.name }}
+            -Dsonar.projectName=${{ github.repository }}
+            -Dsonar.sources=lib
+            -Dsonar.tests=test
+            -Dsonar.dart.analyzer.mode=FLUTTER
+            -Dsonar.sourceEncoding=UTF-8
+            -Dsonar.dart.lcov.reportPaths=coverage/lcov.info
+            -Dsonar.host.url=https://sonarcloud.io 
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
