@@ -338,7 +338,7 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
                               ),
                               child: Row(children: [
                                 Text(
-                                  rating.toString().substring(0, 3) ?? '-',
+                                  rating.toString().substring(0, 3),
                                   style: AppTextStyle.body3SemiBold,
                                 ),
                                 const Icon(

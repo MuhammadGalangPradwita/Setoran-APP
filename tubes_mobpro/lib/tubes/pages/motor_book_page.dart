@@ -29,7 +29,7 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
   String? kodeVoucher;
   Voucher? voucher;
   Diskon? diskon;
-  String? paymentMethod;
+  MetodePembayaran? paymentMethod;
   DateTimeRange? rentTime;
 
   bool isLoading = false;
@@ -109,19 +109,19 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
                 : MetodePembayaran.dompetDigital,
           ));
 
-      await ApiService().motorApi.apiMotorIdPut(payload['id_motor'],
-          putMotorDTO: PutMotorDTO(
-            statusMotor: StatusMotor.disewa,
-            platNomor: motor.platNomor!.replaceAll(' ', ''),
-            nomorSTNK: motor.nomorSTNK!,
-            nomorBPKB: motor.nomorBPKB!,
-            model: motor.model!,
-            brand: motor.brand!,
-            tipe: motor.tipe!,
-            tahun: motor.tahun!,
-            transmisi: motor.transmisi!,
-            hargaHarian: motor.hargaHarian!,
-          ));
+      // await ApiService().motorApi.apiMotorIdPut(payload['id_motor'],
+      //     putMotorDTO: PutMotorDTO(
+      //       statusMotor: StatusMotor.disewa,
+      //       platNomor: motor.platNomor!.replaceAll(' ', ''),
+      //       nomorSTNK: motor.nomorSTNK!,
+      //       nomorBPKB: motor.nomorBPKB!,
+      //       model: motor.model!,
+      //       brand: motor.brand!,
+      //       tipe: motor.tipe!,
+      //       tahun: motor.tahun!,
+      //       transmisi: motor.transmisi!,
+      //       hargaHarian: motor.hargaHarian!,
+      //     ));
 
       //  Untuk debugging
       // AwesomeDialog(
@@ -228,7 +228,6 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
       });
 
       print('Error checking voucher: ${e.toString()}');
-
     }
   }
 
@@ -278,8 +277,7 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
                       children: [
                         ClipRRect(
                           borderRadius: BorderRadius.circular(8),
-                          child:
-                              Builder(
+                          child: Builder(
                             builder: (context) {
                               final frontImage = widget.motor.motorImage?.front;
                               if (frontImage != null && frontImage.isNotEmpty) {
@@ -453,7 +451,7 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
                     // Payment Method Options
                     RadioListTile(
                       title: const Text('Bank Transfer'),
-                      value: 'bank_transfer',
+                      value: MetodePembayaran.transferBank,
                       groupValue: paymentMethod,
                       onChanged: (value) {
                         setState(() {
@@ -463,7 +461,7 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
                     ),
                     RadioListTile(
                       title: const Text('DANA'),
-                      value: 'dana',
+                      value: MetodePembayaran.dompetDigital,
                       groupValue: paymentMethod,
                       onChanged: (value) {
                         setState(() {

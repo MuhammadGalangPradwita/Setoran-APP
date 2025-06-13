@@ -364,8 +364,6 @@ class _HomepageScreenState extends State<HomepageScreen> {
                         withImage: true,
                         withDiskon: true,
                         withUlasan: true,
-                        page: 1,
-                        amountPerPage: 4,
                         sorting: MotorSorting.bestRating),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
@@ -388,8 +386,6 @@ class _HomepageScreenState extends State<HomepageScreen> {
                         withImage: true,
                         withDiskon: true,
                         withUlasan: true,
-                        page: 1,
-                        amountPerPage: 4,
                         sorting: MotorSorting.mostPopular),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {

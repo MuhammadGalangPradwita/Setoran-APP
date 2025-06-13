@@ -46,13 +46,13 @@ extension MotorHelper on Motor {
         print(
             'Motor punya image: idMotor ${motor.idMotor} nama motor: ${motor.model}, imageId: ${motor.idMotorImage} image: ${motor.motorImage?.front}');
 
-      if (motor.statusMotor == "Tersedia") {
+      if (motor.statusMotor == StatusMotor.tersedia) {
         filteredList.add(motor);
       }
     }
 
     // Mengembalikan daftar motor yang sudah dibooking
-    return listMotors;
+    return filteredList;
   }
 
   double? calculateAverageRating(List<Ulasan> ulasan) {
