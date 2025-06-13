@@ -1,12 +1,10 @@
 name: Build
 on:
   push:
-    branches:
-      - haidar
+    branches: [main]
   pull_request:
     types: [opened, synchronize, reopened]
-    branches:
-      - haidar
+    branches: [main]
 
 jobs:
   sonarqube:
@@ -16,7 +14,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          ref: haidar
+          ref: main
           fetch-depth: 0  # penting untuk SonarQube
 
       - name: Setup JDK for SonarQube
