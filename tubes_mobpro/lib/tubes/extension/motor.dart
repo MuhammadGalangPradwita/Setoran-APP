@@ -22,11 +22,13 @@ extension MotorHelper on Motor {
   }
 
   /// pastikan list ulasan sudah ter load di objek motor
-  Future<double?> getAvgUlasan() async {
+  double? getAvgUlasan() {
     if (ulasan == null || ulasan!.isEmpty) return null;
 
     double total =
         ulasan!.fold(0.0, (sum, ulasan) => sum + ulasan.rating!.toDouble());
+
+    
     return total / ulasan!.length;
   }
 
@@ -67,5 +69,4 @@ extension MotorHelper on Motor {
 
     return count > 0 ? totalRating / count : null;
   }
-
 }

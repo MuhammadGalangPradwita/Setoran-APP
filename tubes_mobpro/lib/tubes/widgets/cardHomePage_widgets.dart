@@ -93,11 +93,12 @@ class vehicleCard extends StatelessWidget {
                                   ),
                                   const SizedBox(width: 5),
                                   Text(
-                                    ulasan != null &&
-                                            Motor().calculateAverageRating(ulasan!) !=
-                                                null
-                                        ? Motor().calculateAverageRating(ulasan!)!
-                                            .toStringAsFixed(1)
+                                    motor.ulasan != null &&
+                                            motor.getAvgUlasan() != null
+                                        ? motor
+                                            .getAvgUlasan()!
+                                            .toString()
+                                            .substring(0, 3)
                                         : "-",
                                     style: AppTextStyle.body2Bold,
                                   ),
@@ -144,11 +145,9 @@ class vehicleCard extends StatelessWidget {
       ),
     );
   }
-
 }
 
 class vehicleCardDiscount extends StatelessWidget {
-
   final Motor motor;
 
   final List<Ulasan>? ulasan;
@@ -362,10 +361,10 @@ class VoucherCard extends StatelessWidget {
                           bottomLeft: Radius.circular(10)),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.1), 
-                          offset: const Offset(4, 4), 
-                          blurRadius: 10, 
-                          spreadRadius: 2, 
+                          color: Colors.black.withOpacity(0.1),
+                          offset: const Offset(4, 4),
+                          blurRadius: 10,
+                          spreadRadius: 2,
                         ),
                       ],
                     ),

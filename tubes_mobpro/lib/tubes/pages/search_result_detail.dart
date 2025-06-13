@@ -20,7 +20,6 @@ class SearchResultDetail extends StatefulWidget {
 }
 
 class _SearchResultDetailState extends State<SearchResultDetail> {
-
   final formatter = NumberFormat("#,###");
   double? rating;
 
@@ -29,21 +28,6 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
     super.initState();
 
     getRatingFromUlasan();
-  }
-
-  Future<double?> getRating(List<Ulasan>? value) async {
-    double? totalRating = null;
-
-    List<Ulasan>? ulasans = (await ApiService().ulasanApi.apiUlasanGet());
-
-    if (ulasans != null) {
-      totalRating = 0;
-      totalRating = ulasans
-          .where((ulasan) => ulasan.idMotor == widget.motor.idMotor)
-          .fold(0, (sum, ulasan) => sum + ulasan.rating!);
-    }
-
-    return totalRating;
   }
 
   Future<void> showUlasanDialog(BuildContext context) async {
@@ -67,11 +51,9 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        ApiService().ulasanApi.apiUlasanGet().then((value) {
-
-          
-
-        },);
+        ApiService().ulasanApi.apiUlasanGet().then(
+              (value) {},
+            );
         return AlertDialog(
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -153,6 +135,7 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
                         .ulasanApi
                         .apiUlasanPost(postUlasanDTO: postUlasanDTO);
 
+                    // Show success snackbar
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text("Ulasan berhasil dikirim!"),
@@ -339,14 +322,12 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
                               style: ElevatedButton.styleFrom(
                                 shape: const CircleBorder(),
                                 elevation: 1.0,
-                                padding: const EdgeInsets.all(
-                                    12),
-                                backgroundColor:
-                                    Colors.white,
+                                padding: const EdgeInsets.all(12),
+                                backgroundColor: Colors.white,
                               ),
                               child: Row(children: [
                                 Text(
-                                  '${rating ?? '-'}',
+                                  rating.toString().substring(0, 3) ?? '-',
                                   style: AppTextStyle.body3SemiBold,
                                 ),
                                 const Icon(
