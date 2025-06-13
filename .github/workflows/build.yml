@@ -49,6 +49,7 @@ jobs:
             -Dsonar.dart.analyzer.mode=FLUTTER
             -Dsonar.sourceEncoding=UTF-8
             -Dsonar.dart.lcov.reportPaths=coverage/lcov.info
+            -Dsonar.host.url=https://sonarcloud.io 
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
