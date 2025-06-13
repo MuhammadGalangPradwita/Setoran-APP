@@ -80,7 +80,7 @@ class AppTextStyle {
   );
 
   static TextStyle body1Bold = GoogleFonts.poppins(
-    fontSize: 12,
+    fontSize: 16,
     fontWeight: FontWeight.w700,
   );
 
@@ -96,7 +96,7 @@ class AppTextStyle {
   );
 
   static TextStyle body2Bold = GoogleFonts.poppins(
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: FontWeight.w700,
   );
 

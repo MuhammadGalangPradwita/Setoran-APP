@@ -135,12 +135,23 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
                         .ulasanApi
                         .apiUlasanPost(postUlasanDTO: postUlasanDTO);
 
-                    // Show success snackbar
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text("Ulasan berhasil dikirim!"),
-                      ),
-                    );
+                    AwesomeDialog(
+                      context: context,
+                      dialogType: DialogType.success,
+                      title: 'Success',
+                      desc: 'Ulasan berhasil dikirim.',
+                      btnOkOnPress: () {
+                        Navigator.pop(context);
+                      },
+                    ).show();
+
+                    // // Show success snackbar
+                    // ScaffoldMessenger.of(context).showSnackBar(
+                    //   const SnackBar(
+                    //     content: Text("Ulasan berhasil dikirim!"),
+                    //   ),
+
+                    // );
                   } catch (e) {
                     AwesomeDialog(
                       context: context,

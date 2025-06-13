@@ -100,7 +100,7 @@ class vehicleCard extends StatelessWidget {
                                             .toString()
                                             .substring(0, 3)
                                         : "-",
-                                    style: AppTextStyle.body2Bold,
+                                    style: AppTextStyle.body2SemiBold,
                                   ),
                                 ],
                               ),
