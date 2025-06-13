@@ -43,11 +43,13 @@ jobs:
             echo "TAG_EXISTS=false" >> $GITHUB_OUTPUT
           fi
 
-      # Only proceed with release if tag doesn't exist
+      # Only proceed with build if tag doesn't exist
       - name: Build APKs for all architectures
+        if: steps.check_tag.outputs.TAG_EXISTS == 'false'
         run: flutter build apk --release --split-per-abi
 
       - name: Upload APK artifacts
+        if: steps.check_tag.outputs.TAG_EXISTS == 'false'
         uses: actions/upload-artifact@v4
         with:
           name: flutter-apks-${{ env.APP_VERSION }}
@@ -68,4 +70,4 @@ jobs:
       - name: Warning if tag exists
         if: steps.check_tag.outputs.TAG_EXISTS == 'true'
         run: |
-          echo "::warning::Version v${{ env.APP_VERSION }} already exists as a tag. Release creation skipped."
+          echo "::warning::Version v${{ env.APP_VERSION }} already exists as a tag. Build and release creation skipped."
