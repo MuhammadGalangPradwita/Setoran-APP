@@ -230,13 +230,12 @@ class vehicleCardDiscount extends StatelessWidget {
                                   ),
                                   const SizedBox(width: 5),
                                   Text(
-                                    ulasan != null &&
-                                            Motor().calculateAverageRating(
-                                                    ulasan!) !=
-                                                null
-                                        ? Motor()
-                                            .calculateAverageRating(ulasan!)!
-                                            .toStringAsFixed(1)
+                                    motor.ulasan != null &&
+                                            motor.getAvgUlasan() != null
+                                        ? motor
+                                            .getAvgUlasan()!
+                                            .toString()
+                                            .substring(0, 3)
                                         : "-",
                                     style: AppTextStyle.body2Bold,
                                   ),
