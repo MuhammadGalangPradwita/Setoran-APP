@@ -22,7 +22,6 @@ jobs:
         with:
           java-version: "17"
           distribution: "temurin"
-          cache: "maven"
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -42,5 +41,14 @@ jobs:
         uses: SonarSource/sonarqube-scan-action@v5
         with:
           projectBaseDir: tubes_mobpro
+          args: >
+            -Dsonar.projectKey=${{ github.repository_owner }}_${{ github.event.repository.name }}
+            -Dsonar.projectName=${{ github.repository }}
+            -Dsonar.sources=lib
+            -Dsonar.tests=test
+            -Dsonar.dart.analyzer.mode=FLUTTER
+            -Dsonar.sourceEncoding=UTF-8
+            -Dsonar.dart.lcov.reportPaths=coverage/lcov.info
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
