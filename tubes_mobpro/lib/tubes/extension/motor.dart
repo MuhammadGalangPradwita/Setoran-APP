@@ -28,7 +28,6 @@ extension MotorHelper on Motor {
     double total =
         ulasan!.fold(0.0, (sum, ulasan) => sum + ulasan.rating!.toDouble());
 
-    
     return total / ulasan!.length;
   }
 

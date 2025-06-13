@@ -89,7 +89,7 @@ class vehicleCard extends StatelessWidget {
                                   const Icon(
                                     Icons.star,
                                     color: Colors.amber,
-                                    size: 18,
+                                    size: 14,
                                   ),
                                   const SizedBox(width: 5),
                                   Text(
@@ -230,12 +230,13 @@ class vehicleCardDiscount extends StatelessWidget {
                                   ),
                                   const SizedBox(width: 5),
                                   Text(
-                                    motor.ulasan != null &&
-                                            motor.getAvgUlasan() != null
-                                        ? motor
-                                            .getAvgUlasan()!
-                                            .toString()
-                                            .substring(0, 3)
+                                    ulasan != null &&
+                                            Motor().calculateAverageRating(
+                                                    ulasan!) !=
+                                                null
+                                        ? Motor()
+                                            .calculateAverageRating(ulasan!)!
+                                            .toStringAsFixed(1)
                                         : "-",
                                     style: AppTextStyle.body2Bold,
                                   ),
