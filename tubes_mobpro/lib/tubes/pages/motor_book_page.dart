@@ -1,14 +1,11 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'package:tubes_mobpro/tubes/api_service.dart';
 import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
 import 'package:tubes_mobpro/tubes/extension/motor.dart';
-import 'package:tubes_mobpro/tubes/pages/auth_check.dart';
 import 'package:tubes_mobpro/tubes/pages/homePage_screen.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
-import 'dart:convert';
 
 import '../widgets/button_widgets.dart';
 
@@ -109,19 +106,19 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
                 : MetodePembayaran.dompetDigital,
           ));
 
-      // await ApiService().motorApi.apiMotorIdPut(payload['id_motor'],
-      //     putMotorDTO: PutMotorDTO(
-      //       statusMotor: StatusMotor.disewa,
-      //       platNomor: motor.platNomor!.replaceAll(' ', ''),
-      //       nomorSTNK: motor.nomorSTNK!,
-      //       nomorBPKB: motor.nomorBPKB!,
-      //       model: motor.model!,
-      //       brand: motor.brand!,
-      //       tipe: motor.tipe!,
-      //       tahun: motor.tahun!,
-      //       transmisi: motor.transmisi!,
-      //       hargaHarian: motor.hargaHarian!,
-      //     ));
+      await ApiService().motorApi.apiMotorIdPut(payload['id_motor'],
+          putMotorDTO: PutMotorDTO(
+            statusMotor: StatusMotor.disewa,
+            platNomor: motor.platNomor!.replaceAll(' ', ''),
+            nomorSTNK: motor.nomorSTNK!,
+            nomorBPKB: motor.nomorBPKB!,
+            model: motor.model!,
+            brand: motor.brand!,
+            tipe: motor.tipe!,
+            tahun: motor.tahun!,
+            transmisi: motor.transmisi!,
+            hargaHarian: motor.hargaHarian!,
+          ));
 
       //  Untuk debugging
       // AwesomeDialog(
@@ -158,16 +155,13 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
         showCloseIcon: false,
         // btnCancelOnPress: () {},
         btnOkOnPress: () {
-          Navigator.of(context).popUntil((route) => route.isFirst);
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const HomepageScreen()),
+          );
         },
       ).show();
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $e')),
-      );
-
-      print('Error creating transaction: $e');
-
       AwesomeDialog(
         context: context,
         dialogType: DialogType.error,

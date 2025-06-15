@@ -2,15 +2,12 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tubes_mobpro/tubes/api_service.dart';
 import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
-import 'package:tubes_mobpro/tubes/pages/auth_check.dart';
 import 'package:tubes_mobpro/tubes/pages/sign_in_page.dart';
 import 'package:tubes_mobpro/tubes/widgets/button_widgets.dart';
 import 'package:tubes_mobpro/tubes/widgets/textField_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tubes_mobpro/tubes/widgets/google_login_dialog.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});

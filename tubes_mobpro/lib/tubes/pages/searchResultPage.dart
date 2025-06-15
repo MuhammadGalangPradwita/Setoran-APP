@@ -15,20 +15,42 @@ class SearchResult extends StatelessWidget {
   final String transimission;
   final DateTimeRange? selectedDateRange;
 
-  Future<Widget> buildVehicleRow(List<Motor> motors) async {
+  Widget buildVehicleRow(List<Motor> motors) {
     List<Widget> vehicleCards = [];
-    for (var motor in motors) {
-      List<Ulasan>? ulasanList =
-          await ApiService().motorApi.apiMotorIdUlasansGet(motor.idMotor!);
+    for (var _ in motors) {
+      for (int i = 0; i < motors.length; i++) {
+        Widget? card;
 
-      vehicleCards.add(
-        vehicleCard(
-          ulasan: ulasanList,
-          margin: const EdgeInsets.only(top: 20, right: 20, left: 20),
-          motor: motor,
-          selectedDateRange: selectedDateRange,
-        ),
-      );
+        if (motors[i].getBestDiscount() != null) {
+          if (motors[i]
+              .getBestDiscount()!
+              .tanggalAkhir!
+              .isBefore(DateTime.now())) {
+            continue;
+          }
+
+          double disPrice = (motors[i].hargaHarian! -
+              motors[i].getBestDiscount()!.jumlahDiskon!);
+
+          card = vehicleCardDiscount(
+            motor: motors[i],
+            disPrice: disPrice,
+          );
+        } else {
+          card = vehicleCard(
+            margin: const EdgeInsets.only(top: 20, left: 10, right: 10),
+            motor: motors[i],
+          );
+        }
+
+        vehicleCards.add(
+          Padding(
+              padding: const EdgeInsets.only(top: 20, left: 5, right: 10),
+              child: card),
+        );
+
+        // Tambahkan gap kecuali setelah card terakhir
+      }
     }
 
     // Membagi ke dalam row (maksimal 2 card per baris)
@@ -36,6 +58,7 @@ class SearchResult extends StatelessWidget {
     for (int i = 0; i < vehicleCards.length; i += 2) {
       rows.add(
         Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             vehicleCards[i],
             if (i + 1 < vehicleCards.length)
@@ -46,6 +69,7 @@ class SearchResult extends StatelessWidget {
     }
 
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: rows,
     );
   }
@@ -87,7 +111,8 @@ class SearchResult extends StatelessWidget {
                 : TransmisiMotor.matic,
             withDiskon: true,
             withImage: true,
-            withUlasan: true),
+            withUlasan: true,
+            page: 1),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -96,29 +121,14 @@ class SearchResult extends StatelessWidget {
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return const Center(child: Text('No motors available'));
           }
-          final motors = snapshot.data!;
           return SingleChildScrollView(
             child: Container(
-              margin: const EdgeInsets.only(top: 10, left: 20, right: 10),
-              padding: const EdgeInsets.only(right: 20),
-              // height: 300,
-              width: double.infinity,
-              child: FutureBuilder<Widget>(
-                future: buildVehicleRow(
-                    Motor().removeBookedMotors(snapshot.data!) ?? []),
-                builder: (context, vehicleRowSnapshot) {
-                  if (vehicleRowSnapshot.connectionState ==
-                      ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (vehicleRowSnapshot.hasError) {
-                    return Center(
-                        child: Text('Error: ${vehicleRowSnapshot.error}'));
-                  } else {
-                    return vehicleRowSnapshot.data ?? const SizedBox();
-                  }
-                },
-              ),
-            ),
+                alignment: Alignment.center,
+                margin: const EdgeInsets.only(top: 10, left: 5, right: 10),
+                padding: const EdgeInsets.only(right: 20),
+                width: double.infinity,
+                child: buildVehicleRow(
+                    MotorHelper.removeBookedMotors(snapshot.data!) ?? [])),
           );
         },
       ),

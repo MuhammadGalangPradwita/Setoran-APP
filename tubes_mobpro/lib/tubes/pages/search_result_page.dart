@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
 
-import 'package:tubes_mobpro/tubes/pages/search_result_detail.dart';
-import 'package:tubes_mobpro/tubes/services/firebase_notification_service.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 import 'package:intl/intl.dart';
 

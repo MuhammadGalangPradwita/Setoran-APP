@@ -6,19 +6,16 @@ import 'package:tubes_mobpro/tubes/extension/motor.dart';
 import 'package:tubes_mobpro/tubes/pages/discount_page.dart';
 import 'package:tubes_mobpro/tubes/pages/search_result_detail.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
-import 'package:tubes_mobpro/tubes/widgets/textField_widget.dart';
 
 class vehicleCard extends StatelessWidget {
   final EdgeInsetsGeometry margin;
   final Motor motor;
   final DateTimeRange? selectedDateRange;
-  final List<Ulasan>? ulasan;
 
   vehicleCard(
       {super.key,
       required this.margin,
       required this.motor,
-      required this.ulasan,
       this.selectedDateRange});
 
   final formatter = NumberFormat("#,###");
@@ -150,16 +147,15 @@ class vehicleCard extends StatelessWidget {
 class vehicleCardDiscount extends StatelessWidget {
   final Motor motor;
 
-  final List<Ulasan>? ulasan;
   final double disPrice;
   final formatter = NumberFormat("#,###");
+  final DateTimeRange? selectedDateRange;
 
-  vehicleCardDiscount({
-    super.key,
-    required this.ulasan,
-    required this.disPrice,
-    required this.motor,
-  });
+  vehicleCardDiscount(
+      {super.key,
+      required this.disPrice,
+      required this.motor,
+      this.selectedDateRange});
 
   @override
   Widget build(BuildContext context) {
@@ -175,12 +171,15 @@ class vehicleCardDiscount extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => SearchResultDetail(motor: motor),
+                    builder: (context) => SearchResultDetail(
+                      motor: motor,
+                      selectedDateRange: selectedDateRange,
+                    ),
                   ),
                 );
               },
               child: SizedBox(
-                width: 180,
+                width: 165,
                 height: 250,
                 child: Column(
                   children: [
@@ -226,19 +225,18 @@ class vehicleCardDiscount extends StatelessWidget {
                                   const Icon(
                                     Icons.star,
                                     color: Colors.amber,
-                                    size: 18,
+                                    size: 14,
                                   ),
                                   const SizedBox(width: 5),
                                   Text(
-                                    ulasan != null &&
-                                            Motor().calculateAverageRating(
-                                                    ulasan!) !=
-                                                null
-                                        ? Motor()
-                                            .calculateAverageRating(ulasan!)!
-                                            .toStringAsFixed(1)
+                                    motor.ulasan != null &&
+                                            motor.getAvgUlasan() != null
+                                        ? motor
+                                            .getAvgUlasan()!
+                                            .toString()
+                                            .substring(0, 3)
                                         : "-",
-                                    style: AppTextStyle.body2Bold,
+                                    style: AppTextStyle.body2SemiBold,
                                   ),
                                 ],
                               ),
@@ -325,7 +323,7 @@ class VoucherCard extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => DiscountPage(),
+                                  builder: (context) => const DiscountPage(),
                                 ),
                               );
                             },
@@ -356,7 +354,7 @@ class VoucherCard extends StatelessWidget {
                   child: Container(
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.only(
+                      borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(10),
                           bottomLeft: Radius.circular(10)),
                       boxShadow: [
@@ -397,15 +395,15 @@ class VoucherCard extends StatelessWidget {
                     ),
                   ),
                 ),
-                Expanded(
+                const Expanded(
                   flex: 3,
                   child: Stack(
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         width: 189,
                         height: 115,
                       ),
-                      const Positioned(
+                      Positioned(
                         top: -10,
                         right: 0,
                         child: SizedBox(

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
-import 'package:tubes_mobpro/tubes/pages/notificationDetailPage.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
-import 'package:tubes_mobpro/tubes/utilities/app_util.dart';
 
 class NotificationPage extends StatefulWidget {
   const NotificationPage({super.key});

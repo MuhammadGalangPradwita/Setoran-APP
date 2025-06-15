@@ -4,9 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tubes_mobpro/tubes/api_service.dart';
 import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
-import 'package:tubes_mobpro/tubes/pages/auth_check.dart';
+import 'package:tubes_mobpro/tubes/extension/motor.dart';
 import 'package:tubes_mobpro/tubes/pages/motor_book_page.dart';
-import 'package:tubes_mobpro/tubes/services/firebase_notification_service.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 
 class SearchResultDetail extends StatefulWidget {
@@ -21,13 +20,10 @@ class SearchResultDetail extends StatefulWidget {
 
 class _SearchResultDetailState extends State<SearchResultDetail> {
   final formatter = NumberFormat("#,###");
-  double? rating;
 
   @override
   void initState() {
     super.initState();
-
-    getRatingFromUlasan();
   }
 
   Future<void> showUlasanDialog(BuildContext context) async {
@@ -190,29 +186,6 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
     );
   }
 
-  void getRatingFromUlasan() {
-    ApiService()
-        .motorApi
-        .apiMotorIdUlasansGet(widget.motor.idMotor!)
-        .then((value) {
-      if (value != null) {
-        double totalRating = 0;
-        int count = 0;
-
-        for (var ulasan in value) {
-          if (ulasan.rating != null) {
-            totalRating += ulasan.rating!;
-            count++;
-          }
-        }
-
-        setState(() {
-          rating = count > 0 ? totalRating / count : null;
-        });
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -338,7 +311,13 @@ class _SearchResultDetailState extends State<SearchResultDetail> {
                               ),
                               child: Row(children: [
                                 Text(
-                                  rating.toString().substring(0, 3),
+                                  widget.motor.ulasan != null &&
+                                          widget.motor.getAvgUlasan() != null
+                                      ? widget.motor
+                                          .getAvgUlasan()!
+                                          .toString()
+                                          .substring(0, 3)
+                                      : "-",
                                   style: AppTextStyle.body3SemiBold,
                                 ),
                                 const Icon(

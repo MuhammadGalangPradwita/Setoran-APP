@@ -1,4 +1,3 @@
-import 'package:tubes_mobpro/tubes/api_service.dart';
 import 'package:tubes_mobpro/tubes/api_utilities/lib/api.dart';
 
 extension MotorHelper on Motor {
@@ -32,7 +31,7 @@ extension MotorHelper on Motor {
   }
 
   // Mengambil daftar motor yang sudah dibooking
-  List<Motor>? removeBookedMotors(List<Motor>? listMotors) {
+  static List<Motor>? removeBookedMotors(List<Motor>? listMotors) {
     List<Motor> filteredList = [];
 
     if (listMotors == null || listMotors.isEmpty) {
@@ -41,12 +40,8 @@ extension MotorHelper on Motor {
 
     // Menghapus motor yang sudah dibooking dari daftar
     for (var motor in listMotors!) {
-      // Mendapatkan motor yg mempunyai image
-      if (motor.idMotorImage != null)
-        print(
-            'Motor punya image: idMotor ${motor.idMotor} nama motor: ${motor.model}, imageId: ${motor.idMotorImage} image: ${motor.motorImage?.front}');
-
       if (motor.statusMotor == StatusMotor.tersedia) {
+        if (motor.platNomor == "E2365CTYL") {}
         filteredList.add(motor);
       }
     }

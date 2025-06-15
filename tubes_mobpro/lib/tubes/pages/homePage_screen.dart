@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
@@ -11,7 +9,6 @@ import 'package:tubes_mobpro/tubes/pages/notification_page.dart';
 import 'package:tubes_mobpro/tubes/pages/searchResultPage.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 import 'package:tubes_mobpro/tubes/widgets/cardHomePage_widgets.dart';
-import 'package:tubes_mobpro/tubes/widgets/textField_widget.dart';
 import 'package:tubes_mobpro/tubes/widgets/button_widgets.dart';
 
 import '../api_service.dart';
@@ -49,51 +46,40 @@ class _HomepageScreenState extends State<HomepageScreen> {
   Widget buildHorizontalVehicleList(List<Motor> motors, bool isDiscount) {
     List<Widget> vehicleCards = [];
     for (int i = 0; i < motors.length; i++) {
+      Widget empty = const SizedBox.shrink();
+
+      Widget card = empty;
+
+      if (isDiscount && motors[i].getBestDiscount() != null) {
+        if (motors[i]
+            .getBestDiscount()!
+            .tanggalAkhir!
+            .isBefore(DateTime.now())) {
+          continue;
+        }
+
+        double disPrice = (motors[i].hargaHarian! -
+            motors[i].getBestDiscount()!.jumlahDiskon!);
+
+        card = vehicleCardDiscount(
+          motor: motors[i],
+          disPrice: disPrice,
+        );
+      } else if (isDiscount) {
+        continue;
+      } else {
+        card = vehicleCard(
+          margin: const EdgeInsets.only(top: 20, left: 10, right: 10),
+          motor: motors[i],
+        );
+      }
+
       vehicleCards.add(
         Padding(
-          padding: const EdgeInsets.only(top: 20, left: 10, right: 10),
-          child: FutureBuilder<List<Ulasan>?>(
-            future: getUlasanByMotorId(motors[i].idMotor),
-            builder: (context, snapshot) {
-              List<Ulasan>? ulasan;
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (snapshot.hasError) {
-                return vehicleCard(
-                  ulasan: null,
-                  margin: const EdgeInsets.only(top: 20, left: 10, right: 10),
-                  motor: motors[i],
-                );
-              } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                ulasan = snapshot.data!;
-              } else if (snapshot.hasData && snapshot.data!.isEmpty) {
-                ulasan = null;
-              }
-
-              if (isDiscount && motors[i].getBestDiscount() != null) {
-                double disPrice = (motors[i].hargaHarian! -
-                    motors[i].getBestDiscount()!.jumlahDiskon!);
-
-                return vehicleCardDiscount(
-                  ulasan: ulasan,
-                  motor: motors[i],
-                  disPrice: disPrice,
-                );
-              } else if (isDiscount) {
-                return const SizedBox(
-                  width: 0,
-                );
-              }
-
-              return vehicleCard(
-                ulasan: ulasan,
-                margin: const EdgeInsets.only(top: 20, left: 10, right: 10),
-                motor: motors[i],
-              );
-            },
-          ),
-        ),
+            padding: const EdgeInsets.only(top: 20, left: 10, right: 10),
+            child: card),
       );
+
       // Tambahkan gap kecuali setelah card terakhir
       if (i != motors.length - 1) {
         vehicleCards.add(const SizedBox(width: 16)); // Jarak antar card
@@ -374,7 +360,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                         return const Center(child: Text('No motors available'));
                       } else {
                         final List<Motor> motors =
-                            Motor().removeBookedMotors(snapshot.data!)!;
+                            MotorHelper.removeBookedMotors(snapshot.data!)!;
                         return buildHorizontalVehicleList(motors, false);
                       }
                     },
@@ -396,7 +382,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                         return const Center(child: Text('No motors available'));
                       } else {
                         final List<Motor> motors =
-                            Motor().removeBookedMotors(snapshot.data!)!;
+                            MotorHelper.removeBookedMotors(snapshot.data!)!;
                         return buildHorizontalVehicleList(motors, false);
                       }
                     },
@@ -412,21 +398,23 @@ class _HomepageScreenState extends State<HomepageScreen> {
                         withUlasan: true,
                         sorting: MotorSorting.bestDiscount),
                     builder: (context, snapshot) {
-                      List<Motor>? motors =
-                          Motor().removeBookedMotors(snapshot.data!)!;
-
-                      motors = filterUnDiscounted(motors);
-
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());
                       } else if (snapshot.hasError) {
                         return Center(child: Text('Error: ${snapshot.error}'));
-                      } else if (!snapshot.hasData ||
-                          snapshot.data!.isEmpty ||
-                          motors == null ||
-                          motors.isEmpty) {
-                        return const Center(child: Text('No motors available'));
                       } else {
+                        List<Motor>? motors =
+                            MotorHelper.removeBookedMotors(snapshot.data!)!;
+
+                        motors = filterUnDiscounted(motors);
+
+                        if (!snapshot.hasData ||
+                            snapshot.data!.isEmpty ||
+                            motors == null ||
+                            motors.isEmpty) {
+                          return const Center(
+                              child: Text('No motors available'));
+                        }
                         return buildHorizontalVehicleList(motors, true);
                       }
                     },

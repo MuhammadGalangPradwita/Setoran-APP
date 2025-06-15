@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tubes_mobpro/tubes/pages/otp.dart';
-import 'package:tubes_mobpro/tubes/pages/sign_up_page.dart';
 import 'package:tubes_mobpro/tubes/themes/app_theme.dart';
 import 'package:gap/gap.dart';
 import 'forgot_password_number.dart';
