@@ -85,6 +85,8 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
         'nominal': finalFees,
       };
 
+      print('User: ${userId}');
+
       if (voucher != null) {
         payload['id_voucher'] = voucher.idVoucher;
       }
@@ -201,6 +203,11 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
       var voucherUsed = await ApiService()
           .voucherApi
           .voucherCheckVoucherCodeGet(voucherFound!.kodeVoucher!);
+
+      if (voucherFound.statusVoucher!.value == StatusVoucher.nonAktif) {
+        VoucherResultMessage = 'Voucher tidak aktik!';
+      }
+
       if (!voucherUsed!.valid! == false) {
         setState(() {
           voucher = voucherFound;
@@ -209,6 +216,8 @@ class _BookMotorcyclePageState extends State<BookMotorcyclePage> {
               'Voucher code "${voucher!.namaVoucher}" applied!';
         });
       } else {
+        print('vocher found: ${voucherFound}');
+        print('vocher used: ${voucherUsed}');
         setState(() {
           voucher = null;
 
